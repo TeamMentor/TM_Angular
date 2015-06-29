@@ -1,0 +1,22 @@
+{
+  "name": "TM_Angular",
+  "version": "0.0.1",
+  "homepage": "https://github.com/TeamMentor/TM_Angular",
+  "authors": [
+    "Dinis Cruz <dinis.cruz@owasp.org>"
+  ],
+  "description": "AngularJS specific files for TEAM Mentor",
+  "license": "TeamMentor Commercial License",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.1",
+    "coffee-script": "~1.9.3",
+    "jade": "~1.11.0"
+  }
+}
