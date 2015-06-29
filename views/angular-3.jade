@@ -1,0 +1,22 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title Test
+        script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.js')
+        script(src='http://coffeescript.org/extras/coffee-script.js')
+        style.
+            input { width: 200px }
+
+        script(type='text/coffeescript').
+            app = angular.module('App', [])
+            app.controller 'TestController', ($scope)->
+                $scope.name = 'Angular 1.4 with Jade with coffee'
+            angular.bootstrap document, ["App"]
+
+    body
+        div
+            div(ng-controller="TestController")
+                h2 {{name}}
+                hr
+                input(type="text" ng-model="name" )

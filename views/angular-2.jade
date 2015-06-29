@@ -1,0 +1,31 @@
+doctype html
+//html(ng-app='BlogExample')
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title Test
+    script(src='angular/angular.js')
+    script(src='angular/coffee-script.js')
+
+    //script(type='text/javascript' src='/flare/angular/test.js')
+    //script(type='text/coffeescript' src='/flare/angular/test.coffee')
+
+    style.
+        input { width: 200px }
+
+    script(type='text/coffeescript').
+      app = angular.module('App', [])
+
+      app.controller 'TestController', ($scope)->
+        $scope.name = 'this is from the controller'
+
+      angular.bootstrap document, ["App"]
+
+    body
+        div
+          span(app-version)
+
+      //div(ng-controller="TestControlle    r")
+ n  h2 {{yourNam    e}}
+            hr
+        input(type="textnameela name here")
