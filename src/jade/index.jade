@@ -1,0 +1,30 @@
+extends ../../../TM_Jade/user/main.jade
+
+extends ../../../TM_Jade/_layouts/page_logged_in.jade
+include ../../../TM_Jade/_mixins/user-mixins
+include ../../../TM_Jade/_mixins/search-mixins
+
+block content
+
+  #application
+    div(ng-controller="Search_Controller")
+      #search-div
+        .lge-container
+          .row
+            .col-offset-2.col-8
+              #search-input
+                  form(action='/search', method='GET')
+                      label(for='search-input') Search...
+                      .input-group
+                          input.form-control(type='text' keyboard-poster post-function="get_Words" placeholder="Search" list="_words" _style='margin-bottom: 100px')
+                          datalist(id="_words")
+                            option(ng-repeat='(k,v) in words'  ng-value='k') {{v}}
+                          button#search-button(type='submit')
+                            +search-icon
+                          div(style='display:none')
+                            input.form-control(type='text' ng-model='text' name='text')
+
+  script(src='/angular/js/lib.js')
+  script(src='/angular/js/code.js')
+  script.
+    angular.bootstrap(document, ["App"])

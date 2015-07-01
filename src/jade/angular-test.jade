@@ -1,0 +1,21 @@
+extends ../../../TM_Jade/_layouts/page_logged_out.jade
+
+block content
+  script(src='/angular/js/lib.js')
+
+  #application
+    .row
+      .col-3
+      .col-6
+          div(ng-controller="TestController")
+            h1 {{title}}
+            input(type="text" ng-model="title" )
+
+
+  script(type='text/coffeescript').
+    app = angular.module('App', [])
+
+    app.controller 'TestController', ($scope)->
+        $scope.title = 'this is from the controller :)'
+
+    angular.bootstrap document, ["App"]
