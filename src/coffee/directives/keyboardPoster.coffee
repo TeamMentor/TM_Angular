@@ -1,23 +1,5 @@
 app = angular.module('App')
 
-app.service 'TM_API', ($q, $http)=>
- @.get_Words = (term, callback)->
-   $http.get "http://localhost:12345/angular/api/auto-complete?term=#{term}"
-        .then (response)->
-          callback response.data
- @
-
-app.controller 'Search_Controller', ($scope, TM_API)->
-
-
-  $scope.get_Words = (term)->
-    $scope.text = term.split('-')[1]
-    console.log $scope.text
-    console.log term
-    TM_API.get_Words term, (words)->
-
-      $scope.words = words;
-
 app.directive 'keyboardPoster', ($parse, $timeout)->
 
   DELAY_TIME_BEFORE_POSTING = 0;
