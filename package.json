@@ -1,0 +1,35 @@
+{
+  "name": "tm_angular",
+  "version": "0.0.1",
+  "description": "Angular files for TeamMentor 4.x",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeamMentor/TM_Angular.git"
+  },
+  "author": "Dinis Cruz <dinis.cruz@owasp.org> (http://blog.diniscruz.com/)",
+  "license": "LicenseRef-TM-Commercial",
+  "bugs": {
+    "url": "https://github.com/TeamMentor/TM_Angular/issues"
+  },
+  "homepage": "https://github.com/TeamMentor/TM_Angular#readme",
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.37",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-coffee-preprocessor": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-mocha": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-requirejs": "^0.2.2",
+    "mocha": "^2.2.5",
+    "phantomjs": "^1.9.17",
+    "requirejs": "^2.1.18"
+  }
+}

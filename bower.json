@@ -11,12 +11,12 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "test"
   ],
   "dependencies": {
     "angular": "~1.4.1",
     "coffee-script": "~1.9.3",
-    "jade": "~1.11.0"
+    "jade": "~1.11.0",
+    "angular-mocks": "~1.4.1"
   }
 }
