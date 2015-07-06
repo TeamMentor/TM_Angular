@@ -1,7 +1,7 @@
 (function() {
   var app;
 
-  app = angular.module('App', []);
+  app = angular.module('App', ['mm.foundation']);
 
 }).call(this);
 
@@ -19,6 +19,21 @@
           return done();
         }
       });
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.controller('Select-Controller', function($scope, $http, $timeout, TM_API) {
+    $scope.selected = void 0;
+    return $scope.getLocation = function(val) {
+      console.log('getLocation: ' + val);
+      return TM_API.get_Words(val);
     };
   });
 
@@ -62,11 +77,28 @@
       _this.get_Words = function(term, callback) {
         var url;
         url = "http://localhost:12345/angular/api/auto-complete?term=" + term;
-        return $http.get(url).success(function(response) {
-          return callback(response.data);
-        }).error(function(data, status, headers, config) {
-          console.log('error');
-          return console.log(data);
+        return $http.get(url).success(function(data) {
+          var match;
+          if (callback) {
+            return callback((function() {
+              var results;
+              results = [];
+              for (match in data) {
+                results.push(match);
+              }
+              return results;
+            })());
+          }
+        }).then(function(response) {
+          var match;
+          return (function() {
+            var results;
+            results = [];
+            for (match in response.data) {
+              results.push(match);
+            }
+            return results;
+          })();
         });
       };
       return _this;

@@ -1,1 +1,1 @@
-app = angular.module('App', [])
+app = angular.module('App', ['mm.foundation'])

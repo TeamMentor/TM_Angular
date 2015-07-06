@@ -17,6 +17,9 @@
     "angular": "~1.4.1",
     "coffee-script": "~1.9.3",
     "jade": "~1.11.0",
-    "angular-mocks": "~1.4.1"
+    "angular-mocks": "~1.4.1",
+    "angular-ui-select": "~0.12.0",
+    "angular-bootstrap": "~0.13.0",
+    "angular-foundation-bower": "~0.6.0"
   }
 }
