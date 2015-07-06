@@ -2,6 +2,7 @@ app = angular.module('App')
 
 app.service 'TM_API', ($q, $http)=>
   #server  = 'http://localhost:12345'
+  cache_Query_Tree = {}
 
   @.get_Words = (term, callback)->
     url = "/angular/api/auto-complete?term=#{term}"
@@ -17,9 +18,12 @@ app.service 'TM_API', ($q, $http)=>
   @.query_tree =  (id, callback)->
     id = id || 'query-dd98c2d701d8'
 
+    if cache_Query_Tree[id]
+      return callback cache_Query_Tree[id]
+
     url     = "/api/data/query_tree/#{id}"
-    console.log url
     $http.get url
          .success (data)->
+            cache_Query_Tree[id] = data
             callback(data)
   @

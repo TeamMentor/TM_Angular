@@ -2,6 +2,7 @@ extends angular-page
 
 block content
     script(src='/angular/jade/component/articles_list')
+    script(src='/angular/jade/component/breadcrumbs')
     script(src='/angular/jade/component/directory_list')
     script(src='/angular/jade/component/filters_div')
     script(src='/angular/jade/component/results')
@@ -12,10 +13,13 @@ block content
         .row
             .col-3
                 .lge-container
-                    span(ng-bind-html="directory_list")
+                    span(ng-click="open_Query(this, $event)")
+                        span(ng-bind-html="directory_list")
                     //+directory-list
             .col-6
                 .lge-container
+                    span(ng-click="open_Breadcrumb(this, $event)")
+                        span(ng-bind-html="breadcrumbs")
                     span(ng-bind-html="results")
                     span(ng-bind-html="articles_list")
                     //+breadcrumbs
