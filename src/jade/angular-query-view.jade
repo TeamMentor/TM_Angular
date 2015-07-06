@@ -1,13 +1,18 @@
 extends angular-page
+mixin slider
+    ul
+        p article {{slider.index}} to {{slider.index + slider.step}} of {{slider.ceiling}}
+           slider(floor="{{slider.floor}}"
+                  ceiling="{{slider.ceiling}}"
+                  step="{{slider.step}}"
+                  precision="2"
+                  ng-model="slider.index"
+                  ng-change="onSlide()")
 
 block content
-    script(src='/angular/jade/component/articles_list')
-    script(src='/angular/jade/component/breadcrumbs')
-    script(src='/angular/jade/component/directory_list')
-    script(src='/angular/jade/component/filters_div')
-    script(src='/angular/jade/component/results')
+    script(src='/angular/js/jade.js')
 
-    div(ng-controller="Jade-Controller")
+    div(ng-controller="Index-Controller")
 
         #application
         .row
@@ -21,11 +26,14 @@ block content
                     span(ng-click="open_Breadcrumb(this, $event)")
                         span(ng-bind-html="breadcrumbs")
                     span(ng-bind-html="results")
+                    + slider
+
                     span(ng-bind-html="articles_list")
                     //+breadcrumbs
                     //+results
                     //+articles-list
             .col-3
                 .lge-container
-                    span(ng-bind-html="filters_div")
+                    span(ng-click="open_Filter(this, $event)")
+                        span(ng-bind-html="filters_div")
                     //+filters-div

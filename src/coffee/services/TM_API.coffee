@@ -27,3 +27,16 @@ app.service 'TM_API', ($q, $http)=>
             cache_Query_Tree[id] = data
             callback(data)
   @
+
+  @.query_tree_filtered =  (id, filter, callback)->
+
+    if cache_Query_Tree[id+filter]
+      return callback cache_Query_Tree[id]
+
+    url     = "/api/data/query_tree_filtered/#{id}/#{filter}"
+    $http.get url
+      .success (data)->
+        console.log data
+        cache_Query_Tree[id+filter] = data
+        callback(data)
+  @
