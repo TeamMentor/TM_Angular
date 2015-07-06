@@ -10,6 +10,60 @@
 
   app = angular.module('App');
 
+  app.controller('Jade-Controller', function($scope, $sce, TM_API) {
+    var id;
+    Array.prototype.size = function() {
+      return this.length;
+    };
+    Array.prototype.take = function(size) {
+      if (size === -1) {
+        return this;
+      } else {
+        return this.slice(0, size);
+      }
+    };
+    String.prototype.remove = function(value) {
+      var result;
+      result = this;
+      while (result.contains(value)) {
+        result = result.replace(value, '');
+      }
+      return result;
+    };
+    String.prototype.contains = function(value) {
+      var i, item, len, regex;
+      if (value instanceof RegExp) {
+        regex = new RegExp(value);
+        return regex.exec(this) !== null;
+      }
+      if (value instanceof Array) {
+        for (i = 0, len = value.length; i < len; i++) {
+          item = value[i];
+          if (this.indexOf(item) === -1) {
+            return false;
+          }
+        }
+        return true;
+      }
+      return this.indexOf(value) > -1;
+    };
+    id = 'query-6234f2d47eb7';
+    return TM_API.query_tree(id, function(data) {
+      window._data = data;
+      $scope.directory_list = $sce.trustAsHtml(jade_directory_list(data));
+      $scope.results = $sce.trustAsHtml(jade_results(data));
+      $scope.articles_list = $sce.trustAsHtml(jade_articles_list(data));
+      return $scope.filters_div = $sce.trustAsHtml(jade_filters_div(data));
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
   app.controller('Search_Controller', function($scope, TM_API) {
     return $scope.get_Words = function(term, done) {
       $scope.text = term.split('-')[1];
@@ -44,24 +98,33 @@
 
   app = angular.module('App');
 
-  app.directive('keyboardPoster', function($parse, $timeout) {
-    var DELAY_TIME_BEFORE_POSTING;
-    DELAY_TIME_BEFORE_POSTING = 0;
+  app.directive('tmJade2', function($parse, $timeout) {
     return function(scope, elem, attrs) {
-      var currentTimeout, element;
-      element = angular.element(elem)[0];
-      currentTimeout = null;
-      return element.oninput = function() {
-        var model, poster;
-        model = $parse(attrs.postFunction);
-        poster = model(scope);
-        if (currentTimeout) {
-          $timeout.cancel(currentTimeout);
+      window._scope = scope;
+      window._elem = scope;
+      window._attrs = attrs;
+      console.log(scope);
+      console.log(elem);
+      return console.log(attrs);
+    };
+  });
+
+  app.directive('tmJade', function($parse, $timeout) {
+    var data, html;
+    data = {
+      href: '/abc',
+      title: 'aaaa',
+      containers: [
+        {
+          id: 123,
+          title: 'abc',
+          size: 12
         }
-        return currentTimeout = $timeout((function() {
-          return poster(angular.element(element).val());
-        }), DELAY_TIME_BEFORE_POSTING);
-      };
+      ]
+    };
+    html = jade_directory_list(data);
+    return {
+      template: html
     };
   });
 
@@ -76,7 +139,7 @@
     return function($q, $http) {
       _this.get_Words = function(term, callback) {
         var url;
-        url = "http://localhost:12345/angular/api/auto-complete?term=" + term;
+        url = "/angular/api/auto-complete?term=" + term;
         return $http.get(url).success(function(data) {
           var match;
           if (callback) {
@@ -99,6 +162,15 @@
             }
             return results;
           })();
+        });
+      };
+      _this.query_tree = function(id, callback) {
+        var url;
+        id = id || 'query-dd98c2d701d8';
+        url = "/api/data/query_tree/" + id;
+        console.log(url);
+        return $http.get(url).success(function(data) {
+          return callback(data);
         });
       };
       return _this;
