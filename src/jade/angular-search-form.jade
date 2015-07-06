@@ -1,0 +1,15 @@
+extends angular-page
+
+block content
+    div(ng-controller="Select-Controller")
+        #search-div
+            .lge-container
+                .row
+                    .col-offset-2.col-8
+                        #search-input
+                            form(action='/search', method='GET')
+                                label(for='search-input') Search...
+                                .input-group
+                                    block search-input
+                                        button#search-button(type='submit')
+                                            +search-icon
