@@ -114,7 +114,7 @@ app.controller 'Index-Controller', ($scope, $sce, TM_API)->
 
       $scope.show_Query_Tree_Filter filter_Id,
 
-  $scope.$watch "slider.index", (current ,before)->
-    $scope.show_Articles_List current
+  $scope.$watch "slider.index", (current)->
+    $scope.open_Query current
 
   $scope.get_Query_Tree breadcrumbs[0].id # index

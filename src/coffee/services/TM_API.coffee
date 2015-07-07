@@ -40,3 +40,28 @@ app.service 'TM_API', ($q, $http)=>
         cache_Query_Tree[id+filter] = data
         callback(data)
   @
+
+  @.query_from_text_search =  (text, callback)->
+
+    url     = "/api/search/query_from_text_search/#{text}"
+    $http.get url
+    .success (data)->
+      console.log data
+      callback(data)
+  @
+
+  @.get_articles_parent_queries =  (article_Ids, ignore_Titles, callback)->
+
+    url     = "/api/data/articles_parent_queries/#{article_Ids.join(',')}"
+    $http.get url
+         .success (data)->
+           matches = []
+           for key,query of data.queries
+             if key.indexOf('query-') > -1
+               query_Data = data.queries[key]
+               if query_Data.child_Queries.size() is 0
+                 if ignore_Titles.indexOf(query_Data.title) is -1
+                   matches.push { id: key,  title: query_Data.title, articles: query_Data.articles , size: query_Data.articles.size()}
+           callback(matches) if callback
+  @
+

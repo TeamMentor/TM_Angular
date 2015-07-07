@@ -1,7 +1,7 @@
 app = angular.module('App')
 
 #app.controller 'Select_Controller', ($scope, $http, $timeout, $interval)->
-app.controller 'Select-Controller', ($scope, $http, $timeout, TM_API)->
+app.controller 'Select_Controller', ($scope, $http, $timeout, TM_API)->
 
   #angular.module('App').controller('TypeaheadCtrl', function($scope, $http, $timeout, TM_API) {
 
