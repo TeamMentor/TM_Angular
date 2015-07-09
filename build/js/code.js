@@ -246,13 +246,15 @@
     };
     $scope.open_Query = function(obj, $event) {
       var query_Id, query_Title;
-      query_Id = $event.target.id;
-      query_Title = $event.target.text;
-      breadcrumbs.push({
-        title: query_Title,
-        href: '#' + query_Id
-      });
-      return $scope.get_Query_Tree(query_Id);
+      if ($event) {
+        query_Id = $event.target.id;
+        query_Title = $event.target.text;
+        breadcrumbs.push({
+          title: query_Title,
+          href: '#' + query_Id
+        });
+        return $scope.get_Query_Tree(query_Id);
+      }
     };
     $scope.open_Breadcrumb = function(obj, $event) {
       var id;

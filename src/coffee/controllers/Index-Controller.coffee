@@ -87,10 +87,11 @@ app.controller 'Index-Controller', ($scope, $sce, TM_API)->
       $scope.render_Data data
 
   $scope.open_Query = (obj, $event)->
-    query_Id    = $event.target.id
-    query_Title = $event.target.text
-    breadcrumbs.push {title:query_Title, href: '#' + query_Id}
-    $scope.get_Query_Tree query_Id
+    if $event
+      query_Id    = $event.target.id
+      query_Title = $event.target.text
+      breadcrumbs.push {title:query_Title, href: '#' + query_Id}
+      $scope.get_Query_Tree query_Id
 
   $scope.open_Breadcrumb =  (obj, $event)->
     id = $event.target.href.split('#')[1].split('/')[0]
