@@ -66,7 +66,7 @@ app.controller 'Active_Search_Controller', ($scope, $timeout, $sce, TM_API)->
     if  $scope.text
       TM_API.query_from_text_search $scope.text, (query_id)->
         if query_id
-          $scope.get_Query_Tree query_id
+          $scope.get_Query_Tree query_id   
 
   $scope.open_Query = (obj, $event)->
     query_Id    = $event.target.id

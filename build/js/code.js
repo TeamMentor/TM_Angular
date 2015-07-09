@@ -1,7 +1,44 @@
 (function() {
   var app;
 
-  app = angular.module('App', ['mm.foundation', 'ui.slider']);
+  app = angular.module('App', ['mm.foundation', 'ui.slider', 'ui.router']);
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.directive('tmJade2', function($parse, $timeout) {
+    return function(scope, elem, attrs) {
+      window._scope = scope;
+      window._elem = scope;
+      window._attrs = attrs;
+      console.log(scope);
+      console.log(elem);
+      return console.log(attrs);
+    };
+  });
+
+  app.directive('tmJade', function($parse, $timeout) {
+    var data, html;
+    data = {
+      href: '/abc',
+      title: 'aaaa',
+      containers: [
+        {
+          id: 123,
+          title: 'abc',
+          size: 12
+        }
+      ]
+    };
+    html = jade_directory_list(data);
+    return {
+      template: html
+    };
+  });
 
 }).call(this);
 
@@ -294,6 +331,59 @@
 
   app = angular.module('App');
 
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('/index');
+    $stateProvider.state('about', {
+      url: '/about',
+      templateUrl: '../pages/about.html'
+    });
+    $stateProvider.state('docs', {
+      url: '/docs',
+      templateUrl: '../pages/docs.html'
+    });
+    $stateProvider.state('index', {
+      url: '/index',
+      templateUrl: '../pages/index.html'
+    });
+    $stateProvider.state('features', {
+      url: '/features',
+      templateUrl: '../pages/features.html'
+    });
+    $stateProvider.state('start', {
+      url: '/start',
+      templateUrl: '../pages/start.html'
+    });
+    $stateProvider.state('main', {
+      url: '/main',
+      templateUrl: '../pages/main.html'
+    });
+    $stateProvider.state('navigate', {
+      url: '/navigate',
+      templateUrl: '../pages/navigate.html'
+    });
+    $stateProvider.state('article', {
+      url: '/article',
+      templateUrl: '../pages/article.html'
+    });
+    $stateProvider.state('contacts', {
+      template: '<h1>My Contacts</h1>'
+    });
+    return window.stateProvider = $stateProvider;
+  });
+
+  app.controller('Route_Test_Controller', function($scope, $timeout, $sce, TM_API, $state) {
+    $scope.test = 1231234512;
+    window.scope = $scope;
+    return window.state = $state;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
   app.controller('Search_Controller', function($scope, TM_API) {
     return $scope.get_Words = function(term, done) {
       $scope.text = term.split('-')[1];
@@ -318,43 +408,6 @@
     return $scope.getLocation = function(val) {
       console.log('getLocation: ' + val);
       return TM_API.get_Words(val);
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
-  app.directive('tmJade2', function($parse, $timeout) {
-    return function(scope, elem, attrs) {
-      window._scope = scope;
-      window._elem = scope;
-      window._attrs = attrs;
-      console.log(scope);
-      console.log(elem);
-      return console.log(attrs);
-    };
-  });
-
-  app.directive('tmJade', function($parse, $timeout) {
-    var data, html;
-    data = {
-      href: '/abc',
-      title: 'aaaa',
-      containers: [
-        {
-          id: 123,
-          title: 'abc',
-          size: 12
-        }
-      ]
-    };
-    html = jade_directory_list(data);
-    return {
-      template: html
     };
   });
 
