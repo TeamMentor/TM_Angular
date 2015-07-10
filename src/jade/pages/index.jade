@@ -1,0 +1,20 @@
+//extends ../angular-page
+doctype html
+html(lang='en')
+    include ../../../../TM_Flare/_layouts/head
+    link(rel="stylesheet" href="/angular/css/lib.css")
+    script(src='/angular/js/lib.js')
+    script(src='/angular/js/code.js')
+    body
+        include ../../../../TM_Flare/_layouts/flare_page_landing.jade
+        //block content
+        #application
+            div(ng-controller='Route_Test_Controller')
+                a(ui-sref="index") index |
+                a(ui-sref="about") | about |
+                a(ui-sref="features") | features |
+                a(ui-sref="docs") | docs |
+                a(ui-sref="start") | start
+            div(ui-view)
+        script.
+            angular.bootstrap(document, ["App"])

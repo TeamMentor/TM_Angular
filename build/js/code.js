@@ -335,35 +335,35 @@
     $urlRouterProvider.otherwise('/index');
     $stateProvider.state('about', {
       url: '/about',
-      templateUrl: '../pages/about.html'
+      templateUrl: '../views/about.html'
     });
     $stateProvider.state('docs', {
       url: '/docs',
-      templateUrl: '../pages/docs.html'
+      templateUrl: '../views/docs.html'
     });
     $stateProvider.state('index', {
       url: '/index',
-      templateUrl: '../pages/index.html'
+      templateUrl: '../views/index.html'
     });
     $stateProvider.state('features', {
       url: '/features',
-      templateUrl: '../pages/features.html'
+      templateUrl: '../views/features.html'
     });
     $stateProvider.state('start', {
       url: '/start',
-      templateUrl: '../pages/start.html'
+      templateUrl: '../views/start.html'
     });
     $stateProvider.state('main', {
       url: '/main',
-      templateUrl: '../pages/main.html'
+      templateUrl: '../views/main.html'
     });
     $stateProvider.state('navigate', {
       url: '/navigate',
-      templateUrl: '../pages/navigate.html'
+      templateUrl: '../views/navigate.html'
     });
     $stateProvider.state('article', {
       url: '/article',
-      templateUrl: '../pages/article.html'
+      templateUrl: '../views/article.html'
     });
     $stateProvider.state('contacts', {
       template: '<h1>My Contacts</h1>'
