@@ -1,0 +1,52 @@
+extend angular-search-form.jade
+
+mixin slider
+    ul
+        p article {{slider.index}} to {{slider.index + slider.step}} of {{slider.ceiling}} :
+            b= ' {{sub_Query}}'
+            slider(floor="{{slider.floor}}"
+            ceiling="{{slider.ceiling}}"
+            step="{{slider.step}}"
+            precision="2"
+            ng-model="slider.index"
+            ng-change="onSlide()")
+
+//block search-input
+block content
+    link(rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" )
+    link(rel="stylesheet" href="https://angular-ui.github.io/bootstrap/assets/demo.css")
+    script(src='https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.min.js')
+    script(src='/angular/js/jade.js')
+
+    div(ng-controller="Select_Controller")
+        div(ng-controller="Active_Search_Controller")
+            #search-div
+                .lge-container
+                    .row
+                        .col-offset-2.col-8
+                            #search-input
+                                form
+                                    #label(for='search-input')
+                                    .input-group
+                                        input(type="text" ng-model="text"
+                                              autocomplete="off"
+                                              placeholder="Type Search here.... ABC"
+                                              typeahead="address for address in getLocation($viewValue)"
+                                              typeahead-loading="loadingLocations"
+                                              class="form-control")
+
+
+
+                    .row
+                        .col-3
+                            .lge-container
+                                span(ng-click="open_Query(this, $event)")
+                                    span(ng-bind-html="directory_list")
+                        .col-6
+                            .lge-container
+                                + slider
+                                span(ng-bind-html="articles_list")
+                        .col-3
+                            .lge-container
+                                span(ng-click="open_Filter(this, $event)")
+                                    span(ng-bind-html="filters_div")

@@ -1,30 +1,25 @@
-extends ../../../TM_Jade/user/main.jade
+//extends ../angular-page
+doctype html
+html(lang='en')
+    include ../../../TM_Flare/_layouts/head
+    link(rel="stylesheet" href="/angular/css/lib.css")
+    script(src='/angular/js/lib.js')
+    script(src='/angular/js/code.js')
+    body
+        //include ../../../TM_Flare/_layouts/landing_navbar.jade
+        //block content
+        #application
+            div(ng-controller='Route_Test_Controller')
+                a(ui-sref="index") index |
+                a(ui-sref="about") | about |
+                a(ui-sref="features") | features |
+                a(ui-sref="docs") | docs |
+                a(ui-sref="start") | start
 
-extends ../../../TM_Jade/_layouts/page_logged_in.jade
-include ../../../TM_Jade/_mixins/user-mixins
-include ../../../TM_Jade/_mixins/search-mixins
+            hr
+            div(ui-view='navbar')
+            hr
+            div(ui-view='content')
 
-block content
-
-  #application
-    div(ng-controller="Search_Controller")
-      #search-div
-        .lge-container
-          .row
-            .col-offset-2.col-8
-              #search-input
-                  form(action='/search', method='GET')
-                      label(for='search-input') Search...
-                      .input-group
-                          input.form-control(type='text' keyboard-poster post-function="get_Words" placeholder="Search" list="_words" _style='margin-bottom: 100px')
-                          datalist(id="_words")
-                            option(ng-repeat='(k,v) in words'  ng-value='k') {{v}}
-                          button#search-button(type='submit')
-                            +search-icon
-                          div(style='display:none')
-                            input.form-control(type='text' ng-model='text' name='text')
-
-  script(src='/angular/js/lib.js')
-  script(src='/angular/js/code.js')
-  script.
-    angular.bootstrap(document, ["App"])
+        script.
+            angular.bootstrap(document, ["App"])
