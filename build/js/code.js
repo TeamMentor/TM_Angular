@@ -10,43 +10,6 @@
 
   app = angular.module('App');
 
-  app.directive('tmJade2', function($parse, $timeout) {
-    return function(scope, elem, attrs) {
-      window._scope = scope;
-      window._elem = scope;
-      window._attrs = attrs;
-      console.log(scope);
-      console.log(elem);
-      return console.log(attrs);
-    };
-  });
-
-  app.directive('tmJade', function($parse, $timeout) {
-    var data, html;
-    data = {
-      href: '/abc',
-      title: 'aaaa',
-      containers: [
-        {
-          id: 123,
-          title: 'abc',
-          size: 12
-        }
-      ]
-    };
-    html = jade_directory_list(data);
-    return {
-      template: html
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
   app.controller('Active_Search_Controller', function($scope, $timeout, $sce, TM_API) {
     $scope.slider = {
       floor: 1,
@@ -408,6 +371,43 @@
     return $scope.getLocation = function(val) {
       console.log('getLocation: ' + val);
       return TM_API.get_Words(val);
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.directive('tmJade2', function($parse, $timeout) {
+    return function(scope, elem, attrs) {
+      window._scope = scope;
+      window._elem = scope;
+      window._attrs = attrs;
+      console.log(scope);
+      console.log(elem);
+      return console.log(attrs);
+    };
+  });
+
+  app.directive('tmJade', function($parse, $timeout) {
+    var data, html;
+    data = {
+      href: '/abc',
+      title: 'aaaa',
+      containers: [
+        {
+          id: 123,
+          title: 'abc',
+          size: 12
+        }
+      ]
+    };
+    html = jade_directory_list(data);
+    return {
+      template: html
     };
   });
 

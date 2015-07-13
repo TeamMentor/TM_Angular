@@ -1,0 +1,17 @@
+extends ../angular-page
+
+block content
+    script.
+        console.log("AAAAAAAAAAAAA")
+        module = angular.module("App")
+        module.controller('Test_Controller',  function($scope) {
+                $scope.test = 'abc 123'
+            });
+
+    #application
+        .row
+            .col-3
+                .lge-container
+                    div(ng-controller="Test_Controller")
+                        h1 {{test}}
+                        input#test_Field(ng-model='test')
