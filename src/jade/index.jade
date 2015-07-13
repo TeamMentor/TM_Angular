@@ -9,16 +9,14 @@ html(lang='en')
         //include ../../../TM_Flare/_layouts/landing_navbar.jade
         //block content
         #application
-            div(ng-controller='Route_Test_Controller')
+            //div(ng-controller='Route_Test_Controller')
                 a(ui-sref="index") index |
                 a(ui-sref="about") | about |
                 a(ui-sref="features") | features |
                 a(ui-sref="docs") | docs |
                 a(ui-sref="start") | start
 
-            hr
             div(ui-view='navbar')
-            hr
             div(ui-view='content')
 
         script.

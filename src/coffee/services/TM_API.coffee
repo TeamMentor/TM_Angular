@@ -13,7 +13,7 @@ app.service 'TM_API', ($q, $http)=>
                    return (match for match of response.data)          # when using promises
 
   @.query_tree =  (id, callback)->
-    id = id || 'query-dd98c2d701d8'
+    id = id || 'query-6234f2d47eb7'
 
     if cache_Query_Tree[id]
       return callback cache_Query_Tree[id]
