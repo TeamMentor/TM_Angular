@@ -341,36 +341,6 @@
 
   app = angular.module('App');
 
-  app.directive('tmJade2', function($parse, $timeout) {
-    return function(scope, elem, attrs) {
-      window._scope = scope;
-      window._elem = scope;
-      window._attrs = attrs;
-      console.log(scope);
-      console.log(elem);
-      return console.log(attrs);
-    };
-  });
-
-  app.directive('tmJade', function($parse, $timeout) {
-    var data, html;
-    data = {
-      href: '/abc',
-      title: 'aaaa',
-      containers: [
-        {
-          id: 123,
-          title: 'abc',
-          size: 12
-        }
-      ]
-    };
-    html = jade_directory_list(data);
-    return {
-      template: html
-    };
-  });
-
 }).call(this);
 
 (function() {
@@ -422,11 +392,11 @@
     resolve_Navbar = function(Load_Jade, User) {
       var file, name;
       if (User.logged_In) {
-        name = 'customer_navbar_app';
+        name = 'logged_in';
       } else {
-        name = 'landing_navbar';
+        name = 'anonymous';
       }
-      file = "_layouts/" + name;
+      file = "navbar/" + name;
       return Load_Jade(file, name, function(method, resolve) {
         return resolve(method());
       });

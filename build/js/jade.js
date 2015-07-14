@@ -5761,13 +5761,13 @@ buf.push("</aside>");
 
 jade_mixins["left-navigation"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<aside id=\"left-nav\"><ul><li><a ui-sref=\"main\">");
+buf.push("<aside id=\"left-nav\"><ul><li><!--a(ui-sref=\"main\")--><a href=\"#main\">");
 jade_mixins["forward-icon"]();
-buf.push("</a></li><li><a ui-sref=\"navigate\">");
+buf.push("</a></li><li><!--a(ui-sref=\"navigate\")--><a href=\"#navigate\">");
 jade_mixins["index-icon"]();
-buf.push("</a></li><li><a ui-sref=\"docs\">");
+buf.push("</a></li><li><!--a(ui-sref=\"docs\")--><a href=\"#docs\">");
 jade_mixins["info-icon"]();
-buf.push("</a></li><li><a ui-sref=\"logout\">");
+buf.push("</a></li><li><!--a(ui-sref=\"logout\")--><a href=\"#logout\">");
 jade_mixins["logout-icon"]();
 buf.push("</a></li></ul></aside>");
 };
@@ -6446,7 +6446,7 @@ else
 {
 buf.push("<td><div id=\"resultsTitle\" class=\"label no-underline\">" + (jade.escape(null == (jade_interp = results.take(25).size() + ' results showing') ? "" : jade_interp)) + "</div></td>");
 }
-buf.push("<ul class=\"display-inline\"><li><!--a.button.btn-result.icon-Filter(href='#right-nav') aaaaaaa--><a href=\"\" class=\"button btn-result icon-Filter\">aaaaaaa</a></li><!--li+save-results-button--><!--li+share-results-button\n\n--></ul>");
+buf.push("<ul class=\"display-inline\"><li><!--a.button.btn-result.icon-Filter(href='#right-nav') aaaaaaa--><a href=\"\" class=\"button btn-result icon-Filter\"></a></li><!--li+save-results-button--><!--li+share-results-button\n\n--></ul>");
 }
 buf.push("</section>");
 };

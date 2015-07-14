@@ -39,11 +39,11 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
   resolve_Navbar = (Load_Jade, User)->
     if User.logged_In
-      name = 'customer_navbar_app'
+      name = 'logged_in'
     else
-      name = 'landing_navbar'
+      name = 'anonymous'
 
-    file = "_layouts/#{name}"
+    file = "navbar/#{name}"
     return Load_Jade file, name, (method, resolve)->
       resolve method()
 

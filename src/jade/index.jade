@@ -6,18 +6,8 @@ html(lang='en')
     script(src='/angular/js/lib.js')
     script(src='/angular/js/code.js')
     body
-        //include ../../../TM_Flare/_layouts/landing_navbar.jade
-        //block content
-        #application
-            //div(ng-controller='Route_Test_Controller')
-                a(ui-sref="index") index |
-                a(ui-sref="about") | about |
-                a(ui-sref="features") | features |
-                a(ui-sref="docs") | docs |
-                a(ui-sref="start") | start
-
-            div(ui-view='navbar')
-            div(ui-view='content')
+        div(ui-view='navbar')
+        div(ui-view='content')
 
         script.
             angular.bootstrap(document, ["App"])
