@@ -54,7 +54,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
         #resolve 'method()'
 
   View_Controller = (page)->
-    ($scope,User, $sce, $state, $stateParams, TM_API) ->
+    ($rootScope, $scope,User, $sce, $state, $stateParams, TM_API) ->
 
       window.state = $state
       window.scope = $scope
@@ -69,16 +69,19 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
       method_Name = "jade_#{page}"
       if page is 'navigate'
-        Navigate_Controller($scope, $sce, $stateParams, TM_API)
+        Navigate_Controller($rootScope, $scope, $sce, $stateParams, TM_API)
       else
         if window[method_Name]
           $scope.content_HTML =  $sce.trustAsHtml window[method_Name]()  # this is not working all the time
           #console.log $compile window[method_Name]()($scope)
 
-  Navigate_Controller = ($scope,$sce, $stateParams, TM_API) ->
+  Navigate_Controller = ($rootScope, $scope,$sce, $stateParams, TM_API) ->
 
     TM_API.query_tree $stateParams.query_Id, (data)->
       data.href = '#/navigate/'
+      $scope.content_HTML =  $sce.trustAsHtml(jade_navigate(data))
+
+    $rootScope.$on 'UPDATE_CHILD', (event, data)->
       $scope.content_HTML =  $sce.trustAsHtml(jade_navigate(data))
 
 
