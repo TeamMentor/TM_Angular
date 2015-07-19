@@ -1,7 +1,5 @@
 app = angular.module('App')
 
-config =
-  cache_Jade_Js: true
 
 app.service 'User', ()->
   user =
@@ -9,28 +7,7 @@ app.service 'User', ()->
     logged_In: true
   return user
 
-app.service 'Load_Jade', ($q, $document)->
-  return (jade_File, method_Name, callback)->
-    method_Name = 'jade_' + method_Name
 
-    deferrer = $q.defer()
-
-    if config.cache_Jade_Js and window[method_Name]
-      callback window[method_Name], deferrer.resolve
-    else
-      #console.log 'on Load_Jade for: ' + jade_File
-      try
-        script = $document[0].createElement('script');
-        src  = "/angular/jade/#{jade_File}"
-        script.src = src;
-
-        $document[0].body.appendChild(script);
-        script.onload = ()->
-          callback window[method_Name], deferrer.resolve
-      catch error
-        console.log error
-
-    return deferrer.promise
 
 
 app.config ($stateProvider, $urlRouterProvider) ->
@@ -81,13 +58,15 @@ app.config ($stateProvider, $urlRouterProvider) ->
       data.href = '#/navigate/'
       $scope.content_HTML =  $sce.trustAsHtml(jade_navigate(data))
 
-    $rootScope.$on 'UPDATE_CHILD', (event, data)->
+    $rootScope.$on 'New_Results_Data', (event, data)->
+      console.log 'Received New_Results_Data'
       $scope.content_HTML =  $sce.trustAsHtml(jade_navigate(data))
 
 
   NavBar_Controller = ()->
 
-  view_Names = ['about', 'docs', 'index','features', 'get_started', 'logout','main', 'navigate']
+  view_Names = ['about', 'docs', 'index','features', 'get_started', 'logout','main', 'navigate'
+                'error', 'blank']
   for view_Name in view_Names
     $stateProvider.state view_Name    ,
       url       : "/#{view_Name}"
@@ -109,13 +88,5 @@ app.config ($stateProvider, $urlRouterProvider) ->
 app.controller 'Content_Controller', ($scope)->
   #console.log 'in content controller'
   $scope.content ='...TEAM mentor is loading....'
-
-app.run ($timeout, Load_Jade)->
-  preload = ()->
-    preload_Pages = ["about", "features", "index", "get_started"]
-    for page in preload_Pages
-      Load_Jade "views/#{page}", "", ->
-
-  $timeout preload, 250
 
   #$locationProvider.html5Mode(true)

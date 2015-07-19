@@ -33,7 +33,6 @@ app.service 'TM_API', ($q, $http)=>
     url     = "/api/data/query_tree_filtered/#{id}/#{filter}"
     $http.get url
       .success (data)->
-        console.log data
         cache_Query_Tree[id+filter] = data
         callback(data)
   @
@@ -43,7 +42,6 @@ app.service 'TM_API', ($q, $http)=>
     url     = "/api/search/query_from_text_search/#{text}"
     $http.get url
     .success (data)->
-      console.log data
       callback(data)
   @
 

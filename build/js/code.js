@@ -6,6 +6,28 @@
 }).call(this);
 
 (function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.run(function($timeout, Load_Jade) {
+    var preload;
+    preload = function() {
+      var i, len, page, preload_Pages, results;
+      preload_Pages = ["about", "features", "index", "get_started"];
+      results = [];
+      for (i = 0, len = preload_Pages.length; i < len; i++) {
+        page = preload_Pages[i];
+        results.push(Load_Jade("views/" + page, "", function() {}));
+      }
+      return results;
+    };
+    return $timeout(preload, 250);
+  });
+
+}).call(this);
+
+(function() {
 
 
 }).call(this);
@@ -16,16 +38,47 @@
   app = angular.module('App');
 
   app.controller('Search_Controller', function($rootScope, $scope, TM_API) {
+    console.log(" IN Search_Controller");
+    $scope.text = 'xss....';
     return $scope.submit = function() {
+      console.log("IN Search_Controller submit");
       return TM_API.query_from_text_search($scope.text, function(query_id) {
         console.log(query_id);
         return TM_API.query_tree(query_id, function(data) {
+          console.log(data);
           if (data) {
             data.href = '#/navigate/';
+            console.log('broadcasting: ' + 'New_Results_Data');
             return $rootScope.$broadcast('New_Results_Data', data);
           }
         });
       });
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.directive('leftNavigation', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/left_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.directive('searchBar', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/search_bar'
     };
   });
 
@@ -81,13 +134,9 @@
 }).call(this);
 
 (function() {
-  var app, config;
+  var app;
 
   app = angular.module('App');
-
-  config = {
-    cache_Jade_Js: true
-  };
 
   app.service('User', function() {
     var user;
@@ -96,31 +145,6 @@
       logged_In: true
     };
     return user;
-  });
-
-  app.service('Load_Jade', function($q, $document) {
-    return function(jade_File, method_Name, callback) {
-      var deferrer, error, script, src;
-      method_Name = 'jade_' + method_Name;
-      deferrer = $q.defer();
-      if (config.cache_Jade_Js && window[method_Name]) {
-        callback(window[method_Name], deferrer.resolve);
-      } else {
-        try {
-          script = $document[0].createElement('script');
-          src = "/angular/jade/" + jade_File;
-          script.src = src;
-          $document[0].body.appendChild(script);
-          script.onload = function() {
-            return callback(window[method_Name], deferrer.resolve);
-          };
-        } catch (_error) {
-          error = _error;
-          console.log(error);
-        }
-      }
-      return deferrer.promise;
-    };
   });
 
   app.config(function($stateProvider, $urlRouterProvider) {
@@ -174,12 +198,13 @@
         data.href = '#/navigate/';
         return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
       });
-      return $rootScope.$on('UPDATE_CHILD', function(event, data) {
+      return $rootScope.$on('New_Results_Data', function(event, data) {
+        console.log('Received New_Results_Data');
         return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
       });
     };
     NavBar_Controller = function() {};
-    view_Names = ['about', 'docs', 'index', 'features', 'get_started', 'logout', 'main', 'navigate'];
+    view_Names = ['about', 'docs', 'index', 'features', 'get_started', 'logout', 'main', 'navigate', 'error', 'blank'];
     for (i = 0, len = view_Names.length; i < len; i++) {
       view_Name = view_Names[i];
       $stateProvider.state(view_Name, {
@@ -216,19 +241,40 @@
     return $scope.content = '...TEAM mentor is loading....';
   });
 
-  app.run(function($timeout, Load_Jade) {
-    var preload;
-    preload = function() {
-      var i, len, page, preload_Pages, results;
-      preload_Pages = ["about", "features", "index", "get_started"];
-      results = [];
-      for (i = 0, len = preload_Pages.length; i < len; i++) {
-        page = preload_Pages[i];
-        results.push(Load_Jade("views/" + page, "", function() {}));
+}).call(this);
+
+(function() {
+  var app, config;
+
+  app = angular.module('App');
+
+  config = {
+    cache_Jade_Js: true
+  };
+
+  app.service('Load_Jade', function($q, $document) {
+    return function(jade_File, method_Name, callback) {
+      var deferrer, error, script, src;
+      method_Name = 'jade_' + method_Name;
+      deferrer = $q.defer();
+      if (config.cache_Jade_Js && window[method_Name]) {
+        callback(window[method_Name], deferrer.resolve);
+      } else {
+        try {
+          script = $document[0].createElement('script');
+          src = "/angular/jade/" + jade_File;
+          script.src = src;
+          $document[0].body.appendChild(script);
+          script.onload = function() {
+            return callback(window[method_Name], deferrer.resolve);
+          };
+        } catch (_error) {
+          error = _error;
+          console.log(error);
+        }
       }
-      return results;
+      return deferrer.promise;
     };
-    return $timeout(preload, 250);
   });
 
 }).call(this);
@@ -289,7 +335,6 @@
         }
         url = "/api/data/query_tree_filtered/" + id + "/" + filter;
         return $http.get(url).success(function(data) {
-          console.log(data);
           cache_Query_Tree[id + filter] = data;
           return callback(data);
         });
@@ -299,7 +344,6 @@
         var url;
         url = "/api/search/query_from_text_search/" + text;
         return $http.get(url).success(function(data) {
-          console.log(data);
           return callback(data);
         });
       };
