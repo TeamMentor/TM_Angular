@@ -9,6 +9,7 @@ app.config ($stateProvider, $urlRouterProvider, $locationProvider) ->
       templateUrl: "/angular/jade-html/views/#{view_Name}"
 
 
-  $stateProvider.state 'user'    ,
-    url        : "/user"
-    template   : 'a user'
+  $stateProvider.state 'article'    ,
+    url        : "/article/:article_Id/:article_Title"
+    controller : 'Article_Controller'
+    templateUrl: '/angular/jade-html/views/article'

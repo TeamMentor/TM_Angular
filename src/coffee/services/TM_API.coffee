@@ -1,9 +1,9 @@
-app = angular.module('App')
+app     = angular.module('App')
 
-app.service 'TM_API', ($q, $http)=>
+app.service 'TM_API', ($q, $http, $timeout)=>
   #server  = 'http://localhost:12345'
   cache_Query_Tree = {}
-
+  cache_Articles = {}
   @.get_Words = (term, callback)->
     url = "/angular/api/auto-complete?term=#{term}"
     return $http.get url
@@ -16,13 +16,13 @@ app.service 'TM_API', ($q, $http)=>
     id = id || 'query-6234f2d47eb7'
 
     if cache_Query_Tree[id]
-      return callback cache_Query_Tree[id]
-
-    url     = "/api/data/query_tree/#{id}"
-    $http.get url
-         .success (data)->
-            cache_Query_Tree[id] = data
-            callback(data)
+      $timeout -> callback cache_Query_Tree[id]
+    else
+      url     = "/api/data/query_tree/#{id}"
+      $http.get url
+           .success (data)->
+              cache_Query_Tree[id] = data
+              callback(data)
   @
 
   @.query_tree_filtered =  (id, filter, callback)->
@@ -68,12 +68,21 @@ app.service 'TM_API', ($q, $http)=>
             callback(data)
   @
 
-  @.docs_Page =  (id, callback)->
-    url     = "/json/docs/#{id}"
-    $http.get url
-         .success (data)->
-            callback(data)
+  @.docs_Page =  (article_Id, callback)->
+    url     = "/json/docs/#{article_Id}"
+    $http.get(url).success callback
   @
+
+  @.article =  (article_Id, callback)->
+    if cache_Articles[article_Id]
+      $timeout -> callback cache_Articles[article_Id]
+    else
+      url     = "/json/article/#{article_Id}"
+      $http.get(url).success (data)->
+        cache_Articles[article_Id]= data
+        callback(data)
+  @
+
 
 
 

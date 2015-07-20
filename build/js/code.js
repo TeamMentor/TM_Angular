@@ -30,6 +30,17 @@
 }).call(this);
 
 (function() {
+  angular.module('App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
+    return TM_API.article($stateParams.article_Id, function(article_Data) {
+      $scope.title = article_Data.title;
+      $scope.article_Html = $sce.trustAsHtml(article_Data.article_Html);
+      return console.log(article_Data);
+    });
+  });
+
+}).call(this);
+
+(function() {
   angular.module('App').controller('Help_Controller', function($sce, $scope, TM_API) {
     return TM_API.docs_Library(function(library) {
       $scope.Views = library.Views;
@@ -46,12 +57,12 @@
 }).call(this);
 
 (function() {
-  angular.module('App').controller('Navigate_Controller', function($sce, $scope, TM_API) {
+  angular.module('App').controller('Navigate_Controller', function($rootScope, $sce, $scope, TM_API) {
     $scope.previous_Query = null;
     $scope.load_Query = function(query_Id) {
       return TM_API.query_tree(query_Id, function(data) {
         data.previous_Query = $scope.previous_Query;
-        $scope.$broadcast('show-query-data', data);
+        $rootScope.$broadcast('show-query-data', data);
         return $scope.previous_Query = query_Id;
       });
     };
@@ -93,6 +104,11 @@
       });
     };
   });
+
+}).call(this);
+
+(function() {
+  angular.module('App').controller('User_Navigation_Controller', function($scope, $state) {});
 
 }).call(this);
 
@@ -402,9 +418,10 @@
         templateUrl: "/angular/jade-html/views/" + view_Name
       });
     }
-    return $stateProvider.state('user', {
-      url: "/user",
-      template: 'a user'
+    return $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/article'
     });
   });
 
@@ -452,9 +469,10 @@
   app = angular.module('App');
 
   app.service('TM_API', (function(_this) {
-    return function($q, $http) {
-      var cache_Query_Tree;
+    return function($q, $http, $timeout) {
+      var cache_Articles, cache_Query_Tree;
       cache_Query_Tree = {};
+      cache_Articles = {};
       _this.get_Words = function(term, callback) {
         var url;
         url = "/angular/api/auto-complete?term=" + term;
@@ -486,13 +504,16 @@
         var url;
         id = id || 'query-6234f2d47eb7';
         if (cache_Query_Tree[id]) {
-          return callback(cache_Query_Tree[id]);
+          return $timeout(function() {
+            return callback(cache_Query_Tree[id]);
+          });
+        } else {
+          url = "/api/data/query_tree/" + id;
+          return $http.get(url).success(function(data) {
+            cache_Query_Tree[id] = data;
+            return callback(data);
+          });
         }
-        url = "/api/data/query_tree/" + id;
-        return $http.get(url).success(function(data) {
-          cache_Query_Tree[id] = data;
-          return callback(data);
-        });
       };
       _this;
       _this.query_tree_filtered = function(id, filter, callback) {
@@ -552,12 +573,25 @@
         });
       };
       _this;
-      _this.docs_Page = function(id, callback) {
+      _this.docs_Page = function(article_Id, callback) {
         var url;
-        url = "/json/docs/" + id;
-        return $http.get(url).success(function(data) {
-          return callback(data);
-        });
+        url = "/json/docs/" + article_Id;
+        return $http.get(url).success(callback);
+      };
+      _this;
+      _this.article = function(article_Id, callback) {
+        var url;
+        if (cache_Articles[article_Id]) {
+          return $timeout(function() {
+            return callback(cache_Articles[article_Id]);
+          });
+        } else {
+          url = "/json/article/" + article_Id;
+          return $http.get(url).success(function(data) {
+            cache_Articles[article_Id] = data;
+            return callback(data);
+          });
+        }
       };
       return _this;
     };
