@@ -33,8 +33,7 @@
   angular.module('App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
     return TM_API.article($stateParams.article_Id, function(article_Data) {
       $scope.title = article_Data.title;
-      $scope.article_Html = $sce.trustAsHtml(article_Data.article_Html);
-      return console.log(article_Data);
+      return $scope.article_Html = $sce.trustAsHtml(article_Data.article_Html);
     });
   });
 
@@ -109,6 +108,26 @@
 
 (function() {
   angular.module('App').controller('User_Navigation_Controller', function($scope, $state) {});
+
+}).call(this);
+
+(function() {
+  angular.module('App').directive('filters', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/filters', 'filters', function(filters) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = filters(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
 
 }).call(this);
 
@@ -193,13 +212,6 @@
       templateUrl: '/angular/jade-html/component/search_bar'
     };
   });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
 
 }).call(this);
 
