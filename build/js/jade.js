@@ -1572,18 +1572,680 @@ function jade_article(locals) {
 var buf = [];
 var jade_mixins = {};
 var jade_interp;
-;var locals_for_with = (locals || {});(function (article_Html, phase, technology, title, type) {
-buf.push("<!--extends ../_to_be_wired_in/_layouts/page_logged_in-->");
+;var locals_for_with = (locals || {});(function (phase, technology, type) {
+jade_mixins["tm-support-email"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.com\">support@securityinnovation.com</a>");
+};
 
 
 
 
-buf.push("<!--mixin navigatedl\n  dt\n    if title\n      span.label.no-underline= title\n      span.sub-nav__icon\n        +back-icon\n  if(containers)\n    #containers.scroll\n      each container in containers\n        if container.size > 0\n          a(href= href + container.id , id=container.id)\n            dd\n              span.text= container.title\n              span.badge= container.size\n--><!-- Terms and Conditions Navigation-->");
 
 
 
 
-buf.push("<div class=\"application\"><!--include ../component/left_navigation.jade--><!--include ../component/filters.jade--><main><section class=\"row\"><div class=\"col-2\"></div><div class=\"col-8\"><section class=\"row__article\"><h1>" + (jade.escape(null == (jade_interp = title) ? "" : jade_interp)) + "</h1><div id=\"html\" class=\"article-content\">" + (null == (jade_interp = article_Html) ? "" : jade_interp) + "</div><ul class=\"display-inline\"><li>");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["mail-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Mail\" class=\"icon-Mail\"></span>");
+};
+jade_mixins["twitter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Twitter\" class=\"icon-Twitter\"></span>");
+};
+jade_mixins["paperclip-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span>");
+};
+jade_mixins["php-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"PHP\" class=\"icon-PHP\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["scala-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Scala\" class=\"icon-Scala\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["vulnerabilities-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Vulnerabilities\" class=\"icon-Vulnerabilities\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["wcf-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"WCF\" class=\"icon-WCF\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["web-app-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Web Application\" class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
+};
+jade_mixins["net-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\".Net\" class=\"icon-Net\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["net-3-5-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\".Net\" class=\"icon-Net-3-5\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["ios-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"iOS\" class=\"icon-iOS\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
+jade_mixins["java-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Java\" class=\"icon-Java\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+jade_mixins["android-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Android\" class=\"icon-Android\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span></span>");
+};
+jade_mixins["c-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"C++\" class=\"icon-C\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["checklist-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Checklist\" class=\"icon-Checklist\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span></span>");
+};
+jade_mixins["code-example-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Code Example\" class=\"icon-CodeExample\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span></span>");
+};
+jade_mixins["guideline-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Guideline\" class=\"icon-Guideline\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["principle-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Principle\" class=\"icon-Principle\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["how-to-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"How To\" class=\"icon-HowTo\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["html5-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"HTML5\" class=\"icon-HTML5\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["deploy-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Deployment\" class=\"icon-Deploy\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["design-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Design\" class=\"icon-Design\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span></span>");
+};
+jade_mixins["implement-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Implementation\" class=\"icon-Implementation\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
+jade_mixins["test-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Test\" class=\"icon-Test\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["default-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+
+
+
+
+jade_mixins["filter-icon"] = jade_interp = function(filter, title){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span id=\"filter-icon\">");
+switch (filter){
+case 'Type':
+switch (title){
+case 'Checklist Item':
+jade_mixins["checklist-icon"]();
+  break;
+case 'Guideline':
+jade_mixins["guideline-icon"]();
+  break;
+case 'Code Example':
+jade_mixins["code-example-icon"]();
+  break;
+case 'How To':
+jade_mixins["how-to-icon"]();
+  break;
+case 'Vulnerability':
+jade_mixins["vulnerabilities-icon"]();
+  break;
+case 'Principle':
+jade_mixins["principle-icon"]();
+  break;
+default:
+jade_mixins["default-icon"]();
+  break;
+}
+  break;
+case 'Technology':
+switch (title){
+case '.NET':
+case 'ASP.NET 3.5':
+case 'ASP.NET 4.0':
+jade_mixins["net-icon"]();
+  break;
+case '.NET 3.5':
+jade_mixins["net-3-5-icon"]();
+  break;
+case 'Android':
+jade_mixins["android-icon"]();
+  break;
+case 'C++':
+jade_mixins["c-icon"]();
+  break;
+case 'iOS':
+jade_mixins["ios-icon"]();
+  break;
+case 'Java':
+jade_mixins["java-icon"]();
+  break;
+case 'PHP':
+jade_mixins["php-icon"]();
+  break;
+case 'Scala Play':
+case 'Scala with Play Framework':
+jade_mixins["scala-icon"]();
+  break;
+case 'WCF':
+case 'WCF 3.5':
+jade_mixins["wcf-icon"]();
+  break;
+case 'Web Application':
+jade_mixins["web-app-icon"]();
+  break;
+case 'HTML5':
+jade_mixins["html5-icon"]();
+  break;
+default:
+jade_mixins["default-icon"]();
+  break;
+}
+  break;
+case 'Phase':
+switch (title){
+case 'Deployment':
+jade_mixins["deploy-icon"]();
+  break;
+case 'Design':
+jade_mixins["design-icon"]();
+  break;
+case 'Implementation':
+jade_mixins["implement-icon"]();
+  break;
+case 'Test':
+jade_mixins["test-icon"]();
+  break;
+default:
+jade_mixins["default-icon"]();
+  break;
+}
+  break;
+}
+buf.push("</span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buf.push("<!-- Application Icons-->");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["filter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Filter\"></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["twitter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Twitter\"></span>");
+};
+
+
+
+
+buf.push("<!-- Filter Icons-->");
+
+
+
+
+jade_mixins["android-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Android\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span></span>");
+};
+jade_mixins["scala-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Scala\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["test-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Test\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["vulnerabilities-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Vulnerabilities\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["wcf-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-WCF\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["web-app-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var head_title = 'TEAM Mentor 4.0'
+jade_mixins["copyright"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<footer><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\">");
+jade_mixins["mail-icon"]();
+buf.push("</a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\">");
+jade_mixins["twitter-icon"]();
+buf.push("</a></li><li><a id=\"terms-and-conditions\" href=\"../misc/terms-and-conditions\" title=\"Terms and Conditions\">");
+jade_mixins["paperclip-icon"]();
+buf.push("</a></li></ul></div></footer>");
+};
+buf.push("<div class=\"application\"><main><!-- Application Icons-->");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["filter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Filter\"></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["twitter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Twitter\"></span>");
+};
+
+
+
+
+buf.push("<!-- Filter Icons-->");
+
+
+
+
+jade_mixins["android-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Android\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span></span>");
+};
+jade_mixins["scala-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Scala\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["test-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Test\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["vulnerabilities-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Vulnerabilities\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["wcf-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-WCF\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["web-app-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
+};
+buf.push("<section class=\"row\"><div class=\"col-2\"></div><div class=\"col-8\"><section class=\"row__article\"><h1>{{title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div><ul class=\"display-inline\"><li>");
 jade_mixins["filter-icon"]('Technology', technology);
 buf.push("</li><li>");
 jade_mixins["filter-icon"]('Type', type);
@@ -1591,7 +2253,7 @@ buf.push("</li><li>");
 jade_mixins["filter-icon"]('Phase', phase);
 buf.push("</li></ul></section></div><div class=\"col-2\"></div></section>");
 jade_mixins["copyright"]();
-buf.push("</main></div>");}.call(this,"article_Html" in locals_for_with?locals_for_with.article_Html:typeof article_Html!=="undefined"?article_Html:undefined,"phase" in locals_for_with?locals_for_with.phase:typeof phase!=="undefined"?phase:undefined,"technology" in locals_for_with?locals_for_with.technology:typeof technology!=="undefined"?technology:undefined,"title" in locals_for_with?locals_for_with.title:typeof title!=="undefined"?title:undefined,"type" in locals_for_with?locals_for_with.type:typeof type!=="undefined"?type:undefined));;return buf.join("");
+buf.push("</main></div>");}.call(this,"phase" in locals_for_with?locals_for_with.phase:typeof phase!=="undefined"?phase:undefined,"technology" in locals_for_with?locals_for_with.technology:typeof technology!=="undefined"?technology:undefined,"type" in locals_for_with?locals_for_with.type:typeof type!=="undefined"?type:undefined));;return buf.join("");
 }
 
 function jade_blank(locals) {
@@ -7967,7 +8629,7 @@ var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-buf.push("<div class=\"application\"><main ng-controller=\"Navigate_Controller\"><section class=\"row\"><div class=\"col-2\"><navigate-queries></navigate-queries></div><div class=\"col-6\"><navigate-results></navigate-results></div><!--.col-2navigate-queries--></section></main></div>");;return buf.join("");
+buf.push("<div class=\"application\"><main ng-controller=\"Navigate_Controller\"><section class=\"row\"><div class=\"col-3\"><navigate-queries></navigate-queries></div><div class=\"col-9\"><navigate-results></navigate-results></div></section></main></div>");;return buf.join("");
 }
 
 function jade_navigate_old(locals) {
@@ -13735,9 +14397,9 @@ jade_mixins["web-app-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
-buf.push("<aside id=\"left-nav\"><ul><li><a ui-sref=\"main\">");
+buf.push("<aside id=\"left-nav\" ng-controller=\"User_Navigation_Controller\"><ul><li><a ui-sref=\"main\">");
 jade_mixins["home-icon"]();
-buf.push("</a><!--a(href=\"#main\")--></li><li><!--a(href=\"/angular/user/navigate\")+index-icon--><a ui-sref=\"navigate\">");
+buf.push("</a><!--a(href=\"#main\")--></li><li><!--a(ng-href=\"#\", ng-click='navigate()')+index-icon--><a ui-sref=\"navigate\">");
 jade_mixins["index-icon"]();
 buf.push("</a></li><li><a ui-sref=\"docs\">");
 jade_mixins["info-icon"]();
