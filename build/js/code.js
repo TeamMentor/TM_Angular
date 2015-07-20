@@ -115,7 +115,7 @@
 (function() {
   angular.module('App').directive('helpNavigation', function() {
     return {
-      templateUrl: '/angular/jade-html/component/help_Navigation'
+      templateUrl: '/angular/jade-html/component/help_navigation'
     };
   });
 

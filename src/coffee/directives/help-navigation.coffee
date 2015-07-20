@@ -1,6 +1,6 @@
 angular.module('App')
        .directive 'helpNavigation', ()->
-          return templateUrl: '/angular/jade-html/component/help_Navigation'
+          return templateUrl: '/angular/jade-html/component/help_navigation'
 
 #app = angular.module('App')
 #app.directive 'helpNavigation', ($compile, Load_Jade, TM_API)->
