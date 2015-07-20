@@ -8,6 +8,8 @@
 (function() {
   var app;
 
+  return;
+
   app = angular.module('App');
 
   app.run(function($timeout, Load_Jade) {
@@ -28,7 +30,33 @@
 }).call(this);
 
 (function() {
+  angular.module('App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    return TM_API.docs_Library(function(library) {
+      $scope.Views = library.Views;
+      $scope.show_Doc = function(article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      };
+      return $scope.show_Doc(library.Views.first().Articles.first());
+    });
+  });
 
+}).call(this);
+
+(function() {
+  angular.module('App').controller('Navigate_Controller', function($sce, $scope, TM_API) {
+    console.log('in Navigate_Controller');
+    $scope.previous_Query = null;
+    $scope.load_Query = function(query_Id) {
+      return TM_API.query_tree(query_Id, function(data) {
+        console.log(data);
+        return $scope.$broadcast('show-query-data', data);
+      });
+    };
+    return $scope.load_Query('query-6234f2d47eb7');
+  });
 
 }).call(this);
 
@@ -59,39 +87,19 @@
 }).call(this);
 
 (function() {
-  var app;
+  Array.prototype.first = function() {
+    return this.item(0);
+  };
 
-  app = angular.module('App');
+  Array.prototype.item = function(index) {
+    if (typeof index === 'number') {
+      if ((this.length > index && index > -1)) {
+        return this[index];
+      }
+    }
+    return null;
+  };
 
-  app.directive('leftNavigation', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/left_navigation'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
-  app.directive('searchBar', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/search_bar'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
-}).call(this);
-
-(function() {
   Array.prototype.size = function() {
     return this.length;
   };
@@ -134,112 +142,93 @@
 }).call(this);
 
 (function() {
+  angular.module('App').directive('helpNavigation', function() {
+    return {
+      templateUrl: '/angular/jade-html/component/help_Navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('App').directive('landingBar', function() {
+    return {
+      templateUrl: '/angular/jade-html/component/landing_bar'
+    };
+  });
+
+}).call(this);
+
+(function() {
   var app;
 
   app = angular.module('App');
 
-  app.service('User', function() {
-    var user;
-    user = {
-      name: '...',
-      logged_In: true
+  app.directive('leftNavigation', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/left_navigation'
     };
-    return user;
   });
 
-  app.config(function($stateProvider, $urlRouterProvider) {
-    var NavBar_Controller, Navigate_Controller, View_Controller, i, len, resolve_Navbar, resolve_View, view_Name, view_Names;
-    $urlRouterProvider.otherwise('/index');
-    resolve_Navbar = function(Load_Jade, User) {
-      var file, name;
-      if (User.logged_In) {
-        name = 'logged_in';
-      } else {
-        name = 'anonymous';
-      }
-      file = "navbar/" + name;
-      return Load_Jade(file, name, function(method, resolve) {
-        return resolve(method());
-      });
-    };
-    resolve_View = function(page) {
-      return function(Load_Jade, User) {
-        return Load_Jade("views/" + page, page, function(method, resolve) {
-          return resolve('<span ng-bind-html="content_HTML"></span>');
+}).call(this);
+
+(function() {
+  angular.module('App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_queries', 'navigate_queries', function(navigate_queries) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_queries(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
         });
-      };
-    };
-    View_Controller = function(page) {
-      return function($rootScope, $scope, User, $sce, $state, $stateParams, TM_API) {
-        var method_Name;
-        window.state = $state;
-        window.scope = $scope;
-        if (page === 'logout') {
-          User.logged_In = false;
-          return $state.go('index');
-        }
-        if (page === 'get_started') {
-          User.logged_In = true;
-          page = 'main';
-          return $state.go('navigate');
-        }
-        method_Name = "jade_" + page;
-        if (page === 'navigate') {
-          return Navigate_Controller($rootScope, $scope, $sce, $stateParams, TM_API);
-        } else {
-          if (window[method_Name]) {
-            return $scope.content_HTML = $sce.trustAsHtml(window[method_Name]());
-          }
-        }
-      };
-    };
-    Navigate_Controller = function($rootScope, $scope, $sce, $stateParams, TM_API) {
-      TM_API.query_tree($stateParams.query_Id, function(data) {
-        data.href = '#/navigate/';
-        return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
-      });
-      return $rootScope.$on('New_Results_Data', function(event, data) {
-        console.log('Received New_Results_Data');
-        return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
-      });
-    };
-    NavBar_Controller = function() {};
-    view_Names = ['about', 'docs', 'index', 'features', 'get_started', 'logout', 'main', 'navigate', 'error', 'blank'];
-    for (i = 0, len = view_Names.length; i < len; i++) {
-      view_Name = view_Names[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        views: {
-          'navbar': {
-            templateProvider: resolve_Navbar,
-            controller: NavBar_Controller
-          },
-          'content': {
-            templateProvider: resolve_View(view_Name),
-            controller: View_Controller(view_Name)
-          }
-        }
-      });
-    }
-    $stateProvider.state('/navigate/:query_Id', {
-      url: '/navigate/:query_Id',
-      views: {
-        'navbar': {
-          templateProvider: resolve_Navbar,
-          controller: NavBar_Controller
-        },
-        'content': {
-          templateProvider: resolve_View('navigate'),
-          controller: View_Controller('navigate')
-        }
       }
-    });
-    return window.stateProvider = $stateProvider;
+    };
   });
 
-  app.controller('Content_Controller', function($scope) {
-    return $scope.content = '...TEAM mentor is loading....';
+}).call(this);
+
+(function() {
+  angular.module('App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_results(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
   });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.directive('searchBar', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/search_bar'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
 
 }).call(this);
 
@@ -255,6 +244,7 @@
   app.service('Load_Jade', function($q, $document) {
     return function(jade_File, method_Name, callback) {
       var deferrer, error, script, src;
+      console.log('in LOAD JADE FOR :' + jade_File);
       method_Name = 'jade_' + method_Name;
       deferrer = $q.defer();
       if (config.cache_Jade_Js && window[method_Name]) {
@@ -376,8 +366,192 @@
           }
         });
       };
+      _this;
+      _this.docs_Library = function(callback) {
+        var url;
+        url = "/json/docs/library";
+        return $http.get(url).success(function(data) {
+          return callback(data);
+        });
+      };
+      _this;
+      _this.docs_Page = function(id, callback) {
+        var url;
+        url = "/json/docs/" + id;
+        return $http.get(url).success(function(data) {
+          return callback(data);
+        });
+      };
       return _this;
     };
   })(this));
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    var i, len, results, view_Name, view_Names;
+    view_Names = ['index', 'about', 'blank', 'docs', 'features', 'get_started'];
+    results = [];
+    for (i = 0, len = view_Names.length; i < len; i++) {
+      view_Name = view_Names[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      }));
+    }
+    return results;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  return;
+
+  app = angular.module('App');
+
+  app.service('User', function() {
+    var user;
+    user = {
+      name: '...',
+      logged_In: true
+    };
+    return user;
+  });
+
+  app.config(function($stateProvider, $urlRouterProvider) {
+    var NavBar_Controller, Navigate_Controller, View_Controller, i, len, resolve_Navbar, resolve_View, view_Name, view_Names;
+    $urlRouterProvider.otherwise('/index');
+    resolve_Navbar = function(Load_Jade, User) {
+      var file, name;
+      if (User.logged_In) {
+        name = 'logged_in';
+      } else {
+        name = 'anonymous';
+      }
+      file = "navbar/" + name;
+      return Load_Jade(file, name, function(method, resolve) {
+        return resolve(method());
+      });
+    };
+    resolve_View = function(page) {
+      return function(Load_Jade, User) {
+        return Load_Jade("views/" + page, page, function(method, resolve) {
+          return resolve('<span ng-bind-html="content_HTML"></span>');
+        });
+      };
+    };
+    View_Controller = function(page) {
+      return function($rootScope, $scope, User, $sce, $state, $stateParams, TM_API) {
+        var method_Name;
+        window.state = $state;
+        window.scope = $scope;
+        if (page === 'logout') {
+          User.logged_In = false;
+          return $state.go('index');
+        }
+        if (page === 'get_started') {
+          User.logged_In = true;
+          page = 'main';
+          return $state.go('navigate');
+        }
+        method_Name = "jade_" + page;
+        if (page === 'navigate') {
+          return Navigate_Controller($rootScope, $scope, $sce, $stateParams, TM_API);
+        } else {
+          if (window[method_Name]) {
+            return $scope.content_HTML = $sce.trustAsHtml(window[method_Name]());
+          }
+        }
+      };
+    };
+    Navigate_Controller = function($rootScope, $scope, $sce, $stateParams, TM_API) {
+      TM_API.query_tree($stateParams.query_Id, function(data) {
+        data.href = '#/navigate/';
+        return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
+      });
+      return $rootScope.$on('New_Results_Data', function(event, data) {
+        console.log('Received New_Results_Data');
+        return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
+      });
+    };
+    NavBar_Controller = function() {};
+    view_Names = ['about', 'docs', 'index', 'features', 'get_started', 'logout', 'main', 'navigate', 'error', 'blank'];
+    for (i = 0, len = view_Names.length; i < len; i++) {
+      view_Name = view_Names[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        views: {
+          'navbar': {
+            templateProvider: resolve_Navbar,
+            controller: NavBar_Controller
+          },
+          'content': {
+            templateProvider: resolve_View(view_Name),
+            controller: View_Controller(view_Name)
+          }
+        }
+      });
+    }
+    $stateProvider.state('/navigate/:query_Id', {
+      url: '/navigate/:query_Id',
+      views: {
+        'navbar': {
+          templateProvider: resolve_Navbar,
+          controller: NavBar_Controller
+        },
+        'content': {
+          templateProvider: resolve_View('navigate'),
+          controller: View_Controller('navigate')
+        }
+      }
+    });
+    return window.stateProvider = $stateProvider;
+  });
+
+  app.controller('Content_Controller', function($scope) {
+    return $scope.content = '...TEAM mentor is loading....';
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    var i, len, view_Name, view_Names;
+    view_Names = ['navigate', 'main'];
+    for (i = 0, len = view_Names.length; i < len; i++) {
+      view_Name = view_Names[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    return $stateProvider.state('user', {
+      url: "/user",
+      template: 'a user'
+    });
+  });
 
 }).call(this);

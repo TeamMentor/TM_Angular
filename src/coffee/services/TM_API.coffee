@@ -41,8 +41,8 @@ app.service 'TM_API', ($q, $http)=>
 
     url     = "/api/search/query_from_text_search/#{text}"
     $http.get url
-    .success (data)->
-      callback(data)
+         .success (data)->
+            callback(data)
   @
 
   @.get_articles_parent_queries =  (article_Ids, ignore_Titles, callback)->
@@ -59,4 +59,20 @@ app.service 'TM_API', ($q, $http)=>
                    matches.push { id: key,  title: query_Data.title, articles: query_Data.articles , size: query_Data.articles.size()}
            callback(matches) if callback
   @
+
+  @.docs_Library =  (callback)->
+    url     = "/json/docs/library"
+    $http.get url
+         .success (data)->
+            callback(data)
+  @
+
+  @.docs_Page =  (id, callback)->
+    url     = "/json/docs/#{id}"
+    $http.get url
+         .success (data)->
+            callback(data)
+  @
+
+
 

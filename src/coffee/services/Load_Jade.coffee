@@ -5,6 +5,7 @@ config =
 
 app.service 'Load_Jade', ($q, $document)->
   return (jade_File, method_Name, callback)->
+    console.log 'in LOAD JADE FOR :' + jade_File
     method_Name = 'jade_' + method_Name
 
     deferrer = $q.defer()
@@ -12,7 +13,7 @@ app.service 'Load_Jade', ($q, $document)->
     if config.cache_Jade_Js and window[method_Name]
       callback window[method_Name], deferrer.resolve
     else
-#console.log 'on Load_Jade for: ' + jade_File
+      #console.log 'on Load_Jade for: ' + jade_File
       try
         script = $document[0].createElement('script');
         src  = "/angular/jade/#{jade_File}"

@@ -1,3 +1,5 @@
+return
+
 app = angular.module('App')
 
 
@@ -68,7 +70,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
   view_Names = ['about', 'docs', 'index','features', 'get_started', 'logout','main', 'navigate'
                 'error', 'blank']
   for view_Name in view_Names
-    $stateProvider.state view_Name    ,
+    $stateProvider.state view_Name ,
       url       : "/#{view_Name}"
       views:
         'navbar':  { templateProvider: resolve_Navbar , controller: NavBar_Controller}

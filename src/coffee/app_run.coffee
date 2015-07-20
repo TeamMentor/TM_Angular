@@ -1,3 +1,4 @@
+return
 app = angular.module('App')
 
 app.run ($timeout, Load_Jade)->

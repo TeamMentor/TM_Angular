@@ -1,3 +1,12 @@
+Array::first  = ->
+  @.item(0)
+
+Array::item = (index)->
+  if typeof(index) is 'number'
+    if @.length > index > -1
+      return @[index]
+  null
+
 Array::size = () ->
   @.length
 
