@@ -56,6 +56,34 @@
 }).call(this);
 
 (function() {
+  angular.module('App').controller('Login_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.login = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...logging in ...";
+      return TM_API.login($scope.username, $scope.password, function(data) {
+        var ref;
+        if (data.result === 'OK') {
+          $scope.infoMessage = 'Login OK';
+          return $timeout(function() {
+            return window.location = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('App').controller('Navigate_Controller', function($rootScope, $sce, $scope, TM_API) {
     $scope.previous_Query = null;
     $scope.load_Query = function(query_Id) {
@@ -157,6 +185,19 @@
   app.directive('leftNavigation', function($parse, $timeout) {
     return {
       templateUrl: '/angular/jade-html/component/left_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.directive('loginForm', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/login_form'
     };
   });
 
@@ -604,6 +645,16 @@
             return callback(data);
           });
         }
+      };
+      _this;
+      _this.login = function(username, password, callback) {
+        var postData, url;
+        url = "/json/user/login";
+        postData = {
+          username: username,
+          password: password
+        };
+        return $http.post(url, postData).success(callback);
       };
       return _this;
     };

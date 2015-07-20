@@ -83,6 +83,11 @@ app.service 'TM_API', ($q, $http, $timeout)=>
         callback(data)
   @
 
+  @.login =  (username, password, callback)->
+    url      = "/json/user/login"
+    postData = { username, password:password}
+    $http.post(url, postData).success callback
+  @
 
 
 
