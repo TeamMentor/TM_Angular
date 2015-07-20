@@ -1988,7 +1988,7 @@ buf.push("<!-- Application Icons-->");
 
 jade_mixins["back-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<a href=\"javascript:history.go(-1)\"><span class=\"icon-Arrow-Left\"></span></a>");
+buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -7967,7 +7967,7 @@ var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-buf.push("<div class=\"application\"><main><section class=\"row\"><div class=\"col-3\"><navigate-queries></navigate-queries></div><div class=\"col-9\"><h1>col 9</h1><navigate-results></navigate-results></div></section></main></div>");;return buf.join("");
+buf.push("<div class=\"application\"><main ng-controller=\"Navigate_Controller\"><section class=\"row\"><div class=\"col-2\"><navigate-queries></navigate-queries></div><div class=\"col-6\"><navigate-results></navigate-results></div><!--.col-2navigate-queries--></section></main></div>");;return buf.join("");
 }
 
 function jade_navigate_old(locals) {
@@ -8133,7 +8133,7 @@ buf.push("<span class=\"icon-Edit\"></span>");
 
 jade_mixins["back-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<a href=\"javascript:history.go(-1)\"><span class=\"icon-Arrow-Left\"></span></a>");
+buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -8798,7 +8798,7 @@ buf.push("<!-- Application Icons-->");
 
 jade_mixins["back-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<a href=\"javascript:history.go(-1)\"><span class=\"icon-Arrow-Left\"></span></a>");
+buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -9368,7 +9368,7 @@ buf.push("<html lang=\"en-US\"></html><head><title>" + (jade.escape((jade_interp
 
 jade_mixins["back-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<a href=\"javascript:history.go(-1)\"><span class=\"icon-Arrow-Left\"></span></a>");
+buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -13737,9 +13737,9 @@ buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=
 };
 buf.push("<aside id=\"left-nav\"><ul><li><a ui-sref=\"main\">");
 jade_mixins["home-icon"]();
-buf.push("</a><!--a(href=\"#main\")--></li><li><a ui-sref=\"navigate\">");
+buf.push("</a><!--a(href=\"#main\")--></li><li><!--a(href=\"/angular/user/navigate\")+index-icon--><a ui-sref=\"navigate\">");
 jade_mixins["index-icon"]();
-buf.push("</a><!--a(href=\"#navigate\")--></li><li><a ui-sref=\"docs\">");
+buf.push("</a></li><li><a ui-sref=\"docs\">");
 jade_mixins["info-icon"]();
 buf.push("</a><!--a(href=\"#docs\")--></li><li><a href=\"/angular/guest/index\">");
 jade_mixins["logout-icon"]();

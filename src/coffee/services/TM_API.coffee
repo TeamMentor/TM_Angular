@@ -46,7 +46,6 @@ app.service 'TM_API', ($q, $http)=>
   @
 
   @.get_articles_parent_queries =  (article_Ids, ignore_Titles, callback)->
-
     url     = "/api/data/articles_parent_queries/#{article_Ids.join(',')}"
     $http.get url
          .success (data)->
@@ -54,7 +53,9 @@ app.service 'TM_API', ($q, $http)=>
            for key,query of data.queries
              if key.indexOf('query-') > -1
                query_Data = data.queries[key]
-               if query_Data.child_Queries.size() is 0
+               #if query_Data.child_Queries.size() is 0
+               #if query_Data.parent_Queries.size() is 1
+               if query_Data.parent_Queries?.first() is 'query-6234f2d47eb7'
                  if ignore_Titles.indexOf(query_Data.title) is -1
                    matches.push { id: key,  title: query_Data.title, articles: query_Data.articles , size: query_Data.articles.size()}
            callback(matches) if callback

@@ -47,12 +47,12 @@
 
 (function() {
   angular.module('App').controller('Navigate_Controller', function($sce, $scope, TM_API) {
-    console.log('in Navigate_Controller');
     $scope.previous_Query = null;
     $scope.load_Query = function(query_Id) {
       return TM_API.query_tree(query_Id, function(data) {
-        console.log(data);
-        return $scope.$broadcast('show-query-data', data);
+        data.previous_Query = $scope.previous_Query;
+        $scope.$broadcast('show-query-data', data);
+        return $scope.previous_Query = query_Id;
       });
     };
     return $scope.load_Query('query-6234f2d47eb7');
@@ -66,78 +66,33 @@
   app = angular.module('App');
 
   app.controller('Search_Controller', function($rootScope, $scope, TM_API) {
-    console.log(" IN Search_Controller");
-    $scope.text = 'xss....';
-    return $scope.submit = function() {
-      console.log("IN Search_Controller submit");
-      return TM_API.query_from_text_search($scope.text, function(query_id) {
-        console.log(query_id);
-        return TM_API.query_tree(query_id, function(data) {
-          console.log(data);
-          if (data) {
-            data.href = '#/navigate/';
-            console.log('broadcasting: ' + 'New_Results_Data');
-            return $rootScope.$broadcast('New_Results_Data', data);
+    $scope.map_Search_Queries = function(data) {
+      var article_Ids, result;
+      if (data) {
+        article_Ids = (function() {
+          var i, len, ref, results;
+          ref = data.results;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            result = ref[i];
+            results.push(result.id);
           }
+          return results;
+        })();
+        return TM_API.get_articles_parent_queries(article_Ids, [], function(containers) {
+          data.containers = containers;
+          return $rootScope.$broadcast('show-query-data', data);
+        });
+      }
+    };
+    return $scope.submit = function() {
+      return TM_API.query_from_text_search($scope.text, function(query_id) {
+        return TM_API.query_tree(query_id, function(data) {
+          return $scope.map_Search_Queries(data);
         });
       });
     };
   });
-
-}).call(this);
-
-(function() {
-  Array.prototype.first = function() {
-    return this.item(0);
-  };
-
-  Array.prototype.item = function(index) {
-    if (typeof index === 'number') {
-      if ((this.length > index && index > -1)) {
-        return this[index];
-      }
-    }
-    return null;
-  };
-
-  Array.prototype.size = function() {
-    return this.length;
-  };
-
-  Array.prototype.take = function(size) {
-    if (size === -1) {
-      return this;
-    } else {
-      return this.slice(0, size);
-    }
-  };
-
-  String.prototype.remove = function(value) {
-    var result;
-    result = this;
-    while (result.contains(value)) {
-      result = result.replace(value, '');
-    }
-    return result;
-  };
-
-  String.prototype.contains = function(value) {
-    var i, item, len, regex;
-    if (value instanceof RegExp) {
-      regex = new RegExp(value);
-      return regex.exec(this) !== null;
-    }
-    if (value instanceof Array) {
-      for (i = 0, len = value.length; i < len; i++) {
-        item = value[i];
-        if (this.indexOf(item) === -1) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return this.indexOf(value) > -1;
-  };
 
 }).call(this);
 
@@ -233,158 +188,57 @@
 }).call(this);
 
 (function() {
-  var app, config;
-
-  app = angular.module('App');
-
-  config = {
-    cache_Jade_Js: true
+  Array.prototype.first = function() {
+    return this.item(0);
   };
 
-  app.service('Load_Jade', function($q, $document) {
-    return function(jade_File, method_Name, callback) {
-      var deferrer, error, script, src;
-      console.log('in LOAD JADE FOR :' + jade_File);
-      method_Name = 'jade_' + method_Name;
-      deferrer = $q.defer();
-      if (config.cache_Jade_Js && window[method_Name]) {
-        callback(window[method_Name], deferrer.resolve);
-      } else {
-        try {
-          script = $document[0].createElement('script');
-          src = "/angular/jade/" + jade_File;
-          script.src = src;
-          $document[0].body.appendChild(script);
-          script.onload = function() {
-            return callback(window[method_Name], deferrer.resolve);
-          };
-        } catch (_error) {
-          error = _error;
-          console.log(error);
+  Array.prototype.item = function(index) {
+    if (typeof index === 'number') {
+      if ((this.length > index && index > -1)) {
+        return this[index];
+      }
+    }
+    return null;
+  };
+
+  Array.prototype.size = function() {
+    return this.length;
+  };
+
+  Array.prototype.take = function(size) {
+    if (size === -1) {
+      return this;
+    } else {
+      return this.slice(0, size);
+    }
+  };
+
+  String.prototype.remove = function(value) {
+    var result;
+    result = this;
+    while (result.contains(value)) {
+      result = result.replace(value, '');
+    }
+    return result;
+  };
+
+  String.prototype.contains = function(value) {
+    var i, item, len, regex;
+    if (value instanceof RegExp) {
+      regex = new RegExp(value);
+      return regex.exec(this) !== null;
+    }
+    if (value instanceof Array) {
+      for (i = 0, len = value.length; i < len; i++) {
+        item = value[i];
+        if (this.indexOf(item) === -1) {
+          return false;
         }
       }
-      return deferrer.promise;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
-  app.service('TM_API', (function(_this) {
-    return function($q, $http) {
-      var cache_Query_Tree;
-      cache_Query_Tree = {};
-      _this.get_Words = function(term, callback) {
-        var url;
-        url = "/angular/api/auto-complete?term=" + term;
-        return $http.get(url).success(function(data) {
-          var match;
-          if (callback) {
-            return callback((function() {
-              var results;
-              results = [];
-              for (match in data) {
-                results.push(match);
-              }
-              return results;
-            })());
-          }
-        }).then(function(response) {
-          var match;
-          return (function() {
-            var results;
-            results = [];
-            for (match in response.data) {
-              results.push(match);
-            }
-            return results;
-          })();
-        });
-      };
-      _this.query_tree = function(id, callback) {
-        var url;
-        id = id || 'query-6234f2d47eb7';
-        if (cache_Query_Tree[id]) {
-          return callback(cache_Query_Tree[id]);
-        }
-        url = "/api/data/query_tree/" + id;
-        return $http.get(url).success(function(data) {
-          cache_Query_Tree[id] = data;
-          return callback(data);
-        });
-      };
-      _this;
-      _this.query_tree_filtered = function(id, filter, callback) {
-        var url;
-        if (cache_Query_Tree[id + filter]) {
-          return callback(cache_Query_Tree[id]);
-        }
-        url = "/api/data/query_tree_filtered/" + id + "/" + filter;
-        return $http.get(url).success(function(data) {
-          cache_Query_Tree[id + filter] = data;
-          return callback(data);
-        });
-      };
-      _this;
-      _this.query_from_text_search = function(text, callback) {
-        var url;
-        url = "/api/search/query_from_text_search/" + text;
-        return $http.get(url).success(function(data) {
-          return callback(data);
-        });
-      };
-      _this;
-      _this.get_articles_parent_queries = function(article_Ids, ignore_Titles, callback) {
-        var url;
-        url = "/api/data/articles_parent_queries/" + (article_Ids.join(','));
-        return $http.get(url).success(function(data) {
-          var key, matches, query, query_Data, ref;
-          matches = [];
-          ref = data.queries;
-          for (key in ref) {
-            query = ref[key];
-            if (key.indexOf('query-') > -1) {
-              query_Data = data.queries[key];
-              if (query_Data.child_Queries.size() === 0) {
-                if (ignore_Titles.indexOf(query_Data.title) === -1) {
-                  matches.push({
-                    id: key,
-                    title: query_Data.title,
-                    articles: query_Data.articles,
-                    size: query_Data.articles.size()
-                  });
-                }
-              }
-            }
-          }
-          if (callback) {
-            return callback(matches);
-          }
-        });
-      };
-      _this;
-      _this.docs_Library = function(callback) {
-        var url;
-        url = "/json/docs/library";
-        return $http.get(url).success(function(data) {
-          return callback(data);
-        });
-      };
-      _this;
-      _this.docs_Page = function(id, callback) {
-        var url;
-        url = "/json/docs/" + id;
-        return $http.get(url).success(function(data) {
-          return callback(data);
-        });
-      };
-      return _this;
-    };
-  })(this));
+      return true;
+    }
+    return this.indexOf(value) > -1;
+  };
 
 }).call(this);
 
@@ -553,5 +407,160 @@
       template: 'a user'
     });
   });
+
+}).call(this);
+
+(function() {
+  var app, config;
+
+  app = angular.module('App');
+
+  config = {
+    cache_Jade_Js: true
+  };
+
+  app.service('Load_Jade', function($q, $document) {
+    return function(jade_File, method_Name, callback) {
+      var deferrer, error, script, src;
+      method_Name = 'jade_' + method_Name;
+      deferrer = $q.defer();
+      if (config.cache_Jade_Js && window[method_Name]) {
+        callback(window[method_Name], deferrer.resolve);
+      } else {
+        try {
+          script = $document[0].createElement('script');
+          src = "/angular/jade/" + jade_File;
+          script.src = src;
+          $document[0].body.appendChild(script);
+          script.onload = function() {
+            return callback(window[method_Name], deferrer.resolve);
+          };
+        } catch (_error) {
+          error = _error;
+          console.log(error);
+        }
+      }
+      return deferrer.promise;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('App');
+
+  app.service('TM_API', (function(_this) {
+    return function($q, $http) {
+      var cache_Query_Tree;
+      cache_Query_Tree = {};
+      _this.get_Words = function(term, callback) {
+        var url;
+        url = "/angular/api/auto-complete?term=" + term;
+        return $http.get(url).success(function(data) {
+          var match;
+          if (callback) {
+            return callback((function() {
+              var results;
+              results = [];
+              for (match in data) {
+                results.push(match);
+              }
+              return results;
+            })());
+          }
+        }).then(function(response) {
+          var match;
+          return (function() {
+            var results;
+            results = [];
+            for (match in response.data) {
+              results.push(match);
+            }
+            return results;
+          })();
+        });
+      };
+      _this.query_tree = function(id, callback) {
+        var url;
+        id = id || 'query-6234f2d47eb7';
+        if (cache_Query_Tree[id]) {
+          return callback(cache_Query_Tree[id]);
+        }
+        url = "/api/data/query_tree/" + id;
+        return $http.get(url).success(function(data) {
+          cache_Query_Tree[id] = data;
+          return callback(data);
+        });
+      };
+      _this;
+      _this.query_tree_filtered = function(id, filter, callback) {
+        var url;
+        if (cache_Query_Tree[id + filter]) {
+          return callback(cache_Query_Tree[id]);
+        }
+        url = "/api/data/query_tree_filtered/" + id + "/" + filter;
+        return $http.get(url).success(function(data) {
+          cache_Query_Tree[id + filter] = data;
+          return callback(data);
+        });
+      };
+      _this;
+      _this.query_from_text_search = function(text, callback) {
+        var url;
+        url = "/api/search/query_from_text_search/" + text;
+        return $http.get(url).success(function(data) {
+          return callback(data);
+        });
+      };
+      _this;
+      _this.get_articles_parent_queries = function(article_Ids, ignore_Titles, callback) {
+        var url;
+        url = "/api/data/articles_parent_queries/" + (article_Ids.join(','));
+        return $http.get(url).success(function(data) {
+          var key, matches, query, query_Data, ref, ref1;
+          matches = [];
+          ref = data.queries;
+          for (key in ref) {
+            query = ref[key];
+            if (key.indexOf('query-') > -1) {
+              query_Data = data.queries[key];
+              if (((ref1 = query_Data.parent_Queries) != null ? ref1.first() : void 0) === 'query-6234f2d47eb7') {
+                if (ignore_Titles.indexOf(query_Data.title) === -1) {
+                  matches.push({
+                    id: key,
+                    title: query_Data.title,
+                    articles: query_Data.articles,
+                    size: query_Data.articles.size()
+                  });
+                }
+              }
+            }
+          }
+          if (callback) {
+            return callback(matches);
+          }
+        });
+      };
+      _this;
+      _this.docs_Library = function(callback) {
+        var url;
+        url = "/json/docs/library";
+        return $http.get(url).success(function(data) {
+          return callback(data);
+        });
+      };
+      _this;
+      _this.docs_Page = function(id, callback) {
+        var url;
+        url = "/json/docs/" + id;
+        return $http.get(url).success(function(data) {
+          return callback(data);
+        });
+      };
+      return _this;
+    };
+  })(this));
 
 }).call(this);

@@ -5,7 +5,7 @@ config =
 
 app.service 'Load_Jade', ($q, $document)->
   return (jade_File, method_Name, callback)->
-    console.log 'in LOAD JADE FOR :' + jade_File
+    #console.log 'in LOAD JADE FOR :' + jade_File
     method_Name = 'jade_' + method_Name
 
     deferrer = $q.defer()
