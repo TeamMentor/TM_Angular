@@ -67,7 +67,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
   NavBar_Controller = ()->
 
-  view_Names = ['about', 'docs', 'index','features', 'get_started', 'logout','main', 'navigate'
+  view_Names = ['about', 'docs', 'index','features', 'logout','main', 'navigate'
                 'error', 'blank']
   for view_Name in view_Names
     $stateProvider.state view_Name ,

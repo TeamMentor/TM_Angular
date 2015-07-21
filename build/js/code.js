@@ -30,6 +30,65 @@
 }).call(this);
 
 (function() {
+  Array.prototype.first = function() {
+    return this.item(0);
+  };
+
+  Array.prototype.item = function(index) {
+    if (typeof index === 'number') {
+      if ((this.length > index && index > -1)) {
+        return this[index];
+      }
+    }
+    return null;
+  };
+
+  Array.prototype.size = function() {
+    return this.length;
+  };
+
+  Array.prototype.take = function(size) {
+    if (size === -1) {
+      return this;
+    } else {
+      return this.slice(0, size);
+    }
+  };
+
+  String.prototype.remove = function(value) {
+    var result;
+    result = this;
+    while (result.contains(value)) {
+      result = result.replace(value, '');
+    }
+    return result;
+  };
+
+  String.prototype.contains = function(value) {
+    var i, item, len, regex;
+    if (value instanceof RegExp) {
+      regex = new RegExp(value);
+      return regex.exec(this) !== null;
+    }
+    if (value instanceof Array) {
+      for (i = 0, len = value.length; i < len; i++) {
+        item = value[i];
+        if (this.indexOf(item) === -1) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return this.indexOf(value) > -1;
+  };
+
+  String.prototype.upper_Case_First_Letter = function() {
+    return this.charAt(0).toUpperCase() + this.substr(1);
+  };
+
+}).call(this);
+
+(function() {
   angular.module('App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
     return TM_API.article($stateParams.article_Id, function(article_Data) {
       $scope.title = article_Data.title;
@@ -140,6 +199,34 @@
 }).call(this);
 
 (function() {
+  var app, component, components, fn, i, len;
+
+  app = angular.module('App');
+
+  components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
+
+  fn = function(component) {
+    var directive_Name, index, j, len1, ref, segment;
+    directive_Name = "";
+    ref = component.split('_');
+    for (index = j = 0, len1 = ref.length; j < len1; index = ++j) {
+      segment = ref[index];
+      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+    }
+    return app.directive(directive_Name, function() {
+      return {
+        templateUrl: "/angular/jade-html/component/" + component
+      };
+    });
+  };
+  for (i = 0, len = components.length; i < len; i++) {
+    component = components[i];
+    fn(component);
+  }
+
+}).call(this);
+
+(function() {
   angular.module('App').directive('filters', function($compile, Load_Jade, TM_API) {
     return {
       link: function($scope, element) {
@@ -185,19 +272,6 @@
   app.directive('leftNavigation', function($parse, $timeout) {
     return {
       templateUrl: '/angular/jade-html/component/left_navigation'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
-  app.directive('loginForm', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/login_form'
     };
   });
 
@@ -257,61 +331,6 @@
 }).call(this);
 
 (function() {
-  Array.prototype.first = function() {
-    return this.item(0);
-  };
-
-  Array.prototype.item = function(index) {
-    if (typeof index === 'number') {
-      if ((this.length > index && index > -1)) {
-        return this[index];
-      }
-    }
-    return null;
-  };
-
-  Array.prototype.size = function() {
-    return this.length;
-  };
-
-  Array.prototype.take = function(size) {
-    if (size === -1) {
-      return this;
-    } else {
-      return this.slice(0, size);
-    }
-  };
-
-  String.prototype.remove = function(value) {
-    var result;
-    result = this;
-    while (result.contains(value)) {
-      result = result.replace(value, '');
-    }
-    return result;
-  };
-
-  String.prototype.contains = function(value) {
-    var i, item, len, regex;
-    if (value instanceof RegExp) {
-      regex = new RegExp(value);
-      return regex.exec(this) !== null;
-    }
-    if (value instanceof Array) {
-      for (i = 0, len = value.length; i < len; i++) {
-        item = value[i];
-        if (this.indexOf(item) === -1) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return this.indexOf(value) > -1;
-  };
-
-}).call(this);
-
-(function() {
   var app;
 
   app = angular.module('App');
@@ -330,7 +349,7 @@
 
   app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     var i, len, results, view_Name, view_Names;
-    view_Names = ['index', 'about', 'blank', 'docs', 'features', 'get_started'];
+    view_Names = ['about', 'blank', 'docs', 'features', 'pwd_forgot', 'index', 'login', 'sign_up'];
     results = [];
     for (i = 0, len = view_Names.length; i < len; i++) {
       view_Name = view_Names[i];
@@ -417,7 +436,7 @@
       });
     };
     NavBar_Controller = function() {};
-    view_Names = ['about', 'docs', 'index', 'features', 'get_started', 'logout', 'main', 'navigate', 'error', 'blank'];
+    view_Names = ['about', 'docs', 'index', 'features', 'logout', 'main', 'navigate', 'error', 'blank'];
     for (i = 0, len = view_Names.length; i < len; i++) {
       view_Name = view_Names[i];
       $stateProvider.state(view_Name, {

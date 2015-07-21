@@ -29,3 +29,9 @@ String::contains = (value)->
         return false
     return true
   @.indexOf(value) > -1
+
+
+# not in fluent node
+
+String::upper_Case_First_Letter = ()->
+  @.charAt(0).toUpperCase() + @.substr(1)
