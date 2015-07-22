@@ -89,152 +89,6 @@
 }).call(this);
 
 (function() {
-  var app, component, components, fn, i, len;
-
-  app = angular.module('TM_App');
-
-  components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
-
-  fn = function(component) {
-    var directive_Name, index, j, len1, ref, segment;
-    directive_Name = "";
-    ref = component.split('_');
-    for (index = j = 0, len1 = ref.length; j < len1; index = ++j) {
-      segment = ref[index];
-      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-    }
-    return app.directive(directive_Name, function() {
-      return {
-        templateUrl: "/angular/jade-html/component/" + component
-      };
-    });
-  };
-  for (i = 0, len = components.length; i < len; i++) {
-    component = components[i];
-    fn(component);
-  }
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('filters', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/filters', 'filters', function(filters) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = filters(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('helpNavigation', function() {
-    return {
-      templateUrl: '/angular/jade-html/component/help_navigation'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('landingBar', function() {
-    return {
-      templateUrl: '/angular/jade-html/component/landing_bar'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.directive('leftNavigation', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/left_navigation'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_queries', 'navigate_queries', function(navigate_queries) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_queries(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_results(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.directive('searchBar', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/search_bar'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showComponent', function($compile, $location) {
-    return {
-      link: function($scope, element) {
-        var component, component_Name;
-        component_Name = $location.$$path.substring(1);
-        component = document.createElement(component_Name);
-        return element.replaceWith($compile(component)($scope));
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
     return TM_API.article($stateParams.article_Id, function(article_Data) {
       $scope.title = article_Data.title;
@@ -356,6 +210,152 @@
 
 (function() {
   angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state) {});
+
+}).call(this);
+
+(function() {
+  var app, component, components, fn, i, len;
+
+  app = angular.module('TM_App');
+
+  components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
+
+  fn = function(component) {
+    var directive_Name, index, j, len1, ref, segment;
+    directive_Name = "";
+    ref = component.split('_');
+    for (index = j = 0, len1 = ref.length; j < len1; index = ++j) {
+      segment = ref[index];
+      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+    }
+    return app.directive(directive_Name, function() {
+      return {
+        templateUrl: "/angular/jade-html/component/" + component
+      };
+    });
+  };
+  for (i = 0, len = components.length; i < len; i++) {
+    component = components[i];
+    fn(component);
+  }
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        component_Name = $location.$$path.substring(1);
+        component = document.createElement(component_Name);
+        return element.replaceWith($compile(component)($scope));
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('filters', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/filters', 'filters', function(filters) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = filters(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('helpNavigation', function() {
+    return {
+      templateUrl: '/angular/jade-html/component/help_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('landingBar', function() {
+    return {
+      templateUrl: '/angular/jade-html/component/landing_bar'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.directive('leftNavigation', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/left_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_queries', 'navigate_queries', function(navigate_queries) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_queries(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_results(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.directive('searchBar', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/search_bar'
+    };
+  });
 
 }).call(this);
 
