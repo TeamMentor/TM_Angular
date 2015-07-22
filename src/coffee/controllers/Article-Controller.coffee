@@ -1,4 +1,4 @@
-angular.module('App')
+angular.module('TM_App')
        .controller 'Article_Controller', ($sce, $scope, $stateParams, TM_API)->
           TM_API.article $stateParams.article_Id, (article_Data)->
             $scope.title = article_Data.title

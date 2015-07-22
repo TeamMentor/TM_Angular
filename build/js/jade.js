@@ -9384,7 +9384,7 @@ buf.push("<label for=\"user-confirm-new-password\">Confirm New Password</label><
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\"/>");
+buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\" ng-model=\"email\" required=\"required\" maxlength=\"256\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -14936,7 +14936,7 @@ buf.push("<label for=\"user-confirm-new-password\">Confirm New Password</label><
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\"/>");
+buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\" ng-model=\"email\" required=\"required\" maxlength=\"256\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -16251,7 +16251,7 @@ buf.push("<label for=\"user-confirm-new-password\">Confirm New Password</label><
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\"/>");
+buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\" ng-model=\"email\" required=\"required\" maxlength=\"256\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -17568,7 +17568,7 @@ buf.push("<label for=\"user-confirm-new-password\">Confirm New Password</label><
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\"/>");
+buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\" ng-model=\"email\" required=\"required\" maxlength=\"256\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -20238,11 +20238,11 @@ buf.push("</span>");
 };
 buf.push("<aside id=\"left-nav\" ng-controller=\"User_Navigation_Controller\"><ul><li><div class=\"application-logo\"></div></li><li><a ui-sref=\"main\">");
 jade_mixins["home-icon"]();
-buf.push("</a><!--a(href=\"#main\")--></li><li><!--a(ng-href=\"#\", ng-click='navigate()')+index-icon--><a ui-sref=\"navigate\">");
+buf.push("</a></li><li><!--a(ng-href=\"#\", ng-click='navigate()')+index-icon--><a ui-sref=\"navigate\">");
 jade_mixins["index-icon"]();
 buf.push("</a></li><li><a ui-sref=\"docs\">");
 jade_mixins["info-icon"]();
-buf.push("</a><!--a(href=\"#docs\")--></li><li><a href=\"/angular/guest/index\">");
+buf.push("</a></li><li><a href=\"/angular/guest/index\">");
 jade_mixins["logout-icon"]();
 buf.push("</a><!--a(ui-sref=\"logout\")-->\n</li></ul></aside><!-- Application Icons-->");
 
@@ -22780,7 +22780,7 @@ buf.push("<label for=\"user-confirm-new-password\">Confirm New Password</label><
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\"/>");
+buf.push("<label>Email Address</label><input type=\"email\" id=\"email\" placeholder=\"Email Address\" ng-model=\"email\" required=\"required\" maxlength=\"256\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -22833,20 +22833,20 @@ jade_mixins["team-mentor-summary"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<section class=\"tm-summary\"><section class=\"row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></section><section class=\"row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>\n</td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>\n</td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>\n</td></tr></table></section></section>");
 };
-jade_mixins["sign-up-form"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<section class=\"row__label\"><div class=\"label\">Sign Up</div></section><section class=\"row\"><form id=\"sign-up-form\" action=\"/flare/user/sign-up\"><div class=\"input-field\">");
-jade_mixins["username-input"]();
-buf.push("</div><div class=\"input-field\">");
-jade_mixins["email-input"]();
-buf.push("</div><div class=\"input-field\">");
-jade_mixins["password-input"]();
-buf.push("</div><div class=\"input-field\">");
-jade_mixins["confirm-password-input"]();
-buf.push("</div><div class=\"button-field\">");
-jade_mixins["sign-up-button"]();
-buf.push("</div><div class=\"conditions\"><p>By signing up, you agree to our <a href=\"/misc/terms-and-conditions\">Terms and Conditions</a>.</p>\n</div></form></section>");
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 buf.push("<!--mixin forgot-pwd-formsection.row__label\n  .label Forgot your password?\nsection.row\n  form#forgot-pwd-form(action='#')\n    section.row\n      .col-8.input-field\n        +email-input\n      .col-4.button-field\n        br\n        +get-password-button\n-->");
 
 
@@ -22884,11 +22884,9 @@ buf.push("<!--mixin forgot-pwd-formsection.row__label\n  .label Forgot your pass
 
 
 
-buf.push("<!--include ../component/login_form.jade--><div class=\"application\"><section class=\"row\"><div class=\"col-4\">");
+buf.push("<!--include ../component/login_form.jade--><div class=\"application\"><section class=\"row\"><div class=\"col-6\">");
 jade_mixins["team-mentor-summary"]();
-buf.push("</div><div class=\"col-8\"><section class=\"getting-started\">");
-jade_mixins["sign-up-form"]();
-buf.push("</section></div></section></div>");}.call(this,"viewModel" in locals_for_with?locals_for_with.viewModel:typeof viewModel!=="undefined"?viewModel:undefined));;return buf.join("");
+buf.push("</div><div class=\"col-6\"><section class=\"getting-started\"><sign-up-form></sign-up-form></section></div></section></div>");}.call(this,"viewModel" in locals_for_with?locals_for_with.viewModel:typeof viewModel!=="undefined"?viewModel:undefined));;return buf.join("");
 }
 
 function jade_terms_and_conditions(locals) {

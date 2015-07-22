@@ -1,6 +1,6 @@
 return
 
-app = angular.module('App')
+app = angular.module('TM_App')
 
 
 app.service 'User', ()->

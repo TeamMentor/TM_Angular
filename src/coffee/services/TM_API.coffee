@@ -1,4 +1,4 @@
-app     = angular.module('App')
+app     = angular.module('TM_App')
 
 app.service 'TM_API', ($q, $http, $timeout)=>
   #server  = 'http://localhost:12345'
@@ -89,5 +89,10 @@ app.service 'TM_API', ($q, $http, $timeout)=>
     $http.post(url, postData).success callback
   @
 
+  @.pwd_Reset = (email, callback)->
+    url      = "/json/user/pwd_reset"
+    postData = { email:email }
+    $http.post(url, postData).success callback
+  @
 
 

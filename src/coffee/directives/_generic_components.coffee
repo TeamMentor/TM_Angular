@@ -1,4 +1,4 @@
-app = angular.module('App')
+app = angular.module('TM_App')
 
 components = [ 'alert_ok', 'alert_bad' , 'pwd_forgot_form', 'login_form','sign_up_form']
 

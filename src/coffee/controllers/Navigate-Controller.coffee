@@ -1,5 +1,5 @@
 
-angular.module('App')
+angular.module('TM_App')
        .controller 'Navigate_Controller', ($rootScope,$sce, $scope, TM_API)->
           $scope.previous_Query = null
           $scope.load_Query = (query_Id)->

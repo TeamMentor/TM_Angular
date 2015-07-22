@@ -1,5 +1,5 @@
 return
-app = angular.module('App')
+app = angular.module('TM_App')
 
 app.run ($timeout, Load_Jade)->
   preload = ()->

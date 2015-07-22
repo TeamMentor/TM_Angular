@@ -1,4 +1,4 @@
-app = angular.module('App')
+app = angular.module('TM_App')
 
 app.controller 'Search_Controller', ($rootScope, $scope, TM_API)->
 

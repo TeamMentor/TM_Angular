@@ -1,7 +1,5 @@
-angular.module('App')
+angular.module('TM_App')
        .controller 'Login_Controller', ($scope, TM_API, $location, $timeout)->
-          #$scope.username ='user'
-          #$scope.password ='!!Tm!!1234'
 
           $scope.login = ->
             $scope.errorMessage  = null

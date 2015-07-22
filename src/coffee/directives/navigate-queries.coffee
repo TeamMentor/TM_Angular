@@ -1,4 +1,4 @@
-angular.module('App')
+angular.module('TM_App')
        .directive 'navigateQueries', ($compile, Load_Jade, TM_API)->
           return {
             link: ($scope, element)->

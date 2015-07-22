@@ -1,8 +1,8 @@
-angular.module('App')
+angular.module('TM_App')
        .directive 'helpNavigation', ()->
           return templateUrl: '/angular/jade-html/component/help_navigation'
 
-#app = angular.module('App')
+#app = angular.module('TM_App')
 #app.directive 'helpNavigation', ($compile, Load_Jade, TM_API)->
 #  return {
 #    link: ($scope, ele)->

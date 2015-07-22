@@ -1,4 +1,4 @@
-angular.module('App')
+angular.module('TM_App')
        .controller 'Help_Controller', ($sce, $scope, TM_API)->
           TM_API.docs_Library (library)->
             $scope.Views = library.Views

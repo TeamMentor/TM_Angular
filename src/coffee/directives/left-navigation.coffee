@@ -1,4 +1,4 @@
-app = angular.module('App')
+app = angular.module('TM_App')
 
 app.directive 'leftNavigation', ($parse, $timeout)->
   return {

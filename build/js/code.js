@@ -1,7 +1,7 @@
 (function() {
   var app;
 
-  app = angular.module('App', ['mm.foundation', 'ui.slider', 'ui.router']);
+  app = angular.module('TM_App', ['mm.foundation', 'ui.slider', 'ui.router']);
 
 }).call(this);
 
@@ -10,7 +10,7 @@
 
   return;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.run(function($timeout, Load_Jade) {
     var preload;
@@ -89,7 +89,153 @@
 }).call(this);
 
 (function() {
-  angular.module('App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
+  var app, component, components, fn, i, len;
+
+  app = angular.module('TM_App');
+
+  components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
+
+  fn = function(component) {
+    var directive_Name, index, j, len1, ref, segment;
+    directive_Name = "";
+    ref = component.split('_');
+    for (index = j = 0, len1 = ref.length; j < len1; index = ++j) {
+      segment = ref[index];
+      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+    }
+    return app.directive(directive_Name, function() {
+      return {
+        templateUrl: "/angular/jade-html/component/" + component
+      };
+    });
+  };
+  for (i = 0, len = components.length; i < len; i++) {
+    component = components[i];
+    fn(component);
+  }
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('filters', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/filters', 'filters', function(filters) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = filters(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('helpNavigation', function() {
+    return {
+      templateUrl: '/angular/jade-html/component/help_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('landingBar', function() {
+    return {
+      templateUrl: '/angular/jade-html/component/landing_bar'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.directive('leftNavigation', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/left_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_queries', 'navigate_queries', function(navigate_queries) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_queries(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_results(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.directive('searchBar', function($parse, $timeout) {
+    return {
+      templateUrl: '/angular/jade-html/component/search_bar'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        component_Name = $location.$$path.substring(1);
+        component = document.createElement(component_Name);
+        return element.replaceWith($compile(component)($scope));
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
     return TM_API.article($stateParams.article_Id, function(article_Data) {
       $scope.title = article_Data.title;
       return $scope.article_Html = $sce.trustAsHtml(article_Data.article_Html);
@@ -99,7 +245,7 @@
 }).call(this);
 
 (function() {
-  angular.module('App').controller('Help_Controller', function($sce, $scope, TM_API) {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
     return TM_API.docs_Library(function(library) {
       $scope.Views = library.Views;
       $scope.show_Doc = function(article) {
@@ -115,7 +261,7 @@
 }).call(this);
 
 (function() {
-  angular.module('App').controller('Login_Controller', function($scope, TM_API, $location, $timeout) {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $location, $timeout) {
     $scope.login = function() {
       $scope.errorMessage = null;
       $scope.infoMessage = "...logging in ...";
@@ -143,7 +289,7 @@
 }).call(this);
 
 (function() {
-  angular.module('App').controller('Navigate_Controller', function($rootScope, $sce, $scope, TM_API) {
+  angular.module('TM_App').controller('Navigate_Controller', function($rootScope, $sce, $scope, TM_API) {
     $scope.previous_Query = null;
     $scope.load_Query = function(query_Id) {
       return TM_API.query_tree(query_Id, function(data) {
@@ -158,9 +304,24 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.infoMessage = "...sending request ...";
+      return TM_API.pwd_Reset($scope.email, function(data) {
+        return $scope.infoMessage = data.message;
+      });
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
   var app;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.controller('Search_Controller', function($rootScope, $scope, TM_API) {
     $scope.map_Search_Queries = function(data) {
@@ -194,146 +355,14 @@
 }).call(this);
 
 (function() {
-  angular.module('App').controller('User_Navigation_Controller', function($scope, $state) {});
-
-}).call(this);
-
-(function() {
-  var app, component, components, fn, i, len;
-
-  app = angular.module('App');
-
-  components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
-
-  fn = function(component) {
-    var directive_Name, index, j, len1, ref, segment;
-    directive_Name = "";
-    ref = component.split('_');
-    for (index = j = 0, len1 = ref.length; j < len1; index = ++j) {
-      segment = ref[index];
-      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-    }
-    return app.directive(directive_Name, function() {
-      return {
-        templateUrl: "/angular/jade-html/component/" + component
-      };
-    });
-  };
-  for (i = 0, len = components.length; i < len; i++) {
-    component = components[i];
-    fn(component);
-  }
-
-}).call(this);
-
-(function() {
-  angular.module('App').directive('filters', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/filters', 'filters', function(filters) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = filters(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('App').directive('helpNavigation', function() {
-    return {
-      templateUrl: '/angular/jade-html/component/help_navigation'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('App').directive('landingBar', function() {
-    return {
-      templateUrl: '/angular/jade-html/component/landing_bar'
-    };
-  });
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state) {});
 
 }).call(this);
 
 (function() {
   var app;
 
-  app = angular.module('App');
-
-  app.directive('leftNavigation', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/left_navigation'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_queries', 'navigate_queries', function(navigate_queries) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_queries(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_results(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
-
-  app.directive('searchBar', function($parse, $timeout) {
-    return {
-      templateUrl: '/angular/jade-html/component/search_bar'
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('index');
@@ -345,7 +374,7 @@
 (function() {
   var app;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     var i, len, results, view_Name, view_Names;
@@ -368,7 +397,7 @@
 
   return;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.service('User', function() {
     var user;
@@ -478,7 +507,7 @@
 (function() {
   var app;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     var i, len, view_Name, view_Names;
@@ -502,7 +531,7 @@
 (function() {
   var app, config;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   config = {
     cache_Jade_Js: true
@@ -538,7 +567,7 @@
 (function() {
   var app;
 
-  app = angular.module('App');
+  app = angular.module('TM_App');
 
   app.service('TM_API', (function(_this) {
     return function($q, $http, $timeout) {
@@ -672,6 +701,15 @@
         postData = {
           username: username,
           password: password
+        };
+        return $http.post(url, postData).success(callback);
+      };
+      _this;
+      _this.pwd_Reset = function(email, callback) {
+        var postData, url;
+        url = "/json/user/pwd_reset";
+        postData = {
+          email: email
         };
         return $http.post(url, postData).success(callback);
       };

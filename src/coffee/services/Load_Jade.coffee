@@ -1,4 +1,4 @@
-app = angular.module('App')
+app = angular.module('TM_App')
 
 config =
   cache_Jade_Js: true
