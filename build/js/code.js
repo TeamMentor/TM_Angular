@@ -99,6 +99,23 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Articles_Controller', function($scope, TM_API) {
+    return $scope.$on('query_data', function(event, data) {
+      var article, articles, i, id, len, title;
+      articles = data.results.slice(0, 10);
+      for (i = 0, len = articles.length; i < len; i++) {
+        article = articles[i];
+        id = article.id.remove('article-');
+        title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+        article.url = '/angular/user/article/' + id + '/' + title;
+      }
+      return $scope.articles = articles;
+    });
+  });
+
+}).call(this);
+
+(function() {
   window.using = function(target, callback) {
     return callback.apply(target);
   };
@@ -224,15 +241,14 @@
 
 (function() {
   angular.module('TM_App').controller('Queries_Controller', function($scope, query_Service) {
-    $scope.title = 'Index';
     $scope.$on('query_data', function(event, data) {
+      $scope.title = data.title;
       return $scope.containers = data.containers;
     });
     $scope.load_Query = function(query_Id) {
       return query_Service.load_Query(query_Id);
     };
-    query_Service.load_Data();
-    return window._q = query_Service;
+    return query_Service.load_Data();
   });
 
 }).call(this);
@@ -262,13 +278,37 @@
         });
       }
     };
-    return $scope.submit = function() {
+    $scope.submit = function() {
       return TM_API.query_from_text_search($scope.text, function(query_id) {
         return TM_API.query_tree(query_id, function(data) {
           return $scope.map_Search_Queries(data);
         });
       });
     };
+    return $scope.$on('query_data', function(event, data) {
+      var filter, i, len, ref, result, results;
+      $scope.technologies = [];
+      ref = data.filters;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        filter = ref[i];
+        if (filter.title === 'Technology') {
+          results.push((function() {
+            var j, len1, ref1, results1;
+            ref1 = filter.results;
+            results1 = [];
+            for (j = 0, len1 = ref1.length; j < len1; j++) {
+              result = ref1[j];
+              results1.push($scope.technologies.push(result.title));
+            }
+            return results1;
+          })());
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    });
   });
 
 }).call(this);
