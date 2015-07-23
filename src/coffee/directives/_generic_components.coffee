@@ -12,7 +12,7 @@ map_Components =  (path, components)->
       app.directive resolve_Directive_Name(component),  -> {  templateUrl: "/angular/jade-html/component#{path}/#{component}" }
 
 root_Components = [ 'alert_ok', 'alert_bad' , 'pwd_forgot_form', 'login_form','sign_up_form']
-user_Components = [ 'queries', 'queries_history', 'articles']
+user_Components = [ 'queries', 'queries_breadcrumbs', 'articles']
 
 map_Components ''    , root_Components
 map_Components '/user', user_Components
