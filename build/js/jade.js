@@ -9507,7 +9507,7 @@ buf.push("<button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button>")
 buf.push("<!-- Getting Started-->");
 jade_mixins["username-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\"/>");
+buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/>");
 };
 jade_mixins["password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -9515,7 +9515,7 @@ buf.push("<label for=\"password\">Password</label><input type=\"password\" id=\"
 };
 jade_mixins["confirm-password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " maxlength=\"256\"/>");
+buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " required=\"required\" maxlength=\"256\"/>");
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -18394,7 +18394,7 @@ buf.push("<button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button>")
 buf.push("<!-- Getting Started-->");
 jade_mixins["username-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\"/>");
+buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/>");
 };
 jade_mixins["password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -18402,7 +18402,7 @@ buf.push("<label for=\"password\">Password</label><input type=\"password\" id=\"
 };
 jade_mixins["confirm-password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " maxlength=\"256\"/>");
+buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " required=\"required\" maxlength=\"256\"/>");
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -19731,7 +19731,7 @@ buf.push("<button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button>")
 buf.push("<!-- Getting Started-->");
 jade_mixins["username-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\"/>");
+buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/>");
 };
 jade_mixins["password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -19739,7 +19739,7 @@ buf.push("<label for=\"password\">Password</label><input type=\"password\" id=\"
 };
 jade_mixins["confirm-password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " maxlength=\"256\"/>");
+buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " required=\"required\" maxlength=\"256\"/>");
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -21068,7 +21068,7 @@ buf.push("<button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button>")
 buf.push("<!-- Getting Started-->");
 jade_mixins["username-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\"/>");
+buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/>");
 };
 jade_mixins["password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -21076,7 +21076,7 @@ buf.push("<label for=\"password\">Password</label><input type=\"password\" id=\"
 };
 jade_mixins["confirm-password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " maxlength=\"256\"/>");
+buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " required=\"required\" maxlength=\"256\"/>");
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -26334,7 +26334,7 @@ buf.push("<button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button>")
 buf.push("<!-- Getting Started-->");
 jade_mixins["username-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\"/>");
+buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/>");
 };
 jade_mixins["password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -26342,7 +26342,7 @@ buf.push("<label for=\"password\">Password</label><input type=\"password\" id=\"
 };
 jade_mixins["confirm-password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " maxlength=\"256\"/>");
+buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " required=\"required\" maxlength=\"256\"/>");
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -26370,7 +26370,7 @@ buf.push("<label for=\"country\">Country</label><input type=\"text\" id=\"countr
 };
 jade_mixins["state-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"state\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
+buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"State\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -26479,7 +26479,7 @@ jade_mixins["team-mentor-summary"]();
 buf.push("</div><div class=\"col-8\"><section class=\"getting-started\"><!-- Getting Started-->");
 jade_mixins["username-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\"/>");
+buf.push("<label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/>");
 };
 jade_mixins["password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -26487,7 +26487,7 @@ buf.push("<label for=\"password\">Password</label><input type=\"password\" id=\"
 };
 jade_mixins["confirm-password-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " maxlength=\"256\"/>");
+buf.push("<label for=\"confirm-password\">Confirm Password</label><input type=\"password\" id=\"confirm-password\" name=\"confirm-password\" placeholder=\"Password\"" + (jade.attr("value", '' + (viewModel?viewModel.confirmpassword:"") + '', true, false)) + " required=\"required\" maxlength=\"256\"/>");
 };
 jade_mixins["email-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -26515,7 +26515,7 @@ buf.push("<label for=\"country\">Country</label><input type=\"text\" id=\"countr
 };
 jade_mixins["state-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"state\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
+buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"State\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
 };
 buf.push("<!-- User Inputs-->");
 
@@ -26553,7 +26553,7 @@ buf.push("<!-- Editor Inputs-->");
 
 
 
-buf.push("<section class=\"row__label\"><div class=\"label\">Sign Up</div></section><section class=\"row\"><form id=\"sign-up-form\" action=\"/flare/user/sign-up\"><div class=\"input-field\">");
+buf.push("<div ng-controller=\"Signup_Controller\"><section class=\"row__label\"><div class=\"label\">Sign Up</div></section><section class=\"row\"><form id=\"sign-up-form\" role=\"form\" ng-submit=\"signup()\"><div class=\"input-field\">");
 jade_mixins["username-input"]();
 buf.push("</div><div class=\"input-field\">");
 jade_mixins["email-input"]();
@@ -26575,7 +26575,7 @@ buf.push("</div><div class=\"input-field\">");
 jade_mixins["state-input"]();
 buf.push("</div><div class=\"conditions\"><p>By signing up, you agree to our <a href=\"/misc/terms-and-conditions\">Terms and Conditions</a>.</p>\n</div><div class=\"button-field\">");
 jade_mixins["sign-up-button"]();
-buf.push("</div></form></section></section></div></section>");}.call(this,"viewModel" in locals_for_with?locals_for_with.viewModel:typeof viewModel!=="undefined"?viewModel:undefined));;return buf.join("");
+buf.push("</div></form></section></div></section></div></section>");}.call(this,"viewModel" in locals_for_with?locals_for_with.viewModel:typeof viewModel!=="undefined"?viewModel:undefined));;return buf.join("");
 }
 
 function jade_terms_and_conditions(locals) {
