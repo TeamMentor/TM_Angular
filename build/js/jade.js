@@ -11886,7 +11886,7 @@ jade_mixins["default-icon"]();
 }
 buf.push("</span>");
 };
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value='.Net')= 'Net.....'--><!--  option(value='Java')= 'abc'--><!--  option(value='php')= 'php'--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><!-- Application Icons-->");
 
@@ -16264,7 +16264,7 @@ jade_mixins["default-icon"]();
 }
 buf.push("</span>");
 };
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value='.Net')= 'Net.....'--><!--  option(value='Java')= 'abc'--><!--  option(value='php')= 'php'--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><!--include ../component/left_navigation.jade--><!--include ../component/filters.jade--><main><section class=\"row\"><div class=\"col-3\">");
 jade_mixins["navigate"]();
@@ -23447,7 +23447,7 @@ jade_mixins["default-icon"]();
 }
 buf.push("</span>");
 };
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value='.Net')= 'Net.....'--><!--  option(value='Java')= 'abc'--><!--  option(value='php')= 'php'--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><!-- Application Icons-->");
 
@@ -25240,7 +25240,7 @@ buf.push("<label for=\"country\">Country</label><input type=\"text\" id=\"countr
 };
 jade_mixins["state-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"state\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
+buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"State\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
 };
 jade_mixins["login-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
@@ -25637,7 +25637,7 @@ buf.push("<label for=\"country\">Country</label><input type=\"text\" id=\"countr
 };
 jade_mixins["state-input"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"state\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
+buf.push("<label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" placeholder=\"State\"" + (jade.attr("value", '' + (viewModel?viewModel.state:"") + '', true, false)) + " maxlength=\"100\"/>");
 };
 jade_mixins["login-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};

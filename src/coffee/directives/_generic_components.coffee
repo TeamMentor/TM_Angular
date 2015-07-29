@@ -1,5 +1,8 @@
 app = angular.module('TM_App')
 
+String::upper_Case_First_Letter = ()->
+  @.charAt(0).toUpperCase() + @.substr(1)
+
 resolve_Directive_Name =  (name)->
   directive_Name = "";
   for segment,index in name.split('_')                                                # need to use camelcase for the directive name
@@ -9,7 +12,8 @@ resolve_Directive_Name =  (name)->
 map_Components =  (path, components)->
   for component in components
     do (component)->
-      app.directive resolve_Directive_Name(component),  -> {  templateUrl: "/angular/jade-html/component#{path}/#{component}" }
+      app.directive resolve_Directive_Name(component),  ->
+        {  templateUrl: "/angular/jade-html/component#{path}/#{component}" }
 
 root_Components = [ 'alert_ok', 'alert_bad' , 'pwd_forgot_form', 'login_form','sign_up_form']
 user_Components = [ 'queries', 'queries_breadcrumbs', 'articles']
