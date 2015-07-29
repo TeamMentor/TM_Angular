@@ -70,7 +70,7 @@
 
   app = angular.module('TM_App');
 
-  app.run(function($timeout, $browser) {
+  app.run(function($templateCache, $browser) {
     if ($browser.isMock === false) {
       console.log('Since we are running in a real browser, removing all template caches (for now)');
       return $templateCache.removeAll();
