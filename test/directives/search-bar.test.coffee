@@ -20,5 +20,6 @@ describe '| directive | search-bar', ->
       scope.$digest()
 
   it 'check html elements',->
+
     inject ($$)->
       $$(element).$query('input').$attr().assert_Is {id: 'search-text', type: 'text', "ng-model": 'text', placeholder: 'Type keywords here', class: 'search-input ng-pristine ng-untouched ng-valid'}

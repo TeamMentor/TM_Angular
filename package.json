@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/TeamMentor/TM_Angular#readme",
   "devDependencies": {
+    "async": "^1.4.0",
+    "cheerio": "^0.19.0",
+    "fluentnode": "^0.5.2",
     "jasmine-core": "^2.3.4",
     "karma": "^0.12.37",
     "karma-chrome-launcher": "^0.2.0",
@@ -33,6 +36,7 @@
     "requirejs": "^2.1.18"
   },
   "dependencies": {
-    "coffee-script": "^1.9.3"
+    "coffee-script": "^1.9.3",
+    "fluentnode": "^0.5.2"
   }
 }
