@@ -80,7 +80,8 @@
 }).call(this);
 
 (function() {
-  var expect;
+  var expect,
+    hasProp = {}.hasOwnProperty;
 
   expect = chai.expect;
 
@@ -140,6 +141,23 @@
     return this.charAt(0).toUpperCase() + this.substr(1);
   };
 
+  Object.defineProperty(Object.prototype, 'keys', {
+    enumerable: false,
+    writable: true,
+    value: function() {
+      var key;
+      return (function() {
+        var results;
+        results = [];
+        for (key in this) {
+          if (!hasProp.call(this, key)) continue;
+          results.push(key);
+        }
+        return results;
+      }).call(this);
+    }
+  });
+
   Object.defineProperty(Object.prototype, 'assert_Is', {
     enumerable: false,
     writable: true,
@@ -154,13 +172,25 @@
     return this;
   };
 
+  Number.prototype.assert_Is = function(target, message) {
+    expect(this.toString()).to.equal(target.toString(), message);
+    return this;
+  };
+
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API) {
-    return TM_API.article($stateParams.article_Id, function(article_Data) {
-      $scope.title = article_Data.title;
-      return $scope.article_Html = $sce.trustAsHtml(article_Data.article_Html);
+  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
+    return TM_API.article($stateParams.article_Id, function(article) {
+      var id, title;
+      id = article.id.remove('article-');
+      title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+      article.url = '/angular/user/article/' + id + '/' + title;
+      $scope.article = article;
+      $scope.article_Html = $sce.trustAsHtml(article.article_Html);
+      $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+      $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+      return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
     });
   });
 
@@ -387,7 +417,7 @@
 }).call(this);
 
 (function() {
-  var app, map_Components, resolve_Directive_Name, root_Components, user_Components;
+  var app, design_Components, map_Components, resolve_Directive_Name, root_Components, user_Components;
 
   app = angular.module('TM_App');
 
@@ -424,11 +454,15 @@
 
   root_Components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
 
-  user_Components = ['queries', 'queries_breadcrumbs', 'articles'];
+  user_Components = ['queries', 'queries_breadcrumbs', 'articles', 'article_box'];
+
+  design_Components = ['all_icons'];
 
   map_Components('', root_Components);
 
   map_Components('/user', user_Components);
+
+  map_Components('/design', design_Components);
 
 }).call(this);
 
@@ -470,6 +504,35 @@
   angular.module('TM_App').directive('helpNavigation', function() {
     return {
       templateUrl: '/angular/jade-html/component/help_navigation'
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('icon', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var key;
+        key = attribute.type || 'Default';
+        return icon_Service.element_Html(key);
+      }
+    };
+  }).directive('showAllIcons', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var all_Icons_Html, i, key, len, ref;
+        all_Icons_Html = "";
+        ref = icon_Service.mappings.keys();
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          all_Icons_Html += icon_Service.element_Html(key);
+          if (attribute.$attr.withTitles) {
+            all_Icons_Html += " " + key + " <br/>";
+          }
+        }
+        return all_Icons_Html;
+      }
     };
   });
 
@@ -718,11 +781,194 @@
         templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
     }
-    return $stateProvider.state('article', {
+    $stateProvider.state('article', {
       url: "/article/:article_Id/:article_Title",
       controller: 'Article_Controller',
       templateUrl: '/angular/jade-html/views/article'
     });
+    return $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var Icon_Service, mappings,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  mappings = {
+    '.Net': {
+      "class": 'icon-Net',
+      layers: 12
+    },
+    'ASP.NET 3.5': {
+      "class": 'icon-Net',
+      layers: 12
+    },
+    'ASP.NET 4.0': {
+      "class": 'icon-Net',
+      layers: 12
+    },
+    'Android': {
+      "class": 'icon-Android',
+      layers: 12
+    },
+    'C++': {
+      "class": 'icon-C',
+      layers: 12
+    },
+    'iOS': {
+      "class": 'icon-iOS',
+      layers: 12
+    },
+    'Java': {
+      "class": 'icon-Java',
+      layers: 12
+    },
+    'PHP': {
+      "class": 'icon-PHP',
+      layers: 12
+    },
+    'Scala Play': {
+      "class": 'icon-Scala',
+      layers: 12
+    },
+    'Scala with Play Framework': {
+      "class": 'icon-Scala',
+      layers: 12
+    },
+    'WCF': {
+      "class": 'icon-WCF',
+      layers: 12
+    },
+    'WCF 3.5': {
+      "class": 'icon-WCF',
+      layers: 12
+    },
+    'Web Application': {
+      "class": 'icon-Web-App',
+      layers: 12
+    },
+    'HTML5': {
+      "class": 'icon-HTML5',
+      layers: 12
+    },
+    'Deployment': {
+      "class": 'icon-Deployment',
+      layers: 12
+    },
+    'Design': {
+      "class": 'icon-Design',
+      layers: 12
+    },
+    'Implementation': {
+      "class": 'icon-Implementation',
+      layers: 12
+    },
+    'Test': {
+      "class": 'icon-Test',
+      layers: 12
+    },
+    'Checklist Item': {
+      "class": 'icon-Checklist',
+      layers: 12
+    },
+    'Code Example': {
+      "class": 'icon-CodeExample',
+      layers: 12
+    },
+    'Guideline': {
+      "class": 'icon-Guideline',
+      layers: 12
+    },
+    'How To': {
+      "class": 'icon-HowTo',
+      layers: 12
+    },
+    'Principle': {
+      "class": 'icon-Principle',
+      layers: 12
+    },
+    'Requirement': {
+      "class": 'icon-Requirement',
+      layers: 12
+    },
+    'Vulnerability': {
+      "class": 'icon-Vulnerabilities',
+      layers: 12
+    },
+    'Default': {
+      "class": 'icon-Default',
+      layers: 2
+    }
+  };
+
+  Icon_Service = (function() {
+    function Icon_Service() {
+      this.element_Html = bind(this.element_Html, this);
+      this.element = bind(this.element, this);
+      this.mappings = mappings;
+    }
+
+    Icon_Service.prototype.element = function(key) {
+      var element, i, j, mapping, ref;
+      console.log('resolving html for icon: ' + key);
+      mapping = this.mappings[key];
+      if (!mapping) {
+        mapping = this.mappings['Default'];
+      }
+      console.log(mapping);
+      element = angular.element('<span>');
+      using(element[0], function() {
+        this.className = mapping["class"];
+        return this.title = key;
+      });
+      for (i = j = 1, ref = mapping.layers; j <= ref; i = j += 1) {
+        element.append("<span class='path" + i + "'>");
+      }
+      return element;
+    };
+
+    Icon_Service.prototype.element_Html = function(key) {
+      var element;
+      element = this.element(key);
+      if (element) {
+        return element[0].outerHTML;
+      } else {
+        return "";
+      }
+    };
+
+    return Icon_Service;
+
+  })();
+
+
+  /*
+    icon_Data:  (type, key)->
+      switch type
+        when 'technology'
+          switch key
+            when '.NET', 'ASP.NET 3.5', 'ASP.NET 4.0'       then return { class: 'icon-Net'      , layers: 0 }
+            when '.NET 3.5'                                 then return { class: 'icon-Net-3-5'  , layers: 0 }
+            when 'Android'                                  then return { class: 'icon-Android'  , layers: 0 }
+            when 'C++'                                      then return { class: 'icon-C'        , layers: 0 }
+            when 'iOS'                                      then return { class: 'icon-iOS'      , layers: 0 }
+            when 'Java'                                     then return { class: 'icon-Java'     , layers: 0 }
+            when 'PHP'                                      then return { class: 'icon-PHP'      , layers: 0 }
+            when 'Scala Play', 'Scala with Play Framework'  then return { class: 'icon-Scala'    , layers: 0 }
+            when 'WCF' , 'WCF 3.5'                          then return { class: 'icon-WCF'      , layers: 0 }
+            when 'Web Application'                          then return { class: 'icon-Web-App'  , layers: 0 }
+            when 'HTML5'                                    then return { class: 'icon-HTML5'    , layers: 0 }
+             * else return 'Default'
+      return { class: 'icon-Default'   , layers: 0 }
+   */
+
+  angular.module('TM_App').service('icon_Service', function() {
+    return new Icon_Service();
   });
 
 }).call(this);

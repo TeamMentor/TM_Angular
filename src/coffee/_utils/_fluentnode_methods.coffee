@@ -40,6 +40,12 @@ String::upper_Case_First_Letter = ()->
   @.charAt(0).toUpperCase() + @.substr(1)
 
 
+Object.defineProperty Object.prototype, 'keys',
+  enumerable  : false,
+  writable    : true,
+  value: ->
+    return (key for own key of @)
+
 #assert
 
 Object.defineProperty Object.prototype, 'assert_Is',
@@ -51,4 +57,8 @@ Object.defineProperty Object.prototype, 'assert_Is',
 
 String::assert_Is          = (target, message)->
   expect(@.toString()).to.equal(target, message)
+  @
+
+Number::assert_Is          = (target, message)->      # slight modified from fluentnode version
+  expect(@.toString()).to.equal(target.toString(), message)
   @
