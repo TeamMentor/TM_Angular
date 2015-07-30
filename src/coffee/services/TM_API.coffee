@@ -89,6 +89,12 @@ app.service 'TM_API', ($q, $http, $timeout)=>
     $http.post(url, postData).success callback
   @
 
+  @.signup =  (username, password,confirmpassword,email,firstname,lastname,company,title,country,state, callback)->
+    url      = "/json/user/signup"
+    postData =  { username: username , password: password,'confirm-password':confirmpassword , email: email,firstname:firstname, lastname:lastname,company:company,title:title,country:country,state:state}
+    $http.post(url, postData).success callback
+  @
+
   @.pwd_Reset = (email, callback)->
     url      = "/json/user/pwd_reset"
     postData = { email:email }
