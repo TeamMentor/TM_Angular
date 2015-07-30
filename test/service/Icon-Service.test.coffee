@@ -29,3 +29,10 @@ describe '| services | Icon-Service', ->
     using icon_Service, ->
       @.element_Html(test_Key).assert_Is test_Key_Html
       expect(@.element_Html('aaa')).toContain('icon-Default')
+
+  it 'simple_Element', ->
+    using icon_Service, ->
+      @.simple_Element(     'icon-Close', 'Close')[0].outerHTML.assert_Is '<span class="icon-Close" title="Close"></span>'
+      @.simple_Element(     'icon-Close', null   )[0].outerHTML.assert_Is '<span class="icon-Close"></span>'
+      @.simple_Element_Html('icon-Close', 'Close').assert_Is '<span class="icon-Close" title="Close"></span>'
+      @.simple_Element_Html('icon-Close', null   ).assert_Is '<span class="icon-Close"></span>'
