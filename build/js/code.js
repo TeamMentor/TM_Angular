@@ -412,6 +412,34 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...Signing  up ...";
+      return TM_API.signup($scope.username, $scope.password, "$scope.confirm-password", $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref;
+        if (data.result === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return window.location = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state) {});
 
 }).call(this);
@@ -1195,6 +1223,24 @@
         postData = {
           username: username,
           password: password
+        };
+        return $http.post(url, postData).success(callback);
+      };
+      _this;
+      _this.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
+        var postData, url;
+        url = "/json/user/signup";
+        postData = {
+          username: username,
+          password: password,
+          'confirm-password': confirmpassword,
+          email: email,
+          firstname: firstname,
+          lastname: lastname,
+          company: company,
+          title: title,
+          country: country,
+          state: state
         };
         return $http.post(url, postData).success(callback);
       };
