@@ -488,7 +488,14 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state) {});
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, query_Service) {
+    return $scope.open_Query_State = function() {
+      console.log('opening query state');
+      $state.go('queries');
+      query_Service.data = null;
+      return query_Service.load_Data();
+    };
+  });
 
 }).call(this);
 
@@ -691,76 +698,6 @@
     return {
       templateUrl: '/angular/jade-html/component/search_bar'
     };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    var i, len, results, view_Name, view_Names;
-    view_Names = ['about', 'blank', 'docs', 'features', 'pwd_forgot', 'index', 'login', 'sign_up'];
-    results = [];
-    for (i = 0, len = view_Names.length; i < len; i++) {
-      view_Name = view_Names[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    var i, j, len, len1, root_Views, user_Views, view_Name;
-    root_Views = ['navigate', 'main'];
-    user_Views = ['queries', 'articles'];
-    for (i = 0, len = root_Views.length; i < len; i++) {
-      view_Name = root_Views[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    for (j = 0, len1 = user_Views.length; j < len1; j++) {
-      view_Name = user_Views[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/article'
-    });
-    return $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
   });
 
 }).call(this);
@@ -1092,7 +1029,6 @@
           return callback(cache_Query_Tree[id + filter]);
         }
         url = "/api/data/query_tree_filtered/" + id + "/" + filter;
-        console.log(url);
         return $http.get(url).success(function(data) {
           cache_Query_Tree[id + filter] = data;
           return callback(data);
@@ -1219,6 +1155,76 @@
       return element;
     };
     return $$;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    var i, len, results, view_Name, view_Names;
+    view_Names = ['about', 'blank', 'docs', 'features', 'pwd_forgot', 'index', 'login', 'sign_up'];
+    results = [];
+    for (i = 0, len = view_Names.length; i < len; i++) {
+      view_Name = view_Names[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      }));
+    }
+    return results;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    var i, j, len, len1, root_Views, user_Views, view_Name;
+    root_Views = ['navigate', 'main'];
+    user_Views = ['queries', 'articles'];
+    for (i = 0, len = root_Views.length; i < len; i++) {
+      view_Name = root_Views[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    for (j = 0, len1 = user_Views.length; j < len1; j++) {
+      view_Name = user_Views[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/article'
+    });
+    return $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
   });
 
 }).call(this);
