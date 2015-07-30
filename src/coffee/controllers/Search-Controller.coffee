@@ -15,7 +15,6 @@ app.controller 'Search_Controller', ($rootScope, $scope, TM_API)->
       TM_API.query_tree query_id, (data)->
         $scope.map_Search_Queries data
 
-
   $scope.$on 'query_data', (event, data)->
     $scope.technologies = []
     for filter in data.filters

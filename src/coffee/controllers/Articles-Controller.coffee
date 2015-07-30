@@ -7,5 +7,10 @@ angular.module('TM_App')
              id    = article.id.remove('article-')
              title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
              article.url = '/angular/user/article/' + id + '/' + title
+
+             #$scope.icon_Technology = $sce.trustAsHtml icon_Service.element_Html(article.technology)
+             #$scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
+             #$scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
+
            $scope.articles = articles
 

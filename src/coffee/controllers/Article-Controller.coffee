@@ -1,7 +1,15 @@
 angular.module('TM_App')
-       .controller 'Article_Controller', ($sce, $scope, $stateParams, TM_API)->
-          TM_API.article $stateParams.article_Id, (article_Data)->
-            $scope.title = article_Data.title
-            $scope.article_Html =  $sce.trustAsHtml article_Data.article_Html
-            #$scope.technology = article_Data.technology
-            #console.log article_Data
+       .controller 'Article_Controller', ($sce, $scope, $stateParams, TM_API, icon_Service)->
+
+          TM_API.article $stateParams.article_Id, (article)->
+            id    = article.id.remove('article-')
+            title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
+            article.url = '/angular/user/article/' + id + '/' + title
+
+
+            $scope.article      = article
+            $scope.article_Html =  $sce.trustAsHtml article.article_Html
+
+            $scope.icon_Technology = $sce.trustAsHtml icon_Service.element_Html(article.technology)
+            $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
+            $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
