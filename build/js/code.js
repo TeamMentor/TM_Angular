@@ -180,326 +180,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    return TM_API.article($stateParams.article_Id, function(article) {
-      var id, title;
-      id = article.id.remove('article-');
-      title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-      article.url = '/angular/user/article/' + id + '/' + title;
-      $scope.article = article;
-      $scope.article_Html = $sce.trustAsHtml(article.article_Html);
-      $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-      $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-      return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    return using($scope, function() {
-      this.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(this.article.technology));
-      this.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(this.article.type));
-      return this.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(this.article.phase));
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Articles_Controller', function($scope, query_Service, $location, TM_API) {
-    $scope.$on('filter_data', function(event, data) {
-      var article, articles, i, id, len, title;
-      if (data != null ? data.results : void 0) {
-        articles = data.results.slice(0, 10);
-        for (i = 0, len = articles.length; i < len; i++) {
-          article = articles[i];
-          id = article.id.remove('article-');
-          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-          article.url = '/angular/user/article/' + id + '/' + title;
-        }
-        return $scope.articles = articles;
-      }
-    });
-    return query_Service.load_Data();
-  });
-
-}).call(this);
-
-(function() {
-  window.using = function(target, callback) {
-    return callback.apply(target);
-  };
-
-  angular.module('TM_App').controller('Breadcrumbs_Controller', function($scope, query_Service) {
-    return using($scope, function() {
-      this.history = {};
-      this.current_Path = '';
-      this.breadcrumbs = [];
-      this.refresh_Breadcrumbs = (function(_this) {
-        return function() {
-          var i, item, key, len, path, ref, results, title;
-          _this.breadcrumbs = [];
-          path = '';
-          ref = _this.current_Path.split('/');
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            key = ref[i];
-            if (!(key)) {
-              continue;
-            }
-            item = _this.history[key];
-            title = item.title;
-            _this.breadcrumbs.push({
-              query_Id: item.query_Id,
-              title: title,
-              filter_Title: item.filter_Title,
-              path: path,
-              filter_Id: item.filter_Id
-            });
-            results.push(path += "/" + key);
-          }
-          return results;
-        };
-      })(this);
-      this.$on('filter_data', (function(_this) {
-        return function(event, data, filter_Id, filter_Title) {
-          if (data) {
-            if (filter_Id) {
-              _this.current_Path += "/" + data.id + filter_Id;
-              _this.history[data.id + filter_Id] = {
-                title: data.title,
-                filter_Title: filter_Title,
-                filter_Id: filter_Id,
-                query_Id: data.id
-              };
-            } else {
-              _this.current_Path += "/" + data.id;
-              _this.history[data.id] = {
-                title: data.title,
-                query_Id: data.id
-              };
-            }
-            return _this.refresh_Breadcrumbs();
-          }
-        };
-      })(this));
-      return this.load_Query = (function(_this) {
-        return function(breadcrumb) {
-          _this.current_Path = breadcrumb.path;
-          console.log(breadcrumb);
-          if (breadcrumb.filter_Id) {
-            query_Service.filter_Id = '';
-            return query_Service.load_Filter(breadcrumb.query_Id, breadcrumb.filter_Id, breadcrumb.filter_Title);
-          } else {
-            return query_Service.load_Query(breadcrumb.query_Id);
-          }
-        };
-      })(this);
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, query_Service, icon_Service) {
-    var query_Id;
-    query_Id = null;
-    $scope.$on('filter_data', function(event, data) {
-      var filter, i, len, ref, result, results;
-      if (data.filters) {
-        query_Id = data.id;
-        $scope.filters = data.filters;
-        ref = $scope.filters;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          filter = ref[i];
-          results.push((function() {
-            var j, len1, ref1, results1;
-            ref1 = filter.results;
-            results1 = [];
-            for (j = 0, len1 = ref1.length; j < len1; j++) {
-              result = ref1[j];
-              results1.push(result.icon = $sce.trustAsHtml(icon_Service.element_Html(result.title)));
-            }
-            return results1;
-          })());
-        }
-        return results;
-      }
-    });
-    $scope.apply_Filter = function(filter_Id, filter_Title) {
-      return query_Service.load_Filter(query_Id, filter_Id, filter_Title);
-    };
-    return query_Service.load_Data();
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
-    return TM_API.docs_Library(function(library) {
-      $scope.Views = library.Views;
-      $scope.show_Doc = function(article) {
-        return TM_API.docs_Page(article.Id, function(article_Data) {
-          $scope.title = article.Title;
-          return $scope.content = $sce.trustAsHtml(article_Data.html);
-        });
-      };
-      return $scope.show_Doc(library.Views.first().Articles.first());
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.login = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...logging in ...";
-      return TM_API.login($scope.username, $scope.password, function(data) {
-        var ref;
-        if (data.result === 'OK') {
-          $scope.infoMessage = 'Login OK';
-          return $timeout(function() {
-            return window.location = '/angular/user/main';
-          });
-        } else {
-          $scope.infoMessage = null;
-          return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
-        }
-      });
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Navigate_Controller', function($rootScope, $sce, $scope, TM_API) {
-    $scope.previous_Query = null;
-    $scope.load_Query = function(query_Id) {
-      return TM_API.query_tree(query_Id, function(data) {
-        data.previous_Query = $scope.previous_Query;
-        $rootScope.$broadcast('show-query-data', data);
-        return $scope.previous_Query = query_Id;
-      });
-    };
-    return $scope.load_Query('query-6234f2d47eb7');
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.get_Password = function() {
-      $scope.infoMessage = "...sending request ...";
-      return TM_API.pwd_Reset($scope.email, function(data) {
-        return $scope.infoMessage = data.message;
-      });
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Queries_Controller', function($scope, query_Service) {
-    $scope.$on('query_data', function(event, data) {
-      $scope.title = data.title;
-      return $scope.containers = data.containers;
-    });
-    $scope.load_Query = function(query_Id) {
-      return query_Service.load_Query(query_Id);
-    };
-    return query_Service.load_Data();
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.controller('Search_Controller', function($rootScope, $scope, TM_API) {
-    $scope.map_Search_Queries = function(data) {
-      var article_Ids, result;
-      if (data) {
-        article_Ids = (function() {
-          var i, len, ref, results;
-          ref = data.results;
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            result = ref[i];
-            results.push(result.id);
-          }
-          return results;
-        })();
-        return TM_API.get_articles_parent_queries(article_Ids, [], function(containers) {
-          data.containers = containers;
-          return $rootScope.$broadcast('show-query-data', data);
-        });
-      }
-    };
-    $scope.submit = function() {
-      return TM_API.query_from_text_search($scope.text, function(query_id) {
-        return TM_API.query_tree(query_id, function(data) {
-          return $scope.map_Search_Queries(data);
-        });
-      });
-    };
-    return $scope.$on('query_data', function(event, data) {
-      var filter, i, len, ref, result, results;
-      if (data.filters) {
-        $scope.technologies = [];
-        ref = data.filters;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          filter = ref[i];
-          if (filter.title === 'Technology') {
-            results.push((function() {
-              var j, len1, ref1, results1;
-              ref1 = filter.results;
-              results1 = [];
-              for (j = 0, len1 = ref1.length; j < len1; j++) {
-                result = ref1[j];
-                results1.push($scope.technologies.push(result.title));
-              }
-              return results1;
-            })());
-          } else {
-            results.push(void 0);
-          }
-        }
-        return results;
-      }
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, query_Service) {
-    return $scope.open_Query_State = function() {
-      console.log('opening query state');
-      $state.go('queries');
-      query_Service.data = null;
-      return query_Service.load_Data();
-    };
-  });
-
-}).call(this);
-
-(function() {
   var app, design_Components, map_Components, resolve_Directive_Name, root_Components, user_Components;
 
   app = angular.module('TM_App');
@@ -1111,6 +791,24 @@
         return $http.post(url, postData).success(callback);
       };
       _this;
+      _this.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
+        var postData, url;
+        url = "/json/user/signup";
+        postData = {
+          username: username,
+          password: password,
+          'confirm-password': confirmpassword,
+          email: email,
+          firstname: firstname,
+          lastname: lastname,
+          company: company,
+          title: title,
+          country: country,
+          state: state
+        };
+        return $http.post(url, postData).success(callback);
+      };
+      _this;
       _this.pwd_Reset = function(email, callback) {
         var postData, url;
         url = "/json/user/pwd_reset";
@@ -1155,6 +853,354 @@
       return element;
     };
     return $$;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
+    return TM_API.article($stateParams.article_Id, function(article) {
+      var id, title;
+      id = article.id.remove('article-');
+      title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+      article.url = '/angular/user/article/' + id + '/' + title;
+      $scope.article = article;
+      $scope.article_Html = $sce.trustAsHtml(article.article_Html);
+      $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+      $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+      return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
+    return using($scope, function() {
+      this.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(this.article.technology));
+      this.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(this.article.type));
+      return this.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(this.article.phase));
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Articles_Controller', function($scope, query_Service, $location, TM_API) {
+    $scope.$on('filter_data', function(event, data) {
+      var article, articles, i, id, len, title;
+      if (data != null ? data.results : void 0) {
+        articles = data.results.slice(0, 10);
+        for (i = 0, len = articles.length; i < len; i++) {
+          article = articles[i];
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+        }
+        return $scope.articles = articles;
+      }
+    });
+    return query_Service.load_Data();
+  });
+
+}).call(this);
+
+(function() {
+  window.using = function(target, callback) {
+    return callback.apply(target);
+  };
+
+  angular.module('TM_App').controller('Breadcrumbs_Controller', function($scope, query_Service) {
+    return using($scope, function() {
+      this.history = {};
+      this.current_Path = '';
+      this.breadcrumbs = [];
+      this.refresh_Breadcrumbs = (function(_this) {
+        return function() {
+          var i, item, key, len, path, ref, results, title;
+          _this.breadcrumbs = [];
+          path = '';
+          ref = _this.current_Path.split('/');
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            key = ref[i];
+            if (!(key)) {
+              continue;
+            }
+            item = _this.history[key];
+            title = item.title;
+            _this.breadcrumbs.push({
+              query_Id: item.query_Id,
+              title: title,
+              filter_Title: item.filter_Title,
+              path: path,
+              filter_Id: item.filter_Id
+            });
+            results.push(path += "/" + key);
+          }
+          return results;
+        };
+      })(this);
+      this.$on('filter_data', (function(_this) {
+        return function(event, data, filter_Id, filter_Title) {
+          if (data) {
+            if (filter_Id) {
+              _this.current_Path += "/" + data.id + filter_Id;
+              _this.history[data.id + filter_Id] = {
+                title: data.title,
+                filter_Title: filter_Title,
+                filter_Id: filter_Id,
+                query_Id: data.id
+              };
+            } else {
+              _this.current_Path += "/" + data.id;
+              _this.history[data.id] = {
+                title: data.title,
+                query_Id: data.id
+              };
+            }
+            return _this.refresh_Breadcrumbs();
+          }
+        };
+      })(this));
+      return this.load_Query = (function(_this) {
+        return function(breadcrumb) {
+          _this.current_Path = breadcrumb.path;
+          console.log(breadcrumb);
+          if (breadcrumb.filter_Id) {
+            query_Service.filter_Id = '';
+            return query_Service.load_Filter(breadcrumb.query_Id, breadcrumb.filter_Id, breadcrumb.filter_Title);
+          } else {
+            return query_Service.load_Query(breadcrumb.query_Id);
+          }
+        };
+      })(this);
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, query_Service, icon_Service) {
+    var query_Id;
+    query_Id = null;
+    $scope.$on('filter_data', function(event, data) {
+      var filter, i, len, ref, result, results;
+      if (data.filters) {
+        query_Id = data.id;
+        $scope.filters = data.filters;
+        ref = $scope.filters;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter = ref[i];
+          results.push((function() {
+            var j, len1, ref1, results1;
+            ref1 = filter.results;
+            results1 = [];
+            for (j = 0, len1 = ref1.length; j < len1; j++) {
+              result = ref1[j];
+              results1.push(result.icon = $sce.trustAsHtml(icon_Service.element_Html(result.title)));
+            }
+            return results1;
+          })());
+        }
+        return results;
+      }
+    });
+    $scope.apply_Filter = function(filter_Id, filter_Title) {
+      return query_Service.load_Filter(query_Id, filter_Id, filter_Title);
+    };
+    return query_Service.load_Data();
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    return TM_API.docs_Library(function(library) {
+      $scope.Views = library.Views;
+      $scope.show_Doc = function(article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      };
+      return $scope.show_Doc(library.Views.first().Articles.first());
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.login = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...logging in ...";
+      return TM_API.login($scope.username, $scope.password, function(data) {
+        var ref;
+        if (data.result === 'OK') {
+          $scope.infoMessage = 'Login OK';
+          return $timeout(function() {
+            return window.location = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Navigate_Controller', function($rootScope, $sce, $scope, TM_API) {
+    $scope.previous_Query = null;
+    $scope.load_Query = function(query_Id) {
+      return TM_API.query_tree(query_Id, function(data) {
+        data.previous_Query = $scope.previous_Query;
+        $rootScope.$broadcast('show-query-data', data);
+        return $scope.previous_Query = query_Id;
+      });
+    };
+    return $scope.load_Query('query-6234f2d47eb7');
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.infoMessage = "...sending request ...";
+      return TM_API.pwd_Reset($scope.email, function(data) {
+        return $scope.infoMessage = data.message;
+      });
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Queries_Controller', function($scope, query_Service) {
+    $scope.$on('query_data', function(event, data) {
+      $scope.title = data.title;
+      return $scope.containers = data.containers;
+    });
+    $scope.load_Query = function(query_Id) {
+      return query_Service.load_Query(query_Id);
+    };
+    return query_Service.load_Data();
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.controller('Search_Controller', function($rootScope, $scope, TM_API) {
+    $scope.map_Search_Queries = function(data) {
+      var article_Ids, result;
+      if (data) {
+        article_Ids = (function() {
+          var i, len, ref, results;
+          ref = data.results;
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            result = ref[i];
+            results.push(result.id);
+          }
+          return results;
+        })();
+        return TM_API.get_articles_parent_queries(article_Ids, [], function(containers) {
+          data.containers = containers;
+          return $rootScope.$broadcast('show-query-data', data);
+        });
+      }
+    };
+    $scope.submit = function() {
+      return TM_API.query_from_text_search($scope.text, function(query_id) {
+        return TM_API.query_tree(query_id, function(data) {
+          return $scope.map_Search_Queries(data);
+        });
+      });
+    };
+    return $scope.$on('query_data', function(event, data) {
+      var filter, i, len, ref, result, results;
+      if (data.filters) {
+        $scope.technologies = [];
+        ref = data.filters;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter = ref[i];
+          if (filter.title === 'Technology') {
+            results.push((function() {
+              var j, len1, ref1, results1;
+              ref1 = filter.results;
+              results1 = [];
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                result = ref1[j];
+                results1.push($scope.technologies.push(result.title));
+              }
+              return results1;
+            })());
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...Signing  up ...";
+      return TM_API.signup($scope.username, $scope.password, "$scope.confirm-password", $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref;
+        if (data.result === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return window.location = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, query_Service) {
+    return $scope.open_Query_State = function() {
+      console.log('opening query state');
+      $state.go('queries');
+      query_Service.data = null;
+      return query_Service.load_Data();
+    };
   });
 
 }).call(this);
