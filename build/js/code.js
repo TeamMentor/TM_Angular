@@ -197,18 +197,32 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Articles_Controller', function($scope, TM_API) {
-    return $scope.$on('query_data', function(event, data) {
-      var article, articles, i, id, len, title;
-      articles = data.results.slice(0, 10);
-      for (i = 0, len = articles.length; i < len; i++) {
-        article = articles[i];
-        id = article.id.remove('article-');
-        title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-        article.url = '/angular/user/article/' + id + '/' + title;
-      }
-      return $scope.articles = articles;
+  angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
+    return using($scope, function() {
+      this.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(this.article.technology));
+      this.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(this.article.type));
+      return this.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(this.article.phase));
     });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Articles_Controller', function($scope, query_Service, $location, TM_API) {
+    $scope.$on('filter_data', function(event, data) {
+      var article, articles, i, id, len, title;
+      if (data != null ? data.results : void 0) {
+        articles = data.results.slice(0, 10);
+        for (i = 0, len = articles.length; i < len; i++) {
+          article = articles[i];
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+        }
+        return $scope.articles = articles;
+      }
+    });
+    return query_Service.load_Data();
   });
 
 }).call(this);
@@ -225,40 +239,100 @@
       this.breadcrumbs = [];
       this.refresh_Breadcrumbs = (function(_this) {
         return function() {
-          var i, len, path, query_Id, ref, results;
+          var i, item, key, len, path, ref, results, title;
           _this.breadcrumbs = [];
           path = '';
           ref = _this.current_Path.split('/');
           results = [];
           for (i = 0, len = ref.length; i < len; i++) {
-            query_Id = ref[i];
-            if (!(query_Id)) {
+            key = ref[i];
+            if (!(key)) {
               continue;
             }
+            item = _this.history[key];
+            title = item.title;
             _this.breadcrumbs.push({
-              query_Id: query_Id,
-              title: _this.history[query_Id],
-              path: path
+              query_Id: item.query_Id,
+              title: title,
+              filter_Title: item.filter_Title,
+              path: path,
+              filter_Id: item.filter_Id
             });
-            results.push(path += "/" + query_Id);
+            results.push(path += "/" + key);
           }
           return results;
         };
       })(this);
-      this.$on('query_data', (function(_this) {
-        return function(event, data) {
-          _this.current_Path += "/" + data.id;
-          _this.history[data.id] = data.title;
-          return _this.refresh_Breadcrumbs();
+      this.$on('filter_data', (function(_this) {
+        return function(event, data, filter_Id, filter_Title) {
+          if (data) {
+            if (filter_Id) {
+              _this.current_Path += "/" + data.id + filter_Id;
+              _this.history[data.id + filter_Id] = {
+                title: data.title,
+                filter_Title: filter_Title,
+                filter_Id: filter_Id,
+                query_Id: data.id
+              };
+            } else {
+              _this.current_Path += "/" + data.id;
+              _this.history[data.id] = {
+                title: data.title,
+                query_Id: data.id
+              };
+            }
+            return _this.refresh_Breadcrumbs();
+          }
         };
       })(this));
       return this.load_Query = (function(_this) {
         return function(breadcrumb) {
           _this.current_Path = breadcrumb.path;
-          return query_Service.load_Query(breadcrumb.query_Id);
+          console.log(breadcrumb);
+          if (breadcrumb.filter_Id) {
+            query_Service.filter_Id = '';
+            return query_Service.load_Filter(breadcrumb.query_Id, breadcrumb.filter_Id, breadcrumb.filter_Title);
+          } else {
+            return query_Service.load_Query(breadcrumb.query_Id);
+          }
         };
       })(this);
     });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, query_Service, icon_Service) {
+    var query_Id;
+    query_Id = null;
+    $scope.$on('filter_data', function(event, data) {
+      var filter, i, len, ref, result, results;
+      if (data.filters) {
+        query_Id = data.id;
+        $scope.filters = data.filters;
+        ref = $scope.filters;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter = ref[i];
+          results.push((function() {
+            var j, len1, ref1, results1;
+            ref1 = filter.results;
+            results1 = [];
+            for (j = 0, len1 = ref1.length; j < len1; j++) {
+              result = ref1[j];
+              results1.push(result.icon = $sce.trustAsHtml(icon_Service.element_Html(result.title)));
+            }
+            return results1;
+          })());
+        }
+        return results;
+      }
+    });
+    $scope.apply_Filter = function(filter_Id, filter_Title) {
+      return query_Service.load_Filter(query_Id, filter_Id, filter_Title);
+    };
+    return query_Service.load_Data();
   });
 
 }).call(this);
@@ -385,27 +459,29 @@
     };
     return $scope.$on('query_data', function(event, data) {
       var filter, i, len, ref, result, results;
-      $scope.technologies = [];
-      ref = data.filters;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        filter = ref[i];
-        if (filter.title === 'Technology') {
-          results.push((function() {
-            var j, len1, ref1, results1;
-            ref1 = filter.results;
-            results1 = [];
-            for (j = 0, len1 = ref1.length; j < len1; j++) {
-              result = ref1[j];
-              results1.push($scope.technologies.push(result.title));
-            }
-            return results1;
-          })());
-        } else {
-          results.push(void 0);
+      if (data.filters) {
+        $scope.technologies = [];
+        ref = data.filters;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter = ref[i];
+          if (filter.title === 'Technology') {
+            results.push((function() {
+              var j, len1, ref1, results1;
+              ref1 = filter.results;
+              results1 = [];
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                result = ref1[j];
+                results1.push($scope.technologies.push(result.title));
+              }
+              return results1;
+            })());
+          } else {
+            results.push(void 0);
+          }
         }
+        return results;
       }
-      return results;
     });
   });
 
@@ -454,7 +530,7 @@
 
   root_Components = ['alert_ok', 'alert_bad', 'pwd_forgot_form', 'login_form', 'sign_up_form'];
 
-  user_Components = ['queries', 'queries_breadcrumbs', 'articles', 'article_box'];
+  user_Components = ['queries', 'queries_breadcrumbs', 'articles', 'article_box', 'filters'];
 
   design_Components = ['all_icons'];
 
@@ -481,6 +557,8 @@
 }).call(this);
 
 (function() {
+  return;
+
   angular.module('TM_App').directive('filters', function($compile, Load_Jade, TM_API) {
     return {
       link: function($scope, element) {
@@ -513,9 +591,13 @@
   angular.module('TM_App').directive('icon', function(icon_Service) {
     return {
       template: function(element, attribute) {
-        var key;
-        key = attribute.type || 'Default';
-        return icon_Service.element_Html(key);
+        if (attribute["class"]) {
+          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
+        }
+        if (attribute.type) {
+          return icon_Service.element_Html(attribute.type);
+        }
+        return icon_Service.element_Html('Default');
       }
     };
   }).directive('showAllIcons', function(icon_Service) {
@@ -649,123 +731,12 @@
 (function() {
   var app;
 
-  return;
-
-  app = angular.module('TM_App');
-
-  app.service('User', function() {
-    var user;
-    user = {
-      name: '...',
-      logged_In: true
-    };
-    return user;
-  });
-
-  app.config(function($stateProvider, $urlRouterProvider) {
-    var NavBar_Controller, Navigate_Controller, View_Controller, i, len, resolve_Navbar, resolve_View, view_Name, view_Names;
-    $urlRouterProvider.otherwise('/index');
-    resolve_Navbar = function(Load_Jade, User) {
-      var file, name;
-      if (User.logged_In) {
-        name = 'logged_in';
-      } else {
-        name = 'anonymous';
-      }
-      file = "navbar/" + name;
-      return Load_Jade(file, name, function(method, resolve) {
-        return resolve(method());
-      });
-    };
-    resolve_View = function(page) {
-      return function(Load_Jade, User) {
-        return Load_Jade("views/" + page, page, function(method, resolve) {
-          return resolve('<span ng-bind-html="content_HTML"></span>');
-        });
-      };
-    };
-    View_Controller = function(page) {
-      return function($rootScope, $scope, User, $sce, $state, $stateParams, TM_API) {
-        var method_Name;
-        window.state = $state;
-        window.scope = $scope;
-        if (page === 'logout') {
-          User.logged_In = false;
-          return $state.go('index');
-        }
-        if (page === 'get_started') {
-          User.logged_In = true;
-          page = 'main';
-          return $state.go('navigate');
-        }
-        method_Name = "jade_" + page;
-        if (page === 'navigate') {
-          return Navigate_Controller($rootScope, $scope, $sce, $stateParams, TM_API);
-        } else {
-          if (window[method_Name]) {
-            return $scope.content_HTML = $sce.trustAsHtml(window[method_Name]());
-          }
-        }
-      };
-    };
-    Navigate_Controller = function($rootScope, $scope, $sce, $stateParams, TM_API) {
-      TM_API.query_tree($stateParams.query_Id, function(data) {
-        data.href = '#/navigate/';
-        return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
-      });
-      return $rootScope.$on('New_Results_Data', function(event, data) {
-        console.log('Received New_Results_Data');
-        return $scope.content_HTML = $sce.trustAsHtml(jade_navigate(data));
-      });
-    };
-    NavBar_Controller = function() {};
-    view_Names = ['about', 'docs', 'index', 'features', 'logout', 'main', 'navigate', 'error', 'blank'];
-    for (i = 0, len = view_Names.length; i < len; i++) {
-      view_Name = view_Names[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        views: {
-          'navbar': {
-            templateProvider: resolve_Navbar,
-            controller: NavBar_Controller
-          },
-          'content': {
-            templateProvider: resolve_View(view_Name),
-            controller: View_Controller(view_Name)
-          }
-        }
-      });
-    }
-    $stateProvider.state('/navigate/:query_Id', {
-      url: '/navigate/:query_Id',
-      views: {
-        'navbar': {
-          templateProvider: resolve_Navbar,
-          controller: NavBar_Controller
-        },
-        'content': {
-          templateProvider: resolve_View('navigate'),
-          controller: View_Controller('navigate')
-        }
-      }
-    });
-    return window.stateProvider = $stateProvider;
-  });
-
-  app.controller('Content_Controller', function($scope) {
-    return $scope.content = '...TEAM mentor is loading....';
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
   app = angular.module('TM_App');
 
   app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     var i, j, len, len1, root_Views, user_Views, view_Name;
     root_Views = ['navigate', 'main'];
+    user_Views = ['queries', 'articles'];
     for (i = 0, len = root_Views.length; i < len; i++) {
       view_Name = root_Views[i];
       $stateProvider.state(view_Name, {
@@ -773,7 +744,6 @@
         templateUrl: "/angular/jade-html/views/" + view_Name
       });
     }
-    user_Views = ['queries'];
     for (j = 0, len1 = user_Views.length; j < len1; j++) {
       view_Name = user_Views[j];
       $stateProvider.state(view_Name, {
@@ -800,7 +770,7 @@
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   mappings = {
-    '.Net': {
+    '.NET': {
       "class": 'icon-Net',
       layers: 12
     },
@@ -857,7 +827,7 @@
       layers: 12
     },
     'Deployment': {
-      "class": 'icon-Deployment',
+      "class": 'icon-Deploy',
       layers: 12
     },
     'Design': {
@@ -878,7 +848,7 @@
     },
     'Code Example': {
       "class": 'icon-CodeExample',
-      layers: 12
+      layers: 8
     },
     'Guideline': {
       "class": 'icon-Guideline',
@@ -902,12 +872,14 @@
     },
     'Default': {
       "class": 'icon-Default',
-      layers: 2
+      layers: 12
     }
   };
 
   Icon_Service = (function() {
     function Icon_Service() {
+      this.simple_Element_Html = bind(this.simple_Element_Html, this);
+      this.simple_Element = bind(this.simple_Element, this);
       this.element_Html = bind(this.element_Html, this);
       this.element = bind(this.element, this);
       this.mappings = mappings;
@@ -915,17 +887,11 @@
 
     Icon_Service.prototype.element = function(key) {
       var element, i, j, mapping, ref;
-      console.log('resolving html for icon: ' + key);
       mapping = this.mappings[key];
       if (!mapping) {
         mapping = this.mappings['Default'];
       }
-      console.log(mapping);
-      element = angular.element('<span>');
-      using(element[0], function() {
-        this.className = mapping["class"];
-        return this.title = key;
-      });
+      element = this.simple_Element(mapping["class"], key);
       for (i = j = 1, ref = mapping.layers; j <= ref; i = j += 1) {
         element.append("<span class='path" + i + "'>");
       }
@@ -942,30 +908,25 @@
       }
     };
 
+    Icon_Service.prototype.simple_Element = function(name, title) {
+      var element;
+      element = angular.element('<span>');
+      using(element[0], function() {
+        this.className = name;
+        if (title) {
+          return this.title = title;
+        }
+      });
+      return element;
+    };
+
+    Icon_Service.prototype.simple_Element_Html = function(name, title) {
+      return this.simple_Element(name, title)[0].outerHTML;
+    };
+
     return Icon_Service;
 
   })();
-
-
-  /*
-    icon_Data:  (type, key)->
-      switch type
-        when 'technology'
-          switch key
-            when '.NET', 'ASP.NET 3.5', 'ASP.NET 4.0'       then return { class: 'icon-Net'      , layers: 0 }
-            when '.NET 3.5'                                 then return { class: 'icon-Net-3-5'  , layers: 0 }
-            when 'Android'                                  then return { class: 'icon-Android'  , layers: 0 }
-            when 'C++'                                      then return { class: 'icon-C'        , layers: 0 }
-            when 'iOS'                                      then return { class: 'icon-iOS'      , layers: 0 }
-            when 'Java'                                     then return { class: 'icon-Java'     , layers: 0 }
-            when 'PHP'                                      then return { class: 'icon-PHP'      , layers: 0 }
-            when 'Scala Play', 'Scala with Play Framework'  then return { class: 'icon-Scala'    , layers: 0 }
-            when 'WCF' , 'WCF 3.5'                          then return { class: 'icon-WCF'      , layers: 0 }
-            when 'Web Application'                          then return { class: 'icon-Web-App'  , layers: 0 }
-            when 'HTML5'                                    then return { class: 'icon-HTML5'    , layers: 0 }
-             * else return 'Default'
-      return { class: 'icon-Default'   , layers: 0 }
-   */
 
   angular.module('TM_App').service('icon_Service', function() {
     return new Icon_Service();
@@ -1017,6 +978,7 @@
 
   Query_Service = (function() {
     function Query_Service(options) {
+      this.load_Filter = bind(this.load_Filter, this);
       this.load_Query = bind(this.load_Query, this);
       this.load_Data = bind(this.load_Data, this);
       this.options = options || {};
@@ -1024,6 +986,7 @@
       this.$rootScope = options.$rootScope;
       this.index_Query = 'query-6234f2d47eb7';
       this.data = null;
+      this.filter_Id = '';
     }
 
     Query_Service.prototype.load_Data = function() {
@@ -1038,7 +1001,21 @@
       return this.TM_API.query_tree(query_Id, (function(_this) {
         return function(data) {
           _this.data = data;
-          return _this.$rootScope.$broadcast('query_data', data);
+          _this.filter_Id = '';
+          _this.$rootScope.$broadcast('query_data', data);
+          return _this.$rootScope.$broadcast('filter_data', data);
+        };
+      })(this));
+    };
+
+    Query_Service.prototype.load_Filter = function(query_Id, filter_Id, filter_Title) {
+      this.filter_Id += (filter_Id + ',').replace(',,', ',');
+      console.log("[Query-Service] loading data for query: " + query_Id + " and filter " + this.filter_Id + "  with title " + filter_Title);
+      return this.TM_API.query_tree_filtered(query_Id, this.filter_Id, (function(_this) {
+        return function(data) {
+          _this.data = data;
+          _this.$rootScope.$broadcast('query_data', data);
+          return _this.$rootScope.$broadcast('filter_data', data, _this.filter_Id, filter_Title);
         };
       })(this));
     };
@@ -1048,8 +1025,6 @@
   })();
 
   app.service('query_Service', function($rootScope, TM_API) {
-    console.log($rootScope);
-    console.log('in Query_Service service');
     return new Query_Service({
       TM_API: TM_API,
       $rootScope: $rootScope
@@ -1114,9 +1089,10 @@
       _this.query_tree_filtered = function(id, filter, callback) {
         var url;
         if (cache_Query_Tree[id + filter]) {
-          return callback(cache_Query_Tree[id]);
+          return callback(cache_Query_Tree[id + filter]);
         }
         url = "/api/data/query_tree_filtered/" + id + "/" + filter;
+        console.log(url);
         return $http.get(url).success(function(data) {
           cache_Query_Tree[id + filter] = data;
           return callback(data);

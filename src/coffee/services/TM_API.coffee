@@ -28,7 +28,7 @@ app.service 'TM_API', ($q, $http, $timeout)=>
   @.query_tree_filtered =  (id, filter, callback)->
 
     if cache_Query_Tree[id+filter]
-      return callback cache_Query_Tree[id]
+      return callback cache_Query_Tree[id+filter]
 
     url     = "/api/data/query_tree_filtered/#{id}/#{filter}"
     $http.get url

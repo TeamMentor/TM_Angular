@@ -22,6 +22,13 @@ describe '| directive | icon', ->
         @.className.assert_Is 'icon-Java'
         @.title.assert_Is 'Java'
 
+  it '<icon class="Close"/>',->
+    inject ($compile,$rootScope)->
+      element  = $compile('<icon class="Close"/>')({})
+      $rootScope.$digest()
+      element.html().assert_Is '<span class="icon-Close"></span>'
+
+
 describe '| directive | all-icons', ->
   beforeEach ()->
     module('TM_App')
