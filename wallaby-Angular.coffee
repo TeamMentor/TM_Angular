@@ -11,6 +11,7 @@ module.exports = (wallaby)->
               'bower_components/chai/chai.js'
               'bower_components/sinonjs/sinon.js'
               'src/**/*.coffee'  ]                     # app source code
-    tests : [ 'test/**/*.coffee' ]
+    tests : [
+              'test/**/*.coffee' ]
 
   return config

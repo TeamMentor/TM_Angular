@@ -19,3 +19,8 @@ app.config ($stateProvider, $urlRouterProvider, $locationProvider) ->
     url        : "/article/:article_Id/:article_Title"
     controller : 'Article_Controller'
     templateUrl: '/angular/jade-html/views/article'
+
+  $stateProvider.state 'article-box'    ,
+      url        : "/article-box/:article_Id/:article_Title"
+      controller : 'Article_Controller'
+      templateUrl: '/angular/jade-html/views/user/article_box'
