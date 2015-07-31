@@ -3,7 +3,7 @@ app = angular.module('TM_App')
 app.config ($stateProvider, $urlRouterProvider, $locationProvider) ->
 
   root_Views = ['navigate', 'main']
-  user_Views = ['queries', 'articles']
+  user_Views = ['index', 'articles']
 
   for view_Name in root_Views
     $stateProvider.state view_Name    ,
