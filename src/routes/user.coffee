@@ -3,13 +3,13 @@ app = angular.module('TM_App')
 app.config ($stateProvider, routes_Names) ->
 
 
-  for view_Name in routes_Names.user_Root
+  for view_Name in routes_Names.views.user_Root
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/#{view_Name}"
 
 
-  for view_Name in routes_Names.user_User
+  for view_Name in routes_Names.views.user_User
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"

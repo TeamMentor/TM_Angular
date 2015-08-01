@@ -1,5 +1,6 @@
 app = angular.module('TM_App')
 
+#app.config ()->
 String::upper_Case_First_Letter = ()->
   @.charAt(0).toUpperCase() + @.substr(1)
 
@@ -15,13 +16,18 @@ map_Components =  (path, components)->
       app.directive resolve_Directive_Name(component),  ->
         {  templateUrl: "/angular/jade-html/component#{path}/#{component}" }
 
-root_Components   = [ 'alert_ok', 'alert_bad' , 'pwd_forgot_form', 'login_form','sign_up_form']
-user_Components   = [ 'queries', 'queries_breadcrumbs', 'articles', 'article_box', 'filters']
-design_Components = [ 'all_icons']
+design_Components     = [ 'all_icons']
+navigation_Components = [ 'landing_bar', 'left_navigation']
+user_Components       = [ 'article_box', 'articles', 'filters', 'queries_breadcrumbs', 'queries_history']
+root_Components       = [ 'alert_ok', 'alert_bad' , 'article', 'help_navigation', 'login_form', 'pwd_forgot_form', 'sign_up_form']
 
-map_Components ''       , root_Components
-map_Components '/user'  , user_Components
-map_Components '/design', design_Components
+
+
+map_Components ''             , root_Components
+map_Components '/design'      , design_Components
+map_Components '/navigation'  , navigation_Components
+map_Components '/user'        , user_Components
+
 
 
 

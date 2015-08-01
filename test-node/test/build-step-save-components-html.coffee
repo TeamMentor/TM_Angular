@@ -12,7 +12,7 @@ describe 'build-step-save-components-html', ->
 
   #$templateCache.put('/angular/jade-html/component/login_form', '12312312')
   before ->
-    target_File = process.env.localProjectDir.path_Combine('src/coffee/components.coffee')
+    target_File = process.env.localProjectDir.path_Combine('src/components.coffee')
 
   it 'check target file', ->
     target_File
@@ -25,10 +25,16 @@ describe 'build-step-save-components-html', ->
     file_Contents = default_Content
     jade_Components = new Jade_Components()
 
+    throw_On_Error =  (name, html)->
+      if html.size() is 40
+        console.log "Error with component: #{name}"
+        html.assert_Is_Not 'Moved Temporarily. Redirecting to /error'
+
     process_Components = (callback)->
       file_Contents += " \n\n   # ------Components---\n\n"
       save_Component = (name, next)->
         jade_Components.component_Html name, (html, $)->
+          throw_On_Error name, html
           html = html.replace(/"/g, "\\\"")
                      .replace(/{/g, "\\{")
           file_Contents += "   $templateCache.put('/angular/jade-html/component/#{name}' , \"#{html}\") \n \n"
@@ -40,6 +46,7 @@ describe 'build-step-save-components-html', ->
       file_Contents += " \n\n   # ------Views--------\n\n"
       save_View = (name, next)->
         jade_Components.view_Html name, (html, $)->
+          throw_On_Error name, html
           html = html.replace(/"/g, "\\\"")
                      .replace(/{/g, "\\{")
           file_Contents += "   $templateCache.put('/angular/jade-html/views/#{name}' , \"#{html}\") \n \n"
