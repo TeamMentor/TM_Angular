@@ -1,3 +1,5 @@
+expect = chai.expect
+
 describe '| directive | icon', ->
   beforeEach ()->
     module('TM_App')
@@ -9,8 +11,6 @@ describe '| directive | icon', ->
       element_Raw = angular.element('<icon/>')
       element     = $compile(element_Raw)(scope)[0]
       scope.$digest()
-      console.log element_Raw.html()
-      console.log element_Raw
       using element_Raw.find('span')[0], ->
         @.className.assert_Is 'icon-Default'
 
@@ -36,13 +36,11 @@ describe '| directive | all-icons', ->
   it '<show-all-icons/>',->
     inject ($compile,$rootScope)->
       element  = $compile('<show-all-icons/>')({})
-      console.log element.html()
       $rootScope.$digest()
-      expect(element.find('span').length > 60).toEqual(true)
+      expect(element.find('span').length).to.be.above 60
 
   it '<show-all-icons/>',->
     inject ($compile,$rootScope)->
       element  = $compile('<show-all-icons with-titles />')({})
-      console.log element.html()
       $rootScope.$digest()
-      expect(element.find('span').length > 60).toEqual(true)
+      expect(element.find('span').length).to.be.above 60

@@ -1,17 +1,15 @@
 app = angular.module('TM_App')
 
-app.config ($stateProvider, $urlRouterProvider, $locationProvider) ->
+app.config ($stateProvider, routes_Names) ->
 
-  root_Views = ['navigate', 'main']
-  user_Views = ['index', 'articles']
 
-  for view_Name in root_Views
+  for view_Name in routes_Names.user_Root
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/#{view_Name}"
 
 
-  for view_Name in user_Views
+  for view_Name in routes_Names.user_User
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"

@@ -1,9 +1,9 @@
 app = angular.module('TM_App')
 
-app.config ($stateProvider, $urlRouterProvider, $locationProvider) ->
+app.service 'ui_Routes',  ()->
 
-  view_Names = ['about', 'blank', 'docs', 'features', 'pwd_forgot', 'home', 'login', 'sign_up' ]
-  for view_Name in view_Names
+app.config ($stateProvider, routes_Names) ->
+  for view_Name in routes_Names.guest
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/#{view_Name}"
