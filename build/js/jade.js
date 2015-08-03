@@ -1732,7 +1732,7 @@ buf.push("</a></li><li><a id=\"terms-and-conditions\" href=\"../misc/terms-and-c
 jade_mixins["paperclip-icon"]();
 buf.push("</a></li></ul></div></footer>");
 };
-buf.push("<!--.application--><main><!-- Application Icons-->");
+buf.push("<main><!-- Application Icons-->");
 
 
 
@@ -2071,9 +2071,866 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<section class=\"row\"><div class=\"col-2\"></div><div class=\"col-8\"><section class=\"row__article\"><h1>{{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul>");
+jade_mixins["tm-support-email"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.com\">support@securityinnovation.com</a>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["mail-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Mail\" class=\"icon-Mail\"></span>");
+};
+jade_mixins["twitter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Twitter\" class=\"icon-Twitter\"></span>");
+};
+jade_mixins["paperclip-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span>");
+};
+jade_mixins["php-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"PHP\" class=\"icon-PHP\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["scala-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Scala\" class=\"icon-Scala\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["vulnerabilities-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Vulnerabilities\" class=\"icon-Vulnerabilities\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["wcf-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"WCF\" class=\"icon-WCF\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["web-app-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Web Application\" class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
+};
+jade_mixins["net-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\".Net\" class=\"icon-Net\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["net-3-5-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\".Net\" class=\"icon-Net-3-5\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["ios-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"iOS\" class=\"icon-iOS\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
+jade_mixins["java-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Java\" class=\"icon-Java\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+jade_mixins["android-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Android\" class=\"icon-Android\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span></span>");
+};
+jade_mixins["c-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"C++\" class=\"icon-C\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["checklist-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Checklist\" class=\"icon-Checklist\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span></span>");
+};
+jade_mixins["code-example-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Code Example\" class=\"icon-CodeExample\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span></span>");
+};
+jade_mixins["guideline-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Guideline\" class=\"icon-Guideline\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["principle-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Principle\" class=\"icon-Principle\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["how-to-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"How To\" class=\"icon-HowTo\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["html5-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"HTML5\" class=\"icon-HTML5\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["deploy-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Deployment\" class=\"icon-Deploy\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["design-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Design\" class=\"icon-Design\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span></span>");
+};
+jade_mixins["implement-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Implementation\" class=\"icon-Implementation\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
+jade_mixins["test-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Test\" class=\"icon-Test\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["default-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buf.push("<!-- Application Icons-->");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["twitter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Twitter\"></span>");
+};
+
+
+
+
+buf.push("<!-- Filter Icons-->");
+
+
+
+
+jade_mixins["android-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Android\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span></span>");
+};
+jade_mixins["scala-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Scala\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["test-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Test\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["vulnerabilities-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Vulnerabilities\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["wcf-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-WCF\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["web-app-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
+};
+buf.push("<!-- filter icons-->");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["mail-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Mail\" class=\"icon-Mail\"></span>");
+};
+jade_mixins["twitter-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Twitter\" class=\"icon-Twitter\"></span>");
+};
+jade_mixins["paperclip-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span>");
+};
+jade_mixins["php-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"PHP\" class=\"icon-PHP\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["scala-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Scala\" class=\"icon-Scala\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["vulnerabilities-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Vulnerabilities\" class=\"icon-Vulnerabilities\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["wcf-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"WCF\" class=\"icon-WCF\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["web-app-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Web Application\" class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
+};
+jade_mixins["net-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\".Net\" class=\"icon-Net\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["net-3-5-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\".Net\" class=\"icon-Net-3-5\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["ios-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"iOS\" class=\"icon-iOS\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
+jade_mixins["java-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Java\" class=\"icon-Java\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+jade_mixins["android-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Android\" class=\"icon-Android\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span></span>");
+};
+jade_mixins["c-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"C++\" class=\"icon-C\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["checklist-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Checklist\" class=\"icon-Checklist\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span></span>");
+};
+jade_mixins["code-example-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Code Example\" class=\"icon-CodeExample\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span></span>");
+};
+jade_mixins["guideline-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Guideline\" class=\"icon-Guideline\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["principle-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Principle\" class=\"icon-Principle\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["how-to-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"How To\" class=\"icon-HowTo\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["html5-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"HTML5\" class=\"icon-HTML5\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["deploy-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Deployment\" class=\"icon-Deploy\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+jade_mixins["design-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Design\" class=\"icon-Design\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span></span>");
+};
+jade_mixins["implement-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Implementation\" class=\"icon-Implementation\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
+jade_mixins["test-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Test\" class=\"icon-Test\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+jade_mixins["default-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buf.push("<!-- Getting Started-->");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buf.push("<!-- User Inputs-->");
+
+
+
+
+
+
+
+
+
+
+
+
+var head_title = 'TEAM Mentor 4.0'
+jade_mixins["copyright"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<footer><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\">");
+jade_mixins["mail-icon"]();
+buf.push("</a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\">");
+jade_mixins["twitter-icon"]();
+buf.push("</a></li><li><a id=\"terms-and-conditions\" href=\"../misc/terms-and-conditions\" title=\"Terms and Conditions\">");
+jade_mixins["paperclip-icon"]();
+buf.push("</a></li></ul></div></footer>");
+};
+buf.push("<div class=\"col-9\"><article><h1>{{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></article></div><div class=\"col-3\"><section class=\"article-info\"><section class=\"row__label\"><div class=\"label\">Relates to:</div></section><section class=\"row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></section></section>");
 jade_mixins["copyright"]();
-buf.push("</section></div><div class=\"col-2\"></div></section></main>");;return buf.join("");
+buf.push("</div></main>");;return buf.join("");
 }
 
 function jade_article_editor(locals) {
@@ -4002,7 +4859,7 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"application-logo\"></div></li></ul><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><main>");
 jade_mixins["article-editor"]();
@@ -5935,7 +6792,7 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"application-logo\"></div></li></ul><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><main>");
 jade_mixins["curated-content-article"]();
@@ -8792,7 +9649,7 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"application-logo\"></div></li></ul><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><main>");
 jade_mixins["curated-content-article"]();
@@ -16257,7 +17114,7 @@ jade_mixins["default-icon"]();
 }
 buf.push("</span>");
 };
-buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option><!--  option(value=\".Net\")= \"Net.....\"--><!--  option(value=\"Java\")= \"abc\"--><!--  option(value=\"php\")= \"php\"--></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+buf.push("<div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"application-logo\"></div></li></ul><select><option ng-repeat=\"technology in technologies\" value=\"{{technology}}\">{{technology}}</option></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
 jade_mixins["search-icon"]();
 buf.push("</button></form></div><div class=\"application\"><main><section class=\"row__label\"><div id=\"resultsTitle\" class=\"label no-underline\"># results showing</div></section><!--if resultssection.row__label\n  if results.size() > 25\n    .label.no-underline#resultsTitle= results.take(25).size() + '/' + results.size() + ' results showing'\n  else\n    .label.no-underline#resultsTitle= results.take(25).size() + ' results showing'\n  ul.display-inline\n    li\n      //a.button.btn-result.icon-Filter(href='#right-nav') aaaaaaa\n      a.button.btn-result.icon-Filter(href='')\n    //li\n      +save-results-button\n    //li\n      +share-results-button--><section class=\"row\"><span id=\"result_article\">");
 if ( results)

@@ -11,7 +11,7 @@ describe '| API | Jade-Components |', ->
   expected_Components = ['alert_bad', 'alert_ok', 'article', 'help_navigation',
                         'login_form', 'navigate_results', 'pagination', 'pwd_forgot_form',
                          'pwd_reset_form', 'result_article', 'result_saved_article','result_saved_search_term',
-                         'result_search_term', 'results_delete_share','results_save_share','search_bar',
+                         'result_search_term', 'results_delete_share','results_save_share',
                          'search_result','sign_up_form', 'start_view', 'team_mentor_summary', 'user_panel'
                           #design
                          'design/all_icons'
@@ -19,7 +19,7 @@ describe '| API | Jade-Components |', ->
                          'navigation/landing_bar'
                          'navigation/left_navigation'
                           #user
-                         'user/article_box','user/articles','user/filters','user/index', 'user/queries_breadcrumbs','user/queries_history']
+                         'user/article_box','user/articles','user/filters','user/index', 'user/queries_breadcrumbs','user/queries_history', 'user/search_bar']
 
   expected_Views      = ['alert_application', 'article', 'blank',
                          'curated_content', 'curated_content_article', 'docs','error',
