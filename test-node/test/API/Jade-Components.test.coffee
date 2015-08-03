@@ -21,14 +21,14 @@ describe '| API | Jade-Components |', ->
                           #user
                          'user/article_box','user/articles','user/filters','user/index', 'user/queries_breadcrumbs','user/queries_history', 'user/search_bar']
 
-  expected_Views      = ['alert_application', 'article', 'blank',
-                         'curated_content', 'curated_content_article', 'docs','error',
+  expected_Views      = ['alert_application', 'article', 'blank', 'docs'
+                         'curated_content', 'curated_content_article','error',
                          'new_user_onboard' ,'pwd_forgot' ,'pwd_reset' ,'pwd_sent' ,
                          'search' ,'terms_and_conditions', 'user',
                          # guest
                          'guest/about','guest/features','guest/home','guest/login', 'guest/sign_up',
                          # user
-                         'user/article_box', 'user/articles', 'user/index', 'user/main', 'user/navigate']
+                         'user/article_box', 'user/index', 'user/main', 'user/navigate']
 
 
   it 'constructor', ->
