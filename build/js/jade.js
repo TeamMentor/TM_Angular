@@ -2928,7 +2928,7 @@ buf.push("</a></li><li><a id=\"terms-and-conditions\" href=\"../misc/terms-and-c
 jade_mixins["paperclip-icon"]();
 buf.push("</a></li></ul></div></footer>");
 };
-buf.push("<div class=\"col-9\"><article><h1>{{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></article></div><div class=\"col-3\"><section class=\"article-info\"><section class=\"row__label\"><div class=\"label\">Relates to:</div></section><section class=\"row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></section></section>");
+buf.push("<div class=\"col-9\"><div class=\"article\"><h1>{{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></div></div><div class=\"col-3\"><section class=\"article-info\"><section class=\"row__label\"><div class=\"label\">Relates to:</div></section><section class=\"row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></section></section>");
 jade_mixins["copyright"]();
 buf.push("</div></main>");;return buf.join("");
 }
@@ -9661,7 +9661,7 @@ var buf = [];
 var jade_mixins = {};
 var jade_interp;
 
-buf.push("<main ng-controller=\"Help_Controller\" class=\"help\"><section class=\"row\"><div class=\"col-3\"><help-navigation></help-navigation></div><div class=\"col-9\"><article><div id=\"help\"><h1 id=\"help-title\">{{title}}</h1><help-content ng-bind-html=\"content\"></help-content></div></article></div></section></main>");;return buf.join("");
+buf.push("<main ng-controller=\"Help_Controller\" class=\"help\"><section class=\"row\"><div class=\"col-3\"><help-navigation></help-navigation></div><div class=\"col-9\"><!--article--><div id=\"help\" class=\"article\"><h1 id=\"help-title\">{{title}}</h1><help-content ng-bind-html=\"content\"></help-content></div></div></section></main>");;return buf.join("");
 }
 
 function jade_error(locals) {
