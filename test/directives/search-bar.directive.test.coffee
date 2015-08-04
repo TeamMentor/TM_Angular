@@ -43,4 +43,16 @@ describe '| directive | search-bar', ->
       $$(options[1]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"tech 1","query_Id":"id_1"}', class : 'ng-binding ng-scope' }
       $$(options[2]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"tech 2","query_Id":"id_2"}', class : 'ng-binding ng-scope' }
 
+  it 'Check selected option',->
+    inject ($$, $httpBackend)->
+      $httpBackend.flush()
+      scope.$digest()
+      console.log scope.technologies
+      console.log scope.technology
+
+      options = element_Raw.find('option')
+      options[0].selected = true
+      console.log $$(options[0])
+      scope.$digest()
+      console.log scope.technology
 

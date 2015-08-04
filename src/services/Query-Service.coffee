@@ -15,12 +15,16 @@ class Query_Service
       @.load_Query @.index_Query
 
   load_Query: (query_Id)=>
-    console.log "[Query-Service] loading data for query: #{query_Id}"
-    @.TM_API.query_tree query_Id, (data)=>
-      @.data = data
-      @.filter_Id = ''
-      @.$rootScope.$broadcast 'query_data', data
-      @.$rootScope.$broadcast 'filter_data', data
+    if not query_Id
+      @.$rootScope.$broadcast 'query_data', {}
+      @.$rootScope.$broadcast 'filter_data', {}
+    else
+      console.log "[Query-Service] loading data for query: #{query_Id}"
+      @.TM_API.query_tree query_Id, (data)=>
+        @.data = data
+        @.filter_Id = ''
+        @.$rootScope.$broadcast 'query_data', data
+        @.$rootScope.$broadcast 'filter_data', data
 
   load_Filter: (query_Id, filter_Id, filter_Title)=>
     @.filter_Id += (filter_Id + ',').replace(',,',',')
