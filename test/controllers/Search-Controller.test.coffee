@@ -1,3 +1,5 @@
+# TO BE DELETED (replaced by Search-Bar-Controller.test)
+
 expect = chai.expect;
 
 describe '| controllers | Search-Controller.test',->
@@ -6,11 +8,11 @@ describe '| controllers | Search-Controller.test',->
   beforeEach ->
     module('TM_App')
     inject ($controller, $rootScope)->
+
       scope = $rootScope.$new()
       $controller('Search_Controller', { $scope: scope })
 
   it 'constructor', ()->
-
       expect(scope.map_Search_Queries).to.be.an('function')
       expect(scope.submit            ).to.be.an('function')
       expect(scope.$$listeners['query_data'][0]).to.be.an('function')

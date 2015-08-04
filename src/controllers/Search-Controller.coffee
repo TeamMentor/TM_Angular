@@ -1,3 +1,5 @@
+# TO BE DELETED (replaced by Search-Bar-Controller)
+
 app = angular.module('TM_App')
 
 app.controller 'Search_Controller', ($rootScope, $scope, TM_API)->

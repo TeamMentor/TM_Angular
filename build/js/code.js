@@ -39,7 +39,7 @@
     $templateCache.put('/angular/jade-html/component/user/index', "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Queries_Controller\"><dl><dt><span class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon --></span></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><!--if container.size > 0--><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>");
     $templateCache.put('/angular/jade-html/component/user/queries_breadcrumbs', "<div ng-controller=\"Breadcrumbs_Controller\"><dl class=\"breadcrumbs\"><dd ng-repeat=\"breadcrumb in breadcrumbs\" class=\"active\"><a ng-href=\"#\" ng-click=\"load_Query(breadcrumb)\">\{\{breadcrumb.title}}</a></dd></dl></div>");
     $templateCache.put('/angular/jade-html/component/user/queries_history', "<div ng-controller=\"Queries_History_Controller\"><nav><ul class=\"display-inline\"><li ng-repeat=\"(key, value) in history\"><a ng-href=\"#\" ng-click=\"load_Query(key)\">\{\{value}}</a></li></ul></nav></div>");
-    $templateCache.put('/angular/jade-html/component/user/search_bar', "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Search_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select><option ng-repeat=\"technology in technologies\" value=\"\{\{technology}}\">\{\{technology}}</option></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"/><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span></button></form></div>");
+    $templateCache.put('/angular/jade-html/component/user/search_bar', "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select><option ng-repeat=\"technology in technologies\" value=\"\{\{technology}}\">\{\{technology}}</option></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"/><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span></button></form></div>");
     $templateCache.put('/angular/jade-html/component/user_panel', "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><section class=\"row__label\"><div class=\"label\">@username</div></section><section class=\"row\"><form><input type=\"text\" name=\"name\" value=\"First name, Last name\"/><input type=\"text\" name=\"work\" value=\"Position, Company\"/><input type=\"email\" name=\"email\" value=\"Email\"/><button type=\"submit\"><span class=\"icon-Tick\"></span></button></form></section>");
     $templateCache.put('/angular/jade-html/views/alert_application', "<!--extends ../_to_be_wired_in/_layouts/page_logged_in--><!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><!-- Getting Started--><!-- User Inputs--><div class=\"application\"><main><div class=\"alert alert-ok\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Hi</span></div></main></div>");
     $templateCache.put('/angular/jade-html/views/article', "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><!-- Getting Started--><!-- User Inputs--><main><!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><!-- Getting Started--><!-- User Inputs--><div class=\"col-9\"><article><h1>\{\{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></article></div><div class=\"col-3\"><section class=\"article-info\"><section class=\"row__label\"><div class=\"label\">Relates to:</div></section><section class=\"row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></section></section><footer><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" href=\"../misc/terms-and-conditions\" title=\"Terms and Conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></footer></div></main>");
@@ -205,6 +205,17 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
+    return using($scope, function() {
+      this.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(this.article.technology));
+      this.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(this.article.type));
+      return this.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(this.article.phase));
+    });
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
     return TM_API.article($stateParams.article_Id, function(article) {
       var id, title;
@@ -216,17 +227,6 @@
       $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
       $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
       return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-    });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    return using($scope, function() {
-      this.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(this.article.technology));
-      this.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(this.article.type));
-      return this.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(this.article.phase));
     });
   });
 
@@ -447,6 +447,44 @@
     $scope.load_Query = function(query_Id) {
       return query_Service.load_Query(query_Id);
     };
+    return query_Service.load_Data();
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Search_Bar_Controller', function($rootScope, $scope, query_Service) {
+    $scope.$on('query_data', function(event, data) {
+      var filter, i, len, ref, result, results;
+      if (data.filters) {
+        $scope.technologies = [
+          {
+            title: 'All',
+            query_Id: null
+          }
+        ];
+        ref = data.filters;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter = ref[i];
+          if (filter.title === 'Technology' && filter.results) {
+            results.push((function() {
+              var j, len1, ref1, results1;
+              ref1 = filter.results;
+              results1 = [];
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                result = ref1[j];
+                results1.push($scope.technologies.push(result));
+              }
+              return results1;
+            })());
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
+    });
     return query_Service.load_Data();
   });
 
