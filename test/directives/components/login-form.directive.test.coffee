@@ -23,7 +23,7 @@ describe '| directive | login-form', ->
         @('#username'  ).$attr().assert_Is  type: 'text'    , id: 'username'  , class: 'ng-pristine ng-untouched ng-invalid ng-invalid-required'                   , placeholder: 'Username', "ng-model": 'username', required: 'required'
         @('#password'  ).$attr().assert_Is  type: 'password', id: 'password'  , class: 'ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-maxlength', placeholder: 'Password', "ng-model": 'password', required: 'required', maxlength: '256'
         @('#btn-login' ).$attr().assert_Is  type: 'submit'  , id: 'btn-login'
-        @('#pwd_forgot').$attr().assert_Is                    id: 'pwd_forgot', class: 'button btn-minor'                                                          , href: 'pwd_forgot'
+        @('#pwd_forgot').$attr().assert_Is                    id: 'pwd_forgot', class: 'text-right'                                                                , href: 'pwd_forgot'
 
         @('#btn-login' ).innerHTML.assert_Is 'Login'
         @('#pwd_forgot').innerHTML.assert_Is 'Get Password'

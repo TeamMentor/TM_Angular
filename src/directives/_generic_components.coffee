@@ -18,7 +18,7 @@ map_Components =  (path, components)->
 
 design_Components     = [ 'all_icons']
 navigation_Components = [ 'landing_bar', 'left_navigation']
-user_Components       = [ 'article_box', 'articles', 'filters', 'queries', 'queries_breadcrumbs', 'queries_history', 'search_bar']
+user_Components       = [ 'article_box', 'articles', 'filters', 'queries', 'breadcrumbs', 'queries_history', 'results', 'search_bar']
 root_Components       = [ 'alert_ok', 'alert_bad' , 'article', 'help_navigation', 'login_form', 'pwd_forgot_form', 'sign_up_form']
 
 

@@ -10,10 +10,10 @@ module.exports = (wallaby)->
               'bower_components/angular-ui-router/release/angular-ui-router.min.js'
               'bower_components/chai/chai.js'
               'bower_components/sinonjs/sinon.js'
-              'src/**/*.coffee'  ]                     # app source code
+              'src/**/*.coffee'  ]
     tests : [
               'test/**/*.coffee' ]
 
-    testFramework: 'mocha'
+    #testFramework: 'mocha'
 
   return config

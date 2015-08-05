@@ -15,23 +15,21 @@ describe '| directive | |views | index', ->
       $httpBackend.whenGET url_Query_Tree
                   .respond ()-> [200, { }]
 
-  it 'ui-route', ->
+  it 'Confirm that expected directives are inserted in page', ->
     inject ($$, $compile, $rootScope, $state, $httpBackend)->
-      elem  = angular.element('<div>');
+      elem  = angular.element('<div>')
       scope = $rootScope.$new();
       elem.append $compile('<ui-view/>')(scope)
 
-      #console.log elem.find('div')
-      #console.log elem[0].outerHTML
       $state.go('index')
       $httpBackend.flush()
-      #$rootScope.$digest()
 
       using $$(elem[0]).$query,->
-        @('main'       ).$attr().assert_Is { class: 'ng-scope' }
-        @('section'    ).$attr().assert_Is { class: 'row' }
-        console.log @('queries')
-      console.log elem[0].outerHTML
-
-      console.log elem.find('main')[0].outerHTML
+        @('div'       ).$attr().assert_Is { class: 'ng-scope' , 'ng-controller': 'Index_Controller'}
+        @('section'   ).$attr().assert_Is { class: 'row' }
+        @('main'      ).$attr().assert_Is {}
+        @('queries'   ).$attr().assert_Is {}
+        @('articles'  ).$attr().assert_Is {}
+        @('filters'   ).$attr().assert_Is {}
+        #@('queries_breadcrumbs').$attr().assert_Is {}
 
