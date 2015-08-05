@@ -14,7 +14,7 @@ describe '| controllers | Filters-Controller.test',->
     expect(scope.$$listeners['filter_data' ][0]).to.be.an('function')
     expect(scope.$$listeners['view_Filters'][0]).to.be.an('function')
 
-  it 'check view_Filters broadcast',->
+  it 'check receive of view_Filters event',->
     inject ($rootScope)->
       expect(scope.view_Filters).to.be.undefined
       $rootScope.$broadcast 'view_Filters', true
@@ -22,3 +22,9 @@ describe '| controllers | Filters-Controller.test',->
       $rootScope.$broadcast 'view_Filters', false
       expect(scope.view_Filters).to.be.false
 
+  it 'check emit of apply_Filter event',->
+    scope.$on 'apply_Filter', (event, filter_Id, filter_Title)->
+      filter_Id.assert_Is 'filter_Id value'
+      filter_Title.assert_Is 'filter_Title value'
+
+    scope.apply_Filter('filter_Id value', 'filter_Title value')

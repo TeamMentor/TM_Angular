@@ -28,5 +28,7 @@ describe '| directive | component | index', ->
                             'ng-click': 'toggle_Filters()'
                             class     : 'button btn-result icon-Filter'
 
-
-        #console.log @('div').$attr()
+        @('#filters').$attr().assert_Is id: 'filters'
+      using $$(element).$query_All,->
+        @('#filters td').length.assert_Is 2
+        console.log @('#filters td')

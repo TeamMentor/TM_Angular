@@ -14,11 +14,14 @@ describe '| routes | user.routes' , ->
         check_routes @.user_User
 
 
-  xit 'check routes (templateUrl)', ->
-    inject ($rootScope, $state,routes_Names) ->
+  it 'check routes (templateUrl)', ->
+    inject ($rootScope, $state,routes_Names, $httpBackend) ->
+      $httpBackend.expectGET('/angular/jade-html/views/guest/blank'     ).respond ''
+      $httpBackend.expectGET('/angular/jade-html/views/guest/pwd_forgot').respond ''
+
       for route in routes_Names.views.guest
-        console.log '-------------'
-        console.log 'route name: ' + route
+        #console.log '-------------'
+        #console.log 'route name: ' + route
         $state.go(route)
         $rootScope.$digest()
-        console.log $state.current.templateUrl
+        #console.log $state.current.templateUrl

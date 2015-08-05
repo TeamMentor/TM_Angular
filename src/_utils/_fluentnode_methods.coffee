@@ -64,11 +64,9 @@ Number::assert_Is          = (target, message)->      # slight modified from flu
   @
 
 Boolean::assert_Is_False = ->
-  console.log @.valueOf()
   expect(@.valueOf()).to.equal(false)
   return false
 
 Boolean::assert_Is_True = ->
-  console.log @.valueOf()
   expect(@.valueOf()).to.equal(true)
   return true

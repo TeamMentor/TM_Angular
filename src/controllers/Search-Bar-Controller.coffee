@@ -1,6 +1,10 @@
 angular.module('TM_App')
        .controller 'Search_Bar_Controller', ($rootScope, $scope, $state, query_Service, TM_API)->
           $scope.query_Id = null
+
+          $scope.$on 'clear_Search', ()->
+            $scope.text = ''
+
           $scope.$on 'query_data', (event, data)->
             $scope.query_Id = data.id
             if not $scope.selected_Technology
@@ -13,19 +17,20 @@ angular.module('TM_App')
 
                 $scope.selected_Technology = $scope.technologies[0]
 
-          $scope.select_Technology = (option)->
-            console.log "selecting technology: #{option.id} : #{option.title} for query-id: #{$scope.query_Id}"
-            query_Service.filter_Id = ''
-            query_Service.load_Filter($scope.query_Id, option.id)
+          $scope.select_Technology = ()->
+            #console.log "selecting technology: #{option.id} : #{option.title} for query-id: #{$scope.query_Id}"
+
+            $rootScope.$broadcast 'clear_Filters'
+            $rootScope.$broadcast 'apply_Filter', $scope.selected_Technology.id, $scope.selected_Technology.title
 
           $scope.submit = ()->
             $state.go('index')
-            TM_API.query_from_text_search $scope.text, (query_id)->
-              if $scope.selected_Technology.title isnt 'All'
-                query_Service.filter_Id = ''
-                query_Service.load_Filter(query_id, $scope.selected_Technology.id)
-              else
-                query_Service.load_Query(query_id)
+            $rootScope.$broadcast 'clear_Query'
+            if $scope.text is ''
+              $rootScope.$broadcast 'apply_Query', query_Service.index_Query
+            else
+              TM_API.query_from_text_search $scope.text, (query_id)->
+                $rootScope.$broadcast 'apply_Query', query_id
 
 
           query_Service.load_Data()

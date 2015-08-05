@@ -46,12 +46,13 @@ describe '| directive | search-bar', ->
     inject ($$, $httpBackend)->
       $httpBackend.flush()
       scope.$digest()
-      console.log scope.technologies
-      console.log scope.technology
+
+      #console.log scope.technologies
+      #console.log scope.technology
 
       options = element_Raw.find('option')
       options[0].selected = true
-      console.log $$(options[0])
+      #console.log $$(options[0])
       scope.$digest()
-      console.log scope.technology
+      #console.log scope.technology
 

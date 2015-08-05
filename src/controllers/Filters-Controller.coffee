@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'Filters_Controller', ($sce, $scope, query_Service,icon_Service)->
+       .controller 'Filters_Controller', ($sce, $scope, $rootScope, query_Service,icon_Service)->
           query_Id = null
 
           $scope.$on 'filter_data', (event, data)->
@@ -16,10 +16,10 @@ angular.module('TM_App')
             $scope.view_Filters = data
 
           $scope.apply_Filter = (filter_Id,filter_Title)->
-            query_Service.load_Filter query_Id, filter_Id, filter_Title
+            $rootScope.$broadcast 'apply_Filter', filter_Id,filter_Title
+            #query_Service.load_Filter query_Id, filter_Id, filter_Title
 
           query_Service.load_Data()
 
-          #$scope.view_Filters = true
 
 

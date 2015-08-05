@@ -15,5 +15,8 @@ app.service '$$', ()->
               if not element.$query
                 element.$query = (selector)->
                   $$(element.querySelector(selector))
+                element.$query_All = (selector)->
+                  $$(element.querySelectorAll(selector))
+
             return element
     return $$

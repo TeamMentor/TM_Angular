@@ -2,7 +2,7 @@ window.using = (target,callback)->
   callback.apply(target)
 
 angular.module 'TM_App'
-       .controller 'Breadcrumbs_Controller', ($scope, query_Service)->
+       .controller 'Breadcrumbs_Controller', ($scope, $rootScope)->
           using $scope, ->
             @.history      = {}
             @.current_Path = ''
@@ -23,33 +23,26 @@ angular.module 'TM_App'
                                    }
                 path += "/#{key}"
 
-            #@.$on 'query_data', (event, data)=>
-            #  @.current_Path += "/#{data.id}"
-            #  @.history[data.id] = data.title
-            #  @.refresh_Breadcrumbs()
+            @.$on 'clear_Query', (event, data)=>
+              @.current_Path = ''
+              @.breadcrumbs  = []
 
-            @.$on 'filter_data', (event, data, filter_Id, filter_Title)=>
+            @.$on 'query_data', (event, data)=>
               if data
-                if filter_Id
-                  @.current_Path += "/#{data.id}#{filter_Id}"
-                  @.history[data.id+filter_Id] =
-                      title       : data.title
-                      filter_Title: filter_Title
-                      filter_Id   : filter_Id
-                      query_Id    : data.id
-                else
+                if @.current_Path.indexOf(data.id) is -1
                   @.current_Path += "/#{data.id}"
                   @.history[data.id] =
                       title     : data.title
                       query_Id  : data.id
 
-                @.refresh_Breadcrumbs()
+                  @.refresh_Breadcrumbs()
 
             @.load_Query = (breadcrumb)=>
               @.current_Path = breadcrumb.path
               console.log breadcrumb
-              if  breadcrumb.filter_Id
-                query_Service.filter_Id = ''
-                query_Service.load_Filter breadcrumb.query_Id, breadcrumb.filter_Id, breadcrumb.filter_Title
-              else
-                query_Service.load_Query breadcrumb.query_Id
+              #if  breadcrumb.filter_Id
+              #  query_Service.filter_Id = ''
+              #  query_Service.load_Filter breadcrumb.query_Id, breadcrumb.filter_Id, breadcrumb.filter_Title
+              #else
+              $rootScope.$broadcast 'apply_Query', breadcrumb.query_Id
+              #query_Service.load_Query breadcrumb.query_Id

@@ -27,6 +27,15 @@ describe '| controllers | Results-Controller.test',->
       data.assert_Is_True()
     scope.toggle_Filters()
 
+  it 'Check that apply_Filter and clear_Filters broadcasts are correctly received',  ->
+    scope.$broadcast 'clear_Filters'
+    scope.current_Filters.assert_Is {}
+
+    scope.$broadcast 'apply_Filter', 'id', 'title'
+    scope.current_Filters['id'].assert_Is 'title'
+
+    scope.$broadcast 'clear_Filters'
+    scope.current_Filters.assert_Is {}
 
 
 
