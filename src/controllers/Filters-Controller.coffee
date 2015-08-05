@@ -11,8 +11,15 @@ angular.module('TM_App')
                   result.icon = $sce.trustAsHtml icon_Service.element_Html result.title
             else
               $scope.filters = []
+
+          $scope.$on 'view_Filters' , (event,data)->
+            $scope.view_Filters = data
+
           $scope.apply_Filter = (filter_Id,filter_Title)->
             query_Service.load_Filter query_Id, filter_Id, filter_Title
 
           query_Service.load_Data()
+
+          #$scope.view_Filters = true
+
 

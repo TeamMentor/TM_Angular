@@ -22,8 +22,6 @@ app.run ($templateCache)->
  
    $templateCache.put('/angular/jade-html/component/navigation/left_navigation' , "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><aside ng-controller=\"User_Navigation_Controller\"><ul><li><div class=\"logo\"></div></li><li><a ui-sref=\"main\"><span class=\"icon-Home\"></span></a></li><li><!--a(ui-sref=\"queries\")+index-icon--><a ng-click=\"open_Query_State()\"><span title=\"Index\" class=\"icon-Index\"></span></a></li><li><a ui-sref=\"docs\"><span title=\"Documentation\" class=\"icon-Info\"></span></a></li><li><a href=\"/angular/guest/home\"><span title=\"Logout\" class=\"icon-Logout\"></span></a><!--a(ui-sref=\"logout\")--></li></ul></aside>") 
  
-   $templateCache.put('/angular/jade-html/component/pagination' , "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><section class=\"row pagination\"><div class=\"previous\"><span class=\"icon-Arrow-Left\"></span></div><div class=\"number\"><select><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></div><div class=\"next\"><span class=\"icon-Arrow-Right\"></span></div></section>") 
- 
    $templateCache.put('/angular/jade-html/component/pwd_forgot_form' , "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><!-- Getting Started--><!-- User Inputs--><div ng-controller=\"Pwd_Forgot_Controller\"><section class=\"row__label\"><div class=\"label\">Forgot your password?</div></section><section class=\"row\"><form id=\"forgot-pwd-form\" ng-submit=\"get_Password()\"><section class=\"row\"><div class=\"col-8 input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" name=\"email\" ng-model=\"email\" placeholder=\"Email Address\" value=\"\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><button type=\"submit\" id=\"btn-get-password\" class=\"full-width btn-minor\">Get Password</button></div></section></form></section><alert-ok></alert-ok></div>") 
  
    $templateCache.put('/angular/jade-html/component/pwd_reset_form' , "<!-- Getting Started--><!-- User Inputs--><section class=\"row__label\"><div class=\"label\">Reset your password</div></section><section class=\"row\"><form id=\"password-reset-form\" role=\"form\" method=\"post\" action=\"/flare/user/password-reset\"><section class=\"row\"><div class=\"col-6 input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-6 input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" name=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" value=\"\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><br/><button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button></div></section></form></section>") 
@@ -51,8 +49,9 @@ app.run ($templateCache)->
  
    $templateCache.put('/angular/jade-html/component/user/breadcrumbs' , "<div ng-controller=\"Breadcrumbs_Controller\"><dl class=\"breadcrumbs\"><dd ng-repeat=\"breadcrumb in breadcrumbs\" class=\"active\"><a ng-href=\"#\" ng-click=\"load_Query(breadcrumb)\">\{\{breadcrumb.title}}</a></dd></dl></div>") 
  
-   $templateCache.put('/angular/jade-html/component/user/filters' , "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><section class=\"row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div><!--span.sub-nav__icona
-  +close-icon--></dt><a ng-repeat=\"result in filter.results\"><dd ng-href=\"#\" ng-click=\"apply_Filter(result.id, result.title)\" ng-show=\"result.size &gt;0\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></dd></a></div></dl></section></div>") 
+   $templateCache.put('/angular/jade-html/component/user/filters' , "<!-- Application Icons--><!--mixin back-iconspan.icon-Arrow-Left
+--><!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right
+--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><section ng-show=\"view_Filters\" class=\"row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div><span class=\"sub-nav__icon\"><a><span class=\"icon-Close\"></span></a></span></dt><div ng-show=\"true\"><a ng-repeat=\"result in filter.results\"><dd ng-href=\"#\" ng-click=\"apply_Filter(result.id, result.title)\" ng-show=\"result.size &gt;0\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></dd></a></div></div></dl></section></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/queries' , "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Queries_Controller\"><dl><dt><span class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon
 --></span></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><!--if container.size > 0--><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>") 
@@ -61,34 +60,7 @@ app.run ($templateCache)->
  
    $templateCache.put('/angular/jade-html/component/user/results' , "<div ng-controller=\"Results_Controller\"><div class=\"desktop\"><div id=\"results\"><table><tr><!--if no_Resultstd
   p.label#no_results No Results
-  p Please try again--><td><p id=\"resultsTitle\" class=\"label\">Showing n \{\{size}} articles</p></td><td><ul class=\"display-inline\"><li><a href=\"\" class=\"button btn-result icon-Filter\"></a></li><li><button title=\"Save results to Collection\" class=\"btn-result icon-Save\"></button></li><li><button title=\"Share results\" class=\"btn-result icon-Share\"></button></li></ul></td><td><table><tr><td class=\"text-right\"><span id=\"activeFilter\" class=\"filter\"> 'filter 1'</span><span class=\"close\"><a href=\"#\">x</a></span></td><td class=\"text-right\"><span id=\"activeFilter\" class=\"filter\">'filter 2'</span><span class=\"close\"><a href=\"#\">x</a></span></td></tr></table></td></tr><!--if activeFilterfor filter in activeFilter
-  span#activeFilter.filter= filter.title
-  span.close
-    a(href=href + '/' + activeFilter.filters.remove(filter.id)) x--></table></div></div><!--dl.breadcrumbsdiv.row__label
-  .label.no-underline#resultsTitle \{\{message}}
-  ul.display-inline
-    li
-      a.button.btn-result.icon-Filter(href='')
-    li
-      button.btn-result.icon-Save(title='Save results to Collection')
-    li
-      button.btn-result.icon-Share(title='Share results')--><!--dl.sub-nav#navigation
-  dd.active
-    a(href='#') 'item.title'
-  dd
-    a(href='#') 'not active'--></div><!--if resultssection.row__label
-  if results.size() > 25
-    .label.no-underline#resultsTitle= results.take(25).size() + '/' + results.size() + ' results showing'
-  else
-    .label.no-underline#resultsTitle= results.take(25).size() + ' results showing'
-  ul.display-inline
-    li
-      //a.button.btn-result.icon-Filter(href='#right-nav') aaaaaaa
-      a.button.btn-result.icon-Filter(href='')
-    //li
-      +save-results-button
-    //li
-      +share-results-button-->") 
+  p Please try again--><td><p id=\"resultsTitle\" class=\"label\">Showing n \{\{size}} articles</p></td><td><section class=\"row pagination\"><div class=\"previous\"><span class=\"icon-Arrow-Left\"></span></div><div class=\"number\"><select><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></div><div class=\"next\"><span class=\"icon-Arrow-Right\"></span></div></section></td><td><table><tr><td class=\"text-right\"><span id=\"activeFilter\" class=\"filter\"> 'filter 1'</span><span class=\"close\"><a href=\"#\">x</a></span></td><td class=\"text-right\"><span id=\"activeFilter\" class=\"filter\">'filter 2'</span><span class=\"close\"><a href=\"#\">x</a></span></td></tr></table></td><td><ul class=\"display-inline\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result icon-Filter\"></a></li><!--li--><!--  button.btn-result.icon-Save(title='Save results to Collection')--><!--libutton.btn-result.icon-Share(title='Share results')--></ul></td></tr></table></div></div></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/search_bar' , "<!-- Application Icons--><!--mixin filter-icon--><!--  span.icon-Filter--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"/><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span></button></form></div>") 
  

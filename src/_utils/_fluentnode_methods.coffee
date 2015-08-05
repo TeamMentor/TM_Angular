@@ -62,3 +62,13 @@ String::assert_Is          = (target, message)->
 Number::assert_Is          = (target, message)->      # slight modified from fluentnode version
   expect(@.toString()).to.equal(target.toString(), message)
   @
+
+Boolean::assert_Is_False = ->
+  console.log @.valueOf()
+  expect(@.valueOf()).to.equal(false)
+  return false
+
+Boolean::assert_Is_True = ->
+  console.log @.valueOf()
+  expect(@.valueOf()).to.equal(true)
+  return true

@@ -10,4 +10,23 @@ describe '| controllers | Results-Controller.test',->
       $controller('Results_Controller', { $scope: scope })
 
   it 'constructor', ()->
+    expect(scope.view_Filters).to.be.false
+    expect(scope.toggle_Filters).to.be.an('function')
+
+  it 'toggle_Filters (check value)', ()->
+
+    scope.view_Filters.assert_Is_False()
+    scope.toggle_Filters()
+    scope.view_Filters.assert_Is_True()
+    scope.toggle_Filters()
+    scope.view_Filters.assert_Is_False()
+
+  it 'toggle_Filters (check broadcast)', ()->
+
+    scope.$on 'view_Filters' , (event,data)->
+      data.assert_Is_True()
+    scope.toggle_Filters()
+
+
+
 
