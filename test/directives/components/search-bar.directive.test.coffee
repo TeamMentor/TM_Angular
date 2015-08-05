@@ -5,8 +5,7 @@ describe '| directive | search-bar', ->
   element      = null
   element_Raw  = null
   scope        = null
-  results      = [{title:'tech 1', query_Id: 'id_1'}, {title: 'tech 2', query_Id: 'id_2'}]
-  default_Tech = [{title: 'All'  , query_Id: null  }]
+  results      = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
 
   beforeEach ()->
     module('TM_App')
@@ -38,10 +37,10 @@ describe '| directive | search-bar', ->
       $httpBackend.flush()
       options = element_Raw.find('option')
       options.length.assert_Is 3
-
-      $$(options[0]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"All","query_Id":null}'     , class : 'ng-binding ng-scope' }
-      $$(options[1]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"tech 1","query_Id":"id_1"}', class : 'ng-binding ng-scope' }
-      $$(options[2]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"tech 2","query_Id":"id_2"}', class : 'ng-binding ng-scope' }
+      #console.log $$(options[0]).$attr()
+      $$(options[0]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"All","id":"query-6234f2d47eb7"}' , class : 'ng-binding ng-scope' }
+      $$(options[1]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"tech 1","id":"id_1"}'            , class : 'ng-binding ng-scope' }
+      $$(options[2]).$attr().assert_Is 		{ 'ng-repeat': 'technology in technologies', value  : '{"title":"tech 2","id":"id_2"}'            , class : 'ng-binding ng-scope' }
 
   it 'Check selected option',->
     inject ($$, $httpBackend)->

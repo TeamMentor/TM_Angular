@@ -14,4 +14,6 @@ module.exports = (wallaby)->
     tests : [
               'test/**/*.coffee' ]
 
+    testFramework: 'mocha'
+
   return config
