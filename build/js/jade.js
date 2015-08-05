@@ -410,6 +410,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -430,15 +431,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -764,18 +757,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -1281,6 +1268,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -1301,15 +1289,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -1635,18 +1615,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -1741,6 +1715,7 @@ buf.push("<main><!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -1761,15 +1736,7 @@ buf.push("<main><!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -2477,6 +2444,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -2497,15 +2465,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -2831,18 +2791,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -2930,7 +2884,7 @@ buf.push("</a></li></ul></div></footer>");
 };
 buf.push("<div class=\"col-9\"><div class=\"article\"><h1>{{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></div><br/>");
 jade_mixins["copyright"]();
-buf.push("</div><div class=\"col-3\"><section class=\"article-info\"><section class=\"row__label\"><div class=\"label\">Relates to:</div></section><section class=\"row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></section></section></div></main>");;return buf.join("");
+buf.push("</div><div class=\"col-3\"><section class=\"article-info\"><section class=\"row__label\"><div class=\"label\">Metadata:</div><h1>bbbb</h1></section><section class=\"row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></section></section></div></main>");;return buf.join("");
 }
 
 function jade_article_editor(locals) {
@@ -3209,14 +3163,10 @@ buf.push("<span class=\"icon-Tick\"></span>");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -3252,10 +3202,6 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
-};
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -3382,10 +3328,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -3672,10 +3618,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -3696,7 +3639,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -3713,14 +3656,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -3767,10 +3706,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -4026,18 +3965,12 @@ buf.push("<button title=\"Share all articles\" class=\"btn-result icon-Share\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -4239,10 +4172,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -4529,10 +4462,7 @@ buf.push("<html lang=\"en-US\"></html><head><title>" + (jade.escape((jade_interp
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -4553,7 +4483,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -4570,14 +4500,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -4624,10 +4550,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -4859,7 +4785,9 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span class=\"icon-Search\"></span></button></form></div><div class=\"application\"><main>");
+buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Search TEAM Mentor\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+jade_mixins["search-icon"]();
+buf.push("</button></form></div><div class=\"application\"><main>");
 jade_mixins["article-editor"]();
 buf.push("</main></div></body></html>");}.call(this,"technology" in locals_for_with?locals_for_with.technology:typeof technology!=="undefined"?technology:undefined));;return buf.join("");
 }
@@ -5140,14 +5068,10 @@ buf.push("<span class=\"icon-Tick\"></span>");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -5183,10 +5107,6 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
-};
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -5313,10 +5233,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -5603,10 +5523,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -5627,7 +5544,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -5644,14 +5561,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -5698,10 +5611,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -5957,18 +5870,12 @@ buf.push("<button title=\"Share all articles\" class=\"btn-result icon-Share\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -6170,10 +6077,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -6460,10 +6367,7 @@ buf.push("<html lang=\"en-US\"></html><head><title>" + (jade.escape((jade_interp
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -6484,7 +6388,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -6501,14 +6405,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -6555,10 +6455,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -6790,7 +6690,9 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span class=\"icon-Search\"></span></button></form></div><div class=\"application\"><main>");
+buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Search TEAM Mentor\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+jade_mixins["search-icon"]();
+buf.push("</button></form></div><div class=\"application\"><main>");
 jade_mixins["curated-content-article"]();
 buf.push("</main></div></body></html>");}.call(this,"technology" in locals_for_with?locals_for_with.technology:typeof technology!=="undefined"?technology:undefined));;return buf.join("");
 }
@@ -7215,10 +7117,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -7239,11 +7138,7 @@ buf.push("<span class=\"icon-Arrow-Left\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -7569,18 +7464,12 @@ buf.push("</span>");
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -7995,14 +7884,10 @@ buf.push("<span class=\"icon-Tick\"></span>");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -8038,10 +7923,6 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
-};
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
 };
 
 
@@ -8168,10 +8049,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -8458,10 +8339,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -8482,7 +8360,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -8499,14 +8377,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -8553,10 +8427,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -8812,18 +8686,12 @@ buf.push("<button title=\"Share all articles\" class=\"btn-result icon-Share\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -9025,10 +8893,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -9315,10 +9183,7 @@ buf.push("<html lang=\"en-US\"></html><head><title>" + (jade.escape((jade_interp
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -9339,7 +9204,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -9356,14 +9221,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -9410,10 +9271,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -9645,7 +9506,9 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
-buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span class=\"icon-Search\"></span></button></form></div><div class=\"application\"><main>");
+buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Search TEAM Mentor\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+jade_mixins["search-icon"]();
+buf.push("</button></form></div><div class=\"application\"><main>");
 jade_mixins["curated-content-article"]();
 buf.push("</main></div></body></html>");}.call(this,"technology" in locals_for_with?locals_for_with.technology:typeof technology!=="undefined"?technology:undefined));;return buf.join("");
 }
@@ -10485,6 +10348,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -10505,15 +10369,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -10839,18 +10695,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -11752,6 +11602,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -11772,15 +11623,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -12106,18 +11949,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -13072,6 +12909,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -13092,15 +12930,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -13426,18 +13256,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -14394,6 +14218,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -14414,15 +14239,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -14748,18 +14565,12 @@ buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"><
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -14912,14 +14723,6 @@ var buf = [];
 var jade_mixins = {};
 var jade_interp;
 ;var locals_for_with = (locals || {});(function (results, undefined) {
-
-
-
-
-
-
-
-
 
 
 
@@ -15258,14 +15061,6 @@ buf.push("</span>");
 
 
 
-
-
-
-
-
-
-
-
 jade_mixins["default-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span title=\"Default\" class=\"icon-Default\"><span class=\"path1\"></span><span class=\"path2\"></span></span>");
@@ -15394,10 +15189,10 @@ buf.push("<span title=\"Mail\" class=\"icon-Mail\"></span>");
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -15631,10 +15426,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -15921,6 +15716,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -15941,12 +15737,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -15963,13 +15754,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -16016,10 +15804,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -16275,18 +16063,12 @@ buf.push("</span>");
 
 
 
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 
 
 
 
-
-
-
-
-
-
-
-
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -16488,10 +16270,10 @@ buf.push("<a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.co
 
 
 
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -16778,6 +16560,7 @@ buf.push("<html lang=\"en-US\"></html><head><title>" + (jade.escape((jade_interp
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -16798,12 +16581,7 @@ buf.push("<html lang=\"en-US\"></html><head><title>" + (jade.escape((jade_interp
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -16820,13 +16598,10 @@ buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
 
 
 
-
-
-
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span class=\"icon-Search\"></span>");
+};
 
 
 
@@ -16873,10 +16648,10 @@ var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Web-App\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span><span class=\"path4\"></span><span class=\"path5\"></span><span class=\"path6\"></span><span class=\"path7\"></span><span class=\"path8\"></span><span class=\"path9\"></span><span class=\"path10\"></span><span class=\"path11\"></span></span>");
 };
 buf.push("<!-- filter icons-->");
-
-
-
-
+jade_mixins["search-icon"] = jade_interp = function(){
+var block = (this && this.block), attributes = (this && this.attributes) || {};
+buf.push("<span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span>");
+};
 
 
 
@@ -17108,7 +16883,9 @@ jade_mixins["default-icon"]();
 }
 buf.push("</span>");
 };
-buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Type keywords here\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><span class=\"icon-Search\"></span></button></form></div><div class=\"application\"><main><section class=\"row__label\"><div id=\"resultsTitle\" class=\"label no-underline\"># results showing</div></section><!--if resultssection.row__label\n  if results.size() > 25\n    .label.no-underline#resultsTitle= results.take(25).size() + '/' + results.size() + ' results showing'\n  else\n    .label.no-underline#resultsTitle= results.take(25).size() + ' results showing'\n  ul.display-inline\n    li\n      //a.button.btn-result.icon-Filter(href='#right-nav') aaaaaaa\n      a.button.btn-result.icon-Filter(href='')\n    //li\n      +save-results-button\n    //li\n      +share-results-button--><section class=\"row\"><span id=\"result_article\">");
+buf.push("<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Search TEAM Mentor\" class=\"search-input\"><button id=\"search-button\" type=\"submit\" class=\"btn-search\">");
+jade_mixins["search-icon"]();
+buf.push("</button></form></div><div class=\"application\"><main><!--include ../component/results_save_share.jade--><section class=\"row\"><span id=\"result_article\">");
 if ( results)
 {
 // iterate results.take(10)
@@ -17169,10 +16946,7 @@ buf.push("<!--extends ../_to_be_wired_in/_layouts/page_logged_in--><!-- Applicat
 
 
 
-jade_mixins["back-icon"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<span class=\"icon-Arrow-Left\"></span>");
-};
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 jade_mixins["close-icon"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<span class=\"icon-Close\"></span>");
@@ -17193,11 +16967,7 @@ buf.push("<span class=\"icon-Curated-Content\"></span>");
 
 
 
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -17973,6 +17743,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -17993,15 +17764,7 @@ buf.push("<!-- Application Icons-->");
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -18327,18 +18090,12 @@ jade_mixins["share-saved-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Share\" class=\"btn-minor icon-Share\"></button>");
 };
-
-
-
-
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 jade_mixins["delete-results-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Delete results from Collection\" class=\"btn-result icon-Delete\"></button>");
 };
-jade_mixins["share-results-button"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<button title=\"Share results\" class=\"btn-result icon-Share\"></button>");
-};
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -18437,6 +18194,7 @@ buf.push("<div class=\"application\"><main><section class=\"row\"><div class=\"c
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -18457,15 +18215,7 @@ buf.push("<div class=\"application\"><main><section class=\"row\"><div class=\"c
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -18794,18 +18544,12 @@ jade_mixins["share-saved-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Share\" class=\"btn-minor icon-Share\"></button>");
 };
-
-
-
-
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 jade_mixins["delete-results-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Delete results from Collection\" class=\"btn-result icon-Delete\"></button>");
 };
-jade_mixins["share-results-button"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<button title=\"Share results\" class=\"btn-result icon-Share\"></button>");
-};
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -18839,6 +18583,7 @@ buf.push("</li></ul></section><section class=\"row\"><!-- Application Icons-->")
 
 
 
+buf.push("<!--mixin back-iconspan.icon-Arrow-Left\n-->");
 
 
 
@@ -18859,15 +18604,7 @@ buf.push("</li></ul></section><section class=\"row\"><!-- Application Icons-->")
 
 
 
-
-
-
-
-buf.push("<!--mixin filter-icon--><!--  span.icon-Filter-->");
-
-
-
-
+buf.push("<!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right\n-->");
 
 
 
@@ -19193,18 +18930,12 @@ jade_mixins["share-saved-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Share\" class=\"btn-minor icon-Share\"></button>");
 };
-
-
-
-
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 jade_mixins["delete-results-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Delete results from Collection\" class=\"btn-result icon-Delete\"></button>");
 };
-jade_mixins["share-results-button"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<button title=\"Share results\" class=\"btn-result icon-Share\"></button>");
-};
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
@@ -19256,18 +18987,12 @@ jade_mixins["share-saved-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Share\" class=\"btn-minor icon-Share\"></button>");
 };
-
-
-
-
+buf.push("<!--mixin save-results-button--><!--    button.btn-result.icon-Save(title='Save results to Collection')-->");
 jade_mixins["delete-results-button"] = jade_interp = function(){
 var block = (this && this.block), attributes = (this && this.attributes) || {};
 buf.push("<button title=\"Delete results from Collection\" class=\"btn-result icon-Delete\"></button>");
 };
-jade_mixins["share-results-button"] = jade_interp = function(){
-var block = (this && this.block), attributes = (this && this.attributes) || {};
-buf.push("<button title=\"Share results\" class=\"btn-result icon-Share\"></button>");
-};
+buf.push("<!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')\n-->");
 
 
 
