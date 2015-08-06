@@ -3,5 +3,5 @@ angular.module('TM_App')
          $scope.get_Password = ->
            $scope.infoMessage  = "...sending request ..."
            TM_API.pwd_Reset $scope.email, (data)->
-             $scope.infoMessage  = data.message
+             $scope.infoMessage  = data?.message
          $scope.showInfoMessage = -> $scope.infoMessage

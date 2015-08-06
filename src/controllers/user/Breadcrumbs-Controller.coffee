@@ -13,15 +13,13 @@ angular.module 'TM_App'
               path = ''
               for key in @.current_Path.split('/') when key
                 item = @.history[key]
-                title = item.title
-                @.breadcrumbs.push {
-                                     query_Id     : item.query_Id
-                                     title        : title
-                                     filter_Title : item.filter_Title
-                                     path         : path
-                                     filter_Id    : item.filter_Id
-                                   }
-                path += "/#{key}"
+                if item
+                  @.breadcrumbs.push {
+                                       query_Id     : item.query_Id
+                                       title        : item.title
+                                       path         : path
+                                     }
+                  path += "/#{key}"
 
             @.$on 'clear_Query', (event, data)=>
               @.current_Path = ''
@@ -38,11 +36,6 @@ angular.module 'TM_App'
                   @.refresh_Breadcrumbs()
 
             @.load_Query = (breadcrumb)=>
-              @.current_Path = breadcrumb.path
-              console.log breadcrumb
-              #if  breadcrumb.filter_Id
-              #  query_Service.filter_Id = ''
-              #  query_Service.load_Filter breadcrumb.query_Id, breadcrumb.filter_Id, breadcrumb.filter_Title
-              #else
-              $rootScope.$broadcast 'apply_Query', breadcrumb.query_Id
-              #query_Service.load_Query breadcrumb.query_Id
+              if breadcrumb?.path and breadcrumb?.query_Id
+                @.current_Path = breadcrumb.path
+                $rootScope.$broadcast 'apply_Query', breadcrumb.query_Id

@@ -1,6 +1,6 @@
 expect = chai.expect;
 
-describe '| controllers | Articles-Controller.test',->
+describe '| controllers | user | Articles-Controller',->
   scope = null
   articles_Source      = [ { title:'tech 1', id: 'id_1' },
                            { title: 'tech 2', id: 'id_2' }]
@@ -19,6 +19,7 @@ describe '| controllers | Articles-Controller.test',->
       scope       = $rootScope.$new()
       $controller 'Articles_Controller', { $scope: scope}
       scope.$digest()
+
   it 'constructor', ->
     expect(scope.$$listeners['filter_data'][0]).to.be.an('function')
 

@@ -29,7 +29,7 @@ describe '| controllers | Login-Controller.test',->
       scope.login()
       $httpBackend.flush()
 
-  it 'login (OK)', (done)->
+  it 'login (OK)', ()->
     inject ($httpBackend,$timeout)->
 
       $httpBackend.whenPOST('/json/user/login',{}).respond ()->
@@ -41,7 +41,6 @@ describe '| controllers | Login-Controller.test',->
       $timeout.flush();
       scope.infoMessage.assert_Is 'Login OK'
       window.assert_Is location : href: '/angular/user/main'
-      done()
 
   it 'showErrorMessage', ->
     scope.errorMessage = 'abc123'

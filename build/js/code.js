@@ -962,7 +962,7 @@
     $scope.get_Password = function() {
       $scope.infoMessage = "...sending request ...";
       return TM_API.pwd_Reset($scope.email, function(data) {
-        return $scope.infoMessage = data.message;
+        return $scope.infoMessage = data != null ? data.message : void 0;
       });
     };
     return $scope.showInfoMessage = function() {
@@ -973,20 +973,20 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $location, $timeout) {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
     $scope.signup = function() {
       $scope.errorMessage = null;
       $scope.infoMessage = "...Signing  up ...";
       return TM_API.signup($scope.username, $scope.password, "$scope.confirm-password", $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
         var ref;
-        if (data.result === 'OK') {
+        if ((data != null ? data.result : void 0) === 'OK') {
           $scope.infoMessage = 'Signup OK';
           return $timeout(function() {
-            return window.location = '/angular/user/main';
+            return $window.location.href = '/angular/user/main';
           });
         } else {
           $scope.infoMessage = null;
-          return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
         }
       });
     };
@@ -1062,7 +1062,7 @@
       this.breadcrumbs = [];
       this.refresh_Breadcrumbs = (function(_this) {
         return function() {
-          var i, item, key, len, path, ref, results, title;
+          var i, item, key, len, path, ref, results;
           _this.breadcrumbs = [];
           path = '';
           ref = _this.current_Path.split('/');
@@ -1073,15 +1073,16 @@
               continue;
             }
             item = _this.history[key];
-            title = item.title;
-            _this.breadcrumbs.push({
-              query_Id: item.query_Id,
-              title: title,
-              filter_Title: item.filter_Title,
-              path: path,
-              filter_Id: item.filter_Id
-            });
-            results.push(path += "/" + key);
+            if (item) {
+              _this.breadcrumbs.push({
+                query_Id: item.query_Id,
+                title: item.title,
+                path: path
+              });
+              results.push(path += "/" + key);
+            } else {
+              results.push(void 0);
+            }
           }
           return results;
         };
@@ -1108,9 +1109,10 @@
       })(this));
       return this.load_Query = (function(_this) {
         return function(breadcrumb) {
-          _this.current_Path = breadcrumb.path;
-          console.log(breadcrumb);
-          return $rootScope.$broadcast('apply_Query', breadcrumb.query_Id);
+          if ((breadcrumb != null ? breadcrumb.path : void 0) && (breadcrumb != null ? breadcrumb.query_Id : void 0)) {
+            _this.current_Path = breadcrumb.path;
+            return $rootScope.$broadcast('apply_Query', breadcrumb.query_Id);
+          }
         };
       })(this);
     });

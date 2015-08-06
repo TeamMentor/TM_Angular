@@ -17,7 +17,6 @@ angular.module('TM_App')
 
           $scope.apply_Filter = (filter_Id,filter_Title)->
             $rootScope.$broadcast 'apply_Filter', filter_Id,filter_Title
-            #query_Service.load_Filter query_Id, filter_Id, filter_Title
 
           query_Service.load_Data()
 
