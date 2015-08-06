@@ -189,6 +189,198 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {
+      a: {}
+    },
+    views: {
+      guest: ['about', 'blank', 'features', 'pwd_forgot', 'home', 'login', 'sign_up'],
+      user_Root: ['navigate', 'main', 'docs', 'terms_and_conditions'],
+      user_User: ['index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    return TM_API.docs_Library(function(library) {
+      $scope.Views = library.Views;
+      $scope.show_Doc = function(article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      };
+      return $scope.show_Doc(library.Views.first().Articles.first());
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var app, design_Components, guest_Components, map_Components, navigation_Components, resolve_Directive_Name, root_Components, user_Components;
+
+  app = angular.module('TM_App');
+
+  String.prototype.upper_Case_First_Letter = function() {
+    return this.charAt(0).toUpperCase() + this.substr(1);
+  };
+
+  resolve_Directive_Name = function(name) {
+    var directive_Name, i, index, len, ref, segment;
+    directive_Name = "";
+    ref = name.split('_');
+    for (index = i = 0, len = ref.length; i < len; index = ++i) {
+      segment = ref[index];
+      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+    }
+    return directive_Name;
+  };
+
+  map_Components = function(path, components) {
+    var component, i, len, results;
+    results = [];
+    for (i = 0, len = components.length; i < len; i++) {
+      component = components[i];
+      results.push((function(component) {
+        return app.directive(resolve_Directive_Name(component), function() {
+          return {
+            templateUrl: "/angular/jade-html/component" + path + "/" + component
+          };
+        });
+      })(component));
+    }
+    return results;
+  };
+
+  design_Components = ['all_icons'];
+
+  guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
+
+  navigation_Components = ['landing_bar', 'left_navigation'];
+
+  user_Components = ['article_box', 'articles', 'breadcrumbs', 'filters', 'queries', 'queries_history', 'results', 'search_bar'];
+
+  root_Components = ['alert_ok', 'alert_bad', 'article', 'help_navigation'];
+
+  map_Components('', root_Components);
+
+  map_Components('/design', design_Components);
+
+  map_Components('/guest', guest_Components);
+
+  map_Components('/navigation', navigation_Components);
+
+  map_Components('/user', user_Components);
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        component_Name = $location.$$path.substring(1);
+        component = document.createElement(component_Name);
+        return element.replaceWith($compile(component)($scope));
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('icon', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        if (attribute["class"]) {
+          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
+        }
+        if (attribute.type) {
+          return icon_Service.element_Html(attribute.type);
+        }
+        return icon_Service.element_Html('Default');
+      }
+    };
+  }).directive('showAllIcons', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var all_Icons_Html, i, key, len, ref;
+        all_Icons_Html = "";
+        ref = icon_Service.mappings.keys();
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          all_Icons_Html += icon_Service.element_Html(key);
+          if (attribute.$attr.withTitles) {
+            all_Icons_Html += " " + key + " <br/>";
+          }
+        }
+        return all_Icons_Html;
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('inputField', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        return 'a';
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('template/navigate_queries', 'navigate_queries', function(navigate_queries) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_queries(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_results(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
   var app;
 
   app = angular.module('TM_App');
@@ -751,198 +943,6 @@
       return element;
     };
     return $$;
-  });
-
-}).call(this);
-
-(function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {
-      a: {}
-    },
-    views: {
-      guest: ['about', 'blank', 'features', 'pwd_forgot', 'home', 'login', 'sign_up'],
-      user_Root: ['navigate', 'main', 'docs'],
-      user_User: ['index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var app, design_Components, guest_Components, map_Components, navigation_Components, resolve_Directive_Name, root_Components, user_Components;
-
-  app = angular.module('TM_App');
-
-  String.prototype.upper_Case_First_Letter = function() {
-    return this.charAt(0).toUpperCase() + this.substr(1);
-  };
-
-  resolve_Directive_Name = function(name) {
-    var directive_Name, i, index, len, ref, segment;
-    directive_Name = "";
-    ref = name.split('_');
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      segment = ref[index];
-      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-    }
-    return directive_Name;
-  };
-
-  map_Components = function(path, components) {
-    var component, i, len, results;
-    results = [];
-    for (i = 0, len = components.length; i < len; i++) {
-      component = components[i];
-      results.push((function(component) {
-        return app.directive(resolve_Directive_Name(component), function() {
-          return {
-            templateUrl: "/angular/jade-html/component" + path + "/" + component
-          };
-        });
-      })(component));
-    }
-    return results;
-  };
-
-  design_Components = ['all_icons'];
-
-  guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form'];
-
-  navigation_Components = ['landing_bar', 'left_navigation'];
-
-  user_Components = ['article_box', 'articles', 'filters', 'queries', 'breadcrumbs', 'queries_history', 'results', 'search_bar'];
-
-  root_Components = ['alert_ok', 'alert_bad', 'article', 'help_navigation'];
-
-  map_Components('', root_Components);
-
-  map_Components('/design', design_Components);
-
-  map_Components('/guest', guest_Components);
-
-  map_Components('/navigation', navigation_Components);
-
-  map_Components('/user', user_Components);
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showComponent', function($compile, $location) {
-    return {
-      link: function($scope, element) {
-        var component, component_Name;
-        component_Name = $location.$$path.substring(1);
-        component = document.createElement(component_Name);
-        return element.replaceWith($compile(component)($scope));
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('icon', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        if (attribute["class"]) {
-          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
-        }
-        if (attribute.type) {
-          return icon_Service.element_Html(attribute.type);
-        }
-        return icon_Service.element_Html('Default');
-      }
-    };
-  }).directive('showAllIcons', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        var all_Icons_Html, i, key, len, ref;
-        all_Icons_Html = "";
-        ref = icon_Service.mappings.keys();
-        for (i = 0, len = ref.length; i < len; i++) {
-          key = ref[i];
-          all_Icons_Html += icon_Service.element_Html(key);
-          if (attribute.$attr.withTitles) {
-            all_Icons_Html += " " + key + " <br/>";
-          }
-        }
-        return all_Icons_Html;
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('inputField', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        return 'a';
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('template/navigate_queries', 'navigate_queries', function(navigate_queries) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_queries(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_results(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
-    return TM_API.docs_Library(function(library) {
-      $scope.Views = library.Views;
-      $scope.show_Doc = function(article) {
-        return TM_API.docs_Page(article.Id, function(article_Data) {
-          $scope.title = article.Title;
-          return $scope.content = $sce.trustAsHtml(article_Data.html);
-        });
-      };
-      return $scope.show_Doc(library.Views.first().Articles.first());
-    });
   });
 
 }).call(this);
