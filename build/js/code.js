@@ -18,7 +18,7 @@
     $templateCache.put('/angular/jade-html/component/guest/login_form', "<!-- Getting Started--><!-- User Inputs--><div ng-controller=\"Login_Controller\"><div class=\"section row__label\"><div class=\"label\">Login</div></div><div ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div></div><div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div><div class=\"section row\"><form id=\"login-form\" role=\"form\" ng-submit=\"login()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"button-field\"><button type=\"submit\" id=\"btn-login\">Login</button></div><div class=\"button-field\"><br/><a id=\"pwd_forgot\" href=\"pwd_forgot\" class=\"text-right\">Forgot your password?</a></div></form></div></div>");
     $templateCache.put('/angular/jade-html/component/guest/pwd_forgot_form', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><!-- User Inputs--><div ng-controller=\"Pwd_Forgot_Controller\"><div class=\"section row__label\"><div class=\"label\">Forgot your password?</div></div><div class=\"section row\"><form id=\"forgot-pwd-form\" ng-submit=\"get_Password()\"><div class=\"section row\"><div class=\"col-8 input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" name=\"email\" ng-model=\"email\" placeholder=\"Email Address\" value=\"\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><button type=\"submit\" id=\"btn-get-password\" class=\"full-width btn-minor\">Get Password</button></div></div></form></div><alert-ok></alert-ok></div>");
     $templateCache.put('/angular/jade-html/component/guest/pwd_reset_form', "<!-- Getting Started--><!-- User Inputs--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div class=\"section row__label\"><div class=\"label\">Reset your password</div></div><div class=\"section row\"><form id=\"password-reset-form\" role=\"form\" method=\"post\" action=\"/flare/user/password-reset\"><div class=\"section row\"><div class=\"col-6 input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-6 input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" name=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" value=\"\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><br/><button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button></div></div></form></div>");
-    $templateCache.put('/angular/jade-html/component/guest/sign_up_form', "<!-- Getting Started--><!-- User Inputs--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div ng-controller=\"Signup_Controller\"><div class=\"section row__label\"><div class=\"label\">Sign Up</div></div><div id=\"error\" ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div><div id=\"info\" ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div><div class=\"section row\"><form id=\"sign-up-form\" role=\"form\" ng-submit=\"signup()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" name=\"email\" ng-model=\"email\" placeholder=\"Email Address\" value=\"\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" name=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" value=\"\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"firstname\">First Name</label><input type=\"text\" id=\"firstname\" name=\"firstname\" ng-model=\"firstname\" placeholder=\"First Name\" value=\"\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"lastname\">Last Name</label><input type=\"text\" id=\"lastname\" name=\"lastname\" ng-model=\"lastname\" placeholder=\"Last Name\" value=\"\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label>Company</label><input type=\"text\" id=\"company\" placeholder=\"Company\"/></div><div class=\"input-field\"><label>Title</label><input type=\"text\" id=\"title\" placeholder=\"Title\"/></div><div class=\"input-field\"><label for=\"country\">Country</label><input type=\"text\" id=\"country\" name=\"country\" ng-model=\"country\" placeholder=\"Country\" value=\"\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"state\">State</label><input type=\"text\" id=\"state\" name=\"state\" ng-model=\"state\" placeholder=\"State\" value=\"\" maxlength=\"100\"/></div><div class=\"conditions\"><p>By signing up, you agree to our <a href=\"/misc/terms-and-conditions\">Terms and Conditions</a>.</p> </div><div class=\"button-field\"><button type=\"submit\" id=\"btn-sign-up\" class=\"full-width\">Sign Up</button></div></form></div></div>");
+    $templateCache.put('/angular/jade-html/component/guest/sign_up_form', "<!-- Getting Started--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div ng-controller=\"Signup_Controller\"><div class=\"section row__label\"><div class=\"label\">Sign Up</div></div><div id=\"error\" ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div><div id=\"info\" ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div><div class=\"section row\"><form id=\"sign-up-form\" role=\"form\" ng-submit=\"signup()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" ng-model=\"email\" placeholder=\"Email Address\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"firstname\">First Name</label><input type=\"text\" id=\"firstname\" ng-model=\"firstname\" placeholder=\"First Name\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"lastname\">Last Name</label><input type=\"text\" id=\"lastname\" ng-model=\"lastname\" placeholder=\"Last Name\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"company\">Company</label><input type=\"text\" id=\"company\" ng-model=\"company\" placeholder=\"Company\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"title\">Job/Title</label><input type=\"text\" id=\"title\" ng-model=\"title\" placeholder=\"Job/Title\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"country\">Country</label><input type=\"text\" id=\"country\" ng-model=\"country\" placeholder=\"Country\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"state\">State</label><input type=\"text\" id=\"state\" ng-model=\"state\" placeholder=\"State\" maxlength=\"100\"/></div><div class=\"conditions\"><p>By signing up, you agree to our <a href=\"/misc/terms-and-conditions\">Terms and Conditions</a>.</p> </div><div class=\"button-field\"><button type=\"submit\" id=\"btn-sign-up\" class=\"full-width\">Sign Up</button></div></form></div></div>");
     $templateCache.put('/angular/jade-html/component/help_navigation', "<dl class=\"help\"><span ng-repeat=\"view in Views\"><dt class=\"vertical-align\"><span class=\"label no-underline\">\{\{view.Title}}</span></dt><div class=\"scroll\"><dd ng-repeat=\"article in view.Articles\"><a href=\"#\{\{article.Id}}\" ng-click=\"show_Doc(article)\">\{\{article.Title}}</a></dd></div></span></dl>");
     $templateCache.put('/angular/jade-html/component/navigate_results', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons-->");
     $templateCache.put('/angular/jade-html/component/navigation/landing_bar', "<!-- Terms and Conditions Navigation--><nav class=\"container\"><a ui-sref=\"home\" class=\"logo\"></a><div class=\"links\"><ul class=\"display-inline\"><li><a ui-sref=\"about\">About</a></li><li><a ui-sref=\"features\">Features</a></li><li><a ui-sref=\"docs\">Docs</a></li><li><a ui-sref=\"sign_up\">Sign Up</a></li><li><a ui-sref=\"login\">Login</a></li></ul></div></nav>");
@@ -189,266 +189,73 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
+  var app;
 
   app = angular.module('TM_App');
 
-  routes_Names = {
-    components: {
-      a: {}
-    },
-    views: {
-      guest: ['about', 'blank', 'features', 'pwd_forgot', 'home', 'login', 'sign_up'],
-      user_Root: ['navigate', 'main', 'docs'],
-      user_User: ['index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
-    return TM_API.docs_Library(function(library) {
-      $scope.Views = library.Views;
-      $scope.show_Doc = function(article) {
-        return TM_API.docs_Page(article.Id, function(article_Data) {
-          $scope.title = article.Title;
-          return $scope.content = $sce.trustAsHtml(article_Data.html);
-        });
-      };
-      return $scope.show_Doc(library.Views.first().Articles.first());
-    });
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
   });
 
 }).call(this);
 
 (function() {
-  var app, design_Components, guest_Components, map_Components, navigation_Components, resolve_Directive_Name, root_Components, user_Components;
+  var app;
 
   app = angular.module('TM_App');
 
-  String.prototype.upper_Case_First_Letter = function() {
-    return this.charAt(0).toUpperCase() + this.substr(1);
-  };
+  app.service('ui_Routes', function() {});
 
-  resolve_Directive_Name = function(name) {
-    var directive_Name, i, index, len, ref, segment;
-    directive_Name = "";
-    ref = name.split('_');
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      segment = ref[index];
-      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-    }
-    return directive_Name;
-  };
-
-  map_Components = function(path, components) {
-    var component, i, len, results;
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
     results = [];
-    for (i = 0, len = components.length; i < len; i++) {
-      component = components[i];
-      results.push((function(component) {
-        return app.directive(resolve_Directive_Name(component), function() {
-          return {
-            templateUrl: "/angular/jade-html/component" + path + "/" + component
-          };
-        });
-      })(component));
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
     }
     return results;
-  };
-
-  design_Components = ['all_icons'];
-
-  guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form'];
-
-  navigation_Components = ['landing_bar', 'left_navigation'];
-
-  user_Components = ['article_box', 'articles', 'filters', 'queries', 'breadcrumbs', 'queries_history', 'results', 'search_bar'];
-
-  root_Components = ['alert_ok', 'alert_bad', 'article', 'help_navigation'];
-
-  map_Components('', root_Components);
-
-  map_Components('/design', design_Components);
-
-  map_Components('/guest', guest_Components);
-
-  map_Components('/navigation', navigation_Components);
-
-  map_Components('/user', user_Components);
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showComponent', function($compile, $location) {
-    return {
-      link: function($scope, element) {
-        var component, component_Name;
-        component_Name = $location.$$path.substring(1);
-        component = document.createElement(component_Name);
-        return element.replaceWith($compile(component)($scope));
-      }
-    };
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').directive('icon', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        if (attribute["class"]) {
-          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
-        }
-        if (attribute.type) {
-          return icon_Service.element_Html(attribute.type);
-        }
-        return icon_Service.element_Html('Default');
-      }
-    };
-  }).directive('showAllIcons', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        var all_Icons_Html, i, key, len, ref;
-        all_Icons_Html = "";
-        ref = icon_Service.mappings.keys();
-        for (i = 0, len = ref.length; i < len; i++) {
-          key = ref[i];
-          all_Icons_Html += icon_Service.element_Html(key);
-          if (attribute.$attr.withTitles) {
-            all_Icons_Html += " " + key + " <br/>";
-          }
-        }
-        return all_Icons_Html;
-      }
-    };
-  });
+  var app;
 
-}).call(this);
+  app = angular.module('TM_App');
 
-(function() {
-  angular.module('TM_App').directive('inputField', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        return 'a';
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('template/navigate_queries', 'navigate_queries', function(navigate_queries) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_queries(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_results(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.login = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...logging in ...";
-      return TM_API.login($scope.username, $scope.password, (function(_this) {
-        return function(data) {
-          var ref;
-          if (data.result === 'OK') {
-            $scope.infoMessage = 'Login OK';
-            return $timeout(function() {
-              return $window.location.href = '/angular/user/main';
-            });
-          } else {
-            $scope.infoMessage = null;
-            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
-          }
-        };
-      })(this));
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.get_Password = function() {
-      $scope.infoMessage = "...sending request ...";
-      return TM_API.pwd_Reset($scope.email, function(data) {
-        return $scope.infoMessage = data != null ? data.message : void 0;
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
       });
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.signup = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...Signing  up ...";
-      return TM_API.signup($scope.username, $scope.password, "$scope.confirm-password", $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
-        var ref;
-        if ((data != null ? data.result : void 0) === 'OK') {
-          $scope.infoMessage = 'Signup OK';
-          return $timeout(function() {
-            return $window.location.href = '/angular/user/main';
-          });
-        } else {
-          $scope.infoMessage = null;
-          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
-        }
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+    }
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/article'
+    });
+    return $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
   });
 
 }).call(this);
@@ -936,6 +743,9 @@
           element.$html = function() {
             return element.innerHTML;
           };
+          element.$text = function() {
+            return element.innerText;
+          };
         }
       }
       return element;
@@ -946,73 +756,266 @@
 }).call(this);
 
 (function() {
-  var app;
+  var app, routes_Names;
 
   app = angular.module('TM_App');
 
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
+  routes_Names = {
+    components: {
+      a: {}
+    },
+    views: {
+      guest: ['about', 'blank', 'features', 'pwd_forgot', 'home', 'login', 'sign_up'],
+      user_Root: ['navigate', 'main', 'docs'],
+      user_User: ['index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
 
 }).call(this);
 
 (function() {
-  var app;
+  var app, design_Components, guest_Components, map_Components, navigation_Components, resolve_Directive_Name, root_Components, user_Components;
 
   app = angular.module('TM_App');
 
-  app.service('ui_Routes', function() {});
+  String.prototype.upper_Case_First_Letter = function() {
+    return this.charAt(0).toUpperCase() + this.substr(1);
+  };
 
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
+  resolve_Directive_Name = function(name) {
+    var directive_Name, i, index, len, ref, segment;
+    directive_Name = "";
+    ref = name.split('_');
+    for (index = i = 0, len = ref.length; i < len; index = ++i) {
+      segment = ref[index];
+      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+    }
+    return directive_Name;
+  };
+
+  map_Components = function(path, components) {
+    var component, i, len, results;
     results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
+    for (i = 0, len = components.length; i < len; i++) {
+      component = components[i];
+      results.push((function(component) {
+        return app.directive(resolve_Directive_Name(component), function() {
+          return {
+            templateUrl: "/angular/jade-html/component" + path + "/" + component
+          };
+        });
+      })(component));
     }
     return results;
+  };
+
+  design_Components = ['all_icons'];
+
+  guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form'];
+
+  navigation_Components = ['landing_bar', 'left_navigation'];
+
+  user_Components = ['article_box', 'articles', 'filters', 'queries', 'breadcrumbs', 'queries_history', 'results', 'search_bar'];
+
+  root_Components = ['alert_ok', 'alert_bad', 'article', 'help_navigation'];
+
+  map_Components('', root_Components);
+
+  map_Components('/design', design_Components);
+
+  map_Components('/guest', guest_Components);
+
+  map_Components('/navigation', navigation_Components);
+
+  map_Components('/user', user_Components);
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        component_Name = $location.$$path.substring(1);
+        component = document.createElement(component_Name);
+        return element.replaceWith($compile(component)($scope));
+      }
+    };
   });
 
 }).call(this);
 
 (function() {
-  var app;
+  angular.module('TM_App').directive('icon', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        if (attribute["class"]) {
+          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
+        }
+        if (attribute.type) {
+          return icon_Service.element_Html(attribute.type);
+        }
+        return icon_Service.element_Html('Default');
+      }
+    };
+  }).directive('showAllIcons', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var all_Icons_Html, i, key, len, ref;
+        all_Icons_Html = "";
+        ref = icon_Service.mappings.keys();
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          all_Icons_Html += icon_Service.element_Html(key);
+          if (attribute.$attr.withTitles) {
+            all_Icons_Html += " " + key + " <br/>";
+          }
+        }
+        return all_Icons_Html;
+      }
+    };
+  });
 
-  app = angular.module('TM_App');
+}).call(this);
 
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/article'
+(function() {
+  angular.module('TM_App').directive('inputField', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        return 'a';
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('template/navigate_queries', 'navigate_queries', function(navigate_queries) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_queries(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
+    return {
+      link: function($scope, element) {
+        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
+          return $scope.$on('show-query-data', function(event, data) {
+            var compiled, content, html;
+            html = navigate_results(data);
+            compiled = $compile(html);
+            content = compiled($scope);
+            element.children().remove();
+            return element.append(content);
+          });
+        });
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    return TM_API.docs_Library(function(library) {
+      $scope.Views = library.Views;
+      $scope.show_Doc = function(article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      };
+      return $scope.show_Doc(library.Views.first().Articles.first());
     });
-    return $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.login = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...logging in ...";
+      return TM_API.login($scope.username, $scope.password, (function(_this) {
+        return function(data) {
+          var ref;
+          if (data.result === 'OK') {
+            $scope.infoMessage = 'Login OK';
+            return $timeout(function() {
+              return $window.location.href = '/angular/user/main';
+            });
+          } else {
+            $scope.infoMessage = null;
+            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+          }
+        };
+      })(this));
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.infoMessage = "...sending request ...";
+      return TM_API.pwd_Reset($scope.email, function(data) {
+        return $scope.infoMessage = data != null ? data.message : void 0;
+      });
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...Signing  up ...";
+      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref;
+        if ((data != null ? data.result : void 0) === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return $window.location.href = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);

@@ -7,7 +7,5 @@ angular.module('TM_App')
 
           $scope.load_Query = (query_Id)->
             $rootScope.$broadcast 'apply_Query', query_Id
-            #query_Service.load_Query query_Id
-
 
           query_Service.load_Data()

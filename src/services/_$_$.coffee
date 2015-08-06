@@ -21,5 +21,8 @@ app.service '$$', ()->
                 element.$html = ()->
                   element.innerHTML
 
+                element.$text = ()->
+                  element.innerText
+
             return element
     return $$
