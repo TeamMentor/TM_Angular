@@ -28,23 +28,23 @@ describe '| directives | component | filters', ->
     inject ($$)->
       using $$(element).$query,->
         @('div'          ).$attr().assert_Is 'ng-controller': 'Filters_Controller'  , class: 'ng-scope'
-        @('section'      ).$attr().assert_Is 'ng-show'      : 'view_Filters'        , class: 'row ng-hide'
+        @('.section'     ).$attr().assert_Is 'ng-show'      : 'view_Filters'        , class: 'section row ng-hide'
         @('#filters'     ).$attr().assert_Is 'ng-repeat'    : 'filter in filters'   , class: 'ng-scope'   , id: 'filters'
         @('#results'     ).$attr().assert_Is                                                                id: 'results'
-        @('#results a'   ).$attr().assert_Is 'ng-repeat': 'result in filter.results', class: 'ng-scope'
-        @('#results a dd').$attr().assert_Is 'ng-click' : 'apply_Filter(result.id, result.title)', 'ng-show': 'result.size >0', href: '#'
-        @('#results a dd').outerText.assert_Is 'title42'
+        @('#results dd'  ).$attr().assert_Is 'ng-repeat'    : 'result in filter.results', class: 'ng-scope'
+        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title)', 'ng-show': 'result.size >0', class: 'filter-link', href: '#'
+        @('#results dd a').outerText.assert_Is 'title42'
 
   it 'Check ng-show status on view_Filters broadcast',->
     inject ($$, $rootScope)->
       using $$(element).$query,->
         $rootScope.$broadcast 'view_Filters', true
         scope.$digest()
-        @('section'   ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'row' }
+        @('.section'  ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'section row' }
 
         $rootScope.$broadcast 'view_Filters', false
         scope.$digest()
-        @('section'   ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'row ng-hide' }
+        @('.section'  ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'section row ng-hide' }
 
 
   it 'Check that ng-click on filter broadcasts an apply_Filter event',->

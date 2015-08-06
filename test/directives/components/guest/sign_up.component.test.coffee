@@ -19,13 +19,15 @@ describe '| directives | guest | login-form', ->
   it 'check html elements',->
     inject ($$)->
       using $$(element).$query,->
-        @('section .label'  ).$html().assert_Is 'Sign Up'
-        @('#errorMessage'   ).$attr().assert_Is id: 'errorMessage', 'ng-show': 'showErrorMessage()', class: 'row ng-hide'
-        @('#infoMessage'    ).$attr().assert_Is id: 'infoMessage' , 'ng-show': 'showInfoMessage()' , class: 'row ng-hide'
+        @('.section .label' ).$html().assert_Is 'Sign Up'
+        @('#error'          ).$attr().assert_Is id: 'error', 'ng-show': 'showErrorMessage()', class: 'section row ng-hide'
+        @('#info'           ).$attr().assert_Is id: 'info' , 'ng-show': 'showInfoMessage()' , class: 'section row ng-hide'
 
         @('#sign-up-form'   ).$attr().assert_Is id: 'sign-up-form', role: 'form', 'ng-submit': 'signup()', class: 'ng-pristine ng-invalid ng-invalid-required ng-valid-email ng-valid-maxlength'
 
-        #@('#sign-up-form'   )
+        #console.log @('#username'       ) .$attr()
+        #@('form #username'  ) .$attr().assert_Is { class:'input-field' }
+#@('#sign-up-form'   )
 
         #console.log 'a'
 #@('form'       ).$attr().assert_Is                    id: 'login-form', class: 'ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength'             , role: 'form', 'ng-submit': 'login()'

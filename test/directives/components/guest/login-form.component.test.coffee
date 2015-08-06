@@ -26,7 +26,7 @@ describe '| directives | guest | login-form', ->
         @('#pwd_forgot').$attr().assert_Is                    id: 'pwd_forgot', class: 'text-right'                                                                , href: 'pwd_forgot'
 
         @('#btn-login' ).innerHTML.assert_Is 'Login'
-        @('#pwd_forgot').innerHTML.assert_Is 'Get Password'
+        @('#pwd_forgot').innerHTML.assert_Is 'Forgot your password?'
 
   it 'Confirm data binding of username and password', ->
     inject ($$)->

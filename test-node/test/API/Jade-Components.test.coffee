@@ -10,7 +10,7 @@ describe '| API | Jade-Components |', ->
 
   expected_Components = ['alert_bad', 'alert_ok', 'article', 'help_navigation',
                          'navigate_results',
-                         'result_article', 'result_saved_article','result_saved_search_term',
+                        'result_saved_article','result_saved_search_term',
                          'result_search_term', 'results_delete_share',
                          'search_result', 'start_view', 'user_panel'
                           #design
@@ -26,10 +26,10 @@ describe '| API | Jade-Components |', ->
                           #user
                          'user/article_box','user/articles', 'user/breadcrumbs', 'user/filters', 'user/queries', 'user/queries_history', 'user/results', 'user/search_bar']
 
-  expected_Views      = ['alert_application', 'article', 'blank', 'docs'
+  expected_Views      = ['alert_application', 'article', 'docs'
                          'curated_content', 'curated_content_article','error',
                          'new_user_onboard' ,'pwd_forgot' ,'pwd_reset' ,'pwd_sent' ,
-                         'search' ,'terms_and_conditions', 'user',
+                         'terms_and_conditions', 'user',
                          # guest
                          'guest/about','guest/features','guest/home','guest/login', 'guest/sign_up',
                          # user
