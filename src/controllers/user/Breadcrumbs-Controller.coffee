@@ -1,6 +1,3 @@
-window.using = (target,callback)->
-  callback.apply(target)
-
 angular.module 'TM_App'
        .controller 'Breadcrumbs_Controller', ($scope, $rootScope)->
           using $scope, ->

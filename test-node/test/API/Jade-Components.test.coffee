@@ -9,12 +9,17 @@ describe '| API | Jade-Components |', ->
   jade_Components = new Jade_Components()
 
   expected_Components = ['alert_bad', 'alert_ok', 'article', 'help_navigation',
-                        'login_form', 'navigate_results', 'pwd_forgot_form',
-                         'pwd_reset_form', 'result_article', 'result_saved_article','result_saved_search_term',
+                         'navigate_results',
+                         'result_article', 'result_saved_article','result_saved_search_term',
                          'result_search_term', 'results_delete_share',
-                         'search_result','sign_up_form', 'start_view', 'user_panel'
+                         'search_result', 'start_view', 'user_panel'
                           #design
                          'design/all_icons'
+                          #guest
+                         'guest/login_form'
+                         'guest/pwd_forgot_form'
+                         'guest/pwd_reset_form'
+                         'guest/sign_up_form'
                           #navigation
                          'navigation/landing_bar'
                          'navigation/left_navigation'

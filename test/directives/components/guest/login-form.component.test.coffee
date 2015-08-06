@@ -1,6 +1,6 @@
 expect = chai.expect
 
-describe '| directive | login-form', ->
+describe '| directives | guest | login-form', ->
 
   element     = null
   element_Raw = null

@@ -17,14 +17,16 @@ map_Components =  (path, components)->
         {  templateUrl: "/angular/jade-html/component#{path}/#{component}" }
 
 design_Components     = [ 'all_icons']
+guest_Components      = [ 'login_form', 'pwd_forgot_form', 'sign_up_form']
 navigation_Components = [ 'landing_bar', 'left_navigation']
 user_Components       = [ 'article_box', 'articles', 'filters', 'queries', 'breadcrumbs', 'queries_history', 'results', 'search_bar']
-root_Components       = [ 'alert_ok', 'alert_bad' , 'article', 'help_navigation', 'login_form', 'pwd_forgot_form', 'sign_up_form']
+root_Components       = [ 'alert_ok', 'alert_bad' , 'article', 'help_navigation']
 
 
 
 map_Components ''             , root_Components
 map_Components '/design'      , design_Components
+map_Components '/guest'       , guest_Components
 map_Components '/navigation'  , navigation_Components
 map_Components '/user'        , user_Components
 

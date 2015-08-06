@@ -70,3 +70,8 @@ Boolean::assert_Is_False = ->
 Boolean::assert_Is_True = ->
   expect(@.valueOf()).to.equal(true)
   return true
+
+#globals
+window.using = (target,callback)->
+  callback.apply(target)
+

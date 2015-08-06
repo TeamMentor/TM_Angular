@@ -12,11 +12,14 @@ app.service '$$', ()->
                     result[attr.name] = attr.value for attr in element.attributes
                   return result
 
-              if not element.$query
                 element.$query = (selector)->
                   $$(element.querySelector(selector))
+
                 element.$query_All = (selector)->
                   $$(element.querySelectorAll(selector))
+
+                element.$html = ()->
+                  element.innerHTML
 
             return element
     return $$
