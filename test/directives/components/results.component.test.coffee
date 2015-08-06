@@ -30,5 +30,4 @@ describe '| directive | component | index', ->
 
         @('#filters').$attr().assert_Is id: 'filters'
       using $$(element).$query_All,->
-        @('#filters td').length.assert_Is 2
-        console.log @('#filters td')
+        @('#filters td').length.assert_Is 0

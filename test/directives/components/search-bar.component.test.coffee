@@ -27,7 +27,7 @@ describe '| directive | search-bar', ->
       using $$(element).$query,->
         @('form'          ).$attr().assert_Is { 'ng-submit' : 'submit()', class: 'ng-pristine ng-valid' }
         @('select'        ).$attr().assert_Is { 'ng-model'  : 'selected_Technology', 'ng-change' : 'select_Technology(selected_Technology)','ng-options': 'technology as technology.title for technology in technologies', class       : 'ng-pristine ng-untouched ng-valid' }
-        @('#search-text'  ).$attr().assert_Is { id: 'search-text'  , type: 'text'  , class: 'search-input ng-pristine ng-untouched ng-valid' , "ng-model": 'text', placeholder: 'Type keywords here'}
+        @('#search-text'  ).$attr().assert_Is { id: 'search-text'  , type: 'text'  , class: 'search-input ng-pristine ng-untouched ng-valid' , "ng-model": 'text', placeholder: 'Search TEAM Mentor'}
         @('#search-button').$attr().assert_Is { id: 'search-button', type: 'submit', class: 'btn-search' }
 
   it 'Check options after first digest (should trigger query_data broadcast) ',->

@@ -28,7 +28,7 @@ describe '| API | Jade-Components |', ->
                          # guest
                          'guest/about','guest/features','guest/home','guest/login', 'guest/sign_up',
                          # user
-                         'user/article_box', 'user/index', 'user/main', 'user/navigate']
+                         'user/article_box', 'user/index', 'user/main']
 
 
   it 'constructor', ->
