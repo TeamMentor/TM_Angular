@@ -1,6 +1,6 @@
 expect = chai.expect
 
-describe '| directive | component | filters', ->
+describe '| directives | component | filters', ->
 
   element     = null
   element_Raw = null

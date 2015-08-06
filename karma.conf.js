@@ -8,19 +8,22 @@ module.exports = function(config) {
 
     files: [
               'build/js/lib.js',
-              'build/js/code.js',
-              //'bower_components/angular/angular.js',
-              //'bower_components/angular-route/angular-route.js',
+              //'build/js/code.js',
+              'build-js/**/*.js',
               'bower_components/angular-mocks/angular-mocks.js',
-              //'bower_components/angular-foundation-bower/mm-foundation-tpls.min.js',
-              //'bower_components/angular-slider/slider.js',
-              //'bower_components/angular-ui-router/release/angular-ui-router.min.js',
               'bower_components/chai/chai.js',
               'bower_components/sinonjs/sinon.js',
+              //'src/**/*.coffee',
               'test/**/*.coffee'
             ],
     exclude       : [ ],
-    preprocessors : { 'test/**/*.coffee': ['coffee'] },
+    preprocessors : {
+                        'test/**/*.coffee': ['coffee'],
+                        //'src/**/*.coffee': ['coffee'],
+                        //'src/**/*.js': ['coverage']
+                        //'build/js/code.js' : ['coverage']
+                        'build-js/**/*.js': ['coverage']
+                    },
     reporters     : ['progress'],
     port          : 9876,
     colors        : true,

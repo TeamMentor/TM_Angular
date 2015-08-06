@@ -39,7 +39,7 @@ describe '| directive | all-icons', ->
       $rootScope.$digest()
       expect(element.find('span').length).to.be.above 60
 
-  it '<show-all-icons/>',->
+  it '<show-all-icons with-titles/>',->
     inject ($compile,$rootScope)->
       element  = $compile('<show-all-icons with-titles />')({})
       $rootScope.$digest()

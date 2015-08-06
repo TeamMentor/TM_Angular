@@ -1,6 +1,6 @@
 expect = chai.expect
 
-describe '| directive | |views | index', ->
+xdescribe '| directive | |views | index', ->
 
   element     = null
   element_Raw = null

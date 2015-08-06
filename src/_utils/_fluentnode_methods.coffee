@@ -36,8 +36,8 @@ String::contains = (value)->
 
 # not in fluent node
 
-String::upper_Case_First_Letter = ()->
-  @.charAt(0).toUpperCase() + @.substr(1)
+#String::upper_Case_First_Letter = ()->
+#  @.charAt(0).toUpperCase() + @.substr(1)
 
 
 Object.defineProperty Object.prototype, 'keys',
