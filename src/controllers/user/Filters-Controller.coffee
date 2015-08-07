@@ -1,10 +1,8 @@
 angular.module('TM_App')
        .controller 'Filters_Controller', ($sce, $scope, $rootScope, query_Service,icon_Service)->
-          query_Id = null
 
           $scope.$on 'filter_data', (event, data)->
             if data?.filters
-              query_Id = data.id
               $scope.filters = data.filters
               for filter in $scope.filters
                 for result in filter.results

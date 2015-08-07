@@ -2,18 +2,9 @@ expect = chai.expect;
 
 describe '| controllers | user | Breadcrumbs-Controller',->
   scope = null
-  #articles_Source      = [ { title:'tech 1', id: 'id_1' },
-  #  { title: 'tech 2', id: 'id_2' }]
-  #articles_Transformed = [ { title: 'tech 1', id: 'id_1', url: '/angular/user/article/id_1/tech-1' },
-  #  { title: 'tech 2', id: 'id_2', url: '/angular/user/article/id_2/tech-2' } ]
 
   beforeEach ->
     module('TM_App')
-
-  beforeEach ->
-  #  inject ($httpBackend)->
-  #    $httpBackend.whenGET('/api/data/query_tree/query-6234f2d47eb7').respond ()->
-  #      return [200, { results: articles_Source }  ]
 
   beforeEach ->
     inject ($controller, $rootScope, $httpBackend)->
@@ -39,7 +30,7 @@ describe '| controllers | user | Breadcrumbs-Controller',->
           'aaa' : { query_Id : 'aaa_id', title : 'aaa_title' }
           'bbb' : { query_Id : 'bbb_id', title : 'bbb_title' }
           'ccc' : { query_Id : 'ccc_id', title : 'ccc_title' }
-      @.current_Path = '/aaa/bbb/ccc'
+      @.current_Path = '/aaa/bbb/ccc/ddd'                         # the last /ddd should be ignored because it is not on the @.history
       @.refresh_Breadcrumbs()
       @.breadcrumbs.assert_Is [ { query_Id: 'aaa_id', title: 'aaa_title', path: ''         }
                                 { query_Id: 'bbb_id', title: 'bbb_title', path: '/aaa'     }

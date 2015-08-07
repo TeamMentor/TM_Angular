@@ -33,7 +33,7 @@ describe '| directives | component | filters', ->
         @('#results'     ).$attr().assert_Is                                                                id: 'results'
         @('#results div' ).$attr().assert_Is 'ng-repeat'    : 'result in filter.results', class: 'ng-scope'
         @('#results dd'  ).$attr().assert_Is 'ng-show'      : 'result.size > 0'
-        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title)', class: 'filter-link', href: '#'
+        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title)', href: '#'
         @('#results dd a').$text().assert_Is 'title42'
 
   it 'Check ng-show status on view_Filters broadcast',->

@@ -48,11 +48,7 @@ class Icon_Service
     element
 
   element_Html: (key)=>
-    element = @.element(key)
-    if element
-      element[0].outerHTML
-    else
-      ""
+    @.element(key)[0]?.outerHTML
 
   simple_Element: (name, title)=>
     element = angular.element('<span>')

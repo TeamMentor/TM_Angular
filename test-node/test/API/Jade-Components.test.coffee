@@ -24,8 +24,8 @@ describe '| API | Jade-Components |', ->
                          'navigation/landing_bar'
                          'navigation/left_navigation'
                           #user
-                         'user/article_box','user/articles',
-                         'user/breadcrumbs', 'user/filters', 'user/pagination'
+                         'user/active_filter','user/article_box','user/articles',
+                         'user/breadcrumbs', 'user/filters','user/filters_active', 'user/pagination'
                          'user/queries', 'user/queries_history',
                          'user/results', 'user/search_bar']
 

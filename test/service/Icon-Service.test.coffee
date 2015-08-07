@@ -32,6 +32,8 @@ describe '| services | Icon-Service', ->
       @.element_Html(test_Key).assert_Is test_Key_Html
       expect(@.element_Html('aaa')).to.contain('icon-Default')
 
+      expect(@.element_Html(null)).to.contain('icon-Default')
+
   it 'simple_Element', ->
     using icon_Service, ->
       @.simple_Element(     'icon-Close', 'Close')[0].outerHTML.assert_Is '<span class="icon-Close" title="Close"></span>'

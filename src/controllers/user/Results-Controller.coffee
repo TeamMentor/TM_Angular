@@ -5,6 +5,7 @@ angular.module 'TM_App'
           $scope.view_Filters     = false
           $scope.current_Query_Id = null
 
+
           $scope.$on 'query_data', (event,data)->
             $scope.current_Query_Id = data?.id
             $scope.results_Size = data?.results?.length
@@ -14,11 +15,13 @@ angular.module 'TM_App'
             $scope.refresh_Filters()
 
           $scope.$on 'apply_Filter', (event,filter_Id, filter_Title )->
-            $scope.current_Filters[filter_Id] = filter_Title
-            $scope.refresh_Filters()
+            if filter_Id
+              $scope.current_Filters[filter_Id] = filter_Title
+              $scope.refresh_Filters()
 
           $scope.$on 'clear_Filters' , ->
             $scope.current_Filters = {}
+
 
           $scope.toggle_Filters = ->
             $scope.view_Filters = not $scope.view_Filters

@@ -31,5 +31,12 @@ module.exports = function(config) {
     autoWatch     : true,            // enable / disable watching file and executing tests whenever any file changes
     browsers      : ['PhantomJS'],    //browsers: ['Chrome','PhantomJS'],
     singleRun     : true  // if true, Karma captures browsers, runs the tests and exits
+
+    ,
+    coverageReporter : {
+      type : 'html',
+      dir : '~/coverage/'
+    }
+
   })
-}
+};
