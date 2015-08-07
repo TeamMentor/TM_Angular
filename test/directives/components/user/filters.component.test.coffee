@@ -31,9 +31,10 @@ describe '| directives | component | filters', ->
         @('.section'     ).$attr().assert_Is 'ng-show'      : 'view_Filters'        , class: 'section row ng-hide'
         @('#filters'     ).$attr().assert_Is 'ng-repeat'    : 'filter in filters'   , class: 'ng-scope'   , id: 'filters'
         @('#results'     ).$attr().assert_Is                                                                id: 'results'
-        @('#results dd'  ).$attr().assert_Is 'ng-repeat'    : 'result in filter.results', class: 'ng-scope'
-        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title)', 'ng-show': 'result.size >0', class: 'filter-link', href: '#'
-        @('#results dd a').outerText.assert_Is 'title42'
+        @('#results div' ).$attr().assert_Is 'ng-repeat'    : 'result in filter.results', class: 'ng-scope'
+        @('#results dd'  ).$attr().assert_Is 'ng-show'      : 'result.size > 0'
+        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title)', class: 'filter-link', href: '#'
+        @('#results dd a').$text().assert_Is 'title42'
 
   it 'Check ng-show status on view_Filters broadcast',->
     inject ($$, $rootScope)->
@@ -51,4 +52,4 @@ describe '| directives | component | filters', ->
     scope.$on 'apply_Filter', (event,filter_Id, filter_Title )->
       filter_Id   .assert_Is 'id'
       filter_Title.assert_Is 'title'
-    element_Raw.find('dd').triggerHandler('click')
+    element_Raw.find('a').triggerHandler('click')

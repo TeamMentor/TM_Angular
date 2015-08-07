@@ -24,14 +24,17 @@ describe '| API | Jade-Components |', ->
                          'navigation/landing_bar'
                          'navigation/left_navigation'
                           #user
-                         'user/article_box','user/articles', 'user/breadcrumbs', 'user/filters', 'user/queries', 'user/queries_history', 'user/results', 'user/search_bar']
+                         'user/article_box','user/articles',
+                         'user/breadcrumbs', 'user/filters', 'user/pagination'
+                         'user/queries', 'user/queries_history',
+                         'user/results', 'user/search_bar']
 
   expected_Views      = ['alert_application', 'article', 'docs'
                          'curated_content', 'curated_content_article','error',
-                         'new_user_onboard' ,'pwd_forgot' ,'pwd_reset' ,'pwd_sent' ,
+                         'new_user_onboard' ,'pwd_reset' ,'pwd_sent' ,
                          'terms_and_conditions', 'user',
                          # guest
-                         'guest/about','guest/features','guest/home','guest/login', 'guest/sign_up',
+                         'guest/about','guest/features','guest/home','guest/login', 'guest/pwd_forgot', 'guest/sign_up',
                          # user
                          'user/article_box', 'user/index', 'user/main']
 
@@ -44,6 +47,7 @@ describe '| API | Jade-Components |', ->
   it 'components (check expected)', ->
     using jade_Components, ->
       for component in @.components()
+        console.log component
         expected_Components.assert_Contains component
       @.components().assert_Contains expected_Components
       expected_Components.assert_Contains @.components()

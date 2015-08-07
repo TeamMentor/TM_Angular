@@ -15,7 +15,7 @@ app.run ($templateCache)->
  
    $templateCache.put('/angular/jade-html/component/design/all_icons' , "<main><section class=\"row\"><div class=\"col-3\"><h4>injected one at the time</h4><icon class=\"Design\"></icon><icon type=\".Net\"></icon><icon type=\"Java\"></icon><icon type=\"Principle\"></icon><icon type=\"Design\"></icon><icon type=\"Principle\"></icon><icon type=\"Requirement\"></icon></div><div class=\"col-3\"><h4>all in one go (without titles)</h4><show-all-icons></show-all-icons></div><div class=\"col-3\"><h4>all in one go (with titles)</h4><show-all-icons with-titles=\"with-titles\"></show-all-icons></div></section></main>") 
  
-   $templateCache.put('/angular/jade-html/component/guest/login_form' , "<!-- Getting Started--><!-- User Inputs--><div ng-controller=\"Login_Controller\"><div class=\"section row__label\"><div class=\"label\">Login</div></div><div ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div></div><div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div><div class=\"section row\"><form id=\"login-form\" role=\"form\" ng-submit=\"login()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"button-field\"><button type=\"submit\" id=\"btn-login\">Login</button></div><div class=\"button-field\"><br/><a id=\"pwd_forgot\" href=\"pwd_forgot\" class=\"text-right\">Forgot your password?</a></div></form></div></div>") 
+   $templateCache.put('/angular/jade-html/component/guest/login_form' , "<!-- Getting Started--><div ng-controller=\"Login_Controller\"><div class=\"section row__label\"><div class=\"label\">Login</div></div><div ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div></div><div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div><div class=\"section row\"><form id=\"login-form\" role=\"form\" ng-submit=\"login()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"button-field\"><button type=\"submit\" id=\"btn-login\">Login</button></div><div class=\"button-field text-right\"><br/><a id=\"pwd_forgot\" href=\"pwd_forgot\" class=\"text-right\">Forgot your password?</a></div></form></div></div>") 
  
    $templateCache.put('/angular/jade-html/component/guest/pwd_forgot_form' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
@@ -39,9 +39,7 @@ app.run ($templateCache)->
  
    $templateCache.put('/angular/jade-html/component/navigation/landing_bar' , "<!-- Terms and Conditions Navigation--><nav class=\"container\"><a ui-sref=\"home\" class=\"logo\"></a><div class=\"links\"><ul class=\"display-inline\"><li><a ui-sref=\"about\">About</a></li><li><a ui-sref=\"features\">Features</a></li><li><a ui-sref=\"docs\">Docs</a></li><li><a ui-sref=\"sign_up\">Sign Up</a></li><li><a ui-sref=\"login\">Login</a></li></ul></div></nav>") 
  
-   $templateCache.put('/angular/jade-html/component/navigation/left_navigation' , "<!-- Application Icons--><!--mixin back-iconspan.icon-Arrow-Left
---><!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right
---><!-- Filter Icons--><!-- filter icons--><aside ng-controller=\"User_Navigation_Controller\"><ul><li><div class=\"logo\"></div></li><li><a ui-sref=\"main\"><span class=\"icon-Home\"></span></a></li><li><!--a(ui-sref=\"queries\")+index-icon--><a ng-click=\"open_Query_State()\"><span title=\"Index\" class=\"icon-Index\"></span></a></li><li><a ui-sref=\"docs\"><span title=\"Documentation\" class=\"icon-Info\"></span></a></li><li><a href=\"/angular/guest/home\"><span title=\"Logout\" class=\"icon-Logout\"></span></a><!--a(ui-sref=\"logout\")--></li></ul></aside>") 
+   $templateCache.put('/angular/jade-html/component/navigation/left_navigation' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><aside ng-controller=\"User_Navigation_Controller\"><ul><li><div class=\"logo\"></div></li><li><a ui-sref=\"main\"><icon class=\"Home\"></icon></a></li><li><!--a(ui-sref=\"queries\")--><a ng-click=\"open_Query_State()\"><icon class=\"Index\"></icon></a></li><li><a ui-sref=\"docs\"><icon class=\"Info\"></icon></a></li><li><a href=\"/angular/guest/home\"><icon class=\"Logout\"></icon></a><!--a(ui-sref=\"logout\")--></li></ul></aside>") 
  
    $templateCache.put('/angular/jade-html/component/result_saved_article' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
@@ -70,11 +68,11 @@ app.run ($templateCache)->
  
    $templateCache.put('/angular/jade-html/component/user/breadcrumbs' , "<div ng-controller=\"Breadcrumbs_Controller\"><dl class=\"breadcrumbs\"><dd ng-repeat=\"breadcrumb in breadcrumbs\" class=\"active\"><a ng-href=\"#\" ng-click=\"load_Query(breadcrumb)\">\{\{breadcrumb.title}}</a></dd></dl></div>") 
  
-   $templateCache.put('/angular/jade-html/component/user/filters' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><div ng-show=\"view_Filters\" class=\"section row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div></dt><div id=\"results\"><dd ng-repeat=\"result in filter.results\"><a href=\"#\" ng-click=\"apply_Filter(result.id, result.title)\" ng-show=\"result.size &gt;0\" class=\"filter-link\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></a><!--a.close-link(href='#')+close-icon--></dd></div></div></dl></div></div>") 
+   $templateCache.put('/angular/jade-html/component/user/filters' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><div ng-show=\"view_Filters\" class=\"section row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div></dt><div id=\"results\"><div ng-repeat=\"result in filter.results\">            <dd ng-show=\"result.size &gt; 0\"><a href=\"#\" ng-click=\"apply_Filter(result.id, result.title)\" class=\"filter-link\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></a></dd><!--a.close-link(href='#')+close-icon--></div></div></div></dl></div></div>") 
  
-   $templateCache.put('/angular/jade-html/component/user/queries' , "<!-- Application Icons--><!--mixin back-iconspan.icon-Arrow-Left
---><!--mixin filter-icon--><!--  span.icon-Filter--><!--mixin forward-iconspan.icon-Arrow-Right
---><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Queries_Controller\"><dl><dt><span class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon
+   $templateCache.put('/angular/jade-html/component/user/pagination' , "<div class=\"section row pagination\"><div class=\"previous\"><span class=\"icon-Arrow-Left\"></span></div><div class=\"number\"><select><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></div><div class=\"next\"><span class=\"icon-Arrow-Right\"></span></div></div>") 
+ 
+   $templateCache.put('/angular/jade-html/component/user/queries' , "<!--include ../../mixins/icons.jade--><div ng-controller=\"Queries_Controller\"><dl><dt><span class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon
 --></span></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><!--if container.size > 0--><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/queries_history' , "<div ng-controller=\"Queries_History_Controller\"><nav><ul class=\"display-inline\"><li ng-repeat=\"(key, value) in history\"><a ng-href=\"#\" ng-click=\"load_Query(key)\">\{\{value}}</a></li></ul></nav></div>") 
@@ -177,10 +175,28 @@ app.run ($templateCache)->
 </td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
 </td></tr></table></div></div></div></div>") 
  
+   $templateCache.put('/angular/jade-html/views/guest/pwd_forgot' , "<!--extends ../_to_be_wired_in/_layouts/page_logged_out--><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+--><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
+--><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
+--><!-- Getting Started--><!--mixin forgot-pwd-form.section.row__label
+  .label Forgot your password?
+.section.row
+  form#forgot-pwd-form(action='#')
+    .section.row
+      .col-8.input-field
+        +email-input
+      .col-4.button-field
+        br
+        +get-password-button
+--><div class=\"section row\"><div class=\"col-4\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
+</td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>
+</td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
+</td></tr></table></div></div></div><div class=\"col-8\"><pwd-forgot-form></pwd-forgot-form></div></div>") 
+ 
    $templateCache.put('/angular/jade-html/views/guest/sign_up' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
---><!-- Getting Started--><!-- User Inputs--><!--mixin forgot-pwd-form.section.row__label
+--><!-- Getting Started--><!--mixin forgot-pwd-form.section.row__label
   .label Forgot your password?
 .section.row
   form#forgot-pwd-form(action='#')
@@ -199,24 +215,6 @@ app.run ($templateCache)->
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><!-- User Inputs--><div class=\"application\"><div class=\"section row\"><div class=\"col-1\"></div><div class=\"col-10\"><div class=\"section row__label\"><div class=\"label\">Welcome to TEAM Mentor</div><ul class=\"display-inline\"><li class=\"full-width\"><button>Go to app</button></li></ul></div><div class=\"section row\"><div class=\"article result\"><div class=\"summary\"><h2>Search</h2><p>TEAM Mentor 4.0 has faster and more reliable search results. Search the database by filter, issue or technology.</p></div></div><div class=\"article result\"><div class=\"summary\"><h2>Navigate</h2><p>Not sure where to start? You can browse our index and find groups of articles that cover entire topics.</p></div></div><div class=\"article result\"><div class=\"summary\"><h2>Filters</h2><p>Filter your results to find articles that directly relate to you. You can filter by technology, phase and type.</p></div></div></div></div><div class=\"col-1\"></div></div></div>") 
- 
-   $templateCache.put('/angular/jade-html/views/pwd_forgot' , "<!--extends ../_to_be_wired_in/_layouts/page_logged_out--><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
---><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
---><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
---><!-- Getting Started--><!-- User Inputs--><!--mixin forgot-pwd-form.section.row__label
-  .label Forgot your password?
-.section.row
-  form#forgot-pwd-form(action='#')
-    .section.row
-      .col-8.input-field
-        +email-input
-      .col-4.button-field
-        br
-        +get-password-button
---><div class=\"section row\"><div class=\"col-4\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
-</td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>
-</td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
-</td></tr></table></div></div></div><div class=\"col-8\"><pwd-forgot-form></pwd-forgot-form></div></div>") 
  
    $templateCache.put('/angular/jade-html/views/pwd_reset' , "<!--extends ../_to_be_wired_in/_layouts/page_logged_out--><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
@@ -436,7 +434,7 @@ Attn: Ombudsman
  
    $templateCache.put('/angular/jade-html/views/user/article_box' , "<div class=\"main\"><div class=\"section row\"><div class=\"col-3\"><article-box></article-box></div><div class=\"col-9\"></div></div></div>") 
  
-   $templateCache.put('/angular/jade-html/views/user/index' , "<!--.application--><div ng-controller=\"Index_Controller\"><div class=\"main\"><div class=\"section row\"><div class=\"\{\{column_Left}}\"><queries></queries></div><div class=\"\{\{column_Middle}}\"><results></results><breadcrumbs></breadcrumbs><articles></articles><div class=\"section row pagination\"><div class=\"previous\"><span class=\"icon-Arrow-Left\"></span></div><div class=\"number\"><select><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></div><div class=\"next\"><span class=\"icon-Arrow-Right\"></span></div></div></div><div class=\"\{\{column_Right}}\"><filters></filters></div></div></div></div>") 
+   $templateCache.put('/angular/jade-html/views/user/index' , "<!--.application--><div ng-controller=\"Index_Controller\"><div class=\"main\"><div class=\"section row\"><div class=\"\{\{column_Left}}\"><queries></queries></div><div class=\"\{\{column_Middle}}\"><results></results><breadcrumbs></breadcrumbs><articles></articles><pagination></pagination></div><div class=\"\{\{column_Right}}\"><filters></filters></div></div></div></div>") 
  
    $templateCache.put('/angular/jade-html/views/user/main' , "<!DOCTYPE html><html lang=\"en\"><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
