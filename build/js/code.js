@@ -331,57 +331,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').directive('inputField', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        return 'a';
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateQueries', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('template/navigate_queries', 'navigate_queries', function(navigate_queries) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_queries(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('navigateResults', function($compile, Load_Jade, TM_API) {
-    return {
-      link: function($scope, element) {
-        return Load_Jade('component/navigate_results', 'navigate_results', function(navigate_results) {
-          return $scope.$on('show-query-data', function(event, data) {
-            var compiled, content, html;
-            html = navigate_results(data);
-            compiled = $compile(html);
-            content = compiled($scope);
-            element.children().remove();
-            return element.append(content);
-          });
-        });
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
   var app;
 
   app = angular.module('TM_App');
@@ -618,42 +567,6 @@
 
   angular.module('TM_App').service('icon_Service', function() {
     return new Icon_Service();
-  });
-
-}).call(this);
-
-(function() {
-  var app, config;
-
-  app = angular.module('TM_App');
-
-  config = {
-    cache_Jade_Js: true
-  };
-
-  app.service('Load_Jade', function($q, $document) {
-    return function(jade_File, method_Name, callback) {
-      var deferrer, error, script, src;
-      method_Name = 'jade_' + method_Name;
-      deferrer = $q.defer();
-      if (config.cache_Jade_Js && window[method_Name]) {
-        callback(window[method_Name], deferrer.resolve);
-      } else {
-        try {
-          script = $document[0].createElement('script');
-          src = "/angular/jade/" + jade_File;
-          script.src = src;
-          $document[0].body.appendChild(script);
-          script.onload = function() {
-            return callback(window[method_Name], deferrer.resolve);
-          };
-        } catch (_error) {
-          error = _error;
-          console.log(error);
-        }
-      }
-      return deferrer.promise;
-    };
   });
 
 }).call(this);
