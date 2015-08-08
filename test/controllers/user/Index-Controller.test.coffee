@@ -1,6 +1,6 @@
 expect = chai.expect;
 
-describe '| controllers | Index-Controller.test',->
+describe '| controllers | user | Index-Controller.test',->
   scope = null
 
   beforeEach ->

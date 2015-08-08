@@ -19,7 +19,7 @@ map_Components =  (path, components)->
 design_Components     = [ 'all_icons']
 guest_Components      = [ 'login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form']
 navigation_Components = [ 'landing_bar', 'left_navigation']
-user_Components       = [ 'active_filter', 'article_box', 'articles', 'breadcrumbs', 'filters', 'pagination', 'queries', 'queries_history', 'results', 'search_bar']
+user_Components       = [ 'active_filter', 'article_box', 'articles', 'breadcrumbs', 'filters','filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar']
 root_Components       = [ 'alert_ok', 'alert_bad' , 'article', 'help_navigation']
 
 map_Components ''             , root_Components

@@ -2,9 +2,6 @@ expect = chai.expect
 
 describe '| services | Query-Service', ->
 
-  #test_Key      = '.NET'
-  #test_Key_Html = '<span class="icon-Net" title=".NET"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span><span class="path11"></span><span class="path12"></span></span>'
-
   beforeEach ()->
     module('TM_App')
     #inject ($injector)->
@@ -56,12 +53,40 @@ describe '| services | Query-Service', ->
 
       using query_Service, ->
         @.load_Query('an-query-id')
-        $rootScope.$digest()
         expect(@.data).to.equal null
         $httpBackend.flush()
         @.data.assert_Is [{ a: 42 }]
 
   it 'load_Filter', ->
     inject (query_Service, $rootScope, $httpBackend)->
+
+      $httpBackend.expectGET('/api/data/query_tree_filtered/an-query-id/an-filter-id').respond  [{ a: 42 }]
+
+      $rootScope.$on 'query_data', (event, data)->
+        data.assert_Is  [{ a: 42 }]
+      $rootScope.$on 'filter_data', (event, data)->
+        data.assert_Is [{ a: 42 }]
+
       using query_Service, ->
-        @.load_Query('an-query-id')
+        @.load_Filter('an-query-id', 'an-filter-id')
+        $httpBackend.flush()
+        @.data.assert_Is [{ a: 42 }]
+
+  it 'reload_Data', ->
+
+    inject (query_Service, $rootScope, $httpBackend)->
+
+      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond  [{ a: 42 }]
+
+      $rootScope.$on 'clear_Filters', (event, data)-> expect(data).to.equal undefined
+      $rootScope.$on 'clear_Query'  , (event, data)-> expect(data).to.equal undefined
+      $rootScope.$on 'clear_Search' , (event, data)-> expect(data).to.equal undefined
+
+      using query_Service, ->
+        $rootScope.$digest()
+        @.reload_Data()
+        @.data.assert_Is []
+        $rootScope.$digest()
+        $httpBackend.flush()
+        @.data.assert_Is [{ a: 42 }]
+

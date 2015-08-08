@@ -88,7 +88,6 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       $httpBackend.whenGET url_Query_Tree
                   .respond ()-> [200, { }]
       $httpBackend.flush()
-      console.log scope.technologies
       scope.technologies.assert_Is [default_Technology]
 
   it 'Check query_data broadcast (when query_tree returns filters but not technology)', ()->

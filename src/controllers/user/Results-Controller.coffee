@@ -38,3 +38,9 @@ angular.module 'TM_App'
           $scope.clear_Filter = (key)->
             delete $scope.current_Filters[key]
             $scope.refresh_Filters()
+
+
+
+
+          $scope.$on 'filter_data', (event,data)->
+            #$scope.pages = results_Size
