@@ -4,5 +4,5 @@ describe 'misc tests', ->
     module('TM_App')
 
   it 'testing events', ->
-    inject ($controller)->
+    inject ($controller, $rootScope)->
       $controller('Help_Controller', { $scope: {} })

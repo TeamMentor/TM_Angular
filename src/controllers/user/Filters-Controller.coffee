@@ -18,5 +18,9 @@ angular.module('TM_App')
 
           query_Service.load_Data()
 
+          window._this      = this
+          window._scope     = $scope
+          window._rootScopt = $rootScope
+
 
 

@@ -1130,7 +1130,10 @@
     $scope.apply_Filter = function(filter_Id, filter_Title) {
       return $rootScope.$broadcast('apply_Filter', filter_Id, filter_Title);
     };
-    return query_Service.load_Data();
+    query_Service.load_Data();
+    window._this = this;
+    window._scope = $scope;
+    return window._rootScopt = $rootScope;
   });
 
 }).call(this);
