@@ -1,6 +1,6 @@
 expect = chai.expect
 
-xdescribe '| directive | |views | index', ->
+describe '| directive | |views | index', ->
 
   element     = null
   element_Raw = null
@@ -26,8 +26,8 @@ xdescribe '| directive | |views | index', ->
 
       using $$(elem[0]).$query,->
         @('div'       ).$attr().assert_Is { class: 'ng-scope' , 'ng-controller': 'Index_Controller'}
-        @('section'   ).$attr().assert_Is { class: 'row' }
-        @('main'      ).$attr().assert_Is {}
+        @('section'   ).$attr().assert_Is { class: 'row__label' }
+        @('.main'     ).$attr().assert_Is { class: 'main'       }
         @('queries'   ).$attr().assert_Is {}
         @('articles'  ).$attr().assert_Is {}
         @('filters'   ).$attr().assert_Is {}
