@@ -18,8 +18,8 @@ class TM_GraphDB_Http
   query_tree: (query_Id,callback)=>
     @.open "/data/query_tree/#{query_Id}", callback
 
-  query_tree_articles: (query_Id,from, size, callback)=>
-    @.open "/data/query_tree_articles/#{query_Id}/#{from}/#{size}", callback
+  query_tree_articles: (query_Id,from, to, callback)=>
+    @.open "/data/query_tree_articles/#{query_Id}/#{from}/#{to}", callback
 
   query_tree_filters: (query_Id,callback)=>
     @.open "/data/query_tree_filters/#{query_Id}", callback
