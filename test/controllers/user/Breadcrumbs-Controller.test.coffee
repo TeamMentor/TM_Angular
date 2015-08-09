@@ -68,8 +68,7 @@ describe '| controllers | user | Breadcrumbs-Controller',->
     using scope, ->
       @.current_Path = '....'
       @.load_Query()                    ; @.current_Path.assert_Is '....'
-      @.load_Query { path: '1111'}      ; @.current_Path.assert_Is '....'
-      @.load_Query { query_Id: '1111'}  ; @.current_Path.assert_Is '....'               # both values need to be provided
+      @.load_Query { path: '1111'}      ; @.current_Path.assert_Is '....'     # query_Id value need to be provided
 
       @.$on 'apply_Query', (event, query_Id)->
         query_Id.assert_Is '2222'

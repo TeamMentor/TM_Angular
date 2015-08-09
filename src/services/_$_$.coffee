@@ -1,4 +1,5 @@
 # this file is called _$_$.coffee due to https://github.com/wallabyjs/public/issues/219
+#   update: wallaby now seems to handle ok the $$ file but Karma doesn't
 
 app = angular.module('TM_App')
 
@@ -23,6 +24,9 @@ app.service '$$', ()->
 
                 element.$text = ()->
                   element.innerText
+
+                element.$click = ()->
+                  angular.element(element).triggerHandler('click')
 
             return element
     return $$

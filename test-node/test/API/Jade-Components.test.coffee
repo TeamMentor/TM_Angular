@@ -9,12 +9,11 @@ describe '| API | Jade-Components |', ->
   jade_Components = new Jade_Components()
 
   expected_Components = ['alert_bad', 'alert_ok', 'article', 'help_navigation',
-                         'navigate_results',
-                        'result_saved_article','result_saved_search_term',
+                         'result_saved_article','result_saved_search_term',
                          'result_search_term', 'results_delete_share',
                          'search_result', 'start_view', 'user_panel'
                           #design
-                         'design/all_icons'
+                         'design/all_icons', 'design/events'
                           #guest
                          'guest/login_form'
                          'guest/pwd_forgot_form'
@@ -47,7 +46,7 @@ describe '| API | Jade-Components |', ->
   it 'components (check expected)', ->
     using jade_Components, ->
       for component in @.components()
-        console.log component
+        #console.log component
         expected_Components.assert_Contains component
       @.components().assert_Contains expected_Components
       expected_Components.assert_Contains @.components()

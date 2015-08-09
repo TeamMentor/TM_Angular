@@ -1,10 +1,11 @@
 expect = chai.expect
 
-describe '| directive | component | index', ->
+describe '| directive | components | user | index', ->
 
   element     = null
   element_Raw = null
   scope       = null
+
 
   beforeEach ()->
     module('TM_App')
@@ -12,15 +13,23 @@ describe '| directive | component | index', ->
   beforeEach ()->
     inject ($compile,$rootScope)->
       element_Raw = angular.element('<results/>')
-      element     = $compile(element_Raw)($rootScope.$new())[0]
+      scope = $rootScope.$new()
+      element     = $compile(element_Raw)(scope)[0]
       $rootScope.$digest()
-      scope = element_Raw.find('div').eq(0).scope()     # getting the scope for the Controller
+      scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
+
+    #inject ($document)->
+    #  body = angular.element $document[0].body
+    #  body.find('results').remove()
+    #  body.append element
 
   it 'Check html elements',->
     inject ($$)->
       using $$(element).$query,->
         @('div').$attr().assert_Is { 'ng-controller': 'Results_Controller', class: 'ng-scope' }
+        @('#resultsTitle').$attr().assert_Is id: 'resultsTitle', class: 'label ng-binding'
+        @('#resultsTitle').$html().assert_Is 'Query has  articles'
         @('#view_Filters').$attr().assert_Is
                             id        : 'view_Filters'
                             href      : '#'
@@ -28,7 +37,10 @@ describe '| directive | component | index', ->
                             'ng-click': 'toggle_Filters()'
                             class     : 'button btn-result icon-Filter'
 
-        #@('#filters').$attr().assert_Is id: 'filters'
+  it 'Check results_Size binding',->
 
-      using $$(element).$query_All,->
-        @('#filters td').length.assert_Is 0
+    inject ($$)->
+      using $$(element).$query,->
+        scope.results_Size = 42
+        scope.$digest()
+        @('#resultsTitle').$html().assert_Is 'Query has 42 articles'

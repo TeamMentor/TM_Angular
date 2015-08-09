@@ -33,6 +33,6 @@ angular.module 'TM_App'
                   @.refresh_Breadcrumbs()
 
             @.load_Query = (breadcrumb)=>
-              if breadcrumb?.path and breadcrumb?.query_Id
+              if breadcrumb?.query_Id
                 @.current_Path = breadcrumb.path
                 $rootScope.$broadcast 'apply_Query', breadcrumb.query_Id

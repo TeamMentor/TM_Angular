@@ -15,12 +15,12 @@
     $templateCache.put('/angular/jade-html/component/alert_ok', "<div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div>");
     $templateCache.put('/angular/jade-html/component/article', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><div class=\"col-9\"><div class=\"article\"><h1>\{\{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></div><br/><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></div></div><div class=\"col-3\"><div class=\"section article-info\"><div class=\"section row__label\"><div class=\"label\">Relates to:</div></div><div class=\"section row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></div></div></div>");
     $templateCache.put('/angular/jade-html/component/design/all_icons', "<main><section class=\"row\"><div class=\"col-3\"><h4>injected one at the time</h4><icon class=\"Design\"></icon><icon type=\".Net\"></icon><icon type=\"Java\"></icon><icon type=\"Principle\"></icon><icon type=\"Design\"></icon><icon type=\"Principle\"></icon><icon type=\"Requirement\"></icon></div><div class=\"col-3\"><h4>all in one go (without titles)</h4><show-all-icons></show-all-icons></div><div class=\"col-3\"><h4>all in one go (with titles)</h4><show-all-icons with-titles=\"with-titles\"></show-all-icons></div></section></main>");
+    $templateCache.put('/angular/jade-html/component/design/events', "<h2>Events</h2><div ng-controller=\"Events_Controller\" class=\"result\"><div class=\"summary\"><a>'event title'</a><p>event description</p></div></div>");
     $templateCache.put('/angular/jade-html/component/guest/login_form', "<!-- Getting Started--><div ng-controller=\"Login_Controller\"><div class=\"section row__label\"><div class=\"label\">Login</div></div><div ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div></div><div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div><div class=\"section row\"><form id=\"login-form\" role=\"form\" ng-submit=\"login()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"button-field\"><button type=\"submit\" id=\"btn-login\">Login</button></div><div class=\"button-field text-right\"><br/><a id=\"pwd_forgot\" href=\"pwd_forgot\" class=\"text-right\">Forgot your password?</a></div></form></div></div>");
     $templateCache.put('/angular/jade-html/component/guest/pwd_forgot_form', "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><div ng-controller=\"Pwd_Forgot_Controller\"><div class=\"section row__label\"><div class=\"label\">Forgot your password?</div></div><div class=\"section row\"><form id=\"forgot-pwd-form\" ng-submit=\"get_Password()\"><div class=\"section row\"><div class=\"col-8 input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" ng-model=\"email\" placeholder=\"Email Address\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><button type=\"submit\" id=\"btn-get-password\" class=\"full-width\">Retrieve password</button></div></div></form></div><alert-ok></alert-ok></div>");
     $templateCache.put('/angular/jade-html/component/guest/pwd_reset_form', "<!-- Getting Started--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div class=\"section row__label\"><div class=\"label\">Reset your password</div></div><div class=\"section row\"><form id=\"password-reset-form\" role=\"form\" method=\"post\" action=\"/flare/user/password-reset\"><div class=\"section row\"><div class=\"col-6 input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-6 input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><br/><button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button></div></div></form></div>");
     $templateCache.put('/angular/jade-html/component/guest/sign_up_form', "<!-- Getting Started--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div ng-controller=\"Signup_Controller\"><div class=\"section row__label\"><div class=\"label\">Sign Up</div></div><div id=\"error\" ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span></div></div><div id=\"info\" ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><span class=\"alert-icon\">|</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div><div class=\"section row\"><form id=\"sign-up-form\" role=\"form\" ng-submit=\"signup()\"><div class=\"input-field\"><label>Username</label><input type=\"text\" id=\"username\" placeholder=\"Username\" ng-model=\"username\" required=\"required\"/></div><div class=\"input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" ng-model=\"email\" placeholder=\"Email Address\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" required=\"required\" maxlength=\"256\"/></div><div class=\"input-field\"><label for=\"firstname\">First Name</label><input type=\"text\" id=\"firstname\" ng-model=\"firstname\" placeholder=\"First Name\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"lastname\">Last Name</label><input type=\"text\" id=\"lastname\" ng-model=\"lastname\" placeholder=\"Last Name\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"company\">Company</label><input type=\"text\" id=\"company\" ng-model=\"company\" placeholder=\"Company\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"title\">Job/Title</label><input type=\"text\" id=\"title\" ng-model=\"title\" placeholder=\"Job/Title\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"country\">Country</label><input type=\"text\" id=\"country\" ng-model=\"country\" placeholder=\"Country\" required=\"required\" maxlength=\"100\"/></div><div class=\"input-field\"><label for=\"state\">State</label><input type=\"text\" id=\"state\" ng-model=\"state\" placeholder=\"State\" maxlength=\"100\"/></div><div class=\"conditions\"><p>By signing up, you agree to our <a href=\"/misc/terms-and-conditions\">Terms and Conditions</a>.</p> </div><div class=\"button-field\"><button type=\"submit\" id=\"btn-sign-up\" class=\"full-width\">Sign Up</button></div></form></div></div>");
     $templateCache.put('/angular/jade-html/component/help_navigation', "<dl class=\"help\"><span ng-repeat=\"view in Views\"><dt class=\"vertical-align\"><span class=\"label no-underline\">\{\{view.Title}}</span></dt><div class=\"scroll\"><dd ng-repeat=\"article in view.Articles\"><a href=\"#\{\{article.Id}}\" ng-click=\"show_Doc(article)\">\{\{article.Title}}</a></dd></div></span></dl>");
-    $templateCache.put('/angular/jade-html/component/navigate_results', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons-->");
     $templateCache.put('/angular/jade-html/component/navigation/landing_bar', "<!-- Terms and Conditions Navigation--><nav class=\"container\"><a ui-sref=\"home\" class=\"logo\"></a><div class=\"links\"><ul class=\"display-inline\"><li><a ui-sref=\"about\">About</a></li><li><a ui-sref=\"features\">Features</a></li><li><a ui-sref=\"docs\">Docs</a></li><li><a ui-sref=\"sign_up\">Sign Up</a></li><li><a ui-sref=\"login\">Login</a></li></ul></div></nav>");
     $templateCache.put('/angular/jade-html/component/navigation/left_navigation', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><aside ng-controller=\"User_Navigation_Controller\"><ul><li><div class=\"logo\"></div></li><li><a ui-sref=\"main\"><icon class=\"Home\"></icon></a></li><li><!--a(ui-sref=\"queries\")--><a ng-click=\"open_Query_State()\"><icon class=\"Index\"></icon></a></li><li><a ui-sref=\"docs\"><icon class=\"Info\"></icon></a></li><li><a href=\"/angular/guest/home\"><icon class=\"Logout\"></icon></a><!--a(ui-sref=\"logout\")--></li></ul></aside>");
     $templateCache.put('/angular/jade-html/component/result_saved_article', "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div class=\"article result\"><div class=\"metadata\"><ul><li><br/></li><!--li+filter-icon('Type', result.type)--><!--li+filter-icon('Phase', result.phase)--><!--li+filter-icon('Technology', result.technology)--></ul></div><div class=\"summary\"><a href=\"#\"><h3 id=\"article-headline\">Article Headline</h3></a><p>Article Summary</p><ul class=\"display-inline\"><li><button title=\"Delete\" class=\"btn-minor icon-Delete\"></button></li><li><button title=\"Share\" class=\"btn-minor icon-Share\"></button></li></ul></div></div>");
@@ -30,7 +30,7 @@
     $templateCache.put('/angular/jade-html/component/search_result', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div>");
     $templateCache.put('/angular/jade-html/component/start_view', "<div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Popular Search Terms</div></div><div class=\"section row\"><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div></div></div><div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Recently Viewed Articles</div></div><div class=\"section row\"><article-box></article-box><article-box></article-box><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--></div></div><div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Top Articles</div></div><div class=\"section row\"><article-box></article-box><article-box></article-box><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--></div></div>");
     $templateCache.put('/angular/jade-html/component/user/active_filter', "<div class=\"active-filter\"><span><span class=\"icon\">#</span><span class=\"text\">Active Filter</span></span><span class=\"close\"><a href=\"#\">x</a></span></div>");
-    $templateCache.put('/angular/jade-html/component/user/article_box', "<div ng-controller=\"Article_Box_Controller\" class=\"result\"><div class=\"metadata\"><ul><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-technology\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-technology\" ng-bind-html=\"icon_Phase\"></div></li></ul></div><div class=\"summary\"><a ng-href=\"\{\{article.url}}\" id=\"\{\{article.id}}\"><h3 id=\"article-headline\">\{\{article.title}} \{\{title}}</h3></a><p>\{\{article.summary}} ...</p></div></div>");
+    $templateCache.put('/angular/jade-html/component/user/article_box', "<div ng-controller=\"Article_Box_Controller\" class=\"result\"><div class=\"metadata\"><ul><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-technology\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-technology\" ng-bind-html=\"icon_Phase\"></div></li></ul></div><div class=\"summary\"><a ng-href=\"\{\{article.url}}\" id=\"\{\{article.id}}\"><h3 id=\"article-headline\">\{\{article.title}}</h3></a><p>\{\{article.summary}} ...</p></div></div>");
     $templateCache.put('/angular/jade-html/component/user/articles', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Articles_Controller\"><div class=\"section row\"><article-box ng-repeat=\"article in articles\"></article-box></div></div>");
     $templateCache.put('/angular/jade-html/component/user/breadcrumbs', "<div ng-controller=\"Breadcrumbs_Controller\"><dl class=\"breadcrumbs\"><dd ng-repeat=\"breadcrumb in breadcrumbs\" class=\"active\"><a ng-href=\"#\" ng-click=\"load_Query(breadcrumb)\">\{\{breadcrumb.title}}</a></dd></dl></div>");
     $templateCache.put('/angular/jade-html/component/user/filters', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><div ng-show=\"view_Filters\" class=\"section row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div></dt><div id=\"results\"><div ng-repeat=\"result in filter.results\"><dd ng-show=\"result.size &gt; 0\"><a href=\"#\" ng-click=\"apply_Filter(result.id, result.title)\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></a></dd></div></div></div></dl></div></div>");
@@ -230,60 +230,69 @@
 }).call(this);
 
 (function() {
-  var app, design_Components, guest_Components, map_Components, navigation_Components, resolve_Directive_Name, root_Components, user_Components;
+  var Map_Directives,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  app = angular.module('TM_App');
+  Map_Directives = (function() {
+    function Map_Directives(options) {
+      this.map_All = bind(this.map_All, this);
+      this.map_Components = bind(this.map_Components, this);
+      this.app = options.app;
+      this.design_Components = ['all_icons', 'events'];
+      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
+      this.navigation_Components = ['landing_bar', 'left_navigation'];
+      this.user_Components = ['active_filter', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
+      this.root_Components = ['alert_ok', 'alert_bad', 'article', 'help_navigation'];
+    }
+
+    Map_Directives.prototype.resolve_Directive_Name = function(name) {
+      var directive_Name, i, index, len, ref, segment;
+      directive_Name = "";
+      ref = name.split('_');
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        segment = ref[index];
+        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+      }
+      return directive_Name;
+    };
+
+    Map_Directives.prototype.map_Components = function(path, components) {
+      var component, i, len, results;
+      results = [];
+      for (i = 0, len = components.length; i < len; i++) {
+        component = components[i];
+        results.push((function(_this) {
+          return function(component) {
+            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
+              return {
+                templateUrl: "/angular/jade-html/component" + path + "/" + component
+              };
+            });
+          };
+        })(this)(component));
+      }
+      return results;
+    };
+
+    Map_Directives.prototype.map_All = function() {
+      this.map_Components('', this.root_Components);
+      this.map_Components('/design', this.design_Components);
+      this.map_Components('/guest', this.guest_Components);
+      this.map_Components('/navigation', this.navigation_Components);
+      return this.map_Components('/user', this.user_Components);
+    };
+
+    return Map_Directives;
+
+  })();
 
   String.prototype.upper_Case_First_Letter = function() {
     return this.charAt(0).toUpperCase() + this.substr(1);
   };
 
-  resolve_Directive_Name = function(name) {
-    var directive_Name, i, index, len, ref, segment;
-    directive_Name = "";
-    ref = name.split('_');
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      segment = ref[index];
-      directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-    }
-    return directive_Name;
-  };
-
-  map_Components = function(path, components) {
-    var component, i, len, results;
-    results = [];
-    for (i = 0, len = components.length; i < len; i++) {
-      component = components[i];
-      results.push((function(component) {
-        return app.directive(resolve_Directive_Name(component), function() {
-          return {
-            templateUrl: "/angular/jade-html/component" + path + "/" + component
-          };
-        });
-      })(component));
-    }
-    return results;
-  };
-
-  design_Components = ['all_icons'];
-
-  guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
-
-  navigation_Components = ['landing_bar', 'left_navigation'];
-
-  user_Components = ['active_filter', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
-
-  root_Components = ['alert_ok', 'alert_bad', 'article', 'help_navigation'];
-
-  map_Components('', root_Components);
-
-  map_Components('/design', design_Components);
-
-  map_Components('/guest', guest_Components);
-
-  map_Components('/navigation', navigation_Components);
-
-  map_Components('/user', user_Components);
+  new Map_Directives({
+    app: angular.module('TM_App')
+  }).map_All();
 
 }).call(this);
 
@@ -893,11 +902,21 @@
           element.$text = function() {
             return element.innerText;
           };
+          element.$click = function() {
+            return angular.element(element).triggerHandler('click');
+          };
         }
       }
       return element;
     };
     return $$;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -1087,7 +1106,8 @@
       })(this));
       return this.load_Query = (function(_this) {
         return function(breadcrumb) {
-          if ((breadcrumb != null ? breadcrumb.path : void 0) && (breadcrumb != null ? breadcrumb.query_Id : void 0)) {
+          console.log(breadcrumb);
+          if (breadcrumb != null ? breadcrumb.query_Id : void 0) {
             _this.current_Path = breadcrumb.path;
             return $rootScope.$broadcast('apply_Query', breadcrumb.query_Id);
           }
