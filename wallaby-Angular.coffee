@@ -4,7 +4,7 @@ module.exports = (wallaby)->
   console.log '[in Wallaby]'
 
   just_Load = (file)->
-    return{ pattern: file, instrument: false, load: true, ignore: false }
+    return { pattern: file, instrument: false, load: true, ignore: false }
 
   config =
     files : [

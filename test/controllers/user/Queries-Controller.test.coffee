@@ -21,12 +21,6 @@ describe '| controllers | user | Queries-Controller',->
       expect(@.$$listeners['query_data'][0]).to.be.an('function')
       expect(@.load_Query).to.be.an 'function'
 
-  it 'Check that query_Service.load_Data is called', ->
-    inject ($httpBackend)->
-      $httpBackend.flush()
-      scope.title.assert_Is 'el title'
-      scope.containers.assert_Is 42
-
   it 'load_Query', ->
     scope.$on 'apply_Query', (event, query_Id)->
       query_Id.assert_Is 'an id'

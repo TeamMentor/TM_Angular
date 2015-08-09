@@ -36,7 +36,7 @@
     $templateCache.put('/angular/jade-html/component/user/filters', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><div ng-show=\"view_Filters\" class=\"section row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div></dt><div id=\"results\"><div ng-repeat=\"result in filter.results\"><dd ng-show=\"result.size &gt; 0\"><a href=\"#\" ng-click=\"apply_Filter(result.id, result.title)\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></a></dd></div></div></div></dl></div></div>");
     $templateCache.put('/angular/jade-html/component/user/filters_active', "<div class=\"section row\"><!--include active_filter.jade--><!--span.icon-Javaspan.path1 span.path2 --><div ng-repeat=\"(key, value) in current_Filters\" class=\"active-filter\"><span><span class=\"icon-Design\"><span class=\"path1\"></span><span class=\"path2\"></span></span><span class=\"text\">\{\{value}}</span></span><span class=\"close\"><a href=\"#\" ng-click=\"clear_Filter(key)\">x</a></span></div></div>");
     $templateCache.put('/angular/jade-html/component/user/pagination', "<span ng-controller=\"Pagination_Controller\"><div class=\"section row pagination\"><div class=\"previous\"><a href=\"#\" ng-click=\"previous_Page()\"><span class=\"icon-Arrow-Left\"></span><span> previous</span></a></div><div class=\"number\"><!--pre \{\{pages}} (ng-option='page in pages')--><select ng-model=\"currentPage\" ng-change=\"show_Page()\"><option value=\"1\">1</option><option value=\"2\">2</option><option value=\"3\">3</option></select></div><div class=\"next\"><a href=\"#\" ng-click=\"next_Page()\"><span>next </span><span class=\"icon-Arrow-Right\"></span></a></div></div></span>");
-    $templateCache.put('/angular/jade-html/component/user/queries', "<!--include ../../mixins/icons.jade--><div ng-controller=\"Queries_Controller\"><dl><dt><span class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon --></span></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><!--if container.size > 0--><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>");
+    $templateCache.put('/angular/jade-html/component/user/queries', "<!--include ../../mixins/icons.jade--><div ng-controller=\"Queries_Controller\"><dl><dt><span id=\"query_title\" class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon --></span></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><!--if container.size > 0--><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>");
     $templateCache.put('/angular/jade-html/component/user/queries_history', "<div ng-controller=\"Queries_History_Controller\"><nav><ul class=\"display-inline\"><li ng-repeat=\"(key, value) in history\"><a ng-href=\"#\" ng-click=\"load_Query(key)\">\{\{value}}</a></li></ul></nav></div>");
     $templateCache.put('/angular/jade-html/component/user/results', "<div ng-controller=\"Results_Controller\"><section class=\"row__label\"><div id=\"resultsTitle\" class=\"label\">Query has \{\{results_Size}} articles</div><ul class=\"display-inline text-right\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result icon-Filter\"></a></li></ul></section><breadcrumbs></breadcrumbs><filters_active></filters_active><!--pagination--></div>");
     $templateCache.put('/angular/jade-html/component/user/search_bar', "<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Search TEAM Mentor\" class=\"search-input\"/><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><icon class=\"Search\"></icon></button></form></div>");
@@ -188,24 +188,6 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['main', 'docs', 'terms_and_conditions'],
-      user_User: ['index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
     $scope.show_Doc = function(article) {
       if (article) {
@@ -349,6 +331,24 @@
       }
     };
   });
+
+}).call(this);
+
+(function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['main', 'docs', 'terms_and_conditions'],
+      user_User: ['index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
 
 }).call(this);
 
@@ -1106,7 +1106,6 @@
       })(this));
       return this.load_Query = (function(_this) {
         return function(breadcrumb) {
-          console.log(breadcrumb);
           if (breadcrumb != null ? breadcrumb.query_Id : void 0) {
             _this.current_Path = breadcrumb.path;
             return $rootScope.$broadcast('apply_Query', breadcrumb.query_Id);
@@ -1159,7 +1158,8 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Index_Controller', function($scope) {
+  angular.module('TM_App').controller('Index_Controller', function($scope, query_Service) {
+    console.log('in Index controller');
     return using($scope, function() {
       this.history = {};
       this.column_Left = 'col-3';
@@ -1201,14 +1201,14 @@
 
 (function() {
   angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, query_Service) {
+    console.log('Queries_Controller');
     $scope.$on('query_data', function(event, data) {
       $scope.title = data.title;
       return $scope.containers = data.containers;
     });
-    $scope.load_Query = function(query_Id) {
+    return $scope.load_Query = function(query_Id) {
       return $rootScope.$broadcast('apply_Query', query_Id);
     };
-    return query_Service.load_Data();
   });
 
 }).call(this);

@@ -1,4 +1,5 @@
 require 'fluentnode'
+
 cheerio = require 'cheerio'
 
 class TM_Flare_Http
