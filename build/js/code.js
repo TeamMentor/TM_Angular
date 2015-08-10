@@ -627,8 +627,7 @@
         this.TM_API.query_tree_articles(query_Id, 0, 10, (function(_this) {
           return function(data) {
             _this.data_Articles = data;
-            _this.$rootScope.$broadcast('article_data', data);
-            return console.log(data);
+            return _this.$rootScope.$broadcast('article_data', data);
           };
         })(this));
         return this.TM_API.query_tree_filters(query_Id, (function(_this) {

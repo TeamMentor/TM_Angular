@@ -30,7 +30,6 @@ class Query_Service
       @.TM_API.query_tree_articles query_Id,0,10, (data)=>
         @.data_Articles = data
         @.$rootScope.$broadcast 'article_data', data
-        console.log data
       @.TM_API.query_tree_filters query_Id, (data)=>
         @.data_Filters = data
         @.$rootScope.$broadcast 'filter_data', data

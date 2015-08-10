@@ -35,7 +35,6 @@ describe '| directive | components | user | queries', ->
 
       key = 'query_tree_articles_query-6234f2d47eb7_0_10'
       data = graph_db_data[key]
-      console.log graph_db_data.keys()
       scope.$broadcast 'articles_data', data
       scope.$digest()
       #$httpBackend.flush()

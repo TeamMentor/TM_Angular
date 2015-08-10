@@ -20,5 +20,5 @@ describe '| directives | design | login-form', ->
   it 'check html elements',->
     inject ($$)->
       using $$(element).$query,->
-        console.log element.$html()
-        console.log @('h2')
+        @('h2').$attr().assert_Is {}
+        @('h2').$html().assert_Is 'Events'
