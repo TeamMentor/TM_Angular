@@ -34,4 +34,4 @@ angular.module('TM_App')
                 $rootScope.$broadcast 'apply_Query', query_id
 
 
-          query_Service.load_Data()
+          #query_Service.load_Data()

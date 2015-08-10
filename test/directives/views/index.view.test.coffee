@@ -11,9 +11,9 @@ describe '| directive | |views | index', ->
 
   beforeEach ()->
     inject ($httpBackend)->
-      url_Query_Tree     = '/api/data/query_tree/query-6234f2d47eb7'
-      $httpBackend.whenGET url_Query_Tree
-                  .respond ()-> [200, { id: 'aaa-id' ,title: 'aaaa',  results: [] } ]
+      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7'      ).respond ()-> [200, { id: 'aaa-id' ,title: 'aaaa',  results: [] } ]
+      $httpBackend.expectGET('/api/data/query_tree_articles/query-6234f2d47eb7/0/10').respond ()-> {}
+      $httpBackend.expectGET('/api/data/query_tree_filters/query-6234f2d47eb7'      ).respond ()->{}
 
 
   it 'Confirm that expected directives are inserted in page', ->

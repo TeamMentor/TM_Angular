@@ -11,30 +11,32 @@ describe '| directive | components | user | queries', ->
 
   beforeEach ()->
     inject ($compile,$rootScope)->
-      element_Raw = angular.element('<queries/>')
+      element_Raw = angular.element('<articles/>')
       scope       = $rootScope.$new()
       element     = $compile(element_Raw)(scope)[0]
       $rootScope.$digest()
       scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
-      using  scope, ->
-        @.title = 'an title'
-
-    #inject ($document)->
-    #  body = angular.element $document[0].body
-    #  body.find('queries').remove()
-    #  body.append element
+    inject ($document)->
+      body = angular.element $document[0].body
+      body.find('articles').remove()
+      body.append element
 
   it 'constructor',->
     inject ($$)->
       using $$(element).$query,->
-        @('div'   ).$attr().assert_Is 'ng-controller': 'Queries_Controller', class: 'ng-scope'
+        @('div'   ).$attr().assert_Is 'ng-controller': 'Articles_Controller', class: 'ng-scope'
         scope.$digest()
-        @('#query_title').$html().assert_Is 'an title'
+        @('.section').$attr().assert_Is class : 'section row'
+        expect(@('article-box')).to.equal null
 
   it '| controller | $on query_data',->
-    inject (graph_db_data)->
-      key = 'query_tree_queries_query-6234f2d47eb7'
+    inject (graph_db_data,$httpBackend)->
+
+      key = 'query_tree_articles_query-6234f2d47eb7_0_10'
       data = graph_db_data[key]
-      scope.$broadcast 'query_data', data
+      console.log graph_db_data.keys()
+      scope.$broadcast 'articles_data', data
       scope.$digest()
+      #$httpBackend.flush()
+      #scope.$digest()

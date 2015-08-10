@@ -1,5 +1,5 @@
 angular.module 'TM_App'
-       .controller 'Index_Controller', ($scope)->
+       .controller 'Index_Controller', ($scope, query_Service)->
           using $scope, ->
             @.history = {}
             @.column_Left   = 'col-3'
@@ -14,3 +14,5 @@ angular.module 'TM_App'
               else
                 @.column_Middle = 'col-9'
                 @.column_Right  = 'col-0'
+
+            query_Service.reload_Data()

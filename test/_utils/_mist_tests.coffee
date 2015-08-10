@@ -1,4 +1,4 @@
-describe 'misc tests', ->
+describe '| misc tests', ->
 
   beforeEach ->
     module('TM_App')

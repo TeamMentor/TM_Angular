@@ -61,19 +61,18 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
   it 'submit (no text)', ->
     inject ($httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
+      #$httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
       using scope, ->
         @.$on 'clear_Query', (event)->
           event.name.assert_Is 'clear_Query'
         @.$on 'apply_Query', (event, query_Id)->
           query_Id.assert_Is 'query-6234f2d47eb7'
         @.submit()
-        @.$digest()
-        $httpBackend.flush()
+        #@.$digest()
+        #$httpBackend.flush()
 
   it 'submit (valid text)', ->
     inject ($httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
       $httpBackend.expectGET('/api/search/query_from_text_search/xss').respond 'search-xss'
       using scope, ->
         scope.text = 'xss'
@@ -83,32 +82,21 @@ describe '| controllers | user | Search-Bar-Controller.test',->
         $httpBackend.flush()
 
 
-  it 'Check query_data broadcast (when query_tree returns no data)', ()->
-    inject ($httpBackend)->
-      $httpBackend.whenGET url_Query_Tree
-                  .respond ()-> [200, { }]
-      $httpBackend.flush()
-      scope.technologies.assert_Is [default_Technology]
+  it 'Check query_data broadcast', ()->
+    # when query_tree returns no data
+    scope.$broadcast 'query_data', {}
+    scope.technologies.assert_Is [default_Technology]
 
-  it 'Check query_data broadcast (when query_tree returns filters but not technology)', ()->
-    inject ($httpBackend)->
-      $httpBackend.whenGET url_Query_Tree
-                  .respond ()-> [200, { filters: [] }  ]
-      $httpBackend.flush()
-      expect(scope.technologies).to.deep.equal [default_Technology]
+    # when query_tree returns filters but not technology
+    scope.$broadcast 'query_data',  { filters: [] }
+    expect(scope.technologies).to.deep.equal [default_Technology]
 
-  it 'Check query_data broadcast (when query_tree returns Technology filters but no results)', ()->
-    inject ($httpBackend)->
-      $httpBackend.whenGET url_Query_Tree
-                  .respond ()-> [200, { filters: [{ title: 'Technology'} ] }  ]
-      $httpBackend.flush()
-      expect(scope.technologies).to.deep.equal [{ title: 'All', id: 'query-6234f2d47eb7' }]
+    # when query_tree returns Technology filters but no results
+    scope.$broadcast 'query_data',  { filters: [{ title: 'Technology'} ] }
+    expect(scope.technologies).to.deep.equal [{ title: 'All', id: 'query-6234f2d47eb7' }]
 
-  it 'Check query_data broadcast (when query_tree returns Technology filters with results)', ()->
+    # when query_tree returns Technology filters with results
+    scope.selected_Technology = null
     results = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
-    inject ($httpBackend)->
-      $httpBackend.whenGET  url_Query_Tree
-                  .respond ()-> [200, { filters: [{ title: 'Technology', results: results } ] } ]
-      $httpBackend.flush()
-
-      expect(scope.technologies).to.deep.equal [default_Technology].concat(results)
+    scope.$broadcast 'query_data', { filters: [{ title: 'Technology', results: results } ] }
+    expect(scope.technologies).to.deep.equal [default_Technology].concat(results)

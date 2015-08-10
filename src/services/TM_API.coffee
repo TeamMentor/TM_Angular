@@ -6,8 +6,10 @@ class TM_API
     @.$q               = q
     @.$http            = http
     @.$timeout         = timeout
-    @.cache_Query_Tree = {}
-    @.cache_Articles   = {}
+    @.cache_Articles           = {}
+    @.cache_Query_Tree         = {}
+    @.cache_Query_Tree_Queries = {}
+
 
   get_Words: (term, callback)=>
     url = "/angular/api/auto-complete?term=#{term}"
@@ -25,9 +27,21 @@ class TM_API
     else
       url     = "/api/data/query_tree/#{id}"
       @.$http.get url
-           .success (data)=>
-              @.cache_Query_Tree[id] = data
-              callback(data)
+             .success (data)=>
+                @.cache_Query_Tree[id] = data
+                callback(data)
+
+  query_tree_articles:  (id, from, to, callback)=>
+    url     = "/api/data/query_tree_articles/#{id}/#{from}/#{to}"
+    @.$http.get(url).success callback
+
+  query_tree_filters:  (id, callback)=>
+    url     = "/api/data/query_tree_filters/#{id}"
+    @.$http.get(url).success callback
+
+  query_tree_queries:  (id, callback)=>
+    url     = "/api/data/query_tree_queries/#{id}"
+    @.$http.get(url).success callback
 
   query_tree_filtered:  (id, filter, callback)=>
     if id and filter and callback

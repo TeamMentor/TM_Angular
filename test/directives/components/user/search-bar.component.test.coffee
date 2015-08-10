@@ -13,8 +13,8 @@ describe '| directive | search-bar', ->
   beforeEach ()->
     inject ($compile,$rootScope, $httpBackend)->
 
-      $httpBackend.whenGET('/api/data/query_tree/query-6234f2d47eb7').respond ()->
-        return [200, { filters: [{ title: 'Technology', results: results   } ] }  ]
+      #$httpBackend.whenGET('/api/data/query_tree_queries/query-6234f2d47eb7').respond ()->
+      #  return [200, { filters: [{ title: 'Technology', results: results   } ] }  ]
 
       element_Raw = angular.element('<search-bar/>')
       element     = $compile(element_Raw)($rootScope.$new())[0]
@@ -32,9 +32,10 @@ describe '| directive | search-bar', ->
 
   it 'Check options after first digest (should trigger query_data broadcast) ',->
 
-    inject ($$, $httpBackend)->
-      expect(scope.technologies).to.equal(undefined)
-      $httpBackend.flush()
+    expect(scope.technologies).to.equal(undefined)
+    scope.$broadcast 'query_data', { filters: [{ title: 'Technology', results: results   } ] }
+    scope.$digest()
+    inject ($$)->
       options = element_Raw.find('option')
       options.length.assert_Is 3
       seed = Number $$(options[0]).$attr().value.split(':')[1]  # need this since the object:{n} value can vary
@@ -42,17 +43,12 @@ describe '| directive | search-bar', ->
       $$(options[1]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'tech 1'                       }
       $$(options[2]).$attr().assert_Is 		{ value: 'object:' + seed   , label: 'tech 2'                       }
 
-  it 'Check selected option',->
-    inject ($$, $httpBackend)->
-      $httpBackend.flush()
-      scope.$digest()
-
-      #console.log scope.technologies
-      #console.log scope.technology
-
-      options = element_Raw.find('option')
-      options[0].selected = true
-      #console.log $$(options[0])
-      scope.$digest()
-      #console.log scope.technology
+  # not completed
+  #it 'Check selected option',->
+  #  scope.$broadcast 'query_data', { filters: [{ title: 'Technology', results: results   } ] }
+  #  #scope.$digest()
+  #  inject ($$)->
+  #    options = element_Raw.find('option')
+  #    options[0].selected = true
+  #    scope.$digest()
 

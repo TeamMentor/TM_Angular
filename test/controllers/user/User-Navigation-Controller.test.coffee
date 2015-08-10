@@ -16,7 +16,7 @@ describe '| controllers | user | User-Navigation-Controller.test',->
 
   it 'submit (check state change)', ->
     inject ($state, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
+      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7').respond {}
       using scope, ->
         $state.current.name.assert_Is ''
         @.open_Query_State()

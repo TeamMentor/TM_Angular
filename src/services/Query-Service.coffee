@@ -6,34 +6,48 @@ class Query_Service
     @.$rootScope  = options.$rootScope
     @.index_Query = 'query-6234f2d47eb7'
     #@.index_Query = 'query-fd328b700ba5'
-    @.data        = null
+    @.data_Queries = null
+    @.data_Articles = null
+    @.data_Filters = null
 
   load_Data: ()=>
     if not @.data
-      @.data = []
+      @.data_Queries  = []
+      @.data_Articles = []
+      @.data_Filters  = []
       @.load_Query @.index_Query
 
   load_Query: (query_Id)=>
     if not query_Id
       @.$rootScope.$broadcast 'query_data', {}
+      @.$rootScope.$broadcast 'article_data', {}
       @.$rootScope.$broadcast 'filter_data', {}
     else
       #console.log "[Query-Service] loading data for query: #{query_Id}"
-      @.TM_API.query_tree query_Id, (data)=>
-        @.data = data
+      @.TM_API.query_tree_queries query_Id, (data)=>
+        @.data_Queries = data
         @.$rootScope.$broadcast 'query_data', data
+      @.TM_API.query_tree_articles query_Id,0,10, (data)=>
+        @.data_Articles = data
+        @.$rootScope.$broadcast 'article_data', data
+        console.log data
+      @.TM_API.query_tree_filters query_Id, (data)=>
+        @.data_Filters = data
         @.$rootScope.$broadcast 'filter_data', data
 
   load_Filter: (query_Id, filter_Id)=>
     #console.log "[Query-Service] loading data for query: #{query_Id} and filters #{filter_Id}"
 
     @.TM_API.query_tree_filtered query_Id, filter_Id , (data)=>
-      @.data = data
+      @.data_Queries = data
+      @.data_Filters = data
       @.$rootScope.$broadcast 'query_data', data
       @.$rootScope.$broadcast 'filter_data', data
 
   reload_Data: ()=>
-    @.data = null
+    @.data_Queries  = null
+    @.data_Articles = null
+    @.data_Queries  = null
     @.$rootScope.$broadcast 'clear_Filters'
     @.$rootScope.$broadcast 'clear_Query'
     @.$rootScope.$broadcast 'clear_Search'

@@ -1,5 +1,3 @@
-expect = chai.expect
-
 # Fluentnode extension methods (these need to be moved into a separate module or service
 
 Array::first  = ->
@@ -46,32 +44,36 @@ Object.defineProperty Object.prototype, 'keys',
   value: ->
     return (key for own key of @)
 
-#assert
-
-Object.defineProperty Object.prototype, 'assert_Is',
-  enumerable  : false,
-  writable    : true,
-  value: (target)->
-    expect(@).to.deep.equal(target)
-    @
-
-String::assert_Is          = (target, message)->
-  expect(@.toString()).to.equal(target, message)
-  @
-
-Number::assert_Is          = (target, message)->      # slight modified from fluentnode version
-  expect(@.toString()).to.equal(target.toString(), message)
-  @
-
-Boolean::assert_Is_False = ->
-  expect(@.valueOf()).to.equal(false)
-  return false
-
-Boolean::assert_Is_True = ->
-  expect(@.valueOf()).to.equal(true)
-  return true
 
 #globals
-window.using = (target,callback)->
-  callback.apply(target)
+  window.using = (target,callback)->
+    callback.apply(target)
 
+#asserts
+
+if window['chai']     # need to move this to a separate file only available during tests
+
+  expect = chai.expect
+
+  Object.defineProperty Object.prototype, 'assert_Is',
+    enumerable  : false,
+    writable    : true,
+    value: (target)->
+      expect(@).to.deep.equal(target)
+      @
+
+  String::assert_Is          = (target, message)->
+    expect(@.toString()).to.equal(target, message)
+    @
+
+  Number::assert_Is          = (target, message)->      # slight modified from fluentnode version
+    expect(@.toString()).to.equal(target.toString(), message)
+    @
+
+  Boolean::assert_Is_False = ->
+    expect(@.valueOf()).to.equal(false)
+    return false
+
+  Boolean::assert_Is_True = ->
+    expect(@.valueOf()).to.equal(true)
+    return true

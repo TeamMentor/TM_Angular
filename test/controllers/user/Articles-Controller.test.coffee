@@ -10,20 +10,14 @@ describe '| controllers | user | Articles-Controller',->
     module('TM_App')
 
   beforeEach ->
-    inject ($httpBackend)->
-      $httpBackend.whenGET('/api/data/query_tree/query-6234f2d47eb7').respond ()->
-        return [200, { results: articles_Source }  ]
-
-  beforeEach ->
-    inject ($controller, $rootScope, $httpBackend)->
+    inject ($controller, $rootScope)->
       scope       = $rootScope.$new()
       $controller 'Articles_Controller', { $scope: scope}
       scope.$digest()
 
   it 'constructor', ->
-    expect(scope.$$listeners['filter_data'][0]).to.be.an('function')
+    expect(scope.$$listeners['article_data'][0]).to.be.an('function')
 
-  it 'Check that query_Service.load_Data is called', ->
-    inject ($httpBackend)->
-      $httpBackend.flush()
-      scope.articles.assert_Is articles_Transformed
+  it '$on article_data', ->
+    scope.$broadcast 'article_data', { results: articles_Source }
+    scope.articles.assert_Is articles_Transformed

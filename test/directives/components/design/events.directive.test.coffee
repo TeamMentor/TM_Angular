@@ -15,7 +15,7 @@ describe '| directives | design | login-form', ->
       element     = $compile(element_Raw)($rootScope.$new())[0]
       $rootScope.$digest()
       scope  =  element_Raw.find('div').eq(0).scope()
-      angular.element($document[0].body).append(element)
+      #angular.element($document[0].body).append(element)
 
   it 'check html elements',->
     inject ($$)->

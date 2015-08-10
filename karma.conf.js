@@ -9,10 +9,11 @@ module.exports = function(config) {
     files: [
               'build/js/lib.js',
               //'build/js/code.js',
+
+              'bower_components/chai/chai.js',
               'build-js/**/*.js',
               'bower_components/angular-mocks/angular-mocks.js',
-              'bower_components/chai/chai.js',
-              'bower_components/sinonjs/sinon.js',
+              //'bower_components/sinonjs/sinon.js',
               //'src/**/*.coffee',
               'test/**/*.coffee'
             ],
@@ -31,12 +32,5 @@ module.exports = function(config) {
     autoWatch     : true,            // enable / disable watching file and executing tests whenever any file changes
     browsers      : ['PhantomJS'],    //browsers: ['Chrome','PhantomJS'],
     singleRun     : true  // if true, Karma captures browsers, runs the tests and exits
-
-    ,
-    coverageReporter : {
-      type : 'html',
-      dir : '~/coverage/'
-    }
-
   })
 };

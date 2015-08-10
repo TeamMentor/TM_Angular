@@ -59,8 +59,9 @@ describe '| controllers | user | Results-Controller.test',->
 
   it 'refresh_Filters (no current filters)', ()->
     inject ($httpBackend)->
-      $httpBackend.whenGET '/api/data/query_tree/an-id'
-                  .respond {}
+      $httpBackend.expectGET('/api/data/query_tree_queries/an-id'      ).respond {}
+      $httpBackend.expectGET('/api/data/query_tree_articles/an-id/0/10').respond {}
+      $httpBackend.expectGET('/api/data/query_tree_filters/an-id'      ).respond {}
       using scope, ->
         @.current_Query_Id = 'an-id'
         @.refresh_Filters()

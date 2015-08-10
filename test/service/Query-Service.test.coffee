@@ -13,7 +13,9 @@ describe '| services | Query-Service', ->
         @.TM_API      .assert_Is TM_API
         @.$rootScope  .assert_Is $rootScope
         @.index_Query .assert_Is 'query-6234f2d47eb7'
-        expect(@.data).to.equal null
+        expect(@.data_Articles).to.equal null
+        expect(@.data_Filters).to.equal null
+        expect(@.data_Queries).to.equal null
 
         expect(@.load_Data  ).to.be.an 'function'
         expect(@.load_Query ).to.be.an 'function'
@@ -22,13 +24,19 @@ describe '| services | Query-Service', ->
 
   it 'load_Data', ->
     inject (query_Service, $rootScope, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7'      ).respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_articles/query-6234f2d47eb7/0/10').respond  [{ a: 43 }]
+      $httpBackend.expectGET('/api/data/query_tree_filters/query-6234f2d47eb7'      ).respond  [{ a: 44 }]
       using query_Service, ->
         @.load_Data()
         $rootScope.$digest()
-        @.data.assert_Is []
+        @.data_Queries.assert_Is []
+        @.data_Articles.assert_Is []
+        @.data_Filters.assert_Is []
         $httpBackend.flush()
-        @.data.assert_Is [{ a: 42 }]
+        @.data_Queries.assert_Is  [{ a: 42 }]
+        @.data_Articles.assert_Is [{ a: 43 }]
+        @.data_Filters.assert_Is  [{ a: 44 }]
 
   it 'load_Query (no id)', ->
     inject (query_Service, $rootScope, $httpBackend)->
@@ -40,22 +48,30 @@ describe '| services | Query-Service', ->
 
       using query_Service, ->
         @.load_Query()
-        expect(@.data).to.equal null
+        expect(@.data_Queries ).to.equal null
+        expect(@.data_Articles).to.equal null
+        expect(@.data_Filters ).to.equal null
 
   it 'load_Query (with id)', ->
     inject (query_Service, $rootScope, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/an-query-id').respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_queries/an-query-id'      ).respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_articles/an-query-id/0/10').respond  [{ a: 43 }]
+      $httpBackend.expectGET('/api/data/query_tree_filters/an-query-id'      ).respond  [{ a: 44 }]
 
       $rootScope.$on 'query_data', (event, data)->
         data.assert_Is  [{ a: 42 }]
+      $rootScope.$on 'article_data', (event, data)->
+        data.assert_Is  [{ a: 43 }]
       $rootScope.$on 'filter_data', (event, data)->
-        data.assert_Is [{ a: 42 }]
+        data.assert_Is [{ a: 44 }]
 
       using query_Service, ->
         @.load_Query('an-query-id')
-        expect(@.data).to.equal null
+        expect(@.data_Queries ).to.equal null
         $httpBackend.flush()
-        @.data.assert_Is [{ a: 42 }]
+        @.data_Queries .assert_Is [{ a: 42 }]
+        @.data_Articles.assert_Is [{ a: 43 }]
+        @.data_Filters .assert_Is [{ a: 44 }]
 
   it 'load_Filter', ->
     inject (query_Service, $rootScope, $httpBackend)->
@@ -70,13 +86,16 @@ describe '| services | Query-Service', ->
       using query_Service, ->
         @.load_Filter('an-query-id', 'an-filter-id')
         $httpBackend.flush()
-        @.data.assert_Is [{ a: 42 }]
+        @.data_Queries.assert_Is  [{ a: 42 }]
+        @.data_Filters.assert_Is  [{ a: 42 }]
 
   it 'reload_Data', ->
 
     inject (query_Service, $rootScope, $httpBackend)->
 
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7'      ).respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_articles/query-6234f2d47eb7/0/10').respond  [{ a: 43 }]
+      $httpBackend.expectGET('/api/data/query_tree_filters/query-6234f2d47eb7'      ).respond  [{ a: 44 }]
 
       $rootScope.$on 'clear_Filters', (event, data)-> expect(data).to.equal undefined
       $rootScope.$on 'clear_Query'  , (event, data)-> expect(data).to.equal undefined
@@ -85,8 +104,12 @@ describe '| services | Query-Service', ->
       using query_Service, ->
         $rootScope.$digest()
         @.reload_Data()
-        @.data.assert_Is []
+        @.data_Queries .assert_Is []
+        @.data_Articles.assert_Is []
+        @.data_Filters .assert_Is []
         $rootScope.$digest()
         $httpBackend.flush()
-        @.data.assert_Is [{ a: 42 }]
+        @.data_Queries .assert_Is [{ a: 42 }]
+        @.data_Articles.assert_Is [{ a: 43 }]
+        @.data_Filters .assert_Is [{ a: 44 }]
 

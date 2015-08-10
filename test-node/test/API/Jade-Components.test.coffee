@@ -8,7 +8,7 @@ describe '| API | Jade-Components |', ->
 
   jade_Components = new Jade_Components()
 
-  expected_Components = ['alert_bad', 'alert_ok', 'article', 'help_navigation',
+  expected_Components = ['alert_bad', 'alert_ok', 'help_navigation',
                          'result_saved_article','result_saved_search_term',
                          'result_search_term', 'results_delete_share',
                          'search_result', 'start_view', 'user_panel'
@@ -23,19 +23,19 @@ describe '| API | Jade-Components |', ->
                          'navigation/landing_bar'
                          'navigation/left_navigation'
                           #user
-                         'user/active_filter','user/article_box','user/articles',
+                         'user/active_filter','user/article_box', 'user/article','user/articles',
                          'user/breadcrumbs', 'user/filters','user/filters_active', 'user/pagination'
                          'user/queries', 'user/queries_history',
                          'user/results', 'user/search_bar']
 
-  expected_Views      = ['alert_application', 'article', 'docs'
+  expected_Views      = ['alert_application', 'docs'
                          'curated_content', 'curated_content_article','error',
                          'new_user_onboard' ,'pwd_reset' ,'pwd_sent' ,
                          'terms_and_conditions', 'user',
                          # guest
                          'guest/about','guest/features','guest/home','guest/login', 'guest/pwd_forgot', 'guest/sign_up',
                          # user
-                         'user/article_box', 'user/index', 'user/main']
+                         'user/article','user/article_box', 'user/index', 'user/main']
 
 
   it 'constructor', ->
