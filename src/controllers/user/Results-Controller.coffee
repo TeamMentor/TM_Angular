@@ -3,16 +3,19 @@ angular.module 'TM_App'
 
           console.log 'in Results_Controller ' + new Date().getMilliseconds()
 
-          #$scope.current_Query_Id = null
+          $scope.current_Page       = 1
+          $scope.current_Page_Split = 10
 
           $scope.$on 'article_data', (event,data)->
-            #$scope.current_Query_Id = data?.id
             $scope.results_Size = data?.size
+
+          $scope.$on 'set_page', (event, data)=>
+            console.log data
+            $scope.current_Page = data
+
+          $scope.$on 'set_page_split', (event, data)=>
+            console.log data
+            $scope.current_Page_Split = data
 
           $scope.toggle_Filters = ->
             $rootScope.$broadcast 'toggle_filters', null
-
-
-          #$scope.$on 'apply_Query', (event, query_Id)->
-            #$scope.current_Query_Id = query_Id
-            #$scope.refresh_Filters()

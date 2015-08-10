@@ -27,12 +27,17 @@ class Query_Service
       @.TM_API.query_tree_queries query_Id, (data)=>
         @.data_Queries = data
         @.$rootScope.$broadcast 'query_data', data
-      @.TM_API.query_tree_articles query_Id,0,10, (data)=>
-        @.data_Articles = data
-        @.$rootScope.$broadcast 'article_data', data
+
+      @.load_Query_Articles query_Id, 0, 10
+
       @.TM_API.query_tree_filters query_Id, (data)=>
         @.data_Filters = data
         @.$rootScope.$broadcast 'filter_data', data
+
+  load_Query_Articles: (query_Id, from, to)=>
+    @.TM_API.query_tree_articles query_Id,from, to, (data)=>
+      @.data_Articles = data
+      @.$rootScope.$broadcast 'article_data', data
 
   load_Filter: (query_Id, filter_Id)=>
     #console.log "[Query-Service] loading data for query: #{query_Id} and filters #{filter_Id}"

@@ -17,9 +17,6 @@ angular.module('TM_App')
                  article.url = '/angular/user/article/' + id + '/' + title
             $scope.articles = articles
 
-          $scope.$on 'show_page', (event, page)->
-            #articles = raw_Articles.slice(0 + page * 10 ,10 + page * 10 )
 
-
-          #query_Service.load_Data()
-
+          $scope.$on 'clear_articles', ()->
+            $scope.articles = []

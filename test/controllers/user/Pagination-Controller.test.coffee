@@ -9,27 +9,79 @@ describe '| controllers | user | Pagination-Controller.test',->
       scope = $rootScope.$new()
       $controller('Pagination_Controller', { $scope: scope })
 
+      scope.model.page       = 42
+      scope.model.page_Split = 43
+
   it 'constructor',->
+
     using scope, ->
-      @.currentPage.assert_Is 1
-      expect(@.show_Page).to.be.an 'function'
-      expect(@.previous_Page).to.be.an 'function'
-      expect(@.next_Page).to.be.an 'function'
+      @.$digest()
+      #@.model assert_Is { current_Page : 1, articles_Per_Page: 10 }
+
+      expect(@.set_Page      ).to.be.an 'function'
+      expect(@.set_Page_Split).to.be.an 'function'
+      expect(@.previous_Page ).to.be.an 'function'
+      expect(@.next_Page     ).to.be.an 'function'
 
 
-  it 'show_Page', ->
+  it '$on article_data', ->
+    using scope , ->
+      @.model.page_Split =  10
+
+      @.$broadcast 'article_data', { size: 100 }
+      @.model.pages.assert_Is [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+
+      @.$broadcast 'article_data', { size: 50 }
+      @.model.pages.assert_Is [ 1, 2, 3, 4,5]
+
+      @.$broadcast 'article_data', { size: 9 }
+      @.model.pages.assert_Is [ 1 ]
+
+      @.$broadcast 'article_data', { size: 9 }
+      @.model.pages.assert_Is [ 1 ]
+
+
+      @.model.page_Split =  30
+
+      @.$broadcast 'article_data', { size: 99 }
+      @.model.pages.assert_Is [ 1, 2, 3, 4]
+
+      @.$broadcast 'article_data', { size: 50 }
+      @.model.pages.assert_Is [ 1, 2]
+
+      @.$broadcast 'article_data', { size: 30 }
+      @.model.pages.assert_Is [ 1 ]
+
+      @.$broadcast 'article_data', { size: 9 }
+      @.model.pages.assert_Is [ 1 ]
+
+      @.$broadcast 'article_data', null
+      @.model.pages.assert_Is [ ]
+
+
+
+  it 'set_Page', ->
     using scope,->
-      @.$on 'show_page', (event, page)->
-        page.assert_Is 1
+      scope.$on 'set_page', (event, page)->
+        page.assert_Is 42
+      @.set_Page()
 
-      @.show_Page()
+  it 'set_Page_Split', ->
+    using scope,->
+      scope.$on 'set_page_split', (event, page)->
+        page.assert_Is 43
+      @.set_Page_Split()
 
   it 'previous_Page',->
     using scope,->
       @.previous_Page()
-      @.currentPage.assert_Is 0
+      @.model.page.assert_Is 41
 
   it 'next_Page',->
     using scope,->
       @.next_Page()
-      @.currentPage.assert_Is 2
+      @.model.page.assert_Is 42
+
+      @.model.pages = [1..44]
+      @.next_Page()
+      @.model.page.assert_Is 43
