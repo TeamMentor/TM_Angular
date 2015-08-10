@@ -54,7 +54,7 @@ describe 'build-step-save-GraphDB-data', ->
   #      done()
 
   it 'query_tree_articles', (done)->
-
+    @.timeout 4000
     get_Articles  = (query_Id, from, to, next)->
       key      = "query_tree_articles_#{query_Id}_#{from}_#{to}"
       graphDB.query_tree_articles query_Id, from, to, save_Data key, ->
