@@ -1,7 +1,9 @@
 angular.module('TM_App')
        .controller 'Articles_Controller', ($scope, query_Service,  $location , TM_API)->
 
-         raw_Articles = null
+         console.log 'in Articles_Controller ' + new Date().getMilliseconds()
+
+         #raw_Articles = null
 
          $scope.$on 'article_data', (event, data)->
             articles = []

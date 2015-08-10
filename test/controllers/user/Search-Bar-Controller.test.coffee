@@ -19,7 +19,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       expect(@.query_Id           ).to.equal null
       expect(@.selected_Technology).to.equal null
       expect(@.$$listeners['clear_Search'][0]).to.be.an('function')
-      expect(@.$$listeners['query_data'  ][0]).to.be.an('function')
+      expect(@.$$listeners['filter_data' ][0]).to.be.an('function')
 
       expect(@.select_Technology).to.be.an('function')
       expect(@.submit           ).to.be.an('function')
@@ -33,7 +33,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
   it '$on query_data (null data)', ->
     using scope, ->
       data = null
-      @.$broadcast 'query_data'
+      @.$broadcast 'filter_data'
       expect(@.query_Id).to.equal undefined
       @.selected_Technology.assert_Is { title: 'All', id: 'query-6234f2d47eb7' }
 
@@ -84,19 +84,19 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
   it 'Check query_data broadcast', ()->
     # when query_tree returns no data
-    scope.$broadcast 'query_data', {}
+    scope.$broadcast 'filter_data', {}
     scope.technologies.assert_Is [default_Technology]
 
     # when query_tree returns filters but not technology
-    scope.$broadcast 'query_data',  { filters: [] }
+    scope.$broadcast 'filter_data',  { filters: [] }
     expect(scope.technologies).to.deep.equal [default_Technology]
 
     # when query_tree returns Technology filters but no results
-    scope.$broadcast 'query_data',  { filters: [{ title: 'Technology'} ] }
+    scope.$broadcast 'filter_data',  { filters: [{ title: 'Technology'} ] }
     expect(scope.technologies).to.deep.equal [{ title: 'All', id: 'query-6234f2d47eb7' }]
 
     # when query_tree returns Technology filters with results
     scope.selected_Technology = null
     results = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
-    scope.$broadcast 'query_data', { filters: [{ title: 'Technology', results: results } ] }
+    scope.$broadcast 'filter_data', { filters: [{ title: 'Technology', results: results } ] }
     expect(scope.technologies).to.deep.equal [default_Technology].concat(results)

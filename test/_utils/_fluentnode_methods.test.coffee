@@ -1,4 +1,11 @@
 describe '| _utils | _fluentnode_methods', ->
+
+  it 'Array::contains', ->
+    ['0','1'].contains('1'    ).assert_Is_True()
+    ['0','1'].contains('2'    ).assert_Is_False()
+    ['0','1'].contains(['0','1']).assert_Is_True()
+    ['0','1'].contains(['0','2']).assert_Is_False()
+
   it 'Array::first', ->
     ['0','1'].first().assert_Is '0'
 
@@ -32,3 +39,10 @@ describe '| _utils | _fluentnode_methods', ->
   it 'String::upper_Case_First_Letter',->
     ''.upper_Case_First_Letter().assert_Is ''
     'abc'.upper_Case_First_Letter().assert_Is 'Abc'
+
+
+  it 'assert_Contains', ->
+    ['0'].assert_Contains '0',
+    ['1'].assert_Contains('1', 'with message')
+    ['0','1','2'].assert_Contains '1'
+    ['0','1','2'].assert_Contains ['1','2'], "an message"

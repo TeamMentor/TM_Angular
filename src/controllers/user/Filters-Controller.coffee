@@ -1,6 +1,7 @@
 angular.module('TM_App')
        .controller 'Filters_Controller', ($sce, $scope, $rootScope, query_Service,icon_Service)->
 
+          console.log 'in Filters_Controller ' + new Date().getMilliseconds()
           $scope.$on 'filter_data', (event, data)->
             if data?.filters
               $scope.filters = data.filters

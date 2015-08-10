@@ -1,5 +1,8 @@
 angular.module('TM_App')
        .controller 'Search_Bar_Controller', ($rootScope, $scope, $state, query_Service, TM_API)->
+
+          console.log 'in Articles_Controller ' + new Date().getMilliseconds()
+
           $scope.query_Id            = null
           $scope.selected_Technology = null
           $scope.text                = ''
@@ -7,7 +10,7 @@ angular.module('TM_App')
           $scope.$on 'clear_Search', ()->
             $scope.text = ''
 
-          $scope.$on 'query_data', (event, data)->
+          $scope.$on 'filter_data', (event, data)->
             $scope.query_Id = data?.id
             if not $scope.selected_Technology
               $scope.technologies = [{ title: 'All', id: query_Service.index_Query }]

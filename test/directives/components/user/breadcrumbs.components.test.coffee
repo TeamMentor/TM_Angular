@@ -74,7 +74,7 @@ describe '| directive | components | user | breadcrumbs', ->
         @.breadcrumbs .assert_Is []
         expect($$(element).$query('dd')).to.equal null
 
-  it '| controller | $on query_data', ->
+  it '| controller | $on query_data (vanila data)', ->
     using scope,->
       @.$broadcast 'query_data', { id: 'ccc', title: 'ccc-title'}
       @.$digest()
@@ -85,6 +85,18 @@ describe '| directive | components | user | breadcrumbs', ->
       using @.breadcrumbs.pop(), ->
         delete @.$$hashKey
         @.assert_Is query_Id: 'ccc', title: 'ccc-title', path:'/aaa/bbb'
+
+  it '| controller | $on query_data (graph_db_data)', ->
+    inject (graph_db_data)->
+      using scope, ->
+        @.$broadcast 'clear_Query'
+        @.history = {}
+        @.$broadcast 'query_data',  graph_db_data['query_tree_queries_query-6234f2d47eb7']
+        @.history.assert_Is { 'query-6234f2d47eb7': { title: 'Index', query_Id: 'query-6234f2d47eb7' } }
+        @.current_Path.assert_Is '/query-6234f2d47eb7'
+        @.breadcrumbs.assert_Is 	[ { query_Id: 'query-6234f2d47eb7', title: 'Index', path: '' } ]
+
+        scope.$digest()
 
   it '| controller | $on load_Query', ->
     inject ($$)->

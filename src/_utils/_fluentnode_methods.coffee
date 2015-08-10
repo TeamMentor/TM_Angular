@@ -1,7 +1,17 @@
 # Fluentnode extension methods (these need to be moved into a separate module or service
 
+Array::contains = (value)->
+  if value instanceof Array
+    for item in value
+      if not (item in @)
+        return false
+    return true;
+  else
+  (value in @)
+
 Array::first  = ->
   @.item(0)
+
 
 Array::item = (index)->
   if typeof(index) is 'number'
@@ -77,3 +87,12 @@ if window['chai']     # need to move this to a separate file only available duri
   Boolean::assert_Is_True = ->
     expect(@.valueOf()).to.equal(true)
     return true
+
+  Array::assert_Contains = (value, message)->
+    message = message || "[assert_Contains]"
+    if value instanceof Array
+      for item in value
+        @.contains(item).assert_Is_True("#{item} not found in array: #{@}")
+    else
+      @.contains(value).assert_Is_True(message)
+    @

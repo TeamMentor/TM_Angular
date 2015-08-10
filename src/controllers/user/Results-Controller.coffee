@@ -1,6 +1,7 @@
 angular.module 'TM_App'
        .controller 'Results_Controller', ($scope, $rootScope, query_Service)->
 
+          console.log 'in Results_Controller ' + new Date().getMilliseconds()
           $scope.current_Filters  = {}
           $scope.view_Filters     = false
           $scope.current_Query_Id = null

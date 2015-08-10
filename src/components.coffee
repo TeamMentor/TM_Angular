@@ -83,7 +83,7 @@ span.path2
  
    $templateCache.put('/angular/jade-html/component/user/queries_history' , "<div ng-controller=\"Queries_History_Controller\"><nav><ul class=\"display-inline\"><li ng-repeat=\"(key, value) in history\"><a ng-href=\"#\" ng-click=\"load_Query(key)\">\{\{value}}</a></li></ul></nav></div>") 
  
-   $templateCache.put('/angular/jade-html/component/user/results' , "<div ng-controller=\"Results_Controller\"><section class=\"row__label\"><div id=\"resultsTitle\" class=\"label\">Query has \{\{results_Size}} articles</div><ul class=\"display-inline text-right\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result icon-Filter\"></a></li></ul></section><breadcrumbs></breadcrumbs><filters_active></filters_active><!--pagination--></div>") 
+   $templateCache.put('/angular/jade-html/component/user/results' , "<div ng-controller=\"Results_Controller\"><section class=\"row__label\"><div id=\"resultsTitle\" class=\"label\">Query has \{\{results_Size}} articles</div><ul class=\"display-inline text-right\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result icon-Filter\"></a></li></ul></section><!--breadcrumbs--><!--filters_active--><!--pagination--></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/search_bar' , "<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><div class=\"logo\"></div></li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"Search TEAM Mentor\" class=\"search-input\"/><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><icon class=\"Search\"></icon></button></form></div>") 
  
@@ -434,7 +434,7 @@ Attn: Ombudsman
  
    $templateCache.put('/angular/jade-html/views/user/article_box' , "<div class=\"main\"><div class=\"section row\"><div class=\"col-3\"><article-box></article-box></div><div class=\"col-9\"></div></div></div>") 
  
-   $templateCache.put('/angular/jade-html/views/user/index' , "<!--.application--><div ng-controller=\"Index_Controller\"><div class=\"main\"><div class=\"section row\"><div class=\"\{\{column_Left}}\"><queries></queries></div><div class=\"\{\{column_Middle}}\"><results></results><!--breadcrumbs--><!--include ../../component/user/filters_active.jade--><!--filters_active--><articles></articles><pagination></pagination></div><div class=\"\{\{column_Right}}\"><filters></filters></div></div></div></div>") 
+   $templateCache.put('/angular/jade-html/views/user/index' , "<!--.application--><div ng-controller=\"Index_Controller\"><div class=\"main\"><div class=\"section row\"><div class=\"\{\{column_Left}}\"><queries></queries></div><div class=\"\{\{column_Middle}}\"><results></results><breadcrumbs></breadcrumbs><filters_active></filters_active><articles></articles><pagination></pagination></div><div class=\"\{\{column_Right}}\"><filters></filters></div></div></div></div>") 
  
    $templateCache.put('/angular/jade-html/views/user/main' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')

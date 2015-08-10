@@ -1,5 +1,8 @@
 angular.module 'TM_App'
        .controller 'Index_Controller', ($scope, query_Service)->
+
+          console.log 'in Index_Controller ' + new Date().getMilliseconds()
+
           using $scope, ->
             @.history = {}
             @.column_Left   = 'col-3'

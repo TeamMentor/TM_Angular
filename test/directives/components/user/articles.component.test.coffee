@@ -17,10 +17,11 @@ describe '| directive | components | user | queries', ->
       $rootScope.$digest()
       scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
-    inject ($document)->
-      body = angular.element $document[0].body
-      body.find('articles').remove()
-      body.append element
+    # show element in screenshot
+    #inject ($document)->
+    #  body = angular.element $document[0].body
+    #  body.find('articles').remove()
+    #  body.append element
 
   it 'constructor',->
     inject ($$)->

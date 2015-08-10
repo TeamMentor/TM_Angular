@@ -1,6 +1,9 @@
 angular.module 'TM_App'
        .controller 'Breadcrumbs_Controller', ($scope, $rootScope)->
           using $scope, ->
+
+            console.log 'in Breadcrumbs_Controller ' + new Date().getMilliseconds()
+
             @.history      = {}
             @.current_Path = ''
             @.breadcrumbs  = []
