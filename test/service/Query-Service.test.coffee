@@ -97,9 +97,9 @@ describe '| services | Query-Service', ->
       $httpBackend.expectGET('/api/data/query_tree_articles/query-6234f2d47eb7/0/10').respond  [{ a: 43 }]
       $httpBackend.expectGET('/api/data/query_tree_filters/query-6234f2d47eb7'      ).respond  [{ a: 44 }]
 
-      $rootScope.$on 'clear_Filters', (event, data)-> expect(data).to.equal undefined
-      $rootScope.$on 'clear_Query'  , (event, data)-> expect(data).to.equal undefined
-      $rootScope.$on 'clear_Search' , (event, data)-> expect(data).to.equal undefined
+      $rootScope.$on 'clear_filters', (event, data)-> expect(data).to.equal undefined
+      $rootScope.$on 'clear_query'  , (event, data)-> expect(data).to.equal undefined
+      $rootScope.$on 'clear_search' , (event, data)-> expect(data).to.equal undefined
 
       using query_Service, ->
         $rootScope.$digest()

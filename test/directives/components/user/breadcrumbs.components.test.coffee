@@ -58,7 +58,7 @@ describe '| directive | components | user | breadcrumbs', ->
           delete @.$$hashKey
           @.assert_Is { query_Id: 'bbb-id', title: 'bbb-title', path: '/aaa' }
 
-  it '| controller | $on clear_Query', ->
+  it '| controller | $on clear_query', ->
     inject ($$)->
       using scope,->
         @.current_Path.assert_Is '/aaa/bbb'
@@ -67,7 +67,7 @@ describe '| directive | components | user | breadcrumbs', ->
 
         expect($$(element).$query('dd')).to.not.equal null
 
-        @.$broadcast 'clear_Query'
+        @.$broadcast 'clear_query'
         @.$digest()
 
         @.current_Path.assert_Is ''
@@ -89,7 +89,7 @@ describe '| directive | components | user | breadcrumbs', ->
   it '| controller | $on query_data (graph_db_data)', ->
     inject (graph_db_data)->
       using scope, ->
-        @.$broadcast 'clear_Query'
+        @.$broadcast 'clear_query'
         @.history = {}
         @.$broadcast 'query_data',  graph_db_data['query_tree_queries_query-6234f2d47eb7']
         @.history.assert_Is { 'query-6234f2d47eb7': { title: 'Index', query_Id: 'query-6234f2d47eb7' } }

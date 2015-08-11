@@ -12,7 +12,7 @@ describe '| controllers | Filters-Controller.test',->
   it 'constructor', ()->
     expect(scope.apply_Filter).to.be.an('function')
     expect(scope.$$listeners['filter_data' ][0]).to.be.an('function')
-    expect(scope.$$listeners['view_Filters'][0]).to.be.an('function')
+    expect(scope.$$listeners['view_filters'][0]).to.be.an('function')
 
   it '$on filter_data (bad data)', ()->
     scope.$broadcast 'filter_data'
@@ -26,16 +26,16 @@ describe '| controllers | Filters-Controller.test',->
     iconValue = scope.filters[0].results[0].icon.$$unwrapTrustedValue()
     expect(iconValue).to.contain 'icon-Java'
 
-  it '$on view_Filters',->
+  it '$on view_filters',->
     inject ($rootScope)->
       expect(scope.view_Filters).to.be.undefined
-      $rootScope.$broadcast 'view_Filters', true
+      $rootScope.$broadcast 'view_filters', true
       expect(scope.view_Filters).to.be.true
-      $rootScope.$broadcast 'view_Filters', false
+      $rootScope.$broadcast 'view_filters', false
       expect(scope.view_Filters).to.be.false
 
-  it 'apply_Filter',->
-    scope.$on 'apply_Filter', (event, filter_Id, filter_Title)->
+  it '$on apply_filter',->
+    scope.$on 'apply_filter', (event, filter_Id, filter_Title)->
       filter_Id.assert_Is 'filter_Id value'
       filter_Title.assert_Is 'filter_Title value'
 

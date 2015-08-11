@@ -54,9 +54,9 @@ class Query_Service
     @.data_Queries  = null
     @.data_Articles = null
     @.data_Queries  = null
-    @.$rootScope.$broadcast 'clear_Filters'
-    @.$rootScope.$broadcast 'clear_Query'
-    @.$rootScope.$broadcast 'clear_Search'
+    @.$rootScope.$broadcast 'clear_filters'
+    @.$rootScope.$broadcast 'clear_query'
+    @.$rootScope.$broadcast 'clear_search'
     @.load_Data()
 
 app.service 'query_Service', ($rootScope, TM_API)->

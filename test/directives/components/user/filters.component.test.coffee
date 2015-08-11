@@ -41,11 +41,11 @@ describe '| directives | component | filters', ->
   it 'Check ng-show status on view_Filters broadcast',->
     inject ($$, $rootScope)->
       using $$(element).$query,->
-        $rootScope.$broadcast 'view_Filters', true
+        $rootScope.$broadcast 'view_filters', true
         scope.$digest()
         @('.section'  ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'section row' }
 
-        $rootScope.$broadcast 'view_Filters', false
+        $rootScope.$broadcast 'view_filters', false
         scope.$digest()
         @('.section'  ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'section row ng-hide' }
 
@@ -55,7 +55,7 @@ describe '| directives | component | filters', ->
       @.$broadcast 'filter_data', query_Tree_Filters_Data
       @.$digest()
 
-    scope.$on 'apply_Filter', (event,filter_Id, filter_Title )->
+    scope.$on 'apply_filter', (event,filter_Id, filter_Title )->
       filter_Id   .assert_Is 'id'
       filter_Title.assert_Is 'title'
     element_Raw.find('a').triggerHandler('click')

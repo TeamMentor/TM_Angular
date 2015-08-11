@@ -14,7 +14,7 @@ describe '| controllers | user | Breadcrumbs-Controller',->
 
   it 'constructor', ->
     using scope, ->
-      expect(@.$$listeners['clear_Query'][0]).to.be.an('function')
+      expect(@.$$listeners['clear_query'][0]).to.be.an('function')
       expect(@.$$listeners['query_data'][0] ).to.be.an('function')
       expect(@.refresh_Breadcrumbs).to.be.an 'function'
       expect(@.load_Query         ).to.be.an 'function'
@@ -36,11 +36,11 @@ describe '| controllers | user | Breadcrumbs-Controller',->
                                 { query_Id: 'bbb_id', title: 'bbb_title', path: '/aaa'     }
                                 { query_Id: 'ccc_id', title: 'ccc_title', path: '/aaa/bbb' } ]
 
-  it '$on clear_Query', ->
+  it '$on clear_query', ->
     using scope, ->
       @.current_Path = 'aaaa'
       @.breadcrumbs  = ['bbb']
-      scope.$broadcast 'clear_Query'
+      scope.$broadcast 'clear_query'
       @.current_Path.assert_Is ''
       @.breadcrumbs.assert_Is []
 

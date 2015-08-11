@@ -41,10 +41,10 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     using scope, ->
       @.selected_Technology = id : 'an id', title : 'an title'
 
-      @.$on 'clear_Filters', (event)->
-        event.name.assert_Is 'clear_Filters'
+      @.$on 'clear_filters', (event)->
+        event.name.assert_Is 'clear_filters'
 
-      @.$on 'apply_Filter' , (event, id, title)->
+      @.$on 'apply_filter' , (event, id, title)->
         id.assert_Is 'an id'
         title.assert_Is 'an title'
 
@@ -63,9 +63,9 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     inject ($httpBackend)->
       #$httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
       using scope, ->
-        @.$on 'clear_Query', (event)->
-          event.name.assert_Is 'clear_Query'
-        @.$on 'apply_Query', (event, query_Id)->
+        @.$on 'clear_query', (event)->
+          event.name.assert_Is 'clear_query'
+        @.$on 'apply_query', (event, query_Id)->
           query_Id.assert_Is 'query-6234f2d47eb7'
         @.submit()
         #@.$digest()
@@ -76,7 +76,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       $httpBackend.expectGET('/api/search/query_from_text_search/xss').respond 'search-xss'
       using scope, ->
         scope.text = 'xss'
-        @.$on 'apply_Query', (event, query_Id)->
+        @.$on 'apply_query', (event, query_Id)->
           query_Id.assert_Is 'search-xss'
         @.submit()
         $httpBackend.flush()

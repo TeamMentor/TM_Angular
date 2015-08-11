@@ -89,20 +89,6 @@ describe '| controllers | user | Pagination-Controller.test',->
       @.next_Page()
       @.model.page.assert_Is 43
 
-  it 'reset', ->
-    using scope, ->
-      @.$on 'set_page', (event, page)->
-        page.assert_Is 1
-      @.$on 'set_page_split', (event, page)->
-        page.assert_Is 10
-
-      @.model.page       = 0
-      @.model.page_Split = 0
-      @.reset()
-      @.model.page      .assert_Is 1
-      @.model.page_Split.assert_Is 10
-
-
   it '$scope.$on', ->
     using scope,->
       @.model.pages = [0..50]

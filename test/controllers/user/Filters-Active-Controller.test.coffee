@@ -14,8 +14,8 @@ describe '| controllers | user | Filters-Active-Controller.test',->
     using scope, ->
       expect(@.current_Filters ).to.deep.equal {}
 
-      expect(@.$$listeners['apply_Filter' ][0]).to.be.an('function')
-      expect(@.$$listeners['clear_Filters'][0]).to.be.an('function')
+      expect(@.$$listeners['apply_filter' ][0]).to.be.an('function')
+      expect(@.$$listeners['clear_filters'][0]).to.be.an('function')
       expect(@.$$listeners['query_data'   ][0]).to.be.an('function')
       expect(@.$$listeners['apply_Query'  ][0]).to.be.an('function')
 
@@ -25,7 +25,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it '$on apply_Filter', ->
     using scope, ->
-      @.$broadcast 'apply_Filter', 'an id', 'an title'
+      @.$broadcast 'apply_filter', 'an id', 'an title'
       @.current_Filters.assert_Is 'an id' : 'an title'
 
   it '$on query_data', ->
@@ -71,11 +71,11 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it 'Check that apply_Filter and clear_Filters broadcasts are correctly received',  ->
     using scope, ->
-      @.$broadcast 'clear_Filters'
+      @.$broadcast 'clear_filters'
       @.current_Filters.assert_Is {}
 
-      @.$broadcast 'apply_Filter', 'id', 'title'
+      @.$broadcast 'apply_filter', 'id', 'title'
       @.current_Filters['id'].assert_Is 'title'
 
-      @.$broadcast 'clear_Filters'
+      @.$broadcast 'clear_filters'
       @.current_Filters.assert_Is {}

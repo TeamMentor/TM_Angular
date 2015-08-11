@@ -21,7 +21,7 @@ angular.module 'TM_App'
                                      }
                   path += "/#{key}"
 
-            @.$on 'clear_Query', (event, data)=>
+            @.$on 'clear_query', (event, data)=>
               @.current_Path = ''
               @.breadcrumbs  = []
 

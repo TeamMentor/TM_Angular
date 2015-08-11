@@ -17,3 +17,5 @@ angular.module 'TM_App'
 
           $scope.toggle_Filters = ->
             $rootScope.$broadcast 'toggle_filters', null
+
+          $scope.toggle_Filters()
