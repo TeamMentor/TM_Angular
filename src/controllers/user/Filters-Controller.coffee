@@ -3,6 +3,10 @@ angular.module('TM_App')
 
           console.log 'in Filters_Controller ' + new Date().getMilliseconds()
 
+          $scope.current_Filters = {}
+          $scope.show_Technology = true
+          $scope.show_Metadata  = {}
+
           $scope.$on 'filter_data', (event, data)->
             if data?.filters
               $scope.filters = data.filters
@@ -12,17 +16,40 @@ angular.module('TM_App')
             else
               $scope.filters = []
 
-          $scope.$on 'view_Filters' , (event,data)->
+          $scope.$on 'view_filters' , (event,data)->
             $scope.view_Filters = data
 
-          $scope.apply_Filter = (filter_Id,filter_Title)->
-            $rootScope.$broadcast 'apply_Filter', filter_Id,filter_Title
+          $scope.$on 'apply_filter', (event, filter_Id,filter_Title, metadata_Title)->
+            $scope.current_Filters[filter_Id] = filter_Id: filter_Id ,filter_Title : filter_Title, metadata_Title: metadata_Title
+            $scope.map_Visibility()
 
-          #query_Service.load_Data()
 
-          window._this      = this
-          window._scope     = $scope
-          window._rootScopt = $rootScope
+          $scope.$on 'clear_filter', (event, filter_Id)->
+            delete $scope.current_Filters[filter_Id]
+            $scope.map_Visibility()
+
+          $scope.apply_Filter = (filter_Id,filter_Title, metadata_Title)->
+            $rootScope.$broadcast 'apply_filter', filter_Id,filter_Title, metadata_Title
+
+          $scope.map_Visibility =  ()->
+            #console.log 'in map visibility'
+            #console.log $scope.current_Filters
+            $scope.show_Technology = 'false bb'
+            delete $scope.show_Metadata['Technology']
+
+            for item,value of $scope.current_Filters
+              #console.log value
+              #console.log value.metadata_Title
+              if value.metadata_Title is 'Technology'
+                $scope.show_Technology = 'true aaa'
+                $scope.show_Metadata.Technology = true
+
+
+
+          #$scope.show_Metadata = (metadata_Title) ->
+          #  if metadata_Title is 'Technology'
+          #    $scope.show_Metadata[$scope.show_Technology] = true
+          #  return true
 
 
 
