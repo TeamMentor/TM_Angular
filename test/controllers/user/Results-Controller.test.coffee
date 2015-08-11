@@ -23,18 +23,22 @@ describe '| controllers | user | Results-Controller.test',->
       #@.current_Query_Id.assert_Is 'an id'
       @.results_Size    .assert_Is 42
 
+  it '$on set_page', ->
+    using scope, ->
+      @.$broadcast 'set_page', 'abc'
+      @.current_Page.assert_Is 'abc'
+
+  it '$on set_page_Split', ->
+    using scope, ->
+      @.$broadcast 'set_page_split', 'abc'
+      @.current_Page_Split.assert_Is 'abc'
 
   it 'toggle_Filters',->
     using scope, ->
       @.$on 'toggle_filters', (event, data)->
         expect(data).to.equal null
-
       @.toggle_Filters()
 
-  #it '$on apply_Query', ->
-  #  using scope, ->
-  #    @.$broadcast 'apply_Query', 'an id'
-  #    @.current_Query_Id.assert_Is 'an id'
 
 
 

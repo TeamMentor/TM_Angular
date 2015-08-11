@@ -83,7 +83,7 @@ describe '| directive | search-bar', ->
 
   it 'Check options after filter_data $broadcast (with sample data)',->
     results      = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
-    expect(scope.technologies).to.equal(undefined)
+    scope.technologies.assert_Is {}
     scope.$broadcast 'filter_data', { filters: [{ title: 'Technology', results: results   } ] }
     scope.$digest()
     inject ($$)->

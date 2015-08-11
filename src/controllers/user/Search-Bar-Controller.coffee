@@ -23,7 +23,7 @@ angular.module('TM_App')
 
           $scope.$on 'apply_filter', (event, filter_Id, filter_Title, metadata_Title)->
             if metadata_Title is 'Technology'
-              if filter_Title isnt $scope.selected_Technology.title
+              if filter_Title isnt $scope.selected_Technology?.title
                 $scope.selected_Technology =  $scope.technologies_By_Id[filter_Id]
                 $scope.previous_Filter_Id = filter_Id
 

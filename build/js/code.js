@@ -1257,8 +1257,7 @@
   angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
     console.log('in Filters_Controller ' + new Date().getMilliseconds());
     $scope.current_Filters = {};
-    $scope.show_Technology = true;
-    $scope.show_Metadata = {};
+    $scope.hide_Metadata = {};
     $scope.$on('filter_data', function(event, data) {
       var filter, i, len, ref, result, results;
       if (data != null ? data.filters : void 0) {
@@ -1303,15 +1302,13 @@
     };
     return $scope.map_Visibility = function() {
       var item, ref, results, value;
-      $scope.show_Technology = 'false bb';
-      delete $scope.show_Metadata['Technology'];
+      delete $scope.hide_Metadata['Technology'];
       ref = $scope.current_Filters;
       results = [];
       for (item in ref) {
         value = ref[item];
         if (value.metadata_Title === 'Technology') {
-          $scope.show_Technology = 'true aaa';
-          results.push($scope.show_Metadata.Technology = true);
+          results.push($scope.hide_Metadata.Technology = true);
         } else {
           results.push(void 0);
         }
@@ -1488,8 +1485,9 @@
       }
     });
     $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title) {
+      var ref;
       if (metadata_Title === 'Technology') {
-        if (filter_Title !== $scope.selected_Technology.title) {
+        if (filter_Title !== ((ref = $scope.selected_Technology) != null ? ref.title : void 0)) {
           $scope.selected_Technology = $scope.technologies_By_Id[filter_Id];
           return $scope.previous_Filter_Id = filter_Id;
         }

@@ -30,12 +30,40 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       @.$broadcast 'clear_Search'
       @.text.assert_Is ''
 
+  it '$on clear_filter', ->
+    using scope, ->
+      @.technologies_By_Id  =
+        an_id : 'an id'
+        All   : 'all'
+
+      @.$broadcast 'clear_filter', 'an_id'
+      @.technologies_By_Id
+      @.selected_Technology.assert_Is 'all'
+
+      @.selected_Technology = 'abc'
+      @.ignore_Events      = true
+      @.$broadcast 'clear_filter', 'an_id'
+      @.selected_Technology.assert_Is 'abc'
+
   it '$on query_data (null data)', ->
     using scope, ->
       data = null
       @.$broadcast 'filter_data'
       expect(@.query_Id).to.equal undefined
       @.selected_Technology.assert_Is { title: 'All', id: 'query-6234f2d47eb7' }
+
+
+  it '$on apply_filter', ->
+    using scope, ->
+      @.$broadcast 'apply_filter', 'filter_Id', 'filter_Title', 'metadata_Title'
+      expect(@.selected_Technology).to.equal null
+      expect(@.previous_Filter_Id).to.equal null
+
+      @.technologies_By_Id = 'filter_Id' : 'abc'
+      @.$broadcast 'apply_filter', 'filter_Id', 'filter_Title', 'Technology'
+      @.selected_Technology.assert_Is 'abc'
+      @previous_Filter_Id.assert_Is 'filter_Id'
+
 
   it 'select_Technology', ->
     using scope, ->
