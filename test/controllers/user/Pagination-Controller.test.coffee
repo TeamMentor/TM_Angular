@@ -56,15 +56,18 @@ describe '| controllers | user | Pagination-Controller.test',->
       @.model.pages.assert_Is [ 1 ]
 
       @.$broadcast 'article_data', null
-      @.model.pages.assert_Is [ ]
+      expect(@.model.pages).to.equal null
 
 
 
   it 'set_Page', ->
-    using scope,->
-      scope.$on 'set_page', (event, page)->
-        page.assert_Is 42
-      @.set_Page()
+    inject ($httpBackend, $timeout)->
+      $httpBackend.expectGET('/api/data/query_tree_articles/null/1763/1806').respond {}
+      using scope,->
+        scope.$on 'set_page', (event, page)->
+          page.assert_Is 42
+        @.set_Page()
+        $timeout.flush()
 
   it 'set_Page_Split', ->
     using scope,->
@@ -85,3 +88,30 @@ describe '| controllers | user | Pagination-Controller.test',->
       @.model.pages = [1..44]
       @.next_Page()
       @.model.page.assert_Is 43
+
+  it 'reset', ->
+    using scope, ->
+      @.$on 'set_page', (event, page)->
+        page.assert_Is 1
+      @.$on 'set_page_split', (event, page)->
+        page.assert_Is 10
+
+      @.model.page       = 0
+      @.model.page_Split = 0
+      @.reset()
+      @.model.page      .assert_Is 1
+      @.model.page_Split.assert_Is 10
+
+
+  it '$scope.$on', ->
+    using scope,->
+      @.model.pages = [0..50]
+
+      expected_Page = 41
+      @.$on 'set_page', (event, page)->
+        page.assert_Is expected_Page
+
+      @.$broadcast 'keyup', keyIdentifier : 'Left'
+
+      expected_Page = 42
+      @.$broadcast 'keyup', keyIdentifier : 'Right'

@@ -10,11 +10,9 @@ angular.module 'TM_App'
             $scope.results_Size = data?.size
 
           $scope.$on 'set_page', (event, data)=>
-            console.log data
             $scope.current_Page = data
 
           $scope.$on 'set_page_split', (event, data)=>
-            console.log data
             $scope.current_Page_Split = data
 
           $scope.toggle_Filters = ->

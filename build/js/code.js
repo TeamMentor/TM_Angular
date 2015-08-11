@@ -80,6 +80,24 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').run(function($rootScope) {
+    var body;
+    body = angular.element(document.body);
+    body.on('keydown', function(event) {
+      if (event) {
+        return $rootScope.$broadcast('keydown', event);
+      }
+    });
+    return body.on('keyup', function(event) {
+      if (event) {
+        return $rootScope.$broadcast('keyup', event);
+      }
+    });
+  });
+
+}).call(this);
+
+(function() {
   var expect,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     hasProp = {}.hasOwnProperty;
@@ -634,6 +652,8 @@
       this.data_Queries = null;
       this.data_Articles = null;
       this.data_Filters = null;
+      this.page_From = 0;
+      this.page_To = 10;
     }
 
     Query_Service.prototype.load_Data = function() {
@@ -657,7 +677,7 @@
             return _this.$rootScope.$broadcast('query_data', data);
           };
         })(this));
-        this.load_Query_Articles(query_Id, 0, 10);
+        this.load_Query_Articles(query_Id, this.page_From, this.page_To);
         return this.TM_API.query_tree_filters(query_Id, (function(_this) {
           return function(data) {
             _this.data_Filters = data;
@@ -1100,7 +1120,7 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Articles_Controller', function($scope, query_Service, $location, TM_API) {
+  angular.module('TM_App').controller('Articles_Controller', function($scope) {
     console.log('in Articles_Controller ' + new Date().getMilliseconds());
     $scope.$on('article_data', function(event, data) {
       var article, articles, i, id, len, title;
@@ -1306,20 +1326,18 @@
       page: 1,
       page_Split: 10,
       pages: [],
-      page_Splits: [10, 20, 50, 100, 500]
+      page_Splits: [4, 10, 20, 50, 100]
     };
     $scope.query_Id = null;
     $scope.model = model;
-    $scope.$on('filter_data', function(event, data) {
-      return $scope.reset();
-    });
     $scope.$on('query_data', function(event, data) {
-      return $scope.reset();
+      model.page = 1;
+      return model.page_Split = 10;
     });
     $scope.$on('article_data', function(event, data) {
       var i, results, split;
       if (!(data != null ? data.size : void 0)) {
-        return model.pages = [];
+        return model.pages = null;
       } else {
         $scope.query_Id = data.id;
         if (data.size < model.page_Split) {
@@ -1338,14 +1356,15 @@
       }
     });
     $scope.set_Page = function() {
-      $rootScope.$broadcast('clear_articles');
-      $rootScope.$broadcast('set_page', model.page);
-      return $timeout(function() {
-        var from, to;
-        from = (model.page - 1) * model.page_Split;
-        to = model.page * model.page_Split;
-        return query_Service.load_Query_Articles($scope.query_Id, from, to);
-      });
+      if (model.page) {
+        $rootScope.$broadcast('set_page', model.page);
+        return $timeout(function() {
+          var from, to;
+          from = (model.page - 1) * model.page_Split;
+          to = model.page * model.page_Split;
+          return query_Service.load_Query_Articles($scope.query_Id, from, to);
+        });
+      }
     };
     $scope.set_Page_Split = function() {
       $scope.set_Page();
@@ -1363,12 +1382,14 @@
         return $scope.set_Page();
       }
     };
-    return $scope.reset = function() {
-      model.page = 1;
-      model.page_Split = 10;
-      $rootScope.$broadcast('set_page', model.page);
-      return $rootScope.$broadcast('set_page_split', model.page_Split);
-    };
+    return $scope.$on('keyup', function(event, data) {
+      if (data.keyIdentifier === 'Left') {
+        $scope.previous_Page();
+      }
+      if (data.keyIdentifier === 'Right') {
+        return $scope.next_Page();
+      }
+    });
   });
 
 }).call(this);
@@ -1396,13 +1417,11 @@
     });
     $scope.$on('set_page', (function(_this) {
       return function(event, data) {
-        console.log(data);
         return $scope.current_Page = data;
       };
     })(this));
     $scope.$on('set_page_split', (function(_this) {
       return function(event, data) {
-        console.log(data);
         return $scope.current_Page_Split = data;
       };
     })(this));

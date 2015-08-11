@@ -9,6 +9,8 @@ class Query_Service
     @.data_Queries = null
     @.data_Articles = null
     @.data_Filters = null
+    @.page_From    = 0
+    @.page_To      = 10
 
   load_Data: ()=>
     if not @.data
@@ -28,7 +30,7 @@ class Query_Service
         @.data_Queries = data
         @.$rootScope.$broadcast 'query_data', data
 
-      @.load_Query_Articles query_Id, 0, 10
+      @.load_Query_Articles query_Id, @.page_From, @.page_To
 
       @.TM_API.query_tree_filters query_Id, (data)=>
         @.data_Filters = data

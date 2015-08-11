@@ -1,4 +1,4 @@
-describe 'disable_cache',->
+describe '| disable-cache',->
   browser = null                                                        # need to capture this object
 
   it 'Check $templateCache has values' ,->
