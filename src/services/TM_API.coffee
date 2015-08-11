@@ -19,17 +19,17 @@ class TM_API
                 .then (response)->
                    return (match for match of response.data)          # when using promises
 
-  query_tree:  (id, callback)=>
-    id = id || 'query-6234f2d47eb7'
-
-    if @.cache_Query_Tree[id]
-      @.$timeout => callback @.cache_Query_Tree[id]
-    else
-      url     = "/api/data/query_tree/#{id}"
-      @.$http.get url
-             .success (data)=>
-                @.cache_Query_Tree[id] = data
-                callback(data)
+  #query_tree:  (id, callback)=>
+  #  id = id || 'query-6234f2d47eb7'
+  #
+  #  if @.cache_Query_Tree[id]
+  #    @.$timeout => callback @.cache_Query_Tree[id]
+  #  else
+  #    url     = "/api/data/query_tree/#{id}"
+  #    @.$http.get url
+  #           .success (data)=>
+  #              @.cache_Query_Tree[id] = data
+  #              callback(data)
 
   query_tree_articles:  (id, from, to, callback)=>
     url     = "/api/data/query_tree_articles/#{id}/#{from}/#{to}"

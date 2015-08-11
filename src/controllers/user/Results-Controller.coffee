@@ -1,7 +1,7 @@
 angular.module 'TM_App'
        .controller 'Results_Controller', ($scope, $rootScope, query_Service)->
 
-          console.log 'in Results_Controller ' + new Date().getMilliseconds()
+          #console.log 'in Results_Controller ' + new Date().getMilliseconds()
 
           $scope.current_Page       = 1
           $scope.current_Page_Split = 10

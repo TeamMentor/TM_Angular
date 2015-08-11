@@ -16,7 +16,7 @@ describe '| services | TM-API', ->
           #console.log name
           expect(@[name]  ).to.be.an 'function'
 
-      check_Are_Functions ['get_Words', 'query_tree', 'query_tree_filtered', 'query_from_text_search' ,
+      check_Are_Functions ['get_Words', 'query_tree_filtered', 'query_from_text_search' ,
                            'get_articles_parent_queries',
                            'docs_Library' , 'docs_Page'
                            'article',
@@ -37,36 +37,36 @@ describe '| services | TM-API', ->
 
         $httpBackend.flush()
 
-  it 'query_Tree (with no id)', ->
-    inject ($httpBackend, $timeout)->
+  #it 'query_Tree (with no id)', ->
+  #  inject ($httpBackend, $timeout)->
+  #
+  #    $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond { data: 42 }
+  #
+  #    using tm_API, ->
+  #      @.query_tree null, (data)->       # check from http request
+  #        data.assert_Is { data: 42 }
+  #
+  #      $httpBackend.flush()
+  #
+  #      @.cache_Query_Tree['query-6234f2d47eb7'].assert_Is { data: 42 }
+  #
+  #      @.query_tree null, (data)->       # check from @.cache_Query_Tree
+  #          data.assert_Is { data: 42 }
+  #
+  #      $timeout.flush()
 
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond { data: 42 }
 
-      using tm_API, ->
-        @.query_tree null, (data)->       # check from http request
-          data.assert_Is { data: 42 }
-
-        $httpBackend.flush()
-
-        @.cache_Query_Tree['query-6234f2d47eb7'].assert_Is { data: 42 }
-
-        @.query_tree null, (data)->       # check from @.cache_Query_Tree
-            data.assert_Is { data: 42 }
-
-        $timeout.flush()
-
-
-  it 'query_Tree (with id)', ->
-    inject ($httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/an-id').respond { data: 42 }
-
-      using tm_API, ->
-        @.query_tree 'an-id', (data)->
-          data.assert_Is { data: 42 }
-
-        $httpBackend.flush()
-
-        @.cache_Query_Tree['an-id'].assert_Is { data: 42 }
+  #it 'query_Tree (with id)', ->
+  #  inject ($httpBackend)->
+  #    $httpBackend.expectGET('/api/data/query_tree/an-id').respond { data: 42 }
+  #
+  #    using tm_API, ->
+  #      @.query_tree 'an-id', (data)->
+  #        data.assert_Is { data: 42 }
+  #
+  #      $httpBackend.flush()
+  #
+  #      @.cache_Query_Tree['an-id'].assert_Is { data: 42 }
 
   it 'query_tree_filtered (with no id)', ->
     inject ($httpBackend)->

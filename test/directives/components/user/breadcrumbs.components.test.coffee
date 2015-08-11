@@ -104,7 +104,7 @@ describe '| directive | components | user | breadcrumbs', ->
         @.refresh_Breadcrumbs()
         @.$digest()
 
-        scope.$on 'apply_Query', (event, query_Id)->
+        scope.$on 'apply_query', (event, query_Id)->
           query_Id.assert_Is 'aaa-id'
 
         $$(element).$query('a').$click()

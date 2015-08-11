@@ -20,7 +20,7 @@ angular.module('TM_App')
           $scope.$on 'query_data', (event,data)->
             $scope.current_Query_Id = data?.id
 
-          $scope.$on 'apply_Query', (event, query_Id)->
+          $scope.$on 'apply_query', (event, query_Id)->
             $scope.current_Query_Id = query_Id
             $scope.refresh_Filters()
 

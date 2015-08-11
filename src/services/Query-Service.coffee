@@ -45,9 +45,14 @@ class Query_Service
     #console.log "[Query-Service] loading data for query: #{query_Id} and filters #{filter_Id}"
 
     @.TM_API.query_tree_filtered query_Id, filter_Id , (data)=>
-      @.data_Queries = data
-      @.data_Filters = data
+      if data?.results
+        data.size = data.results.size()
+
+      @.data_Queries  = data
+      @.data_Articles = data
+      @.data_Filters  = data
       @.$rootScope.$broadcast 'query_data', data
+      @.$rootScope.$broadcast 'article_data', data
       @.$rootScope.$broadcast 'filter_data', data
 
   reload_Data: ()=>

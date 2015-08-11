@@ -48,6 +48,12 @@ angular.module('TM_App')
 
               if $scope.selected_Technology.title isnt 'All'
                 $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
+              else
+                $scope.submit()
+                #$rootScope.$broadcast 'apply_query', query_Service.index_Query
+              #  $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id
+              #else
+
 
               $scope.previous_Filter_Id = $scope.selected_Technology.id
               $scope.ignore_Events = false

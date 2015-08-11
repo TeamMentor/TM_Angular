@@ -17,7 +17,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
       expect(@.$$listeners['apply_filter' ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filters'][0]).to.be.an('function')
       expect(@.$$listeners['query_data'   ][0]).to.be.an('function')
-      expect(@.$$listeners['apply_Query'  ][0]).to.be.an('function')
+      expect(@.$$listeners['apply_query'  ][0]).to.be.an('function')
 
 
       expect(@.refresh_Filters).to.be.an('function')
@@ -35,9 +35,9 @@ describe '| controllers | user | Filters-Active-Controller.test',->
       @.current_Query_Id.assert_Is 'an id'
 
 
-  it '$on apply_Query', ->
+  it '$on apply_query', ->
     using scope, ->
-      @.$broadcast 'apply_Query', 'an id'
+      @.$broadcast 'apply_query', 'an id'
       @.current_Query_Id.assert_Is 'an id'
 
   it 'refresh_Filters (no current filters)', ()-> 

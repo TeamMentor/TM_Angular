@@ -21,7 +21,7 @@ describe '| controllers | user | Queries-Controller',->
       expect(@.$$listeners['query_data'][0]).to.be.an('function')
       expect(@.load_Query).to.be.an 'function'
 
-  it 'load_Query', ->
-    scope.$on 'apply_Query', (event, query_Id)->
+  it 'apply_query', ->
+    scope.$on 'apply_query', (event, query_Id)->
       query_Id.assert_Is 'an id'
     scope.load_Query('an id')

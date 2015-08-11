@@ -80,19 +80,67 @@
 }).call(this);
 
 (function() {
+  var slice = [].slice;
+
   angular.module('TM_App').run(function($rootScope) {
-    var body;
+    var body, events, i, len, log_Event, log_Events, name, results;
     body = angular.element(document.body);
     body.on('keydown', function(event) {
       if (event) {
         return $rootScope.$broadcast('keydown', event);
       }
     });
-    return body.on('keyup', function(event) {
+    body.on('keyup', function(event) {
       if (event) {
         return $rootScope.$broadcast('keyup', event);
       }
     });
+    log_Events = true;
+    if (log_Events) {
+      log_Event = function(name) {
+        return $rootScope.$on(name, function() {
+          var params;
+          params = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+          return console.log({
+            event: name,
+            time: (new Date()).getMilliseconds(),
+            params: params
+          });
+        });
+      };
+      events = ['apply_filter', 'apply_query', 'clear_articles', 'clear_filter', 'clear_query', 'clear_search', 'query_data', 'article_data', 'filter_data', 'set_page', 'set_page_split', 'toggle_filters', 'view_filters', 'test'];
+      results = [];
+      for (i = 0, len = events.length; i < len; i++) {
+        name = events[i];
+        results.push(log_Event(name));
+      }
+      return results;
+    }
+  });
+
+  angular.module('TM_App').factory('httpInterceptor', function($q) {
+    return {
+      request: function(config) {
+        if (config) {
+          console.log(config.method + " " + config.url);
+        }
+        return config || $q.when(config);
+      }
+    };
+  }).config(function($httpProvider) {
+    return $httpProvider.interceptors.push('httpInterceptor');
+  }).run(function($http, $rootScope) {
+    var spinnerFunction_End, spinnerFunction_Start;
+    spinnerFunction_Start = function(data) {
+      $rootScope.$broadcast('http_start');
+      return data;
+    };
+    spinnerFunction_End = function(data) {
+      $rootScope.$broadcast('http_end');
+      return data;
+    };
+    $http.defaults.transformRequest.push(spinnerFunction_Start);
+    return $http.defaults.transformResponse.push(spinnerFunction_End);
   });
 
 }).call(this);
@@ -699,9 +747,14 @@
     Query_Service.prototype.load_Filter = function(query_Id, filter_Id) {
       return this.TM_API.query_tree_filtered(query_Id, filter_Id, (function(_this) {
         return function(data) {
+          if (data != null ? data.results : void 0) {
+            data.size = data.results.size();
+          }
           _this.data_Queries = data;
+          _this.data_Articles = data;
           _this.data_Filters = data;
           _this.$rootScope.$broadcast('query_data', data);
+          _this.$rootScope.$broadcast('article_data', data);
           return _this.$rootScope.$broadcast('filter_data', data);
         };
       })(this));
@@ -750,7 +803,6 @@
       this.query_tree_queries = bind(this.query_tree_queries, this);
       this.query_tree_filters = bind(this.query_tree_filters, this);
       this.query_tree_articles = bind(this.query_tree_articles, this);
-      this.query_tree = bind(this.query_tree, this);
       this.get_Words = bind(this.get_Words, this);
       this.$q = q;
       this.$http = http;
@@ -786,26 +838,6 @@
           return results;
         })();
       });
-    };
-
-    TM_API.prototype.query_tree = function(id, callback) {
-      var url;
-      id = id || 'query-6234f2d47eb7';
-      if (this.cache_Query_Tree[id]) {
-        return this.$timeout((function(_this) {
-          return function() {
-            return callback(_this.cache_Query_Tree[id]);
-          };
-        })(this));
-      } else {
-        url = "/api/data/query_tree/" + id;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Query_Tree[id] = data;
-            return callback(data);
-          };
-        })(this));
-      }
     };
 
     TM_API.prototype.query_tree_articles = function(id, from, to, callback) {
@@ -1121,7 +1153,6 @@
 
 (function() {
   angular.module('TM_App').controller('Articles_Controller', function($scope) {
-    console.log('in Articles_Controller ' + new Date().getMilliseconds());
     $scope.$on('article_data', function(event, data) {
       var article, articles, i, id, len, title;
       articles = [];
@@ -1136,8 +1167,13 @@
       }
       return $scope.articles = articles;
     });
-    return $scope.$on('clear_articles', function() {
+    $scope.$on('clear_articles', function() {
       return $scope.articles = [];
+    });
+    return $scope.$on('apply_query', function(event, query_id) {
+      if (!query_id) {
+        return $scope.articles = [];
+      }
     });
   });
 
@@ -1146,7 +1182,6 @@
 (function() {
   angular.module('TM_App').controller('Breadcrumbs_Controller', function($scope, $rootScope) {
     return using($scope, function() {
-      console.log('in Breadcrumbs_Controller ' + new Date().getMilliseconds());
       this.history = {};
       this.current_Path = '';
       this.breadcrumbs = [];
@@ -1201,7 +1236,7 @@
         return function(breadcrumb) {
           if (breadcrumb != null ? breadcrumb.query_Id : void 0) {
             _this.current_Path = breadcrumb.path;
-            return $rootScope.$broadcast('apply_Query', breadcrumb.query_Id);
+            return $rootScope.$broadcast('apply_query', breadcrumb.query_Id);
           }
         };
       })(this);
@@ -1229,7 +1264,7 @@
     $scope.$on('query_data', function(event, data) {
       return $scope.current_Query_Id = data != null ? data.id : void 0;
     });
-    $scope.$on('apply_Query', function(event, query_Id) {
+    $scope.$on('apply_query', function(event, query_Id) {
       $scope.current_Query_Id = query_Id;
       return $scope.refresh_Filters();
     });
@@ -1255,7 +1290,6 @@
 
 (function() {
   angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
-    console.log('in Filters_Controller ' + new Date().getMilliseconds());
     $scope.current_Filters = {};
     $scope.hide_Metadata = {};
     $scope.$on('filter_data', function(event, data) {
@@ -1321,7 +1355,6 @@
 
 (function() {
   angular.module('TM_App').controller('Index_Controller', function($scope, query_Service) {
-    console.log('in Index_Controller ' + new Date().getMilliseconds());
     return using($scope, function() {
       this.history = {};
       this.view_Filters = false;
@@ -1430,7 +1463,7 @@
       return $scope.containers = data.containers;
     });
     return $scope.load_Query = function(query_Id) {
-      return $rootScope.$broadcast('apply_Query', query_Id);
+      return $rootScope.$broadcast('apply_query', query_Id);
     };
   });
 
@@ -1438,7 +1471,6 @@
 
 (function() {
   angular.module('TM_App').controller('Results_Controller', function($scope, $rootScope, query_Service) {
-    console.log('in Results_Controller ' + new Date().getMilliseconds());
     $scope.current_Page = 1;
     $scope.current_Page_Split = 10;
     $scope.$on('article_data', function(event, data) {
@@ -1529,6 +1561,8 @@
         $rootScope.$broadcast('clear_filter', $scope.previous_Filter_Id);
         if ($scope.selected_Technology.title !== 'All') {
           $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology');
+        } else {
+          $scope.submit();
         }
         $scope.previous_Filter_Id = $scope.selected_Technology.id;
         return $scope.ignore_Events = false;
@@ -1550,10 +1584,19 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, query_Service) {
-    return $scope.open_Query_State = function() {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $timeout) {
+    $scope.open_Query_State = function() {
       return $state.go('index');
     };
+    $scope.show_Loading_Image = false;
+    $scope.$on('http_start', function() {
+      return $scope.show_Loading_Image = true;
+    });
+    return $scope.$on('http_end', function() {
+      return $timeout(function() {
+        return $scope.show_Loading_Image = false;
+      });
+    });
   });
 
 }).call(this);

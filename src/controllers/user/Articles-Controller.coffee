@@ -1,7 +1,7 @@
 angular.module('TM_App')
        .controller 'Articles_Controller', ($scope)->
 
-         console.log 'in Articles_Controller ' + new Date().getMilliseconds()
+         #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
 
          $scope.$on 'article_data', (event, data)->
             articles = []
@@ -17,3 +17,7 @@ angular.module('TM_App')
 
           $scope.$on 'clear_articles', ()->
             $scope.articles = []
+
+          $scope.$on 'apply_query', (event, query_id)->
+            if not query_id
+              $scope.articles = []

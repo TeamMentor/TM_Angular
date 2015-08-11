@@ -1,10 +1,11 @@
 angular.module('TM_App')
        .controller 'Filters_Controller', ($sce, $scope, $rootScope, query_Service,icon_Service)->
 
-          console.log 'in Filters_Controller ' + new Date().getMilliseconds()
+          #console.log 'in Filters_Controller ' + new Date().getMilliseconds()
 
           $scope.current_Filters = {}
           $scope.hide_Metadata  = {}
+
 
           $scope.$on 'filter_data', (event, data)->
             if data?.filters
@@ -35,3 +36,5 @@ angular.module('TM_App')
             for item,value of $scope.current_Filters
               if value.metadata_Title is 'Technology'
                 $scope.hide_Metadata.Technology = true
+
+          #window.scope = $scope

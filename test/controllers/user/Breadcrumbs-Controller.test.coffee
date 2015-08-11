@@ -70,7 +70,7 @@ describe '| controllers | user | Breadcrumbs-Controller',->
       @.load_Query()                    ; @.current_Path.assert_Is '....'
       @.load_Query { path: '1111'}      ; @.current_Path.assert_Is '....'     # query_Id value need to be provided
 
-      @.$on 'apply_Query', (event, query_Id)->
+      @.$on 'apply_query', (event, query_Id)->
         query_Id.assert_Is '2222'
 
       @.load_Query { path: '1111', query_Id: '2222'}
