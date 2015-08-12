@@ -13,6 +13,10 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       scope = $rootScope.$new()
       $controller('Search_Bar_Controller', { $scope: scope })
 
+  afterEach ->
+    inject ($httpBackend)->
+      $httpBackend.verifyNoOutstandingExpectation()
+      $httpBackend.verifyNoOutstandingRequest()
 
   it 'constructor', ()->
     using scope, ->
@@ -69,18 +73,27 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     using scope, ->
       @.selected_Technology = id : 'an id', title : 'an title'
 
-      @.$on 'clear_filters', (event)->
-        event.name.assert_Is 'clear_filters'
-
       @.$on 'apply_filter' , (event, id, title)->
         id.assert_Is 'an id'
         title.assert_Is 'an title'
 
       @.select_Technology()
 
+  it 'select_Technology (when title is All)', ->
+    using scope, ->
+      @.selected_Technology = id : 'an id', title : 'All'
+
+      @.$on 'apply_query' , (event, query_Id)->
+        query_Id.assert_Is 'query-6234f2d47eb7'
+
+      @.$on 'clear_query' , (event, data)->
+        expect(data).to.equal null
+
+      @.select_Technology()
+      @.$digest()
+
   it 'submit (check state change)', ->
     inject ($state, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
       using scope, ->
         $state.current.name.assert_Is ''
         @.submit()

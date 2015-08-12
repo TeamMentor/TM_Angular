@@ -42,8 +42,6 @@ class Query_Service
       @.$rootScope.$broadcast 'article_data', data
 
   load_Filter: (query_Id, filter_Id)=>
-    #console.log "[Query-Service] loading data for query: #{query_Id} and filters #{filter_Id}"
-
     @.TM_API.query_tree_filtered query_Id, filter_Id , (data)=>
       if data?.results
         data.size = data.results.size()

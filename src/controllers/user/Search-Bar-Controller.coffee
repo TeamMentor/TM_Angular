@@ -50,17 +50,13 @@ angular.module('TM_App')
                 $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
               else
                 $scope.submit()
-                #$rootScope.$broadcast 'apply_query', query_Service.index_Query
-              #  $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id
-              #else
-
 
               $scope.previous_Filter_Id = $scope.selected_Technology.id
               $scope.ignore_Events = false
 
           $scope.submit = ()->
             $state.go('index')
-            $rootScope.$broadcast 'clear_query'
+            $rootScope.$broadcast 'clear_query', null
             if $scope.text is ''
               $rootScope.$broadcast 'apply_query', query_Service.index_Query
             else

@@ -23,6 +23,15 @@ describe '| controllers | user | Articles-Controller',->
       @.$broadcast 'article_data', { results: articles_Source }
       @.articles.assert_Is articles_Transformed
 
+  it '$on apply_query', ->
+    using scope, ->
+      @.articles = ['a','a']
+      @.$broadcast 'apply_query', 'an-id'
+      @.articles.assert_Is ['a','a']
+
+      @.$broadcast 'apply_query', null
+      @.articles.assert_Is []
+
   it '$on clear_articles', ->
     using scope, ->
       @.articles = [0..10]

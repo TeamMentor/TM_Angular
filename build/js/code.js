@@ -747,6 +747,7 @@
     Query_Service.prototype.load_Filter = function(query_Id, filter_Id) {
       return this.TM_API.query_tree_filtered(query_Id, filter_Id, (function(_this) {
         return function(data) {
+          console.log(data);
           if (data != null ? data.results : void 0) {
             data.size = data.results.size();
           }
@@ -1153,6 +1154,11 @@
 
 (function() {
   angular.module('TM_App').controller('Articles_Controller', function($scope) {
+    $scope.$on('apply_query', function(event, query_id) {
+      if (!query_id) {
+        return $scope.articles = [];
+      }
+    });
     $scope.$on('article_data', function(event, data) {
       var article, articles, i, id, len, title;
       articles = [];
@@ -1167,13 +1173,8 @@
       }
       return $scope.articles = articles;
     });
-    $scope.$on('clear_articles', function() {
+    return $scope.$on('clear_articles', function() {
       return $scope.articles = [];
-    });
-    return $scope.$on('apply_query', function(event, query_id) {
-      if (!query_id) {
-        return $scope.articles = [];
-      }
     });
   });
 
@@ -1337,15 +1338,13 @@
     return $scope.map_Visibility = function() {
       var item, ref, results, value;
       delete $scope.hide_Metadata['Technology'];
+      delete $scope.hide_Metadata['Type'];
+      delete $scope.hide_Metadata['Phase'];
       ref = $scope.current_Filters;
       results = [];
       for (item in ref) {
         value = ref[item];
-        if (value.metadata_Title === 'Technology') {
-          results.push($scope.hide_Metadata.Technology = true);
-        } else {
-          results.push(void 0);
-        }
+        results.push($scope.hide_Metadata[value.metadata_Title] = true);
       }
       return results;
     };
@@ -1570,7 +1569,7 @@
     };
     return $scope.submit = function() {
       $state.go('index');
-      $rootScope.$broadcast('clear_query');
+      $rootScope.$broadcast('clear_query', null);
       if ($scope.text === '') {
         return $rootScope.$broadcast('apply_query', query_Service.index_Query);
       } else {

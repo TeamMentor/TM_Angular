@@ -76,18 +76,28 @@ describe '| services | Query-Service', ->
   it 'load_Filter', ->
     inject (query_Service, $rootScope, $httpBackend)->
 
-      $httpBackend.expectGET('/api/data/query_tree_filtered/an-query-id/an-filter-id').respond  [{ a: 42 }]
+      $httpBackend.expectGET('/api/data/query_tree_filtered/an-query-id/an-filter-id').respond  { a: 42 }
 
       $rootScope.$on 'query_data', (event, data)->
-        data.assert_Is  [{ a: 42 }]
+        data.assert_Is  { a: 42 }
       $rootScope.$on 'filter_data', (event, data)->
-        data.assert_Is [{ a: 42 }]
+        data.assert_Is { a: 42 }
 
       using query_Service, ->
         @.load_Filter('an-query-id', 'an-filter-id')
         $httpBackend.flush()
-        @.data_Queries.assert_Is  [{ a: 42 }]
-        @.data_Filters.assert_Is  [{ a: 42 }]
+        @.data_Queries.assert_Is  { a: 42 }
+        @.data_Filters.assert_Is  { a: 42 }
+
+  it 'load_Filter (check results size mapping)', ->
+    inject (query_Service, $rootScope, $httpBackend)->
+
+      $httpBackend.expectGET('/api/data/query_tree_filtered/an-query-id/an-filter-id').respond  { results: ['a','b'] }
+
+      using query_Service, ->
+        @.load_Filter('an-query-id', 'an-filter-id')
+        $httpBackend.flush()
+        @.data_Queries.size.assert_Is 2
 
   it 'reload_Data', ->
 

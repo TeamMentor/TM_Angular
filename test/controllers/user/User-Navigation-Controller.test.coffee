@@ -14,11 +14,21 @@ describe '| controllers | user | User-Navigation-Controller.test',->
     using scope, ->
       expect(@.open_Query_State).to.be.an('function')
 
-  it 'submit (check state change)', ->
-    inject ($state, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7').respond {}
+  it 'open_Query_State (check state change)', ->
+    inject ($state, $httpBackend, $timeout)->
       using scope, ->
         $state.current.name.assert_Is ''
         @.open_Query_State()
         @.$digest()
         $state.current.name.assert_Is 'index'
+        $timeout.flush()
+
+  it 'open_Query_State (check Loading image change)', ->
+    inject ($state, $httpBackend, $timeout)->
+      using scope, ->
+        @.show_Loading_Image.assert_Is_False()
+        @.open_Query_State()
+        @.$digest()
+        @.show_Loading_Image.assert_Is_True()
+        $timeout.flush()
+        @.show_Loading_Image.assert_Is_False()

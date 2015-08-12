@@ -1,9 +1,13 @@
 angular.module('TM_App')
        .controller 'Articles_Controller', ($scope)->
 
-         #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
+          #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
 
-         $scope.$on 'article_data', (event, data)->
+          $scope.$on 'apply_query', (event, query_id)-> # clears articles when there are not articles broadcasted
+            if not query_id
+              $scope.articles = []
+
+          $scope.$on 'article_data', (event, data)->
             articles = []
             if data?.results
               #raw_Articles = data.results
@@ -17,7 +21,3 @@ angular.module('TM_App')
 
           $scope.$on 'clear_articles', ()->
             $scope.articles = []
-
-          $scope.$on 'apply_query', (event, query_id)->
-            if not query_id
-              $scope.articles = []
