@@ -747,7 +747,6 @@
     Query_Service.prototype.load_Filter = function(query_Id, filter_Id) {
       return this.TM_API.query_tree_filtered(query_Id, filter_Id, (function(_this) {
         return function(data) {
-          console.log(data);
           if (data != null ? data.results : void 0) {
             data.size = data.results.size();
           }

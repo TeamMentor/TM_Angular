@@ -32,9 +32,11 @@ angular.module('TM_App')
 
           $scope.map_Visibility =  ()->
             delete $scope.hide_Metadata['Technology']
+            delete $scope.hide_Metadata['Type']
+            delete $scope.hide_Metadata['Phase']
 
             for item,value of $scope.current_Filters
-              if value.metadata_Title is 'Technology'
-                $scope.hide_Metadata.Technology = true
+              #if value.metadata_Title is 'Technology'
+                $scope.hide_Metadata[value.metadata_Title] = true
 
           #window.scope = $scope
