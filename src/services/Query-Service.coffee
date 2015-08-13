@@ -19,39 +19,52 @@ class Query_Service
       @.data_Filters  = []
       @.load_Query @.index_Query
 
-  load_Query: (query_Id)=>
+  #load_Query
+  load_Query: (query_Id, filter_Id)=>
     if not query_Id
       @.$rootScope.$broadcast 'query_data', {}
       @.$rootScope.$broadcast 'article_data', {}
       @.$rootScope.$broadcast 'filter_data', {}
     else
-      #console.log "[Query-Service] loading data for query: #{query_Id}"
-      @.TM_API.query_tree_queries query_Id, (data)=>
+      @.load_Query_Queries  query_Id, filter_Id
+      @.load_Query_Articles query_Id, filter_Id, @.page_From, @.page_To
+      @.load_Query_Filters  query_Id, filter_Id
+
+
+  load_Query_Queries: (query_Id, filters)=>
+    get_Data = (next)=>
+      if filters
+        @.TM_API.query_tree_filtered_queries query_Id, filters, next
+      else
+        @.TM_API.query_tree_queries query_Id, next
+
+    get_Data (data)=>
         @.data_Queries = data
         @.$rootScope.$broadcast 'query_data', data
 
-      @.load_Query_Articles query_Id, @.page_From, @.page_To
+  load_Query_Articles: (query_Id, filters, from, to)=>
+    get_Data = (next)=>
+      if filters
+        @.TM_API.query_tree_filtered_articles query_Id, filters, from, to, next
+      else
+        @.TM_API.query_tree_articles query_Id,from, to, next
 
-      @.TM_API.query_tree_filters query_Id, (data)=>
-        @.data_Filters = data
-        @.$rootScope.$broadcast 'filter_data', data
-
-  load_Query_Articles: (query_Id, from, to)=>
-    @.TM_API.query_tree_articles query_Id,from, to, (data)=>
+    get_Data (data)=>
       @.data_Articles = data
       @.$rootScope.$broadcast 'article_data', data
 
-  load_Filter: (query_Id, filter_Id)=>
-    @.TM_API.query_tree_filtered query_Id, filter_Id , (data)=>
-      if data?.results
-        data.size = data.results.size()
+  load_Query_Filters: (query_Id, filters)=>
+    get_Data = (next)=>
+      if filters
+        @.TM_API.query_tree_filtered_filters query_Id, filters, next
+      else
+        @.TM_API.query_tree_filters query_Id, next
 
-      @.data_Queries  = data
-      @.data_Articles = data
-      @.data_Filters  = data
-      @.$rootScope.$broadcast 'query_data', data
-      @.$rootScope.$broadcast 'article_data', data
+    get_Data (data)=>
+      @.data_Filters = data
       @.$rootScope.$broadcast 'filter_data', data
+
+
 
   reload_Data: ()=>
     @.data_Queries  = null

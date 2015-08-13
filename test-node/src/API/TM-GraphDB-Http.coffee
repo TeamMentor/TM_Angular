@@ -7,6 +7,8 @@ class TM_GraphDB_Http
     @.server      = 'http://localhost:12346'
     @.index_Query = 'query-6234f2d47eb7'
 
+  cache_path: (callback)->
+    @.open '/graph-db/cache_path', callback
 
   open: (virtual_Path, callback)=>
     "#{@.server}#{virtual_Path}".GET_Json (json)->

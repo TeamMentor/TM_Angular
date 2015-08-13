@@ -30,7 +30,7 @@ angular.module('TM_App')
             if filters is ''
               query_Service.load_Query query_Id
             else
-              query_Service.load_Filter query_Id, filters
+              query_Service.load_Query query_Id, filters
 
           $scope.clear_Filter = (filter_Id)->
             $rootScope.$broadcast 'clear_filter', filter_Id
