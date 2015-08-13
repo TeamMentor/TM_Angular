@@ -33,7 +33,7 @@ describe '| directive | components | user | breadcrumbs', ->
     inject ($$)->
       using $$(element).$query,->
         @('div'   ).$attr().assert_Is 'ng-controller': 'Breadcrumbs_Controller', class: 'ng-scope'
-        @('div dl').$attr().assert_Is class: 'breadcrumbs'
+        @('div dl').$attr().assert_Is 'ng-show': 'breadcrumbs', class:'breadcrumbs'
         @('div dl').$html().assert_Is '<!-- ngRepeat: breadcrumb in breadcrumbs -->'
 
 

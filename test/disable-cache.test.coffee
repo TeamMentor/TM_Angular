@@ -4,7 +4,7 @@ describe '| disable-cache',->
   it 'Check $templateCache has values' ,->
     module('TM_App')
     inject ($templateCache, $browser)->
-      $templateCache.info().assert_Is 	{ id: 'templates', size: 52 }
+      $templateCache.info().assert_Is 	{ id: 'templates', size: 51 }
       browser = $browser
 
   it 'Check $templateCache is cleared' ,->

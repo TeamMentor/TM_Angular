@@ -31,9 +31,9 @@ describe '| directive | |views | index', ->
       $httpBackend.flush()
 
       using $$(element[0]).$query,->
-        @('div'       ).$attr().assert_Is { class: 'ng-scope' , 'ng-controller': 'Index_Controller'}
-        @('section'   ).$attr().assert_Is { class: 'row__label' }
-        @('.main'     ).$attr().assert_Is { class: 'main'       }
+        @('div'       ).$attr().assert_Is class: 'ng-scope'  , 'ng-controller': 'Index_Controller'
+        @('section'   ).$attr().assert_Is class: 'row__label', 'ng-hide' : 'results_Size'
+        @('.main'     ).$attr().assert_Is class: 'main'
         @('queries'   ).$attr().assert_Is {}
         @('articles'  ).$attr().assert_Is {}
         @('filters'   ).$attr().assert_Is {}
