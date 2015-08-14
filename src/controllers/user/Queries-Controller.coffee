@@ -6,6 +6,6 @@ angular.module('TM_App')
             $scope.containers = data.containers
 
           $scope.load_Query = (query_Id)->
-            $rootScope.$broadcast 'apply_Query', query_Id
+            $rootScope.$broadcast 'apply_query', query_Id
 
           #query_Service.reload_Data()

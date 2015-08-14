@@ -3,7 +3,6 @@ describe '| check-graph-db-data ', ->
     module 'TM_App'
   it 'Check graph_db_data service has expected data',->
     inject (graph_db_data)->
-      console.log graph_db_data.keys()
       graph_db_data.keys().assert_Is [ 'status',
                                        'query_tree_articles_query-6234f2d47eb7_0_10',
                                        'query_tree_articles_query-6234f2d47eb7_10_20',

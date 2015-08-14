@@ -28,5 +28,8 @@ app.service '$$', ()->
                 element.$click = ()->
                   angular.element(element).triggerHandler('click')
 
+                element.$scope = ()->
+                  angular.element(element).scope()
+
             return element
     return $$

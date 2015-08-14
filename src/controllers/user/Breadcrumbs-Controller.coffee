@@ -1,6 +1,9 @@
 angular.module 'TM_App'
        .controller 'Breadcrumbs_Controller', ($scope, $rootScope)->
           using $scope, ->
+
+            #console.log 'in Breadcrumbs_Controller ' + new Date().getMilliseconds()
+
             @.history      = {}
             @.current_Path = ''
             @.breadcrumbs  = []
@@ -18,7 +21,7 @@ angular.module 'TM_App'
                                      }
                   path += "/#{key}"
 
-            @.$on 'clear_Query', (event, data)=>
+            @.$on 'clear_query', (event, data)=>
               @.current_Path = ''
               @.breadcrumbs  = []
 
@@ -35,4 +38,4 @@ angular.module 'TM_App'
             @.load_Query = (breadcrumb)=>
               if breadcrumb?.query_Id
                 @.current_Path = breadcrumb.path
-                $rootScope.$broadcast 'apply_Query', breadcrumb.query_Id
+                $rootScope.$broadcast 'apply_query', breadcrumb.query_Id

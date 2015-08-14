@@ -11,6 +11,15 @@ describe '| API | TM-GraphDB-Http |', ->
       @.server.assert_Is      'http://localhost:12346'
       @.index_Query.assert_Is 'query-6234f2d47eb7'
 
+  it 'cache_path', (done)->
+    graphDB.cache_path (data)->
+      using data.path, ->
+        @.assert_Folder_Exists()
+        @.files().file_Names().first().assert_Is 'tm-uno-loaded.flag'
+        @.folders().file_Names().assert_Contains(['data_cache','tm-uno'])
+        done()
+
+
   it 'open', (done)->
     graphDB.open '/graph-db/status', (data)->
       data.assert_Is status: 'ok'

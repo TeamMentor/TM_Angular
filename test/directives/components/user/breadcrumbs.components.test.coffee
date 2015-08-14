@@ -33,7 +33,7 @@ describe '| directive | components | user | breadcrumbs', ->
     inject ($$)->
       using $$(element).$query,->
         @('div'   ).$attr().assert_Is 'ng-controller': 'Breadcrumbs_Controller', class: 'ng-scope'
-        @('div dl').$attr().assert_Is class: 'breadcrumbs'
+        @('div dl').$attr().assert_Is 'ng-show': 'breadcrumbs', class:'breadcrumbs'
         @('div dl').$html().assert_Is '<!-- ngRepeat: breadcrumb in breadcrumbs -->'
 
 
@@ -58,7 +58,7 @@ describe '| directive | components | user | breadcrumbs', ->
           delete @.$$hashKey
           @.assert_Is { query_Id: 'bbb-id', title: 'bbb-title', path: '/aaa' }
 
-  it '| controller | $on clear_Query', ->
+  it '| controller | $on clear_query', ->
     inject ($$)->
       using scope,->
         @.current_Path.assert_Is '/aaa/bbb'
@@ -67,14 +67,14 @@ describe '| directive | components | user | breadcrumbs', ->
 
         expect($$(element).$query('dd')).to.not.equal null
 
-        @.$broadcast 'clear_Query'
+        @.$broadcast 'clear_query'
         @.$digest()
 
         @.current_Path.assert_Is ''
         @.breadcrumbs .assert_Is []
         expect($$(element).$query('dd')).to.equal null
 
-  it '| controller | $on query_data', ->
+  it '| controller | $on query_data (vanila data)', ->
     using scope,->
       @.$broadcast 'query_data', { id: 'ccc', title: 'ccc-title'}
       @.$digest()
@@ -86,13 +86,25 @@ describe '| directive | components | user | breadcrumbs', ->
         delete @.$$hashKey
         @.assert_Is query_Id: 'ccc', title: 'ccc-title', path:'/aaa/bbb'
 
+  it '| controller | $on query_data (graph_db_data)', ->
+    inject (graph_db_data)->
+      using scope, ->
+        @.$broadcast 'clear_query'
+        @.history = {}
+        @.$broadcast 'query_data',  graph_db_data['query_tree_queries_query-6234f2d47eb7']
+        @.history.assert_Is { 'query-6234f2d47eb7': { title: 'Index', query_Id: 'query-6234f2d47eb7' } }
+        @.current_Path.assert_Is '/query-6234f2d47eb7'
+        @.breadcrumbs.assert_Is 	[ { query_Id: 'query-6234f2d47eb7', title: 'Index', path: '' } ]
+
+        scope.$digest()
+
   it '| controller | $on load_Query', ->
     inject ($$)->
       using scope,->
         @.refresh_Breadcrumbs()
         @.$digest()
 
-        scope.$on 'apply_Query', (event, query_Id)->
+        scope.$on 'apply_query', (event, query_Id)->
           query_Id.assert_Is 'aaa-id'
 
         $$(element).$query('a').$click()

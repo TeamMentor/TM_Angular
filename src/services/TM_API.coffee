@@ -43,16 +43,52 @@ class TM_API
     url     = "/api/data/query_tree_queries/#{id}"
     @.$http.get(url).success callback
 
-  query_tree_filtered:  (id, filter, callback)=>
-    if id and filter and callback
-      if @.cache_Query_Tree[id+filter]
-        return callback @.cache_Query_Tree[id+filter]
+  #query_tree_filtered:  (id, filter, callback)=>
+  #  if id and filter and callback
+  #    if @.cache_Query_Tree[id+filter]
+  #      return callback @.cache_Query_Tree[id+filter]
+  #
+  #    url     = "/api/data/query_tree_filtered/#{id}/#{filter}"
+  #    @.$http.get url
+  #      .success (data)=>
+  #        @.cache_Query_Tree[id+filter] = data
+  #        callback(data)
 
-      url     = "/api/data/query_tree_filtered/#{id}/#{filter}"
+  query_tree_filtered_articles:  (id, filter, from, to, callback)=>
+    if id and filter and callback
+      cache_Key = 'filtered_articles_' + id + filter + from + to
+      if @.cache_Query_Tree[cache_Key]
+        return callback @.cache_Query_Tree[cache_Key]
+
+      url     = "/api/data/query_tree_filtered_articles/#{id}/#{filter}/#{from}/#{to}"
       @.$http.get url
-        .success (data)=>
-          @.cache_Query_Tree[id+filter] = data
-          callback(data)
+             .success (data)=>
+                @.cache_Query_Tree[cache_Key] = data
+                callback(data)
+
+  query_tree_filtered_filters:  (id, filter, callback)=>
+    if id and filter and callback
+      cache_Key = 'filtered_filters_' + id + filter
+      if @.cache_Query_Tree[cache_Key]
+        return callback @.cache_Query_Tree[cache_Key]
+
+      url     = "/api/data/query_tree_filtered_filters/#{id}/#{filter}"
+      @.$http.get url
+      .success (data)=>
+        @.cache_Query_Tree[cache_Key] = data
+        callback(data)
+
+  query_tree_filtered_queries:  (id, filter, callback)=>
+    if id and filter and callback
+      cache_Key = 'filtered_queries_' + id + filter
+      if @.cache_Query_Tree[cache_Key]
+        return callback @.cache_Query_Tree[cache_Key]
+
+      url     = "/api/data/query_tree_filtered_queries/#{id}/#{filter}"
+      @.$http.get url
+      .success (data)=>
+        @.cache_Query_Tree[cache_Key] = data
+        callback(data)
 
   query_from_text_search: (text, callback)=>
 

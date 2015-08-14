@@ -9,6 +9,8 @@ class Query_Service
     @.data_Queries = null
     @.data_Articles = null
     @.data_Filters = null
+    @.page_From    = 0
+    @.page_To      = 10
 
   load_Data: ()=>
     if not @.data
@@ -17,40 +19,60 @@ class Query_Service
       @.data_Filters  = []
       @.load_Query @.index_Query
 
-  load_Query: (query_Id)=>
+  #load_Query
+  load_Query: (query_Id, filter_Id)=>
     if not query_Id
       @.$rootScope.$broadcast 'query_data', {}
       @.$rootScope.$broadcast 'article_data', {}
       @.$rootScope.$broadcast 'filter_data', {}
     else
-      #console.log "[Query-Service] loading data for query: #{query_Id}"
-      @.TM_API.query_tree_queries query_Id, (data)=>
+      @.load_Query_Queries  query_Id, filter_Id
+      @.load_Query_Articles query_Id, filter_Id, @.page_From, @.page_To
+      @.load_Query_Filters  query_Id, filter_Id
+
+
+  load_Query_Queries: (query_Id, filters)=>
+    get_Data = (next)=>
+      if filters
+        @.TM_API.query_tree_filtered_queries query_Id, filters, next
+      else
+        @.TM_API.query_tree_queries query_Id, next
+
+    get_Data (data)=>
         @.data_Queries = data
         @.$rootScope.$broadcast 'query_data', data
-      @.TM_API.query_tree_articles query_Id,0,10, (data)=>
-        @.data_Articles = data
-        @.$rootScope.$broadcast 'article_data', data
-        console.log data
-      @.TM_API.query_tree_filters query_Id, (data)=>
-        @.data_Filters = data
-        @.$rootScope.$broadcast 'filter_data', data
 
-  load_Filter: (query_Id, filter_Id)=>
-    #console.log "[Query-Service] loading data for query: #{query_Id} and filters #{filter_Id}"
+  load_Query_Articles: (query_Id, filters, from, to)=>
+    get_Data = (next)=>
+      if filters
+        @.TM_API.query_tree_filtered_articles query_Id, filters, from, to, next
+      else
+        @.TM_API.query_tree_articles query_Id,from, to, next
 
-    @.TM_API.query_tree_filtered query_Id, filter_Id , (data)=>
-      @.data_Queries = data
+    get_Data (data)=>
+      @.data_Articles = data
+      @.$rootScope.$broadcast 'article_data', data
+
+  load_Query_Filters: (query_Id, filters)=>
+    get_Data = (next)=>
+      if filters
+        @.TM_API.query_tree_filtered_filters query_Id, filters, next
+      else
+        @.TM_API.query_tree_filters query_Id, next
+
+    get_Data (data)=>
       @.data_Filters = data
-      @.$rootScope.$broadcast 'query_data', data
       @.$rootScope.$broadcast 'filter_data', data
+
+
 
   reload_Data: ()=>
     @.data_Queries  = null
     @.data_Articles = null
     @.data_Queries  = null
-    @.$rootScope.$broadcast 'clear_Filters'
-    @.$rootScope.$broadcast 'clear_Query'
-    @.$rootScope.$broadcast 'clear_Search'
+    @.$rootScope.$broadcast 'clear_filters'
+    @.$rootScope.$broadcast 'clear_query'
+    @.$rootScope.$broadcast 'clear_search'
     @.load_Data()
 
 app.service 'query_Service', ($rootScope, TM_API)->

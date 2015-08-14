@@ -31,21 +31,21 @@ describe '| directives | component | filters', ->
 
     inject ($$)->
       using $$(element).$query,->
-        @('#filters'     ).$attr().assert_Is 'ng-repeat'    : 'filter in filters'   , class: 'ng-scope'   , id: 'filters'
+        @('#filters'     ).$attr().assert_Is 'ng-repeat'    : 'filter in filters'   , class: 'ng-scope'   , id: 'filters', 'ng-hide' : 'hide_Metadata[filter.title]'
         @('#results'     ).$attr().assert_Is                                                                id: 'results'
         @('#results div' ).$attr().assert_Is 'ng-repeat'    : 'result in filter.results', class: 'ng-scope'
         @('#results dd'  ).$attr().assert_Is 'ng-show'      : 'result.size > 0'
-        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title)', href: '#'
+        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title, filter.title)', href: '#'
         @('#results dd a').$text().assert_Is 'title42'
 
   it 'Check ng-show status on view_Filters broadcast',->
     inject ($$, $rootScope)->
       using $$(element).$query,->
-        $rootScope.$broadcast 'view_Filters', true
+        $rootScope.$broadcast 'view_filters', true
         scope.$digest()
         @('.section'  ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'section row' }
 
-        $rootScope.$broadcast 'view_Filters', false
+        $rootScope.$broadcast 'view_filters', false
         scope.$digest()
         @('.section'  ).$attr().assert_Is 	{ 'ng-show': 'view_Filters', class: 'section row ng-hide' }
 
@@ -55,7 +55,7 @@ describe '| directives | component | filters', ->
       @.$broadcast 'filter_data', query_Tree_Filters_Data
       @.$digest()
 
-    scope.$on 'apply_Filter', (event,filter_Id, filter_Title )->
+    scope.$on 'apply_filter', (event,filter_Id, filter_Title )->
       filter_Id   .assert_Is 'id'
       filter_Title.assert_Is 'title'
     element_Raw.find('a').triggerHandler('click')

@@ -12,18 +12,21 @@ describe '| controllers | user | Index-Controller.test',->
   it 'constructor', ()->
     using scope, ->
       @.history      .assert_Is {}
+      @.view_Filters .assert_Is_False()
       @.column_Left  .assert_Is 'col-3'
       @.column_Middle.assert_Is 'col-9'
       @.column_Right .assert_Is 'col-0'
 
   it '$on view_Filters', ()->
     using scope, ->
-      @.$broadcast 'view_Filters', true
+      @.$broadcast 'toggle_filters', true
+      @.view_Filters .assert_Is_True()
       @.column_Left  .assert_Is 'col-3'
       @.column_Middle.assert_Is 'col-6'
       @.column_Right .assert_Is 'col-3'
 
-      @.$broadcast 'view_Filters', false
+      @.$broadcast 'toggle_filters', false
+      @.view_Filters .assert_Is_False()
       @.column_Left  .assert_Is 'col-3'
       @.column_Middle.assert_Is 'col-9'
       @.column_Right .assert_Is 'col-0'

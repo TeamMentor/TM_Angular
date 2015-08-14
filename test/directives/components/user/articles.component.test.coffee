@@ -17,10 +17,11 @@ describe '| directive | components | user | queries', ->
       $rootScope.$digest()
       scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
-    inject ($document)->
-      body = angular.element $document[0].body
-      body.find('articles').remove()
-      body.append element
+    # show element in screenshot
+    #inject ($document)->
+    #  body = angular.element $document[0].body
+    #  body.find('articles').remove()
+    #  body.append element
 
   it 'constructor',->
     inject ($$)->
@@ -35,7 +36,6 @@ describe '| directive | components | user | queries', ->
 
       key = 'query_tree_articles_query-6234f2d47eb7_0_10'
       data = graph_db_data[key]
-      console.log graph_db_data.keys()
       scope.$broadcast 'articles_data', data
       scope.$digest()
       #$httpBackend.flush()

@@ -1,9 +1,13 @@
 angular.module('TM_App')
-       .controller 'Articles_Controller', ($scope, query_Service,  $location , TM_API)->
+       .controller 'Articles_Controller', ($scope)->
 
-         raw_Articles = null
+          #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
 
-         $scope.$on 'article_data', (event, data)->
+          $scope.$on 'apply_query', (event, query_id)-> # clears articles when there are not articles broadcasted
+            if not query_id
+              $scope.articles = []
+
+          $scope.$on 'article_data', (event, data)->
             articles = []
             if data?.results
               #raw_Articles = data.results
@@ -15,9 +19,5 @@ angular.module('TM_App')
                  article.url = '/angular/user/article/' + id + '/' + title
             $scope.articles = articles
 
-          $scope.$on 'show_page', (event, page)->
-            #articles = raw_Articles.slice(0 + page * 10 ,10 + page * 10 )
-
-
-          #query_Service.load_Data()
-
+          $scope.$on 'clear_articles', ()->
+            $scope.articles = []
