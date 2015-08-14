@@ -141,3 +141,5 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     results = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
     scope.$broadcast 'filter_data', { filters: [{ title: 'Technology', results: results } ] }
     expect(scope.technologies).to.deep.equal [default_Technology].concat(results)
+
+

@@ -827,6 +827,7 @@
       this.query_tree_queries = bind(this.query_tree_queries, this);
       this.query_tree_filters = bind(this.query_tree_filters, this);
       this.query_tree_articles = bind(this.query_tree_articles, this);
+      this.query_tree = bind(this.query_tree, this);
       this.get_Words = bind(this.get_Words, this);
       this.$q = q;
       this.$http = http;
@@ -862,6 +863,26 @@
           return results;
         })();
       });
+    };
+
+    TM_API.prototype.query_tree = function(id, callback) {
+      var url;
+      id = id || 'query-6234f2d47eb7';
+      if (this.cache_Query_Tree[id]) {
+        return this.$timeout((function(_this) {
+          return function() {
+            return callback(_this.cache_Query_Tree[id]);
+          };
+        })(this));
+      } else {
+        url = "/api/data/query_tree/" + id;
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.cache_Query_Tree[id] = data;
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.query_tree_articles = function(id, from, to, callback) {
@@ -1625,17 +1646,67 @@
         return $scope.ignore_Events = false;
       }
     };
-    return $scope.submit = function() {
+    $scope.submit = function() {
       $state.go('index');
       $rootScope.$broadcast('clear_query', null);
       if ($scope.text === '') {
         return $rootScope.$broadcast('apply_query', query_Service.index_Query);
       } else {
-        return TM_API.query_from_text_search($scope.text, function(query_id) {
-          return $rootScope.$broadcast('apply_query', query_id);
+        return $scope.get_Parent_Queries();
+      }
+    };
+    $scope.get_Parent_Queries = function() {
+      return TM_API.query_from_text_search($scope.text, function(query_id) {
+        $rootScope.$broadcast('apply_query', query_id);
+        if (query_id) {
+          return TM_API.query_tree(query_id, function(data) {
+            var article_Ids, filter, filters, i, j, len, len1, ref, ref1, result;
+            article_Ids = (function() {
+              var i, len, ref, results;
+              ref = data.results;
+              results = [];
+              for (i = 0, len = ref.length; i < len; i++) {
+                result = ref[i];
+                results.push(result.id);
+              }
+              return results;
+            })();
+            filters = [];
+            ref = data.filters;
+            for (i = 0, len = ref.length; i < len; i++) {
+              filter = ref[i];
+              ref1 = filter.results;
+              for (j = 0, len1 = ref1.length; j < len1; j++) {
+                result = ref1[j];
+                filters.push(result.title);
+              }
+            }
+            return TM_API.get_articles_parent_queries(article_Ids, filters, function(data) {
+              var data_query;
+              data_query = {
+                id: query_id,
+                title: $scope.text,
+                containers: data
+              };
+              return $rootScope.$broadcast('query_data', data_query);
+            });
+          });
+        }
+      });
+    };
+    $scope.get_Words = function(term) {
+      if (term === '') {
+        return $scope.words = ['....sugestions....'];
+      } else {
+        return TM_API.get_Words(term, function(words) {
+          return $scope.words = words;
         });
       }
     };
+    $scope.select_Word = function(word) {
+      return $scope.text = word;
+    };
+    return $scope.words = ['....sugestions....'];
   });
 
 }).call(this);
