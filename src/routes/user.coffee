@@ -11,7 +11,8 @@ app.config ($stateProvider, routes_Names) ->
 
   for view_Name in routes_Names.views.user_User
     $stateProvider.state view_Name    ,
-      url        : "/#{view_Name}"
+      url        : "/#{view_Name}",
+      controller : 'Article_Controller'
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"
 
 

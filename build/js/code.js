@@ -191,8 +191,8 @@
     components: {},
     views: {
       guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['main', 'docs', 'terms_and_conditions'],
-      user_User: ['index', 'articles']
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
     }
   };
 
@@ -402,6 +402,7 @@
       view_Name = ref1[j];
       $stateProvider.state(view_Name, {
         url: "/" + view_Name,
+        controller: 'Article_Controller',
         templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
     }
@@ -682,9 +683,12 @@
 
   TM_API = (function() {
     function TM_API(q, http, timeout) {
+      this.popular_Search = bind(this.popular_Search, this);
       this.pwd_reset = bind(this.pwd_reset, this);
       this.signup = bind(this.signup, this);
       this.login = bind(this.login, this);
+      this.top_Articles = bind(this.top_Articles, this);
+      this.recent_Articles = bind(this.recent_Articles, this);
       this.article = bind(this.article, this);
       this.docs_Page = bind(this.docs_Page, this);
       this.docs_Library = bind(this.docs_Library, this);
@@ -856,6 +860,27 @@
       }
     };
 
+    TM_API.prototype.recent_Articles = function(callback) {
+      var recent_Articles, url;
+      url = "/json/recentarticles";
+      recent_Articles = [];
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
+    };
+
+    TM_API.prototype.top_Articles = function(callback) {
+      var url;
+      url = "/json/toparticles";
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
+    };
+
     TM_API.prototype.login = function(username, password, callback) {
       var postData, url;
       url = "/json/user/login";
@@ -891,6 +916,16 @@
         email: email
       };
       return this.$http.post(url, postData).success(callback);
+    };
+
+    TM_API.prototype.popular_Search = function(callback) {
+      var url;
+      url = "/json/search/recentsearch";
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
     };
 
     return TM_API;
@@ -1045,7 +1080,7 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    return TM_API.article($stateParams.article_Id, function(article) {
+    TM_API.article($stateParams.article_Id, function(article) {
       var id, title;
       id = article.id.remove('article-');
       title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
@@ -1055,6 +1090,36 @@
       $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
       $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
       return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+    });
+    TM_API.recent_Articles(function(articles) {
+      $scope.recent_Articles = [];
+      if ((articles != null)) {
+        return angular.forEach(articles, function(article) {
+          var id, title;
+          article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+          article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+          article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+          return $scope.recent_Articles.push(article);
+        });
+      }
+    });
+    return TM_API.top_Articles(function(articles) {
+      $scope.top_Articles = [];
+      if ((articles != null)) {
+        return angular.forEach(articles, function(article) {
+          var id, title;
+          article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+          article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+          article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+          return $scope.top_Articles.push(article);
+        });
+      }
     });
   });
 
@@ -1340,6 +1405,18 @@
         });
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Search_Controller', function($sce, $scope, TM_API) {
+    return TM_API.popular_Search(function(search) {
+      angular.forEach(search, function(searchItem) {
+        return searchItem.url = '/search?text=' + searchItem.title;
+      });
+      return $scope.top_Search = search;
+    });
   });
 
 }).call(this);
