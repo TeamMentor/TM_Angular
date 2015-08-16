@@ -21,6 +21,20 @@ class Query_Service
 
   #load_Query
   load_Query: (query_Id, filter_Id)=>
+
+
+    @.TM_API.query_view_model query_Id, null, @.page_From, @.page_To, (data)=>
+      @.$rootScope.$broadcast 'article_data', id:data.id, results: data.articles
+      @.$rootScope.$broadcast 'filter_data' , id:data.id, filters: data.filters
+      @.$rootScope.$broadcast 'query_data'  , id:data.id, containers: data.queries , title: data.title
+
+
+    return
+    #@.TM_API.query_tree_filters query_Id, (data)->
+    #  console.log data
+
+    #@.TM_API.query_view_mode query_Id, filter_Id, @.page_From, @.page_To
+
     if not query_Id
       @.$rootScope.$broadcast 'query_data', {}
       @.$rootScope.$broadcast 'article_data', {}

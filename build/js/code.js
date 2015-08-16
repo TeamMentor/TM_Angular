@@ -79,10 +79,15 @@
 }).call(this);
 
 (function() {
-  var slice = [].slice;
+  var log_Events, log_Urls,
+    slice = [].slice;
+
+  log_Events = false;
+
+  log_Urls = false;
 
   angular.module('TM_App').run(function($rootScope) {
-    var body, events, i, len, log_Event, log_Events, name, results;
+    var body, events, i, len, log_Event, name, results;
     body = angular.element(document.body);
     body.on('keydown', function(event) {
       if (event) {
@@ -94,7 +99,6 @@
         return $rootScope.$broadcast('keyup', event);
       }
     });
-    log_Events = true;
     if (log_Events) {
       log_Event = function(name) {
         return $rootScope.$on(name, function() {
@@ -120,7 +124,7 @@
   angular.module('TM_App').factory('httpInterceptor', function($q) {
     return {
       request: function(config) {
-        if (config) {
+        if (config && log_Urls) {
           console.log(config.method + " " + config.url);
         }
         return config || $q.when(config);
@@ -714,6 +718,24 @@
     };
 
     Query_Service.prototype.load_Query = function(query_Id, filter_Id) {
+      this.TM_API.query_view_model(query_Id, null, this.page_From, this.page_To, (function(_this) {
+        return function(data) {
+          _this.$rootScope.$broadcast('article_data', {
+            id: data.id,
+            results: data.articles
+          });
+          _this.$rootScope.$broadcast('filter_data', {
+            id: data.id,
+            filters: data.filters
+          });
+          return _this.$rootScope.$broadcast('query_data', {
+            id: data.id,
+            containers: data.queries,
+            title: data.title
+          });
+        };
+      })(this));
+      return;
       if (!query_Id) {
         this.$rootScope.$broadcast('query_data', {});
         this.$rootScope.$broadcast('article_data', {});
@@ -821,6 +843,7 @@
       this.docs_Library = bind(this.docs_Library, this);
       this.get_articles_parent_queries = bind(this.get_articles_parent_queries, this);
       this.query_from_text_search = bind(this.query_from_text_search, this);
+      this.query_view_model = bind(this.query_view_model, this);
       this.query_tree_filtered_queries = bind(this.query_tree_filtered_queries, this);
       this.query_tree_filtered_filters = bind(this.query_tree_filtered_filters, this);
       this.query_tree_filtered_articles = bind(this.query_tree_filtered_articles, this);
@@ -952,6 +975,20 @@
           };
         })(this));
       }
+    };
+
+    TM_API.prototype.query_view_model = function(id, filters, from, to, callback) {
+      var url;
+      if (filters) {
+        url = "/api/data/query_view_model_filtered/" + id + "/" + filters + "/" + from + "/" + to;
+      } else {
+        url = "/api/data/query_view_model/" + id + "/" + from + "/" + to;
+      }
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
     };
 
     TM_API.prototype.query_from_text_search = function(text, callback) {

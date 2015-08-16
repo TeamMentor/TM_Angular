@@ -86,9 +86,18 @@ class TM_API
 
       url     = "/api/data/query_tree_filtered_queries/#{id}/#{filter}"
       @.$http.get url
-      .success (data)=>
-        @.cache_Query_Tree[cache_Key] = data
-        callback(data)
+             .success (data)=>
+               @.cache_Query_Tree[cache_Key] = data
+               callback(data)
+
+  query_view_model:  (id, filters, from, to, callback)=>
+    if filters
+      url     = "/api/data/query_view_model_filtered/#{id}/#{filters}/#{from}/#{to}"
+    else
+      url     = "/api/data/query_view_model/#{id}/#{from}/#{to}"
+    @.$http.get url
+           .success (data)=>
+              callback(data)
 
   query_from_text_search: (text, callback)=>
 

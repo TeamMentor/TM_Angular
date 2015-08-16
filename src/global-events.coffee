@@ -1,3 +1,6 @@
+log_Events = false
+log_Urls   = false
+
 angular.module('TM_App')
        .run ($rootScope)->
 
@@ -11,7 +14,6 @@ angular.module('TM_App')
             if event
               $rootScope.$broadcast 'keyup', event
 
-          log_Events = true
           if log_Events
             log_Event = (name)->
               $rootScope.$on name, (params...)->
@@ -32,7 +34,7 @@ angular.module('TM_App')
 angular.module('TM_App')
        .factory 'httpInterceptor',  ($q)->
             request: (config)->
-              if config
+              if config and log_Urls
                 console.log "#{config.method} #{config.url}"
               config || $q.when(config);
        .config  ($httpProvider)->
