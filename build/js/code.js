@@ -67,10 +67,10 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').run(function($templateCache, $browser) {
+  angular.module('TM_App').run(function($templateCache, $browser, $log) {
     if (true) {
       if ($browser.isMock === false) {
-        console.log('Since we are running in a real browser, removing all template caches (for now)');
+        $log.info('Since we are running in a real browser, removing all template caches (for now)');
         return $templateCache.removeAll();
       }
     }
@@ -79,14 +79,9 @@
 }).call(this);
 
 (function() {
-  var log_Events, log_Urls,
-    slice = [].slice;
+  var slice = [].slice;
 
-  log_Events = false;
-
-  log_Urls = false;
-
-  angular.module('TM_App').run(function($rootScope) {
+  angular.module('TM_App').run(function($rootScope, tm_angular_config) {
     var body, events, i, len, log_Event, name, results;
     body = angular.element(document.body);
     body.on('keydown', function(event) {
@@ -99,7 +94,7 @@
         return $rootScope.$broadcast('keyup', event);
       }
     });
-    if (log_Events) {
+    if (tm_angular_config.log_Events) {
       log_Event = function(name) {
         return $rootScope.$on(name, function() {
           var params;
@@ -111,7 +106,7 @@
           });
         });
       };
-      events = ['apply_filter', 'apply_query', 'clear_articles', 'clear_filter', 'clear_query', 'clear_search', 'query_data', 'article_data', 'filter_data', 'set_page', 'set_page_split', 'toggle_filters', 'view_filters', 'test'];
+      events = ['apply_filter', 'apply_query', 'clear_articles', 'clear_filter', 'clear_query', 'clear_search', 'query_data', 'article_data', 'filter_data', 'set_page', 'set_page_split', 'toggle_filters', 'view_filters', 'view_model_data', 'test'];
       results = [];
       for (i = 0, len = events.length; i < len; i++) {
         name = events[i];
@@ -121,13 +116,13 @@
     }
   });
 
-  angular.module('TM_App').factory('httpInterceptor', function($q) {
+  angular.module('TM_App').factory('httpInterceptor', function($q, tm_angular_config) {
     return {
       request: function(config) {
-        if (config && log_Urls) {
+        if (config && tm_angular_config.log_Urls) {
           console.log(config.method + " " + config.url);
         }
-        return config || $q.when(config);
+        return $q.when(config);
       }
     };
   }).config(function($httpProvider) {
@@ -298,6 +293,18 @@
   };
 
   app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
 
 }).call(this);
 
@@ -516,645 +523,6 @@
       controller: 'Article_Controller',
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
-  });
-
-}).call(this);
-
-(function() {
-  var Icon_Service, mappings,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  mappings = {
-    '.NET': {
-      "class": 'icon-Net',
-      layers: 12
-    },
-    'ASP.NET 3.5': {
-      "class": 'icon-Net',
-      layers: 12
-    },
-    'ASP.NET 4.0': {
-      "class": 'icon-Net',
-      layers: 12
-    },
-    'Android': {
-      "class": 'icon-Android',
-      layers: 12
-    },
-    'C++': {
-      "class": 'icon-C',
-      layers: 12
-    },
-    'iOS': {
-      "class": 'icon-iOS',
-      layers: 12
-    },
-    'Java': {
-      "class": 'icon-Java',
-      layers: 12
-    },
-    'PHP': {
-      "class": 'icon-PHP',
-      layers: 12
-    },
-    'Scala Play': {
-      "class": 'icon-Scala',
-      layers: 12
-    },
-    'Scala with Play Framework': {
-      "class": 'icon-Scala',
-      layers: 12
-    },
-    'WCF': {
-      "class": 'icon-WCF',
-      layers: 12
-    },
-    'WCF 3.5': {
-      "class": 'icon-WCF',
-      layers: 12
-    },
-    'Web Application': {
-      "class": 'icon-Web-App',
-      layers: 12
-    },
-    'HTML5': {
-      "class": 'icon-HTML5',
-      layers: 12
-    },
-    'Deployment': {
-      "class": 'icon-Deploy',
-      layers: 12
-    },
-    'Design': {
-      "class": 'icon-Design',
-      layers: 12
-    },
-    'Implementation': {
-      "class": 'icon-Implementation',
-      layers: 12
-    },
-    'Test': {
-      "class": 'icon-Test',
-      layers: 12
-    },
-    'Checklist Item': {
-      "class": 'icon-Checklist',
-      layers: 12
-    },
-    'Code Example': {
-      "class": 'icon-CodeExample',
-      layers: 8
-    },
-    'Guideline': {
-      "class": 'icon-Guideline',
-      layers: 12
-    },
-    'How To': {
-      "class": 'icon-HowTo',
-      layers: 12
-    },
-    'Principle': {
-      "class": 'icon-Principle',
-      layers: 12
-    },
-    'Requirement': {
-      "class": 'icon-Requirement',
-      layers: 12
-    },
-    'Vulnerability': {
-      "class": 'icon-Vulnerabilities',
-      layers: 12
-    },
-    'Default': {
-      "class": 'icon-Default',
-      layers: 12
-    }
-  };
-
-  Icon_Service = (function() {
-    function Icon_Service() {
-      this.simple_Element_Html = bind(this.simple_Element_Html, this);
-      this.simple_Element = bind(this.simple_Element, this);
-      this.element_Html = bind(this.element_Html, this);
-      this.element = bind(this.element, this);
-      this.mappings = mappings;
-    }
-
-    Icon_Service.prototype.element = function(key) {
-      var element, i, j, mapping, ref;
-      mapping = this.mappings[key];
-      if (!mapping) {
-        mapping = this.mappings['Default'];
-      }
-      element = this.simple_Element(mapping["class"], key);
-      for (i = j = 1, ref = mapping.layers; j <= ref; i = j += 1) {
-        element.append("<span class='path" + i + "'>");
-      }
-      return element;
-    };
-
-    Icon_Service.prototype.element_Html = function(key) {
-      var ref;
-      return (ref = this.element(key)[0]) != null ? ref.outerHTML : void 0;
-    };
-
-    Icon_Service.prototype.simple_Element = function(name, title) {
-      var element;
-      element = angular.element('<span>');
-      using(element[0], function() {
-        this.className = name;
-        if (title) {
-          return this.title = title;
-        }
-      });
-      return element;
-    };
-
-    Icon_Service.prototype.simple_Element_Html = function(name, title) {
-      return this.simple_Element(name, title)[0].outerHTML;
-    };
-
-    return Icon_Service;
-
-  })();
-
-  angular.module('TM_App').service('icon_Service', function() {
-    return new Icon_Service();
-  });
-
-}).call(this);
-
-(function() {
-  var Query_Service, app,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  app = angular.module('TM_App');
-
-  Query_Service = (function() {
-    function Query_Service(options) {
-      this.reload_Data = bind(this.reload_Data, this);
-      this.load_Query_Filters = bind(this.load_Query_Filters, this);
-      this.load_Query_Articles = bind(this.load_Query_Articles, this);
-      this.load_Query_Queries = bind(this.load_Query_Queries, this);
-      this.load_Query = bind(this.load_Query, this);
-      this.load_Data = bind(this.load_Data, this);
-      this.TM_API = options.TM_API;
-      this.$rootScope = options.$rootScope;
-      this.index_Query = 'query-6234f2d47eb7';
-      this.data_Queries = null;
-      this.data_Articles = null;
-      this.data_Filters = null;
-      this.page_From = 0;
-      this.page_To = 10;
-    }
-
-    Query_Service.prototype.load_Data = function() {
-      if (!this.data) {
-        this.data_Queries = [];
-        this.data_Articles = [];
-        this.data_Filters = [];
-        return this.load_Query(this.index_Query);
-      }
-    };
-
-    Query_Service.prototype.load_Query = function(query_Id, filter_Id) {
-      this.TM_API.query_view_model(query_Id, null, this.page_From, this.page_To, (function(_this) {
-        return function(data) {
-          _this.$rootScope.$broadcast('article_data', {
-            id: data.id,
-            results: data.articles
-          });
-          _this.$rootScope.$broadcast('filter_data', {
-            id: data.id,
-            filters: data.filters
-          });
-          return _this.$rootScope.$broadcast('query_data', {
-            id: data.id,
-            containers: data.queries,
-            title: data.title
-          });
-        };
-      })(this));
-      return;
-      if (!query_Id) {
-        this.$rootScope.$broadcast('query_data', {});
-        this.$rootScope.$broadcast('article_data', {});
-        return this.$rootScope.$broadcast('filter_data', {});
-      } else {
-        this.load_Query_Queries(query_Id, filter_Id);
-        this.load_Query_Articles(query_Id, filter_Id, this.page_From, this.page_To);
-        return this.load_Query_Filters(query_Id, filter_Id);
-      }
-    };
-
-    Query_Service.prototype.load_Query_Queries = function(query_Id, filters) {
-      var get_Data;
-      get_Data = (function(_this) {
-        return function(next) {
-          if (filters) {
-            return _this.TM_API.query_tree_filtered_queries(query_Id, filters, next);
-          } else {
-            return _this.TM_API.query_tree_queries(query_Id, next);
-          }
-        };
-      })(this);
-      return get_Data((function(_this) {
-        return function(data) {
-          _this.data_Queries = data;
-          return _this.$rootScope.$broadcast('query_data', data);
-        };
-      })(this));
-    };
-
-    Query_Service.prototype.load_Query_Articles = function(query_Id, filters, from, to) {
-      var get_Data;
-      get_Data = (function(_this) {
-        return function(next) {
-          if (filters) {
-            return _this.TM_API.query_tree_filtered_articles(query_Id, filters, from, to, next);
-          } else {
-            return _this.TM_API.query_tree_articles(query_Id, from, to, next);
-          }
-        };
-      })(this);
-      return get_Data((function(_this) {
-        return function(data) {
-          _this.data_Articles = data;
-          return _this.$rootScope.$broadcast('article_data', data);
-        };
-      })(this));
-    };
-
-    Query_Service.prototype.load_Query_Filters = function(query_Id, filters) {
-      var get_Data;
-      get_Data = (function(_this) {
-        return function(next) {
-          if (filters) {
-            return _this.TM_API.query_tree_filtered_filters(query_Id, filters, next);
-          } else {
-            return _this.TM_API.query_tree_filters(query_Id, next);
-          }
-        };
-      })(this);
-      return get_Data((function(_this) {
-        return function(data) {
-          _this.data_Filters = data;
-          return _this.$rootScope.$broadcast('filter_data', data);
-        };
-      })(this));
-    };
-
-    Query_Service.prototype.reload_Data = function() {
-      this.data_Queries = null;
-      this.data_Articles = null;
-      this.data_Queries = null;
-      this.$rootScope.$broadcast('clear_filters');
-      this.$rootScope.$broadcast('clear_query');
-      this.$rootScope.$broadcast('clear_search');
-      return this.load_Data();
-    };
-
-    return Query_Service;
-
-  })();
-
-  app.service('query_Service', function($rootScope, TM_API) {
-    return new Query_Service({
-      TM_API: TM_API,
-      $rootScope: $rootScope
-    });
-  });
-
-}).call(this);
-
-(function() {
-  var TM_API, app,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  app = angular.module('TM_App');
-
-  TM_API = (function() {
-    function TM_API(q, http, timeout) {
-      this.pwd_reset = bind(this.pwd_reset, this);
-      this.signup = bind(this.signup, this);
-      this.login = bind(this.login, this);
-      this.article = bind(this.article, this);
-      this.docs_Page = bind(this.docs_Page, this);
-      this.docs_Library = bind(this.docs_Library, this);
-      this.get_articles_parent_queries = bind(this.get_articles_parent_queries, this);
-      this.query_from_text_search = bind(this.query_from_text_search, this);
-      this.query_view_model = bind(this.query_view_model, this);
-      this.query_tree_filtered_queries = bind(this.query_tree_filtered_queries, this);
-      this.query_tree_filtered_filters = bind(this.query_tree_filtered_filters, this);
-      this.query_tree_filtered_articles = bind(this.query_tree_filtered_articles, this);
-      this.query_tree_queries = bind(this.query_tree_queries, this);
-      this.query_tree_filters = bind(this.query_tree_filters, this);
-      this.query_tree_articles = bind(this.query_tree_articles, this);
-      this.query_tree = bind(this.query_tree, this);
-      this.get_Words = bind(this.get_Words, this);
-      this.$q = q;
-      this.$http = http;
-      this.$timeout = timeout;
-      this.cache_Articles = {};
-      this.cache_Query_Tree = {};
-      this.cache_Query_Tree_Queries = {};
-    }
-
-    TM_API.prototype.get_Words = function(term, callback) {
-      var url;
-      url = "/angular/api/auto-complete?term=" + term;
-      return this.$http.get(url).success(function(data) {
-        var match;
-        if (callback) {
-          return callback((function() {
-            var results;
-            results = [];
-            for (match in data) {
-              results.push(match);
-            }
-            return results;
-          })());
-        }
-      }).then(function(response) {
-        var match;
-        return (function() {
-          var results;
-          results = [];
-          for (match in response.data) {
-            results.push(match);
-          }
-          return results;
-        })();
-      });
-    };
-
-    TM_API.prototype.query_tree = function(id, callback) {
-      var url;
-      id = id || 'query-6234f2d47eb7';
-      if (this.cache_Query_Tree[id]) {
-        return this.$timeout((function(_this) {
-          return function() {
-            return callback(_this.cache_Query_Tree[id]);
-          };
-        })(this));
-      } else {
-        url = "/api/data/query_tree/" + id;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Query_Tree[id] = data;
-            return callback(data);
-          };
-        })(this));
-      }
-    };
-
-    TM_API.prototype.query_tree_articles = function(id, from, to, callback) {
-      var url;
-      url = "/api/data/query_tree_articles/" + id + "/" + from + "/" + to;
-      return this.$http.get(url).success(callback);
-    };
-
-    TM_API.prototype.query_tree_filters = function(id, callback) {
-      var url;
-      url = "/api/data/query_tree_filters/" + id;
-      return this.$http.get(url).success(callback);
-    };
-
-    TM_API.prototype.query_tree_queries = function(id, callback) {
-      var url;
-      url = "/api/data/query_tree_queries/" + id;
-      return this.$http.get(url).success(callback);
-    };
-
-    TM_API.prototype.query_tree_filtered_articles = function(id, filter, from, to, callback) {
-      var cache_Key, url;
-      if (id && filter && callback) {
-        cache_Key = 'filtered_articles_' + id + filter + from + to;
-        if (this.cache_Query_Tree[cache_Key]) {
-          return callback(this.cache_Query_Tree[cache_Key]);
-        }
-        url = "/api/data/query_tree_filtered_articles/" + id + "/" + filter + "/" + from + "/" + to;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Query_Tree[cache_Key] = data;
-            return callback(data);
-          };
-        })(this));
-      }
-    };
-
-    TM_API.prototype.query_tree_filtered_filters = function(id, filter, callback) {
-      var cache_Key, url;
-      if (id && filter && callback) {
-        cache_Key = 'filtered_filters_' + id + filter;
-        if (this.cache_Query_Tree[cache_Key]) {
-          return callback(this.cache_Query_Tree[cache_Key]);
-        }
-        url = "/api/data/query_tree_filtered_filters/" + id + "/" + filter;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Query_Tree[cache_Key] = data;
-            return callback(data);
-          };
-        })(this));
-      }
-    };
-
-    TM_API.prototype.query_tree_filtered_queries = function(id, filter, callback) {
-      var cache_Key, url;
-      if (id && filter && callback) {
-        cache_Key = 'filtered_queries_' + id + filter;
-        if (this.cache_Query_Tree[cache_Key]) {
-          return callback(this.cache_Query_Tree[cache_Key]);
-        }
-        url = "/api/data/query_tree_filtered_queries/" + id + "/" + filter;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Query_Tree[cache_Key] = data;
-            return callback(data);
-          };
-        })(this));
-      }
-    };
-
-    TM_API.prototype.query_view_model = function(id, filters, from, to, callback) {
-      var url;
-      if (filters) {
-        url = "/api/data/query_view_model_filtered/" + id + "/" + filters + "/" + from + "/" + to;
-      } else {
-        url = "/api/data/query_view_model/" + id + "/" + from + "/" + to;
-      }
-      return this.$http.get(url).success((function(_this) {
-        return function(data) {
-          return callback(data);
-        };
-      })(this));
-    };
-
-    TM_API.prototype.query_from_text_search = function(text, callback) {
-      var url;
-      url = "/api/search/query_from_text_search/" + text;
-      return this.$http.get(url).success(function(data) {
-        return callback(data);
-      });
-    };
-
-    TM_API.prototype.get_articles_parent_queries = function(article_Ids, ignore_Titles, callback) {
-      var url;
-      url = "/api/data/articles_parent_queries/" + (article_Ids.join(','));
-      return this.$http.get(url).success(function(data) {
-        var key, matches, query, query_Data, ref, ref1;
-        matches = [];
-        ref = data.queries;
-        for (key in ref) {
-          query = ref[key];
-          if (key.indexOf('query-') > -1) {
-            query_Data = data.queries[key];
-            if (((ref1 = query_Data.parent_Queries) != null ? ref1.first() : void 0) === 'query-6234f2d47eb7') {
-              if (ignore_Titles.indexOf(query_Data.title) === -1) {
-                matches.push({
-                  id: key,
-                  title: query_Data.title,
-                  articles: query_Data.articles,
-                  size: query_Data.articles.size()
-                });
-              }
-            }
-          }
-        }
-        if (callback) {
-          return callback(matches);
-        }
-      });
-    };
-
-    TM_API.prototype.docs_Library = function(callback) {
-      var url;
-      url = "/json/docs/library";
-      return this.$http.get(url).success(function(data) {
-        return callback(data);
-      });
-    };
-
-    TM_API.prototype.docs_Page = function(article_Id, callback) {
-      var url;
-      url = "/json/docs/" + article_Id;
-      return this.$http.get(url).success(callback);
-    };
-
-    TM_API.prototype.article = function(article_Id, callback) {
-      var url;
-      if (this.cache_Articles[article_Id]) {
-        return this.$timeout((function(_this) {
-          return function() {
-            return callback(_this.cache_Articles[article_Id]);
-          };
-        })(this));
-      } else {
-        url = "/json/article/" + article_Id;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Articles[article_Id] = data;
-            return callback(data);
-          };
-        })(this));
-      }
-    };
-
-    TM_API.prototype.login = function(username, password, callback) {
-      var postData, url;
-      url = "/json/user/login";
-      postData = {
-        username: username,
-        password: password
-      };
-      return this.$http.post(url, postData).success(callback);
-    };
-
-    TM_API.prototype.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
-      var postData, url;
-      url = "/json/user/signup";
-      postData = {
-        username: username,
-        password: password,
-        'confirm-password': confirmpassword,
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        company: company,
-        title: title,
-        country: country,
-        state: state
-      };
-      return this.$http.post(url, postData).success(callback);
-    };
-
-    TM_API.prototype.pwd_reset = function(email, callback) {
-      var postData, url;
-      url = "/json/user/pwd_reset";
-      postData = {
-        email: email
-      };
-      return this.$http.post(url, postData).success(callback);
-    };
-
-    return TM_API;
-
-  })();
-
-  app.service('TM_API', (function(_this) {
-    return function($q, $http, $timeout) {
-      return new TM_API($q, $http, $timeout);
-    };
-  })(this));
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('$$', function() {
-    var $$;
-    $$ = function(element) {
-      if (element) {
-        if (!element.$attr) {
-          element.$attr = function() {
-            var attr, i, len, ref, result;
-            result = {};
-            if (element) {
-              ref = element.attributes;
-              for (i = 0, len = ref.length; i < len; i++) {
-                attr = ref[i];
-                result[attr.name] = attr.value;
-              }
-            }
-            return result;
-          };
-          element.$query = function(selector) {
-            return $$(element.querySelector(selector));
-          };
-          element.$query_All = function(selector) {
-            return $$(element.querySelectorAll(selector));
-          };
-          element.$html = function() {
-            return element.innerHTML;
-          };
-          element.$text = function() {
-            return element.innerText;
-          };
-          element.$click = function() {
-            return angular.element(element).triggerHandler('click');
-          };
-          element.$scope = function() {
-            return angular.element(element).scope();
-          };
-        }
-      }
-      return element;
-    };
-    return $$;
   });
 
 }).call(this);
@@ -1507,11 +875,7 @@
     };
     $scope.query_Id = null;
     $scope.model = model;
-    $scope.$on('query_data', function(event, data) {
-      model.page = 1;
-      return model.page_Split = 10;
-    });
-    $scope.$on('article_data', function(event, data) {
+    $scope.$on('view_model_data', function(event, data) {
       var i, results, split;
       if (!(data != null ? data.size : void 0)) {
         return model.pages = null;
@@ -1539,7 +903,7 @@
           var from, to;
           from = (model.page - 1) * model.page_Split;
           to = model.page * model.page_Split;
-          return query_Service.load_Query_Articles($scope.query_Id, from, to);
+          return query_Service.load_Query($scope.query_Id, null, from, to);
         });
       }
     };
@@ -1689,47 +1053,10 @@
       if ($scope.text === '') {
         return $rootScope.$broadcast('apply_query', query_Service.index_Query);
       } else {
-        return $scope.get_Parent_Queries();
+        return TM_API.query_from_text_search($scope.text, function(query_id) {
+          return $rootScope.$broadcast('apply_query', query_id);
+        });
       }
-    };
-    $scope.get_Parent_Queries = function() {
-      return TM_API.query_from_text_search($scope.text, function(query_id) {
-        $rootScope.$broadcast('apply_query', query_id);
-        if (query_id) {
-          return TM_API.query_tree(query_id, function(data) {
-            var article_Ids, filter, filters, i, j, len, len1, ref, ref1, result;
-            article_Ids = (function() {
-              var i, len, ref, results;
-              ref = data.results;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                result = ref[i];
-                results.push(result.id);
-              }
-              return results;
-            })();
-            filters = [];
-            ref = data.filters;
-            for (i = 0, len = ref.length; i < len; i++) {
-              filter = ref[i];
-              ref1 = filter.results;
-              for (j = 0, len1 = ref1.length; j < len1; j++) {
-                result = ref1[j];
-                filters.push(result.title);
-              }
-            }
-            return TM_API.get_articles_parent_queries(article_Ids, filters, function(data) {
-              var data_query;
-              data_query = {
-                id: query_id,
-                title: $scope.text,
-                containers: data
-              };
-              return $rootScope.$broadcast('query_data', data_query);
-            });
-          });
-        }
-      });
     };
     $scope.get_Words = function(term) {
       if (term === '') {
@@ -1762,6 +1089,458 @@
         return $scope.show_Loading_Image = false;
       });
     });
+  });
+
+}).call(this);
+
+(function() {
+  var Icon_Service, mappings,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  mappings = {
+    '.NET': {
+      "class": 'icon-Net',
+      layers: 12
+    },
+    'ASP.NET 3.5': {
+      "class": 'icon-Net',
+      layers: 12
+    },
+    'ASP.NET 4.0': {
+      "class": 'icon-Net',
+      layers: 12
+    },
+    'Android': {
+      "class": 'icon-Android',
+      layers: 12
+    },
+    'C++': {
+      "class": 'icon-C',
+      layers: 12
+    },
+    'iOS': {
+      "class": 'icon-iOS',
+      layers: 12
+    },
+    'Java': {
+      "class": 'icon-Java',
+      layers: 12
+    },
+    'PHP': {
+      "class": 'icon-PHP',
+      layers: 12
+    },
+    'Scala Play': {
+      "class": 'icon-Scala',
+      layers: 12
+    },
+    'Scala with Play Framework': {
+      "class": 'icon-Scala',
+      layers: 12
+    },
+    'WCF': {
+      "class": 'icon-WCF',
+      layers: 12
+    },
+    'WCF 3.5': {
+      "class": 'icon-WCF',
+      layers: 12
+    },
+    'Web Application': {
+      "class": 'icon-Web-App',
+      layers: 12
+    },
+    'HTML5': {
+      "class": 'icon-HTML5',
+      layers: 12
+    },
+    'Deployment': {
+      "class": 'icon-Deploy',
+      layers: 12
+    },
+    'Design': {
+      "class": 'icon-Design',
+      layers: 12
+    },
+    'Implementation': {
+      "class": 'icon-Implementation',
+      layers: 12
+    },
+    'Test': {
+      "class": 'icon-Test',
+      layers: 12
+    },
+    'Checklist Item': {
+      "class": 'icon-Checklist',
+      layers: 12
+    },
+    'Code Example': {
+      "class": 'icon-CodeExample',
+      layers: 8
+    },
+    'Guideline': {
+      "class": 'icon-Guideline',
+      layers: 12
+    },
+    'How To': {
+      "class": 'icon-HowTo',
+      layers: 12
+    },
+    'Principle': {
+      "class": 'icon-Principle',
+      layers: 12
+    },
+    'Requirement': {
+      "class": 'icon-Requirement',
+      layers: 12
+    },
+    'Vulnerability': {
+      "class": 'icon-Vulnerabilities',
+      layers: 12
+    },
+    'Default': {
+      "class": 'icon-Default',
+      layers: 12
+    }
+  };
+
+  Icon_Service = (function() {
+    function Icon_Service() {
+      this.simple_Element_Html = bind(this.simple_Element_Html, this);
+      this.simple_Element = bind(this.simple_Element, this);
+      this.element_Html = bind(this.element_Html, this);
+      this.element = bind(this.element, this);
+      this.mappings = mappings;
+    }
+
+    Icon_Service.prototype.element = function(key) {
+      var element, i, j, mapping, ref;
+      mapping = this.mappings[key];
+      if (!mapping) {
+        mapping = this.mappings['Default'];
+      }
+      element = this.simple_Element(mapping["class"], key);
+      for (i = j = 1, ref = mapping.layers; j <= ref; i = j += 1) {
+        element.append("<span class='path" + i + "'>");
+      }
+      return element;
+    };
+
+    Icon_Service.prototype.element_Html = function(key) {
+      var ref;
+      return (ref = this.element(key)[0]) != null ? ref.outerHTML : void 0;
+    };
+
+    Icon_Service.prototype.simple_Element = function(name, title) {
+      var element;
+      element = angular.element('<span>');
+      using(element[0], function() {
+        this.className = name;
+        if (title) {
+          return this.title = title;
+        }
+      });
+      return element;
+    };
+
+    Icon_Service.prototype.simple_Element_Html = function(name, title) {
+      return this.simple_Element(name, title)[0].outerHTML;
+    };
+
+    return Icon_Service;
+
+  })();
+
+  angular.module('TM_App').service('icon_Service', function() {
+    return new Icon_Service();
+  });
+
+}).call(this);
+
+(function() {
+  var Query_Service, app,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  app = angular.module('TM_App');
+
+  Query_Service = (function() {
+    function Query_Service(options) {
+      this.reload_Data = bind(this.reload_Data, this);
+      this.load_Query = bind(this.load_Query, this);
+      this.load_Data = bind(this.load_Data, this);
+      this.TM_API = options.TM_API;
+      this.$rootScope = options.$rootScope;
+      this.index_Query = 'query-6234f2d47eb7';
+      this.default_Page_From = 0;
+      this.default_Page_To = 10;
+    }
+
+    Query_Service.prototype.load_Data = function() {
+      return this.load_Query(this.index_Query);
+    };
+
+    Query_Service.prototype.load_Query = function(query_Id, filters, from, to) {
+      from = from || this.default_Page_From;
+      to = to || this.default_Page_To;
+      return this.TM_API.query_view_model(query_Id, filters, this.default_Page_From, this.default_Page_To, (function(_this) {
+        return function(data) {
+          return _this.$rootScope.$broadcast('view_model_data', data);
+        };
+      })(this));
+    };
+
+    Query_Service.prototype.reload_Data = function() {
+      this.$rootScope.$broadcast('clear_filters');
+      this.$rootScope.$broadcast('clear_query');
+      this.$rootScope.$broadcast('clear_search');
+      return this.load_Data();
+    };
+
+    return Query_Service;
+
+  })();
+
+  app.service('query_Service', function($rootScope, TM_API) {
+    return new Query_Service({
+      TM_API: TM_API,
+      $rootScope: $rootScope
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var TM_API, app,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  app = angular.module('TM_App');
+
+  TM_API = (function() {
+    function TM_API(q, http, timeout) {
+      this.pwd_reset = bind(this.pwd_reset, this);
+      this.signup = bind(this.signup, this);
+      this.login = bind(this.login, this);
+      this.article = bind(this.article, this);
+      this.docs_Page = bind(this.docs_Page, this);
+      this.docs_Library = bind(this.docs_Library, this);
+      this.get_articles_parent_queries = bind(this.get_articles_parent_queries, this);
+      this.query_from_text_search = bind(this.query_from_text_search, this);
+      this.query_view_model = bind(this.query_view_model, this);
+      this.get_Words = bind(this.get_Words, this);
+      this.$q = q;
+      this.$http = http;
+      this.$timeout = timeout;
+      this.cache_Articles = {};
+      this.cache_Query_Tree = {};
+      this.cache_Query_Tree_Queries = {};
+    }
+
+    TM_API.prototype.get_Words = function(term, callback) {
+      var url;
+      url = "/angular/api/auto-complete?term=" + term;
+      return this.$http.get(url).success(function(data) {
+        var match;
+        if (callback) {
+          return callback((function() {
+            var results;
+            results = [];
+            for (match in data) {
+              results.push(match);
+            }
+            return results;
+          })());
+        }
+      }).then(function(response) {
+        var match;
+        return (function() {
+          var results;
+          results = [];
+          for (match in response.data) {
+            results.push(match);
+          }
+          return results;
+        })();
+      });
+    };
+
+    TM_API.prototype.query_view_model = function(id, filters, from, to, callback) {
+      var url;
+      if (filters) {
+        url = "/api/data/query_view_model_filtered/" + id + "/" + filters + "/" + from + "/" + to;
+      } else {
+        url = "/api/data/query_view_model/" + id + "/" + from + "/" + to;
+      }
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
+    };
+
+    TM_API.prototype.query_from_text_search = function(text, callback) {
+      var url;
+      url = "/api/search/query_from_text_search/" + text;
+      return this.$http.get(url).success(function(data) {
+        return callback(data);
+      });
+    };
+
+    TM_API.prototype.get_articles_parent_queries = function(article_Ids, ignore_Titles, callback) {
+      var url;
+      url = "/api/data/articles_parent_queries/" + (article_Ids.join(','));
+      return this.$http.get(url).success(function(data) {
+        var key, matches, query, query_Data, ref, ref1;
+        matches = [];
+        ref = data.queries;
+        for (key in ref) {
+          query = ref[key];
+          if (key.indexOf('query-') > -1) {
+            query_Data = data.queries[key];
+            if (((ref1 = query_Data.parent_Queries) != null ? ref1.first() : void 0) === 'query-6234f2d47eb7') {
+              if (ignore_Titles.indexOf(query_Data.title) === -1) {
+                matches.push({
+                  id: key,
+                  title: query_Data.title,
+                  articles: query_Data.articles,
+                  size: query_Data.articles.size()
+                });
+              }
+            }
+          }
+        }
+        if (callback) {
+          return callback(matches);
+        }
+      });
+    };
+
+    TM_API.prototype.docs_Library = function(callback) {
+      var url;
+      url = "/json/docs/library";
+      return this.$http.get(url).success(function(data) {
+        return callback(data);
+      });
+    };
+
+    TM_API.prototype.docs_Page = function(article_Id, callback) {
+      var url;
+      url = "/json/docs/" + article_Id;
+      return this.$http.get(url).success(callback);
+    };
+
+    TM_API.prototype.article = function(article_Id, callback) {
+      var url;
+      if (this.cache_Articles[article_Id]) {
+        return this.$timeout((function(_this) {
+          return function() {
+            return callback(_this.cache_Articles[article_Id]);
+          };
+        })(this));
+      } else {
+        url = "/json/article/" + article_Id;
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.cache_Articles[article_Id] = data;
+            return callback(data);
+          };
+        })(this));
+      }
+    };
+
+    TM_API.prototype.login = function(username, password, callback) {
+      var postData, url;
+      url = "/json/user/login";
+      postData = {
+        username: username,
+        password: password
+      };
+      return this.$http.post(url, postData).success(callback);
+    };
+
+    TM_API.prototype.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
+      var postData, url;
+      url = "/json/user/signup";
+      postData = {
+        username: username,
+        password: password,
+        'confirm-password': confirmpassword,
+        email: email,
+        firstname: firstname,
+        lastname: lastname,
+        company: company,
+        title: title,
+        country: country,
+        state: state
+      };
+      return this.$http.post(url, postData).success(callback);
+    };
+
+    TM_API.prototype.pwd_reset = function(email, callback) {
+      var postData, url;
+      url = "/json/user/pwd_reset";
+      postData = {
+        email: email
+      };
+      return this.$http.post(url, postData).success(callback);
+    };
+
+    return TM_API;
+
+  })();
+
+  app.service('TM_API', (function(_this) {
+    return function($q, $http, $timeout) {
+      return new TM_API($q, $http, $timeout);
+    };
+  })(this));
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('$$', function() {
+    var $$;
+    $$ = function(element) {
+      if (element) {
+        if (!element.$attr) {
+          element.$attr = function() {
+            var attr, i, len, ref, result;
+            result = {};
+            if (element) {
+              ref = element.attributes;
+              for (i = 0, len = ref.length; i < len; i++) {
+                attr = ref[i];
+                result[attr.name] = attr.value;
+              }
+            }
+            return result;
+          };
+          element.$query = function(selector) {
+            return $$(element.querySelector(selector));
+          };
+          element.$query_All = function(selector) {
+            return $$(element.querySelectorAll(selector));
+          };
+          element.$html = function() {
+            return element.innerHTML;
+          };
+          element.$text = function() {
+            return element.innerText;
+          };
+          element.$click = function() {
+            return angular.element(element).triggerHandler('click');
+          };
+          element.$scope = function() {
+            return angular.element(element).scope();
+          };
+        }
+      }
+      return element;
+    };
+    return $$;
   });
 
 }).call(this);

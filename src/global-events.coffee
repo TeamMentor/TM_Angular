@@ -1,8 +1,5 @@
-log_Events = false
-log_Urls   = false
-
 angular.module('TM_App')
-       .run ($rootScope)->
+       .run ($rootScope, tm_angular_config)->
 
           # hook keyboard events and broadcast them to the app
           body = angular.element(document.body)
@@ -14,7 +11,7 @@ angular.module('TM_App')
             if event
               $rootScope.$broadcast 'keyup', event
 
-          if log_Events
+          if tm_angular_config.log_Events
             log_Event = (name)->
               $rootScope.$on name, (params...)->
                 console.log { event: name ,  time: (new Date()).getMilliseconds(), params: params}
@@ -26,17 +23,18 @@ angular.module('TM_App')
                        #'http_start', 'http_end'
                        'set_page', 'set_page_split'
                        'toggle_filters',
-                       'view_filters'
+                       'view_filters', 'view_model_data'
                        'test']
 
             log_Event(name) for name in  events
 
 angular.module('TM_App')
-       .factory 'httpInterceptor',  ($q)->
+       .factory 'httpInterceptor',  ($q, tm_angular_config)->
             request: (config)->
-              if config and log_Urls
+              if config and tm_angular_config.log_Urls
                 console.log "#{config.method} #{config.url}"
-              config || $q.when(config);
+              $q.when(config);
+
        .config  ($httpProvider)->
           $httpProvider.interceptors.push('httpInterceptor');
 

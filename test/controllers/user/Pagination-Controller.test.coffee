@@ -24,45 +24,46 @@ describe '| controllers | user | Pagination-Controller.test',->
       expect(@.next_Page     ).to.be.an 'function'
 
 
-  it '$on article_data', ->
+  it '$on view_model_data', ->
     using scope , ->
       @.model.page_Split =  10
+      event_Name = 'view_model_data'
 
-      @.$broadcast 'article_data', { size: 100 }
+      @.$broadcast event_Name, { size: 100 }
       @.model.pages.assert_Is [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 
-      @.$broadcast 'article_data', { size: 50 }
+      @.$broadcast event_Name, { size: 50 }
       @.model.pages.assert_Is [ 1, 2, 3, 4,5]
 
-      @.$broadcast 'article_data', { size: 9 }
+      @.$broadcast event_Name, { size: 9 }
       @.model.pages.assert_Is [ 1 ]
 
-      @.$broadcast 'article_data', { size: 9 }
+      @.$broadcast event_Name, { size: 9 }
       @.model.pages.assert_Is [ 1 ]
 
 
       @.model.page_Split =  30
 
-      @.$broadcast 'article_data', { size: 99 }
+      @.$broadcast event_Name, { size: 99 }
       @.model.pages.assert_Is [ 1, 2, 3, 4]
 
-      @.$broadcast 'article_data', { size: 50 }
+      @.$broadcast event_Name, { size: 50 }
       @.model.pages.assert_Is [ 1, 2]
 
-      @.$broadcast 'article_data', { size: 30 }
+      @.$broadcast event_Name, { size: 30 }
       @.model.pages.assert_Is [ 1 ]
 
-      @.$broadcast 'article_data', { size: 9 }
+      @.$broadcast event_Name, { size: 9 }
       @.model.pages.assert_Is [ 1 ]
 
-      @.$broadcast 'article_data', null
+      @.$broadcast event_Name, null
       expect(@.model.pages).to.equal null
 
 
 
   it 'set_Page', ->
     inject ($httpBackend, $timeout)->
-      $httpBackend.expectGET('/api/data/query_tree_articles/null/1763/1806').respond {}
+      $httpBackend.expectGET('/api/data/query_view_model/null/0/10').respond {}
       using scope,->
         scope.$on 'set_page', (event, page)->
           page.assert_Is 42

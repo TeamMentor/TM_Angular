@@ -20,12 +20,16 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
   it 'constructor', ()->
     using scope, ->
-      expect(@.query_Id           ).to.equal null
-      expect(@.selected_Technology).to.equal null
+      expect(@.query_Id           ).to.     equal null
+      expect(@.selected_Technology).to.     equal null
+      expect(@.text               ).to.     equal ''
+      expect(@.words              ).to.deep.equal [ '....sugestions....' ]
       expect(@.$$listeners['clear_Search'][0]).to.be.an('function')
       expect(@.$$listeners['filter_data' ][0]).to.be.an('function')
 
+      expect(@.get_Words        ).to.be.an('function')
       expect(@.select_Technology).to.be.an('function')
+      expect(@.select_Word      ).to.be.an('function')
       expect(@.submit           ).to.be.an('function')
 
   it '$on clear_Search', ->
@@ -115,6 +119,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
   it 'submit (valid text)', ->
     inject ($httpBackend)->
       $httpBackend.expectGET('/api/search/query_from_text_search/xss').respond 'search-xss'
+      #$httpBackend.expectGET('/api/data/query_view_model/search-xss/0/10').respond 'search-xss'
       using scope, ->
         scope.text = 'xss'
         @.$on 'apply_query', (event, query_Id)->
@@ -141,5 +146,26 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     results = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
     scope.$broadcast 'filter_data', { filters: [{ title: 'Technology', results: results } ] }
     expect(scope.technologies).to.deep.equal [default_Technology].concat(results)
+
+
+  it 'get_Words', ->
+    inject ($httpBackend)->
+      using scope, ->
+        $httpBackend.expectGET('/angular/api/auto-complete?term=a').respond { a : 'aaa', b: 'bbb'}
+        @.words.assert_Is ['....sugestions....']
+        @.get_Words 'a'
+        $httpBackend.flush()
+        @.words.assert_Is [ 'a', 'b']
+
+        @.get_Words ''
+
+        @.words.assert_Is ['....sugestions....']
+
+
+  it 'select_Word', ->
+    using scope, ->
+      @.text.assert_Is ''
+      @.select_Word 'bbbb'
+      @.text.assert_Is 'bbbb'
 
 

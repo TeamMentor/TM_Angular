@@ -60,30 +60,30 @@ angular.module('TM_App')
             if $scope.text is ''
               $rootScope.$broadcast 'apply_query', query_Service.index_Query
             else
-              $scope.get_Parent_Queries()
+              TM_API.query_from_text_search $scope.text, (query_id)->
+                $rootScope.$broadcast 'apply_query', query_id
+
+              #$scope.get_Parent_Queries()
 
               #TM_API.query_from_text_search $scope.text, (query_id)->
               #  $rootScope.$broadcast 'apply_query', query_id
 
+          #$scope.get_Parent_Queries = ()->
+          #  TM_API.query_from_text_search $scope.text, (query_id)->
+          #    $rootScope.$broadcast 'apply_query', query_id
+          #    if query_id
+          #      TM_API.query_view_model query_id, null, null, null, (data)->
 
+          #        article_Ids = (result.id for result in data.results)
 
+          #        filters = []
+          #        for filter in data.filters
+          #          for result in filter.results
+          #            filters.push result.title
 
-          $scope.get_Parent_Queries = ()->
-            TM_API.query_from_text_search $scope.text, (query_id)->
-              $rootScope.$broadcast 'apply_query', query_id
-              if query_id
-                TM_API.query_tree query_id, (data)->
-
-                  article_Ids = (result.id for result in data.results)
-
-                  filters = []
-                  for filter in data.filters
-                    for result in filter.results
-                      filters.push result.title
-
-                  TM_API.get_articles_parent_queries article_Ids, filters, (data)->
-                    data_query = {id: query_id, title: $scope.text, containers: data}
-                    $rootScope.$broadcast 'query_data', data_query
+          #        TM_API.get_articles_parent_queries article_Ids, filters, (data)->
+          #          data_query = {id: query_id, title: $scope.text, containers: data}
+          #          $rootScope.$broadcast 'query_data', data_query
 
 
           $scope.get_Words = (term)->

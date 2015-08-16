@@ -19,14 +19,13 @@ describe '| controllers | Filters-Controller.test',->
     using scope, ->
       @.current_Filters.assert_Is {}
       @.$broadcast 'apply_filter', 'filter_id', 'filter-title', 'metadata-title'
-      console.log @.current_Filters.assert_Is { filter_id: { filter_Id: 'filter_id', filter_Title: 'filter-title', metadata_Title: 'metadata-title' } }
+      @.current_Filters.assert_Is { filter_id: { filter_Id: 'filter_id', filter_Title: 'filter-title', metadata_Title: 'metadata-title' } }
 
   it '$on clear_filter', ->
     using scope, ->
       @.current_Filters.assert_Is {}
       @.$broadcast 'apply_filter', 'filter_id', 'filter-title', 'metadata-title'
       @.$broadcast 'clear_filter', 'filter_id'
-      console.log @.current_Filters
       @.current_Filters.assert_Is { }
 
   it '$on filter_data (bad data)', ()->
