@@ -145,6 +145,24 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
   var expect,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     hasProp = {}.hasOwnProperty;
@@ -276,24 +294,6 @@
       return this;
     };
   }
-
-}).call(this);
-
-(function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
 
 }).call(this);
 
@@ -1158,6 +1158,13 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
     $scope.login = function() {
       $scope.errorMessage = null;
@@ -1231,13 +1238,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, icon_Service) {
     return using($scope, function() {
       var ref, ref1, ref2;
@@ -1253,6 +1253,9 @@
   angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
     TM_API.article($stateParams.article_Id, function(article) {
       var id, title;
+      if (!angular.isObject(article)) {
+        return;
+      }
       id = article.id.remove('article-');
       title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
       article.url = '/angular/user/article/' + id + '/' + title;

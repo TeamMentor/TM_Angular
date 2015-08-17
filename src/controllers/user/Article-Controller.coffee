@@ -2,6 +2,8 @@ angular.module('TM_App')
        .controller 'Article_Controller', ($sce, $scope, $stateParams, TM_API, icon_Service)->
 
           TM_API.article $stateParams.article_Id, (article)->
+            if !angular.isObject(article)
+              return;
             id    = article.id.remove('article-')
             title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
             article.url = '/angular/user/article/' + id + '/' + title
