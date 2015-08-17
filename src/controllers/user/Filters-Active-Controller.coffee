@@ -24,9 +24,6 @@ angular.module('TM_App')
             $scope.current_Query_Id = query_Id
             $scope.refresh_Filters()
 
-          $scope.$on 'filter_data', (event,data)->
-            #$scope.pages = results_Size
-
           $scope.refresh_Filters = ()->
             query_Id = $scope.current_Query_Id
             filters =  $scope.current_Filters.keys().join(',')

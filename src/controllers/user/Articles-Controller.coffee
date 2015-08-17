@@ -7,7 +7,7 @@ angular.module('TM_App')
             if not query_id
               $scope.articles = []
 
-          $scope.$on 'query_view_model', (event, data)->
+          $scope.$on 'view_model_data', (event, data)->
             articles = []
             if data?.articles
               #raw_Articles = data.results

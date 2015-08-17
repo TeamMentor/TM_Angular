@@ -7,7 +7,7 @@ angular.module('TM_App')
           $scope.hide_Metadata  = {}
 
 
-          $scope.$on 'filter_data', (event, data)->
+          $scope.$on 'view_model_data', (event, data)->
             if data?.filters
               $scope.filters = data.filters
               for filter in $scope.filters

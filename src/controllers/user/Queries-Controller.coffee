@@ -3,7 +3,7 @@ angular.module('TM_App')
 
           $scope.$on 'view_model_data', (event, data)->
             $scope.title = data.title
-            $scope.containers = data.containers
+            $scope.containers = data.queries
 
           $scope.load_Query = (query_Id)->
             $rootScope.$broadcast 'apply_query', query_Id

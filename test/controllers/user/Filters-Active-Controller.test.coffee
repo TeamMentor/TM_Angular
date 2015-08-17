@@ -15,12 +15,11 @@ describe '| controllers | user | Filters-Active-Controller.test',->
       expect(@.current_Filters  ).to.deep.equal {}
       expect(@.current_Query_Id ).to     .equal null
 
-      @.$$listeners.keys().size().assert_Is 6
+      @.$$listeners.keys().size().assert_Is 5
       expect(@.$$listeners['apply_filter'   ][0]).to.be.an('function')
       expect(@.$$listeners['apply_query'    ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filter'   ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filters'  ][0]).to.be.an('function')
-      expect(@.$$listeners['filter_data'    ][0]).to.be.an('function')
       expect(@.$$listeners['view_model_data'][0]).to.be.an('function')
 
       expect(@.refresh_Filters).to.be.an('function')

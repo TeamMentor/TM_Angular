@@ -144,6 +144,60 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    $scope.show_Doc = function(article) {
+      if (article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      }
+    };
+    $scope.load_Library = function() {
+      return TM_API.docs_Library(function(library) {
+        var ref, ref1, ref2;
+        if (library != null ? library.Views : void 0) {
+          $scope.Views = library.Views;
+          return $scope.show_Doc((ref = library.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? ref2.first() : void 0 : void 0 : void 0);
+        }
+      });
+    };
+    return $scope.load_Library();
+  });
+
+}).call(this);
+
+(function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['main', 'docs', 'terms_and_conditions'],
+      user_User: ['index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
   var expect,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     hasProp = {}.hasOwnProperty;
@@ -279,60 +333,6 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['main', 'docs', 'terms_and_conditions'],
-      user_User: ['index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
-    $scope.show_Doc = function(article) {
-      if (article) {
-        return TM_API.docs_Page(article.Id, function(article_Data) {
-          $scope.title = article.Title;
-          return $scope.content = $sce.trustAsHtml(article_Data.html);
-        });
-      }
-    };
-    $scope.load_Library = function() {
-      return TM_API.docs_Library(function(library) {
-        var ref, ref1, ref2;
-        if (library != null ? library.Views : void 0) {
-          $scope.Views = library.Views;
-          return $scope.show_Doc((ref = library.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? ref2.first() : void 0 : void 0 : void 0);
-        }
-      });
-    };
-    return $scope.load_Library();
-  });
-
-}).call(this);
-
-(function() {
   var Map_Directives,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -456,73 +456,81 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.login = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...logging in ...";
+      return TM_API.login($scope.username, $scope.password, (function(_this) {
+        return function(data) {
+          var ref;
+          if (data.result === 'OK') {
+            $scope.infoMessage = 'Login OK';
+            return $timeout(function() {
+              return $window.location.href = '/angular/user/main';
+            });
+          } else {
+            $scope.infoMessage = null;
+            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+          }
+        };
+      })(this));
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.infoMessage = "...sending request ...";
+      return TM_API.pwd_reset($scope.email, function(data) {
+        return $scope.infoMessage = data != null ? data.message : void 0;
       });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...Signing  up ...";
+      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref;
+        if ((data != null ? data.result : void 0) === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return $window.location.href = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
+        }
       });
-    }
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    return $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);
@@ -980,81 +988,73 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.login = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...logging in ...";
-      return TM_API.login($scope.username, $scope.password, (function(_this) {
-        return function(data) {
-          var ref;
-          if (data.result === 'OK') {
-            $scope.infoMessage = 'Login OK';
-            return $timeout(function() {
-              return $window.location.href = '/angular/user/main';
-            });
-          } else {
-            $scope.infoMessage = null;
-            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
-          }
-        };
-      })(this));
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
+    }
+    return results;
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.get_Password = function() {
-      $scope.infoMessage = "...sending request ...";
-      return TM_API.pwd_reset($scope.email, function(data) {
-        return $scope.infoMessage = data != null ? data.message : void 0;
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
       });
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.signup = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...Signing  up ...";
-      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
-        var ref;
-        if ((data != null ? data.result : void 0) === 'OK') {
-          $scope.infoMessage = 'Signup OK';
-          return $timeout(function() {
-            return $window.location.href = '/angular/user/main';
-          });
-        } else {
-          $scope.infoMessage = null;
-          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
-        }
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+    }
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    return $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
   });
 
 }).call(this);
@@ -1095,7 +1095,7 @@
         return $scope.articles = [];
       }
     });
-    $scope.$on('query_view_model', function(event, data) {
+    $scope.$on('view_model_data', function(event, data) {
       var article, articles, i, id, len, title;
       articles = [];
       if (data != null ? data.articles : void 0) {
@@ -1205,7 +1205,6 @@
       $scope.current_Query_Id = query_Id;
       return $scope.refresh_Filters();
     });
-    $scope.$on('filter_data', function(event, data) {});
     $scope.refresh_Filters = function() {
       var filters, query_Id;
       query_Id = $scope.current_Query_Id;
@@ -1229,7 +1228,7 @@
   angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
     $scope.current_Filters = {};
     $scope.hide_Metadata = {};
-    $scope.$on('filter_data', function(event, data) {
+    $scope.$on('view_model_data', function(event, data) {
       var filter, i, len, ref, result, results;
       if (data != null ? data.filters : void 0) {
         $scope.filters = data.filters;
@@ -1391,7 +1390,7 @@
   angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope) {
     $scope.$on('view_model_data', function(event, data) {
       $scope.title = data.title;
-      return $scope.containers = data.containers;
+      return $scope.containers = data.queries;
     });
     return $scope.load_Query = function(query_Id) {
       return $rootScope.$broadcast('apply_query', query_Id);
