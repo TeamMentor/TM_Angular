@@ -55,7 +55,7 @@ describe '| directives | component | filters', ->
       @.$broadcast 'view_model_data', query_Tree_Filters_Data
       @.$digest()
 
-    scope.$on 'apply_filter', (event,filter_Id, filter_Title )->
+    scope.$on 'apply_filter', (event,filter_Id, filter_Title, metadata_Title )->
       filter_Id   .assert_Is 'id'
       filter_Title.assert_Is 'title'
     element_Raw.find('a').triggerHandler('click')

@@ -15,12 +15,8 @@ class Query_Service
   load_Query: (query_Id, filters, from, to )=>
     from = from || @.default_Page_From
     to   = to || @.default_Page_To
-    @.TM_API.query_view_model query_Id, filters, @.default_Page_From, @.default_Page_To, (data)=>
+    @.TM_API.query_view_model query_Id, filters, from, to, (data)=>
       @.$rootScope.$broadcast 'view_model_data', data
-      #@.$rootScope.$broadcast 'article_data', id:data.id, results: data.articles
-      #@.$rootScope.$broadcast 'filter_data' , id:data.id, filters: data.filters
-      #@.$rootScope.$broadcast 'query_data'  , id:data.id, containers: data.queries , title: data.title
-
   reload_Data: ()=>
     @.$rootScope.$broadcast 'clear_filters'
     @.$rootScope.$broadcast 'clear_query'

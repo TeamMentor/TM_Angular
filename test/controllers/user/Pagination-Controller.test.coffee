@@ -63,7 +63,7 @@ describe '| controllers | user | Pagination-Controller.test',->
 
   it 'set_Page', ->
     inject ($httpBackend, $timeout)->
-      $httpBackend.expectGET('/api/data/query_view_model/null/0/10').respond {}
+      $httpBackend.expectGET('/api/data/query_view_model/null/1763/1806').respond {}
       using scope,->
         scope.$on 'set_page', (event, page)->
           page.assert_Is 42
