@@ -8,6 +8,20 @@ angular.module 'TM_App'
             @.current_Path = ''
             @.breadcrumbs  = []
 
+            @.$on 'clear_query', (event, data)=>
+              @.current_Path = ''
+              @.breadcrumbs  = []
+
+            @.$on 'view_model_data', (event, data)=>
+              if data
+                if @.current_Path.indexOf(data.id) is -1
+                  @.current_Path += "/#{data.id}"
+                  @.history[data.id] =
+                    title     : data.title
+                    query_Id  : data.id
+
+                  @.refresh_Breadcrumbs()
+
             @.refresh_Breadcrumbs = ()=>
               @.breadcrumbs = []
               path = ''
@@ -20,20 +34,6 @@ angular.module 'TM_App'
                                        path         : path
                                      }
                   path += "/#{key}"
-
-            @.$on 'clear_query', (event, data)=>
-              @.current_Path = ''
-              @.breadcrumbs  = []
-
-            @.$on 'query_data', (event, data)=>
-              if data
-                if @.current_Path.indexOf(data.id) is -1
-                  @.current_Path += "/#{data.id}"
-                  @.history[data.id] =
-                      title     : data.title
-                      query_Id  : data.id
-
-                  @.refresh_Breadcrumbs()
 
             @.load_Query = (breadcrumb)=>
               if breadcrumb?.query_Id

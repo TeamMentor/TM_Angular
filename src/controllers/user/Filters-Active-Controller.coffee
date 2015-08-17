@@ -17,12 +17,15 @@ angular.module('TM_App')
           $scope.$on 'clear_filters' , ->
             $scope.current_Filters = {}
 
-          $scope.$on 'query_data', (event,data)->
+          $scope.$on 'view_model_data', (event,data)->
             $scope.current_Query_Id = data?.id
 
           $scope.$on 'apply_query', (event, query_Id)->
             $scope.current_Query_Id = query_Id
             $scope.refresh_Filters()
+
+          $scope.$on 'filter_data', (event,data)->
+            #$scope.pages = results_Size
 
           $scope.refresh_Filters = ()->
             query_Id = $scope.current_Query_Id
@@ -37,5 +40,3 @@ angular.module('TM_App')
             delete $scope.current_Filters[filter_Id]
             $scope.refresh_Filters()
 
-          $scope.$on 'filter_data', (event,data)->
-            #$scope.pages = results_Size

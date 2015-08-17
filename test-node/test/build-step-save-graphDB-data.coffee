@@ -16,7 +16,7 @@ describe 'build-step-save-GraphDB-data', ->
     graphDB = new TM_GraphDB_Http()
 
   after ->
-    graphDB_Data.keys().assert_Size_Is 6
+    graphDB_Data.keys().assert_Size_Is 7
 
     target_File.assert_File_Deleted()
     fileContents = default_Content  + '   return ' + graphDB_Data.json_Str()
@@ -30,15 +30,15 @@ describe 'build-step-save-GraphDB-data', ->
       data.assert_Is status : 'ok'
       done()
 
-  save_Data = (key, next)->
-    (data)->
-      graphDB_Data[key] = data
-      next()
+  #save_Data = (data, key)->
+  #  graphDB_Data[key] = data
 
   it 'status', (done)->
     delete graphDB_Data['status']
-    graphDB.status save_Data 'status', ->
-      graphDB_Data['status'].assert_Is status: 'ok'
+    key = 'status'
+    graphDB.status  (data)->
+      graphDB_Data[key] = data
+      graphDB_Data[key].assert_Is status: 'ok'
       done()
 
   #it 'query_tree', (done)->
@@ -53,39 +53,44 @@ describe 'build-step-save-GraphDB-data', ->
   #      @.filters   .assert_Not_Empty()
   #      done()
 
-  it 'query_tree_articles', (done)->
-    @.timeout 4000
-    get_Articles  = (query_Id, from, to, next)->
-      key      = "query_tree_articles_#{query_Id}_#{from}_#{to}"
-      graphDB.query_tree_articles query_Id, from, to, save_Data key, ->
+  it 'query_view_model', (done)->
+    #@.timeout 4000
+    get_Data  = (query_Id, from, to, next)->
+      key      = "query_view_model_#{query_Id}_#{from}_#{to}"
+      graphDB.query_view_model query_Id, from, to, (data)->
+        graphDB_Data[key] = data
+        #console.log data
+        #save_Data data, key
         using graphDB_Data[key], ->
-          @.id        .assert_Is query_Id
-          @.title     .assert_Is 'Index'
-          @.results.assert_Size_Is to - from
+          @.id            .assert_Is query_Id
+          @.title         .assert_Is 'Index'
+          @.articles      .assert_Size_Is to - from
+          @.queries       .assert_Size_Is 22
+          @.filters.keys().assert_Size_Is 3
           next()
 
-    get_Articles graphDB.index_Query, 0, 10, ->
-      get_Articles graphDB.index_Query, 10, 20, ->
-        get_Articles graphDB.index_Query, 20, 30, ->
+    get_Data graphDB.index_Query, 0, 10, ->
+      get_Data graphDB.index_Query, 10, 20, ->
+        get_Data graphDB.index_Query, 20, 30, ->
           done()
 
+  it 'query_view_model_filtered', (done)->
+    #@.timeout 4000
+    get_Data  = (query_Id, filters, from, to, next)->
+      key      = "query_view_model_filtered_#{query_Id}_#{filters}_#{from}_#{to}"
 
-  it 'query_tree_filters', (done)->
-    query_Id = graphDB.index_Query
-    key      = "query_tree_filters_#{query_Id}"
-    graphDB.query_tree_filters query_Id, save_Data key, ->
-      using graphDB_Data[key], ->
-        @.id        .assert_Is query_Id
-        @.title     .assert_Is 'Index'
-        @.filters   .assert_Not_Empty()
-        done()
+      graphDB.query_view_model_filtered query_Id, filters, from, to, (data)->
+        graphDB_Data[key] = data
+        using graphDB_Data[key], ->
+          @.id            .assert_Is query_Id
+          @.title         .assert_Is 'Index'
+          @._filters.assert_Is 'query-7d9a1b64c045'
+          @.articles      .assert_Size_Is to - from
+          @.queries       .assert_Size_Is 16
+          @.filters.keys().assert_Size_Is 3
+          next()
 
-  it 'query_tree_queries', (done)->
-    query_Id = graphDB.index_Query
-    key      = "query_tree_queries_#{query_Id}"
-    graphDB.query_tree_queries query_Id, save_Data key, ->
-      using graphDB_Data[key], ->
-        @.id        .assert_Is query_Id
-        @.title     .assert_Is 'Index'
-        @.containers.assert_Not_Empty()
-        done()
+    get_Data graphDB.index_Query, graphDB.java_Query, 0, 10, ->
+      get_Data graphDB.index_Query, graphDB.java_Query,10, 20, ->
+        get_Data graphDB.index_Query, graphDB.java_Query, 20, 30, ->
+          done()

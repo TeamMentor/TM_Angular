@@ -19,30 +19,29 @@ describe '| directive | search-bar', ->
 
       scope = element_Raw.find('div').eq(0).scope()     # getting the scope for the Controller
 
-      filter_Data = graph_db_data['query_tree_filters_query-6234f2d47eb7']
+      filter_Data = graph_db_data['query_view_model_query-6234f2d47eb7_0_10']
 
   it 'Check html elements',->
     inject ($$)->
       using $$(element).$query,->
         @('form'          ).$attr().assert_Is { 'ng-submit' : 'submit()', class: 'ng-pristine ng-valid' }
         @('select'        ).$attr().assert_Is { 'ng-model'  : 'selected_Technology', 'ng-change' : 'select_Technology(selected_Technology)','ng-options': 'technology as technology.title for technology in technologies', class       : 'ng-pristine ng-untouched ng-valid' }
-        @('#search-text'  ).$attr().assert_Is { id: 'search-text'  , type: 'text'  , class: 'search-input ng-pristine ng-untouched ng-valid' , "ng-model": 'text', placeholder: 'Search TEAM Mentor'}
+        @('#search-text'  ).$attr().assert_Is { id: 'search-text'  , type: 'text'  , class: 'search-input ng-pristine ng-untouched ng-valid' , "ng-model": 'text', placeholder: 'Search TEAM Mentor', 'ng-change': 'get_Words(text)' , autocomplete: 'off', autocorrect: 'off', autocapitalize: 'off'}
         @('#search-button').$attr().assert_Is { id: 'search-button', type: 'submit', class: 'btn-search' }
-
 
   it '| controller | $on query_data', ->
 
     using scope, ->
-      @.$broadcast 'filter_data', filter_Data
+      @.$broadcast 'view_model_data', filter_Data
       @.$digest()
 
     using element_Raw.find('option'), ->
-      @.length      .assert_Is 12
+      #@.length      .assert_Is 12
       texts = (option.innerText for option in @)
       texts.first().assert_Is 'All'
       texts.assert_Is 	[ 'All', '.NET','Android','C++','HTML5',
                          'iOS','Java','PHP','Scala Play',
-                         'Technology Independent','WCF','Web Application' ]
+                         'Technology Independent','WCF','Web Application' , '....sugestions....']
 
 
   # this is not working (I can't seem to be able to trigger the select_Technology from the options)
@@ -84,18 +83,20 @@ describe '| directive | search-bar', ->
   it 'Check options after filter_data $broadcast (with sample data)',->
     results      = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
     scope.technologies.assert_Is {}
-    scope.$broadcast 'filter_data', { filters: [{ title: 'Technology', results: results   } ] }
+    scope.$broadcast 'view_model_data', { filters: {'Technology' : results   } }
     scope.$digest()
     inject ($$)->
       options = element_Raw.find('option')
-      options.length.assert_Is 3
+      options.length.assert_Is 4
       seed = Number $$(options[0]).$attr().value.split(':')[1]  # need this since the object:{n} value can vary
       $$(options[0]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'All'   , selected: 'selected' }
       $$(options[1]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'tech 1'                       }
       $$(options[2]).$attr().assert_Is 		{ value: 'object:' + seed   , label: 'tech 2'                       }
 
+      $$(options[3]).$attr().assert_Is    { 'ng-repeat': 'word in words', value: 'word', class: 'ng-binding ng-scope' }
 
-  # not completed
+
+# not completed
   #it 'Check selected option',->
   #  scope.$broadcast 'query_data', { filters: [{ title: 'Technology', results: results   } ] }
   #  #scope.$digest()

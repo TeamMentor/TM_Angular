@@ -76,7 +76,7 @@ describe '| directive | components | user | breadcrumbs', ->
 
   it '| controller | $on query_data (vanila data)', ->
     using scope,->
-      @.$broadcast 'query_data', { id: 'ccc', title: 'ccc-title'}
+      @.$broadcast 'view_model_data', { id: 'ccc', title: 'ccc-title'}
       @.$digest()
       @.current_Path.assert_Is '/aaa/bbb/ccc'
       @.history.keys().size().assert_Is 3
@@ -91,7 +91,7 @@ describe '| directive | components | user | breadcrumbs', ->
       using scope, ->
         @.$broadcast 'clear_query'
         @.history = {}
-        @.$broadcast 'query_data',  graph_db_data['query_tree_queries_query-6234f2d47eb7']
+        @.$broadcast 'view_model_data',  graph_db_data['query_view_model_query-6234f2d47eb7_0_10']
         @.history.assert_Is { 'query-6234f2d47eb7': { title: 'Index', query_Id: 'query-6234f2d47eb7' } }
         @.current_Path.assert_Is '/query-6234f2d47eb7'
         @.breadcrumbs.assert_Is 	[ { query_Id: 'query-6234f2d47eb7', title: 'Index', path: '' } ]

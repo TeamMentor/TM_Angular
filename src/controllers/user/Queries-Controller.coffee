@@ -1,7 +1,7 @@
 angular.module('TM_App')
        .controller 'Queries_Controller', ($scope, $rootScope)->
 
-          $scope.$on 'query_data', (event, data)->
+          $scope.$on 'view_model_data', (event, data)->
             $scope.title = data.title
             $scope.containers = data.containers
 

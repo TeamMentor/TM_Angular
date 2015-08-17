@@ -16,11 +16,11 @@ describe '| controllers | user | Articles-Controller',->
       scope.$digest()
 
   it 'constructor', ->
-    expect(scope.$$listeners['article_data'][0]).to.be.an('function')
+    expect(scope.$$listeners['query_view_model'][0]).to.be.an('function')
 
   it '$on article_data', ->
     using scope, ->
-      @.$broadcast 'article_data', { results: articles_Source }
+      @.$broadcast 'query_view_model', { articles: articles_Source }
       @.articles.assert_Is articles_Transformed
 
   it '$on apply_query', ->
