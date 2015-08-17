@@ -12,15 +12,12 @@ angular.module('TM_App')
           $scope.query_Id  =  null
           $scope.model     = model
 
-          #$scope.$on 'filter_data', (event, data)->
+          #$scope.$on 'query_data', (event, data)->
+          #  model.page       = 1
+          #  model.page_Split = 10
           #  $scope.reset()
 
-          $scope.$on 'query_data', (event, data)->
-            model.page       = 1
-            model.page_Split = 10
-          #  $scope.reset()
-
-          $scope.$on 'article_data', (event, data)->
+          $scope.$on 'view_model_data', (event, data)->
 
             if not (data?.size)
               model.pages = null
@@ -36,15 +33,13 @@ angular.module('TM_App')
 
               model.pages =  [1.. split]
 
-
-
           $scope.set_Page = ()->
             if model.page
               $rootScope.$broadcast 'set_page', model.page
               $timeout ->
                 from = (model.page - 1) * model.page_Split
                 to   = (model.page    ) * model.page_Split
-                query_Service.load_Query_Articles $scope.query_Id, from, to
+                query_Service.load_Query $scope.query_Id, null,  from, to
 
           $scope.set_Page_Split = ()->
             $scope.set_Page()

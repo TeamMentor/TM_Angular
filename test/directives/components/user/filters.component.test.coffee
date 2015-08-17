@@ -26,7 +26,7 @@ describe '| directives | component | filters', ->
 
   it 'controller | $on filter_data',->
     using scope, ->
-      @.$broadcast 'filter_data', query_Tree_Filters_Data
+      @.$broadcast 'view_model_data', query_Tree_Filters_Data
       @.$digest()
 
     inject ($$)->
@@ -52,7 +52,7 @@ describe '| directives | component | filters', ->
 
   it 'Check that ng-click on filter broadcasts an apply_Filter event',->
     using scope, ->
-      @.$broadcast 'filter_data', query_Tree_Filters_Data
+      @.$broadcast 'view_model_data', query_Tree_Filters_Data
       @.$digest()
 
     scope.$on 'apply_filter', (event,filter_Id, filter_Title )->

@@ -17,15 +17,10 @@ describe '| directive | components | user | pagination', ->
       $rootScope.$digest()
       scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
-    #inject ($document)->
-    #  body = angular.element $document[0].body
-    #  body.find('pagination').remove()
-    #  body.append element
-
   it 'constructor',->
     inject ($$)->
       using $$(element).$query,->
-        console.log @('#current_Page')
+        @('#current_Page').$attr().assert_Is { id: 'current_Page', class: 'number' }
 
 
 

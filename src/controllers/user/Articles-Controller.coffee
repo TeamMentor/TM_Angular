@@ -7,12 +7,12 @@ angular.module('TM_App')
             if not query_id
               $scope.articles = []
 
-          $scope.$on 'article_data', (event, data)->
+          $scope.$on 'view_model_data', (event, data)->
             articles = []
-            if data?.results
+            if data?.articles
               #raw_Articles = data.results
               #$scope.$broadcast 'show_page' , 0
-               articles = data.results
+               articles = data.articles
                for article in articles
                  id    = article.id.remove('article-')
                  title = article.title.replace(new RegExp(' ','g'),'-').remove('.')

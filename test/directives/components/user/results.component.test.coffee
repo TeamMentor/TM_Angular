@@ -46,9 +46,9 @@ describe '| directive | components | user | index', ->
 
   it 'Check results_Size binding (via filter_data)',->
     inject (graph_db_data)->
-      article_Data = graph_db_data['query_tree_articles_query-6234f2d47eb7_0_10']
+      article_Data = graph_db_data['query_view_model_query-6234f2d47eb7_0_10']
       expect(article_Data.size).to.be.above 2000
-      scope.$broadcast 'article_data', article_Data
+      scope.$broadcast 'view_model_data', article_Data
       scope.$digest()
       scope.results_Size.assert_Is article_Data.size
       inject ($$)->

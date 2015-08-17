@@ -14,8 +14,14 @@ describe '| controllers | user | Breadcrumbs-Controller',->
 
   it 'constructor', ->
     using scope, ->
-      expect(@.$$listeners['clear_query'][0]).to.be.an('function')
-      expect(@.$$listeners['query_data'][0] ).to.be.an('function')
+      @.history     .assert_Is {}
+      @.current_Path.assert_Is ''
+      @.breadcrumbs .assert_Is []
+
+      @.$$listeners.keys().size().assert_Is 2
+      expect(@.$$listeners['clear_query'    ][0]).to.be.an('function')
+      expect(@.$$listeners['view_model_data'][0] ).to.be.an('function')
+
       expect(@.refresh_Breadcrumbs).to.be.an 'function'
       expect(@.load_Query         ).to.be.an 'function'
 
@@ -46,22 +52,22 @@ describe '| controllers | user | Breadcrumbs-Controller',->
 
   it '$on query_data', ->
     using scope, ->
-      scope.$broadcast 'query_data', { id: 'aaa_id', title: 'aaa'}                      # on aaa_id
+      scope.$broadcast 'view_model_data', { id: 'aaa_id', title: 'aaa'}                      # on aaa_id
       @.current_Path.assert_Is '/aaa_id'
       @.breadcrumbs.assert_Is [ { query_Id: 'aaa_id', title: 'aaa', path: '' } ]
 
-      scope.$broadcast 'query_data', { id: 'bbb_id', title: 'bbb'}                      # on bbb_id
+      scope.$broadcast 'view_model_data', { id: 'bbb_id', title: 'bbb'}                      # on bbb_id
       @.current_Path.assert_Is '/aaa_id/bbb_id'
       @.breadcrumbs.assert_Is [ { query_Id: 'aaa_id', title: 'aaa', path: '' }
                                 { query_Id: 'bbb_id', title: 'bbb', path: '/aaa_id' } ]
 
-      scope.$broadcast 'query_data', { id: 'ccc_id', title: 'ccc'}                      # on ccc_id
+      scope.$broadcast 'view_model_data', { id: 'ccc_id', title: 'ccc'}                      # on ccc_id
       @.current_Path.assert_Is '/aaa_id/bbb_id/ccc_id'
       @.breadcrumbs.assert_Is [ { query_Id: 'aaa_id', title: 'aaa', path: '' }
                                 { query_Id: 'bbb_id', title: 'bbb', path: '/aaa_id' }
                                 { query_Id: 'ccc_id', title: 'ccc', path: '/aaa_id/bbb_id' } ]
 
-      scope.$broadcast 'query_data', { id: 'bbb_id', title: 'bbb'}                      # on bbb_id (again
+      scope.$broadcast 'view_model_data', { id: 'bbb_id', title: 'bbb'}                      # on bbb_id (again
       @.current_Path.assert_Is '/aaa_id/bbb_id/ccc_id'
 
   it 'load_Query',->

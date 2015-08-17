@@ -33,25 +33,17 @@ describe '| graphBD-stress-test', ->
 
     async.each [0..10], open_And_Check_Results, done
 
-  it 'Check multiple calls to /data/query_tree_filtered-* methods', (done)->
+  it 'Check multiple calls to /data/query_view_model_filtered', (done)->
     id     = 'query-6f0946ab5b19'
     filter = 'query-8c511380a4f5'
 
-    target_1 = "/data/query_tree_filtered_articles/#{id}/#{filter}/0/10"
-    target_2 = "/data/query_tree_filtered_queries/#{id}/#{filter}"
-    target_3 = "/data/query_tree_filtered_filters/#{id}/#{filter}"
+    url = "/data/query_view_model_filtered/#{id}/#{filter}/0/10"
 
-    targets = [target_1, target_2, target_3]
-    open_And_Check_Id = (target, next)->
-      graphDB.open target, (data)->
-        data.id.assert_Is id
+    open_And_Check_Id = (index, next)->
+      graphDB.open url, (data)->
+        #data.id.assert_Is id
         next()
-
-    open_Targets = (index, next)->
-      async.each targets, open_And_Check_Id, next
-
-
-    async.each [0..2],open_Targets, done
+    async.each [0..50],open_And_Check_Id, done
 
 
   it 'Delete cache file and make multiple requests', (done)->

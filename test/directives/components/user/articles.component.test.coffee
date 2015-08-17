@@ -33,10 +33,9 @@ describe '| directive | components | user | queries', ->
 
   it '| controller | $on query_data',->
     inject (graph_db_data,$httpBackend)->
-
-      key = 'query_tree_articles_query-6234f2d47eb7_0_10'
+      key = 'query_view_model_query-6234f2d47eb7_0_10'
       data = graph_db_data[key]
-      scope.$broadcast 'articles_data', data
+      scope.$broadcast 'query_view_model', data
       scope.$digest()
       #$httpBackend.flush()
       #scope.$digest()

@@ -4,8 +4,16 @@ describe '| services | Query-Service', ->
 
   beforeEach ()->
     module('TM_App')
-    #inject ($injector)->
+
+    inject ($rootScope)->
+      spyOn $rootScope, '$broadcast'
+
     #  query_Service = $injector.get('query_Service')
+
+  afterEach ->
+    inject ($httpBackend)->
+      $httpBackend.verifyNoOutstandingExpectation()
+      $httpBackend.verifyNoOutstandingRequest()
 
   it 'constructor', ->
     inject (query_Service, TM_API, $rootScope)->
@@ -13,9 +21,6 @@ describe '| services | Query-Service', ->
         @.TM_API      .assert_Is TM_API
         @.$rootScope  .assert_Is $rootScope
         @.index_Query .assert_Is 'query-6234f2d47eb7'
-        expect(@.data_Articles).to.equal null
-        expect(@.data_Filters).to.equal null
-        expect(@.data_Queries).to.equal null
 
         expect(@.load_Data  ).to.be.an 'function'
         expect(@.load_Query ).to.be.an 'function'
@@ -23,110 +28,66 @@ describe '| services | Query-Service', ->
 
   it 'load_Data', ->
     inject (query_Service, $rootScope, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7'      ).respond  [{ a: 42 }]
-      $httpBackend.expectGET('/api/data/query_tree_articles/query-6234f2d47eb7/0/10').respond  [{ a: 43 }]
-      $httpBackend.expectGET('/api/data/query_tree_filters/query-6234f2d47eb7'      ).respond  [{ a: 44 }]
+      $httpBackend.expectGET('/api/data/query_view_model/query-6234f2d47eb7/0/10').respond  [{ a: 42 }]
       using query_Service, ->
         @.load_Data()
         $rootScope.$digest()
-        @.data_Queries.assert_Is []
-        @.data_Articles.assert_Is []
-        @.data_Filters.assert_Is []
         $httpBackend.flush()
-        @.data_Queries.assert_Is  [{ a: 42 }]
-        @.data_Articles.assert_Is [{ a: 43 }]
-        @.data_Filters.assert_Is  [{ a: 44 }]
 
   it 'load_Query (no id)', ->
     inject (query_Service, $rootScope, $httpBackend)->
-
-      $rootScope.$on 'query_data', (event, data)->
-        data.assert_Is {}
-      $rootScope.$on 'filter_data', (event, data)->
-        data.assert_Is {}
+      $httpBackend.expectGET('/api/data/query_view_model/undefined/0/10').respond {}
 
       using query_Service, ->
         @.load_Query()
-        expect(@.data_Queries ).to.equal null
-        expect(@.data_Articles).to.equal null
-        expect(@.data_Filters ).to.equal null
+        $httpBackend.flush()
+
+      using $rootScope.$broadcast.calls, ->
+        @.count().assert_Is 3
+        @.mostRecent().args.assert_Is  [ 'view_model_data',  { } ]
 
   it 'load_Query (with query_Id, no filters)', ->
     inject (query_Service, $rootScope, $httpBackend)->
-      $httpBackend.expectGET('/api/data/query_tree_queries/an-query-id'      ).respond  [{ a: 42 }]
-      $httpBackend.expectGET('/api/data/query_tree_articles/an-query-id/0/10').respond  [{ a: 43 }]
-      $httpBackend.expectGET('/api/data/query_tree_filters/an-query-id'      ).respond  [{ a: 44 }]
-
-      $rootScope.$on 'query_data', (event, data)->
-        data.assert_Is  [{ a: 42 }]
-      $rootScope.$on 'article_data', (event, data)->
-        data.assert_Is  [{ a: 43 }]
-      $rootScope.$on 'filter_data', (event, data)->
-        data.assert_Is [{ a: 44 }]
+      $httpBackend.expectGET('/api/data/query_view_model/an-query-id/0/10').respond  { id: 42 }
 
       using query_Service, ->
         @.load_Query('an-query-id')
-        expect(@.data_Queries ).to.equal null
         $httpBackend.flush()
-        @.data_Queries .assert_Is [{ a: 42 }]
-        @.data_Articles.assert_Is [{ a: 43 }]
-        @.data_Filters .assert_Is [{ a: 44 }]
+
+      using $rootScope.$broadcast.calls, ->
+        @.count().assert_Is 3
+        @.mostRecent().args.assert_Is  [ 'view_model_data',  { id: 42 } ]
 
   it '@.load_Query  (with query_Id and filters)', ->
     inject (query_Service, $rootScope, $httpBackend)->
 
-      $httpBackend.expectGET('/api/data/query_tree_filtered_queries/an-query-id/an-filter-id'      ).respond  { a: 42 }
-      $httpBackend.expectGET('/api/data/query_tree_filtered_articles/an-query-id/an-filter-id/0/10').respond  { a: 43 }
-      $httpBackend.expectGET('/api/data/query_tree_filtered_filters/an-query-id/an-filter-id'      ).respond  { a: 44 }
-
-      $rootScope.$on 'query_data', (event, data)->
-        data.assert_Is  { a: 42 }
-      $rootScope.$on 'article_data', (event, data)->
-        data.assert_Is  { a: 43 }
-      $rootScope.$on 'filter_data', (event, data)->
-        data.assert_Is  { a: 44 }
+      $httpBackend.expectGET('/api/data/query_view_model_filtered/an-query-id/an-filter-id/0/10').respond  { id: 42 }
 
       using query_Service, ->
         @.load_Query('an-query-id', 'an-filter-id')
         $httpBackend.flush()
-        @.data_Queries.assert_Is   { a: 42 }
-        @.data_Filters.assert_Is   { a: 44 }
-        @.data_Articles.assert_Is  { a: 43 }
 
-#  it 'load_Query (check results size mapping)', ->
-#    inject (query_Service, $rootScope, $httpBackend)->
-#
-#      $httpBackend.expectGET('/api/data/query_tree_filtered_queries/an-query-id/an-filter-id'      ).respond  { a: 42 }
-#      $httpBackend.expectGET('/api/data/query_tree_filtered_articles/an-query-id/an-filter-id/0/10').respond  { a: 42 , size: 2 }
-#      $httpBackend.expectGET('/api/data/query_tree_filtered_filters/an-query-id/an-filter-id'      ).respond  { a: 42 }
-#
-#
-#      using query_Service, ->
-#        @.load_Query('an-query-id', 'an-filter-id')
-#        $httpBackend.flush()
-#        @.data_Articles.size.assert_Is 2
+      using $rootScope.$broadcast.calls, ->
+        @.count().assert_Is 3
+        @.mostRecent().args.assert_Is  [ 'view_model_data',  { id: 42 } ]
 #
   it 'reload_Data', ->
 
     inject (query_Service, $rootScope, $httpBackend)->
-
-      $httpBackend.expectGET('/api/data/query_tree_queries/query-6234f2d47eb7'      ).respond  [{ a: 42 }]
-      $httpBackend.expectGET('/api/data/query_tree_articles/query-6234f2d47eb7/0/10').respond  [{ a: 43 }]
-      $httpBackend.expectGET('/api/data/query_tree_filters/query-6234f2d47eb7'      ).respond  [{ a: 44 }]
-
-      $rootScope.$on 'clear_filters', (event, data)-> expect(data).to.equal undefined
-      $rootScope.$on 'clear_query'  , (event, data)-> expect(data).to.equal undefined
-      $rootScope.$on 'clear_search' , (event, data)-> expect(data).to.equal undefined
+      $httpBackend.expectGET('/api/data/query_view_model/query-6234f2d47eb7/0/10').respond  { id: 42 }
 
       using query_Service, ->
         $rootScope.$digest()
         @.reload_Data()
-        @.data_Queries .assert_Is []
-        @.data_Articles.assert_Is []
-        @.data_Filters .assert_Is []
         $rootScope.$digest()
         $httpBackend.flush()
-        @.data_Queries .assert_Is [{ a: 42 }]
-        @.data_Articles.assert_Is [{ a: 43 }]
-        @.data_Filters .assert_Is [{ a: 44 }]
+
+      using $rootScope.$broadcast.calls.all(), ->
+        @.size().assert_Is 6
+        @[0].args.assert_Is [ 'clear_filters']
+        @[1].args.assert_Is [ 'clear_query']
+        @[2].args.assert_Is [ 'clear_search']
+        @[3].args.assert_Is [ 'http_start']
+        @[4].args.assert_Is [ 'http_end']
+        @[5].args.assert_Is [ 'view_model_data',  { id: 42 } ]
 

@@ -10,6 +10,7 @@ angular.module('TM_App')
           $scope.technologies_By_Id  = {}
           $scope.text                = ''
           $scope.ignore_Events       = false
+          $scope.words               = []
 
           $scope.$on 'clear_Search', ()->
             $scope.text = ''
@@ -27,17 +28,17 @@ angular.module('TM_App')
                 $scope.selected_Technology =  $scope.technologies_By_Id[filter_Id]
                 $scope.previous_Filter_Id = filter_Id
 
-          $scope.$on 'filter_data', (event, data)->
+          $scope.$on 'view_model_data', (event, data)->
             $scope.query_Id = data?.id
             if not $scope.selected_Technology
               $scope.technologies       = [{ title: 'All', id: query_Service.index_Query }]
               $scope.technologies_By_Id = { 'All' : $scope.technologies[0]}
               if data?.filters
-                for filter in data.filters
-                  if filter.title is 'Technology' and filter.results
-                    for result in filter.results
-                      $scope.technologies.push(result)
-                      $scope.technologies_By_Id[result.id] = result
+                for key,value of data.filters
+                  if key is 'Technology' and value.size
+                    for filter in value
+                      $scope.technologies.push(filter)
+                      $scope.technologies_By_Id[filter.id] = filter
 
               $scope.selected_Technology = $scope.technologies[0]
 
@@ -60,30 +61,30 @@ angular.module('TM_App')
             if $scope.text is ''
               $rootScope.$broadcast 'apply_query', query_Service.index_Query
             else
-              $scope.get_Parent_Queries()
+              TM_API.query_from_text_search $scope.text, (query_id)->
+                $rootScope.$broadcast 'apply_query', query_id
+
+              #$scope.get_Parent_Queries()
 
               #TM_API.query_from_text_search $scope.text, (query_id)->
               #  $rootScope.$broadcast 'apply_query', query_id
 
+          #$scope.get_Parent_Queries = ()->
+          #  TM_API.query_from_text_search $scope.text, (query_id)->
+          #    $rootScope.$broadcast 'apply_query', query_id
+          #    if query_id
+          #      TM_API.query_view_model query_id, null, null, null, (data)->
 
+          #        article_Ids = (result.id for result in data.results)
 
+          #        filters = []
+          #        for filter in data.filters
+          #          for result in filter.results
+          #            filters.push result.title
 
-          $scope.get_Parent_Queries = ()->
-            TM_API.query_from_text_search $scope.text, (query_id)->
-              $rootScope.$broadcast 'apply_query', query_id
-              if query_id
-                TM_API.query_tree query_id, (data)->
-
-                  article_Ids = (result.id for result in data.results)
-
-                  filters = []
-                  for filter in data.filters
-                    for result in filter.results
-                      filters.push result.title
-
-                  TM_API.get_articles_parent_queries article_Ids, filters, (data)->
-                    data_query = {id: query_id, title: $scope.text, containers: data}
-                    $rootScope.$broadcast 'query_data', data_query
+          #        TM_API.get_articles_parent_queries article_Ids, filters, (data)->
+          #          data_query = {id: query_id, title: $scope.text, containers: data}
+          #          $rootScope.$broadcast 'query_data', data_query
 
 
           $scope.get_Words = (term)->

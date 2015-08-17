@@ -19,79 +19,16 @@ class TM_API
                 .then (response)->
                    return (match for match of response.data)          # when using promises
 
-  query_tree:  (id, callback)=>
-    id = id || 'query-6234f2d47eb7'
-
-    if @.cache_Query_Tree[id]
-      @.$timeout => callback @.cache_Query_Tree[id]
+  query_view_model:  (id, filters, from, to, callback)=>
+    if filters
+      url     = "/api/data/query_view_model_filtered/#{id}/#{filters}/#{from}/#{to}"
     else
-      url     = "/api/data/query_tree/#{id}"
-      @.$http.get url
-             .success (data)=>
-                @.cache_Query_Tree[id] = data
-                callback(data)
-
-  query_tree_articles:  (id, from, to, callback)=>
-    url     = "/api/data/query_tree_articles/#{id}/#{from}/#{to}"
-    @.$http.get(url).success callback
-
-  query_tree_filters:  (id, callback)=>
-    url     = "/api/data/query_tree_filters/#{id}"
-    @.$http.get(url).success callback
-
-  query_tree_queries:  (id, callback)=>
-    url     = "/api/data/query_tree_queries/#{id}"
-    @.$http.get(url).success callback
-
-  #query_tree_filtered:  (id, filter, callback)=>
-  #  if id and filter and callback
-  #    if @.cache_Query_Tree[id+filter]
-  #      return callback @.cache_Query_Tree[id+filter]
-  #
-  #    url     = "/api/data/query_tree_filtered/#{id}/#{filter}"
-  #    @.$http.get url
-  #      .success (data)=>
-  #        @.cache_Query_Tree[id+filter] = data
-  #        callback(data)
-
-  query_tree_filtered_articles:  (id, filter, from, to, callback)=>
-    if id and filter and callback
-      cache_Key = 'filtered_articles_' + id + filter + from + to
-      if @.cache_Query_Tree[cache_Key]
-        return callback @.cache_Query_Tree[cache_Key]
-
-      url     = "/api/data/query_tree_filtered_articles/#{id}/#{filter}/#{from}/#{to}"
-      @.$http.get url
-             .success (data)=>
-                @.cache_Query_Tree[cache_Key] = data
-                callback(data)
-
-  query_tree_filtered_filters:  (id, filter, callback)=>
-    if id and filter and callback
-      cache_Key = 'filtered_filters_' + id + filter
-      if @.cache_Query_Tree[cache_Key]
-        return callback @.cache_Query_Tree[cache_Key]
-
-      url     = "/api/data/query_tree_filtered_filters/#{id}/#{filter}"
-      @.$http.get url
-      .success (data)=>
-        @.cache_Query_Tree[cache_Key] = data
-        callback(data)
-
-  query_tree_filtered_queries:  (id, filter, callback)=>
-    if id and filter and callback
-      cache_Key = 'filtered_queries_' + id + filter
-      if @.cache_Query_Tree[cache_Key]
-        return callback @.cache_Query_Tree[cache_Key]
-
-      url     = "/api/data/query_tree_filtered_queries/#{id}/#{filter}"
-      @.$http.get url
-      .success (data)=>
-        @.cache_Query_Tree[cache_Key] = data
-        callback(data)
+      url     = "/api/data/query_view_model/#{id}/#{from}/#{to}"
+    @.$http.get url
+           .success (data)=>
+              callback(data)
 
   query_from_text_search: (text, callback)=>
-
     url     = "/api/search/query_from_text_search/#{text}"
     @.$http.get url
          .success (data)->

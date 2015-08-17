@@ -5,8 +5,9 @@ angular.module 'TM_App'
 
           $scope.current_Page       = 1
           $scope.current_Page_Split = 10
+          $scope.results_Size       = 0
 
-          $scope.$on 'article_data', (event,data)->
+          $scope.$on 'view_model_data', (event,data)->
             $scope.results_Size = data?.size
 
           $scope.$on 'set_page', (event, data)=>

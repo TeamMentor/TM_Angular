@@ -25,53 +25,44 @@ describe '| API | TM-GraphDB-Http |', ->
       data.assert_Is status: 'ok'
       done()
 
-  it 'query_tree', (done)->
-    graphDB.query_tree null, (data)->
-      assert_Is_Null data
-      graphDB.query_tree graphDB.index_Query, (data)->
-        data.id.assert_Is  graphDB.index_Query
-        data.title.assert_Is 'Index'
-        data.containers.length.assert_Bigger_Than 10
-        data.results.assert_Bigger_Than 1000
-        data.filters.assert_Size_Is 3
+  #it 'query_tree', (done)->
+  #  graphDB.query_tree null, (data)->
+  #    assert_Is_Null data
+  #    graphDB.query_tree graphDB.index_Query, (data)->
+  #      data.id.assert_Is  graphDB.index_Query
+  #      data.title.assert_Is 'Index'
+  #      data.containers.length.assert_Bigger_Than 10
+  #      data.results.assert_Bigger_Than 1000
+  #      data.filters.assert_Size_Is 3
 
-        done()
+  #      done()
 
-  it 'query_tree_articles', (done)->
-    graphDB.query_tree null, (data)->
-      assert_Is_Null data
-      from = 10
-      size = 25
-      graphDB.query_tree_articles graphDB.index_Query, from, size, (data)->
-        data.id.assert_Is  graphDB.index_Query
-        data.title.assert_Is 'Index'
-        data.results.assert_Size_Is size - from
-        assert_Is_Undefined data.filters
-        assert_Is_Undefined data.queries
-        done()
+  #it 'query_tree_articles', (done)->
+  #  graphDB.query_tree null, (data)->
+  #    assert_Is_Null data
+  #    from = 10
+  #    size = 25
+  #    graphDB.query_tree_articles graphDB.index_Query, from, size, (data)->
+  #      data.id.assert_Is  graphDB.index_Query
+  #      data.title.assert_Is 'Index'
+  #      data.results.assert_Size_Is size - from
+  #      assert_Is_Undefined data.filters
+  #      assert_Is_Undefined data.queries
+  #      done()
 
-  it 'query_tree_filters', (done)->
-    graphDB.query_tree null, (data)->
-      assert_Is_Null data
-      graphDB.query_tree_filters graphDB.index_Query, (data)->
-        data.id.assert_Is  graphDB.index_Query
-        data.title.assert_Is 'Index'
-        data.filters.assert_Size_Is 3
-        assert_Is_Undefined data.results
-        assert_Is_Undefined data.queries
-        done()
+  it 'query_view_mode', (done)->
+    from = 10
+    size = 25
+    graphDB.query_view_model graphDB.index_Query, from, size, (data)->
+      data.id.assert_Is  graphDB.index_Query
+      data.title.assert_Is 'Index'
+      data.articles.assert_Size_Is size - from
+      data.filters.keys().assert_Size_Is 3
+      data.queries.assert_Size_Is 22
 
-  it 'query_tree_queries', (done)->
-    graphDB.query_tree null, (data)->
-      assert_Is_Null data
-      graphDB.query_tree_queries graphDB.index_Query, (data)->
-        data.id.assert_Is  graphDB.index_Query
-        data.title.assert_Is 'Index'
-        data.containers.assert_Bigger_Than 10
-        assert_Is_Undefined data.filters
-        assert_Is_Undefined data.results
+      done()
 
-        done()
+
   it 'status', (done)->
     graphDB.status  (data)->
       data.assert_Is status: 'ok'
