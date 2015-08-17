@@ -333,202 +333,6 @@
 }).call(this);
 
 (function() {
-  var Map_Directives,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  Map_Directives = (function() {
-    function Map_Directives(options) {
-      this.map_All = bind(this.map_All, this);
-      this.map_Components = bind(this.map_Components, this);
-      this.app = options.app;
-      this.design_Components = ['all_icons', 'events'];
-      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
-      this.navigation_Components = ['landing_bar', 'left_navigation'];
-      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
-      this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
-    }
-
-    Map_Directives.prototype.resolve_Directive_Name = function(name) {
-      var directive_Name, i, index, len, ref, segment;
-      directive_Name = "";
-      ref = name.split('_');
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        segment = ref[index];
-        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-      }
-      return directive_Name;
-    };
-
-    Map_Directives.prototype.map_Components = function(path, components) {
-      var component, i, len, results;
-      results = [];
-      for (i = 0, len = components.length; i < len; i++) {
-        component = components[i];
-        results.push((function(_this) {
-          return function(component) {
-            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
-              return {
-                templateUrl: "/angular/jade-html/component" + path + "/" + component
-              };
-            });
-          };
-        })(this)(component));
-      }
-      return results;
-    };
-
-    Map_Directives.prototype.map_All = function() {
-      this.map_Components('', this.root_Components);
-      this.map_Components('/design', this.design_Components);
-      this.map_Components('/guest', this.guest_Components);
-      this.map_Components('/navigation', this.navigation_Components);
-      return this.map_Components('/user', this.user_Components);
-    };
-
-    return Map_Directives;
-
-  })();
-
-  String.prototype.upper_Case_First_Letter = function() {
-    return this.charAt(0).toUpperCase() + this.substr(1);
-  };
-
-  new Map_Directives({
-    app: angular.module('TM_App')
-  }).map_All();
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('icon', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        if (attribute["class"]) {
-          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
-        }
-        if (attribute.type) {
-          return icon_Service.element_Html(attribute.type);
-        }
-        return icon_Service.element_Html('Default');
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showAllIcons', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        var all_Icons_Html, i, key, len, ref;
-        all_Icons_Html = "";
-        ref = icon_Service.mappings.keys();
-        for (i = 0, len = ref.length; i < len; i++) {
-          key = ref[i];
-          all_Icons_Html += icon_Service.element_Html(key);
-          if (attribute.$attr.withTitles) {
-            all_Icons_Html += " " + key + " <br/>";
-          }
-        }
-        return all_Icons_Html;
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showComponent', function($compile, $location) {
-    return {
-      link: function($scope, element) {
-        var component, component_Name;
-        if ($location.$$path && $location.$$path !== '/') {
-          component_Name = $location.$$path.substring(1);
-          if (component_Name !== '') {
-            component = document.createElement(component_Name);
-            return element.replaceWith($compile(component)($scope));
-          }
-        }
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        controller: 'Article_Controller',
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    return $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-  });
-
-}).call(this);
-
-(function() {
   var Icon_Service, mappings,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -1015,8 +819,197 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
+    }
+    return results;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        controller: 'Article_Controller',
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    return $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var Map_Directives,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Map_Directives = (function() {
+    function Map_Directives(options) {
+      this.map_All = bind(this.map_All, this);
+      this.map_Components = bind(this.map_Components, this);
+      this.app = options.app;
+      this.design_Components = ['all_icons', 'events'];
+      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
+      this.navigation_Components = ['landing_bar', 'left_navigation'];
+      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
+      this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
+    }
+
+    Map_Directives.prototype.resolve_Directive_Name = function(name) {
+      var directive_Name, i, index, len, ref, segment;
+      directive_Name = "";
+      ref = name.split('_');
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        segment = ref[index];
+        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+      }
+      return directive_Name;
+    };
+
+    Map_Directives.prototype.map_Components = function(path, components) {
+      var component, i, len, results;
+      results = [];
+      for (i = 0, len = components.length; i < len; i++) {
+        component = components[i];
+        results.push((function(_this) {
+          return function(component) {
+            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
+              return {
+                templateUrl: "/angular/jade-html/component" + path + "/" + component
+              };
+            });
+          };
+        })(this)(component));
+      }
+      return results;
+    };
+
+    Map_Directives.prototype.map_All = function() {
+      this.map_Components('', this.root_Components);
+      this.map_Components('/design', this.design_Components);
+      this.map_Components('/guest', this.guest_Components);
+      this.map_Components('/navigation', this.navigation_Components);
+      return this.map_Components('/user', this.user_Components);
+    };
+
+    return Map_Directives;
+
+  })();
+
+  String.prototype.upper_Case_First_Letter = function() {
+    return this.charAt(0).toUpperCase() + this.substr(1);
+  };
+
+  new Map_Directives({
+    app: angular.module('TM_App')
+  }).map_All();
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('icon', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        if (attribute["class"]) {
+          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
+        }
+        if (attribute.type) {
+          return icon_Service.element_Html(attribute.type);
+        }
+        return icon_Service.element_Html('Default');
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showAllIcons', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var all_Icons_Html, i, key, len, ref;
+        all_Icons_Html = "";
+        ref = icon_Service.mappings.keys();
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          all_Icons_Html += icon_Service.element_Html(key);
+          if (attribute.$attr.withTitles) {
+            all_Icons_Html += " " + key + " <br/>";
+          }
+        }
+        return all_Icons_Html;
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        if ($location.$$path && $location.$$path !== '/') {
+          component_Name = $location.$$path.substring(1);
+          if (component_Name !== '') {
+            component = document.createElement(component_Name);
+            return element.replaceWith($compile(component)($scope));
+          }
+        }
+      }
+    };
   });
 
 }).call(this);
@@ -1090,6 +1083,13 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -1598,8 +1598,10 @@
 (function() {
   angular.module('TM_App').controller('Search_Controller', function($sce, $scope, TM_API) {
     return TM_API.popular_Search(function(search) {
+      var baseUrl;
+      baseUrl = "/angular/user/index?text=";
       angular.forEach(search, function(searchItem) {
-        return searchItem.url = '/search?text=' + searchItem.title;
+        return searchItem.url = baseUrl + searchItem.title;
       });
       return $scope.top_Search = search;
     });
