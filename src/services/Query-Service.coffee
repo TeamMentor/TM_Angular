@@ -17,6 +17,7 @@ class Query_Service
     to   = to || @.default_Page_To
     @.TM_API.query_view_model query_Id, filters, from, to, (data)=>
       @.$rootScope.$broadcast 'view_model_data', data
+
   reload_Data: ()=>
     @.$rootScope.$broadcast 'clear_filters'
     @.$rootScope.$broadcast 'clear_query'

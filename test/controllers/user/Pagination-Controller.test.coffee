@@ -62,13 +62,11 @@ describe '| controllers | user | Pagination-Controller.test',->
 
 
   it 'set_Page', ->
-    inject ($httpBackend, $timeout)->
-      $httpBackend.expectGET('/api/data/query_view_model/null/1763/1806').respond {}
+    inject ($httpBackend)->
       using scope,->
         scope.$on 'set_page', (event, page)->
           page.assert_Is 42
         @.set_Page()
-        $timeout.flush()
 
   it 'set_Page_Split', ->
     using scope,->

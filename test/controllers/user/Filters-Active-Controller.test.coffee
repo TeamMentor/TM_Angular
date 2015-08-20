@@ -10,25 +10,35 @@ describe '| controllers | user | Filters-Active-Controller.test',->
       scope = $rootScope.$new()
       $controller('Filters_Active_Controller', { $scope: scope })
 
+  afterEach ->
+    inject ($httpBackend)->
+      $httpBackend.verifyNoOutstandingExpectation()
+      $httpBackend.verifyNoOutstandingRequest()
+
   it 'constructor', ()->
     using scope, ->
       expect(@.current_Filters  ).to.deep.equal {}
       expect(@.current_Query_Id ).to     .equal null
 
-      @.$$listeners.keys().size().assert_Is 5
+      @.$$listeners.keys().size().assert_Is 6
       expect(@.$$listeners['apply_filter'   ][0]).to.be.an('function')
       expect(@.$$listeners['apply_query'    ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filter'   ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filters'  ][0]).to.be.an('function')
       expect(@.$$listeners['view_model_data'][0]).to.be.an('function')
+      expect(@.$$listeners['set_page'       ][0]).to.be.an('function')
 
       expect(@.refresh_Filters).to.be.an('function')
       expect(@.clear_Filter   ).to.be.an('function')
 
   it '$on apply_Filter', ->
-    using scope, ->
-      @.$broadcast 'apply_filter', 'an id', 'an title'
-      @.current_Filters.assert_Is 'an id' : 'an title'
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/api/data/query_view_model_filtered/null/an_id/0/10'      ).respond {}
+      using scope, ->
+        @.$broadcast 'apply_filter', 'an_id', 'an title'
+        @.current_Filters.assert_Is 'an_id' : 'an title'
+        $httpBackend.flush()
+
 
   it '$on query_data', ->
     using scope, ->
@@ -38,42 +48,61 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
 
   it '$on apply_query', ->
-    using scope, ->
-      @.$broadcast 'apply_query', 'an id'
-      @.current_Query_Id.assert_Is 'an id'
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/api/data/query_view_model/an_id/0/10'      ).respond { id: 'abc-id'}
+      using scope, ->
+        @.$broadcast 'apply_query', 'an_id'
+        @.current_Query_Id.assert_Is 'an_id'
+        $httpBackend.flush()
 
-  it 'refresh_Filters (no current filters)', ()-> 
+  it '$on set_page',->
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/api/data/query_view_model/null/11/22'      ).respond { id: 'abc-id'}
+
+      using scope, ->
+        @.$broadcast 'set_page', 2, 11, 22
+        $httpBackend.flush()
+        @.current_Query_Id.assert_Is 'abc-id'
+
+
+  it 'refresh_Filters (no current filters)', ()->
     inject ($httpBackend)->
       $httpBackend.expectGET('/api/data/query_view_model/an-id/0/10'      ).respond {}
       using scope, ->
         @.current_Query_Id = 'an-id'
         @.refresh_Filters()
-        @.$digest()
+        $httpBackend.flush()
+
 
 
   it 'refresh_Filters (with current filters)', ()->
     inject ($httpBackend)->
-      inject ($httpBackend)->
       $httpBackend.expectGET('/api/data/query_view_model_filtered/an-id/aaa,bbb/0/10'      ).respond {}
       using scope, ->
         @.current_Query_Id = 'an-id'
         @.current_Filters = aaa: 'a', 'bbb' : 'b'
         @.refresh_Filters()
-        @.$digest()
+        $httpBackend.flush()
 
   it 'clear_Filter', ->
-    using scope, ->
-      @.current_Filters = aaa: 'a', 'bbb' : 'b'
-      @.clear_Filter 'aaa'
-      @.current_Filters.assert_Is bbb: 'b'
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/api/data/query_view_model_filtered/null/bbb/0/10'      ).respond {}
+      using scope, ->
+        @.current_Filters = aaa: 'a', 'bbb' : 'b'
+        @.clear_Filter 'aaa'
+        $httpBackend.flush()
+        @.current_Filters.assert_Is bbb: 'b'
 
   it 'Check that apply_Filter and clear_Filters broadcasts are correctly received',  ->
-    using scope, ->
-      @.$broadcast 'clear_filters'
-      @.current_Filters.assert_Is {}
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/api/data/query_view_model_filtered/null/id/0/10'      ).respond {}
+      using scope, ->
+        @.$broadcast 'clear_filters'
+        @.current_Filters.assert_Is {}
 
-      @.$broadcast 'apply_filter', 'id', 'title'
-      @.current_Filters['id'].assert_Is 'title'
+        @.$broadcast 'apply_filter', 'id', 'title'
+        @.current_Filters['id'].assert_Is 'title'
 
-      @.$broadcast 'clear_filters'
-      @.current_Filters.assert_Is {}
+        @.$broadcast 'clear_filters'
+        @.current_Filters.assert_Is {}
+        $httpBackend.flush()

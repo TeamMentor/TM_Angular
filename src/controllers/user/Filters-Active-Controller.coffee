@@ -24,13 +24,18 @@ angular.module('TM_App')
             $scope.current_Query_Id = query_Id
             $scope.refresh_Filters()
 
-          $scope.refresh_Filters = ()->
+
+          $scope.$on 'set_page', (event, page, from, to)->
+            $scope.refresh_Filters(from, to)
+
+
+          $scope.refresh_Filters = (from, to)->
             query_Id = $scope.current_Query_Id
             filters =  $scope.current_Filters.keys().join(',')
             if filters is ''
-              query_Service.load_Query query_Id
+              query_Service.load_Query query_Id, null   , from, to
             else
-              query_Service.load_Query query_Id, filters
+              query_Service.load_Query query_Id, filters, from, to
 
           $scope.clear_Filter = (filter_Id)->
             $rootScope.$broadcast 'clear_filter', filter_Id

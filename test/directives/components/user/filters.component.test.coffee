@@ -5,9 +5,11 @@ describe '| directives | component | filters', ->
   element     = null
   element_Raw = null
   scope       = null
-  #query_Tree_Url  = '/api/data/query_tree_queries/query-6234f2d47eb7'
+
   query_Tree_Filters_Data =
-    filters: [ { results: [ { title: 'title', id: 'id' , size: 42}]}]
+
+    filters:  { 'Technology': [ { title: 'title', id: 'id' , size: 42 } ] }
+
   beforeEach ()->
     module('TM_App')
 
@@ -24,18 +26,18 @@ describe '| directives | component | filters', ->
         @('div'          ).$attr().assert_Is 'ng-controller': 'Filters_Controller'  , class: 'ng-scope'
         @('.section'     ).$attr().assert_Is 'ng-show'      : 'view_Filters'        , class: 'section row ng-hide'
 
-  it 'controller | $on filter_data',->
+  it 'controller | $on view_model_data',->
     using scope, ->
       @.$broadcast 'view_model_data', query_Tree_Filters_Data
       @.$digest()
 
     inject ($$)->
       using $$(element).$query,->
-        @('#filters'     ).$attr().assert_Is 'ng-repeat'    : 'filter in filters'   , class: 'ng-scope'   , id: 'filters', 'ng-hide' : 'hide_Metadata[filter.title]'
-        @('#results'     ).$attr().assert_Is                                                                id: 'results'
-        @('#results div' ).$attr().assert_Is 'ng-repeat'    : 'result in filter.results', class: 'ng-scope'
+        @('.filters'     ).$attr().assert_Is 'ng-repeat'    : '(title,filter) in filters'   , class: 'filters ng-scope'
+        @('#results'     ).$attr().assert_Is id: 'results'
+        @('#results div' ).$attr().assert_Is 'ng-repeat'    : 'result in filter', class: 'ng-scope'
         @('#results dd'  ).$attr().assert_Is 'ng-show'      : 'result.size > 0'
-        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title, filter.title)', href: '#'
+        @('#results dd a').$attr().assert_Is 'ng-click'     : 'apply_Filter(result.id, result.title, title)', href: '#'
         @('#results dd a').$text().assert_Is 'title42'
 
   it 'Check ng-show status on view_Filters broadcast',->
