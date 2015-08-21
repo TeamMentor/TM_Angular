@@ -28,13 +28,13 @@
     $templateCache.put('/angular/jade-html/component/results_delete_share', "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><div class=\"section row__label\"><div class=\"label\">Saved Items</div><ul class=\"display-inline\"><li><a href=\"\" class=\"button btn-result icon-Filter\"></a></li><li><button title=\"Delete results from Collection\" class=\"btn-result icon-Delete\"></button></li><li><button title=\"Share results\" class=\"btn-result icon-Share\"></button></li></ul></div>");
     $templateCache.put('/angular/jade-html/component/search_result', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div>");
     $templateCache.put('/angular/jade-html/component/start_view', "<div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Popular Search Terms</div></div><div class=\"section row\"><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div class=\"article search-term\"><a href=\"app-keyword-search\"><span title=\"Search\" class=\"icon-Search\"><span class=\"path1\"></span><span class=\"path2\"></span><span class=\"path3\"></span></span><span>Search Term</span></a></div></div></div><div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Recently Viewed Articles</div></div><div class=\"section row\"><article-box></article-box><article-box></article-box><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--></div></div><div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Top Articles</div></div><div class=\"section row\"><article-box></article-box><article-box></article-box><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--><!--include result_article.jade--></div></div>");
-    $templateCache.put('/angular/jade-html/component/user/article', "<!--include ../mixins/icons.jade--><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><div class=\"col-9\"><div class=\"article\"><h1 class=\"article-title\">\{\{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></div><br/><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></div></div><div class=\"col-3\"><div class=\"section article-info\"><div class=\"section row__label\"><div class=\"label\">Relates to:</div></div><div class=\"section row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></div><div class=\"section row fixed-bottom\"><div class=\"alert alert-neutral\"><span class=\"text\">Have a comment about this article? Send our team <a href=\"mailto:support@securityinnovation.com\">an email.</a></span></div></div></div></div>");
+    $templateCache.put('/angular/jade-html/component/user/article', "<!--include ../mixins/icons.jade--><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><div class=\"col-9\"><div class=\"article\"><h1 class=\"article-title\">\{\{article.title}}</h1><div id=\"html\" ng-bind-html=\"article_Html\" class=\"article-content\"></div></div><br/><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></div></div><div class=\"col-3\"><div class=\"section article-info\"><ul class=\"display-inline\"><li><a title=\"Share this article\" href=\"mailto:\" class=\"button btn-result icon-Share\"></a></li></ul><div class=\"section row__label\"><div class=\"label\">Relates to:</div></div><div class=\"section row\"><ul class=\"display-inline\"><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></li></ul></div><div class=\"section row fixed-bottom\"><div class=\"alert alert-neutral\"><span class=\"text\">Have a comment about this article? Send our team <a href=\"mailto:support@securityinnovation.com\">an email.</a></span></div></div></div></div>");
     $templateCache.put('/angular/jade-html/component/user/article_box', "<div ng-controller=\"Article_Box_Controller\" class=\"result\"><div class=\"metadata\"><ul><li><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></li><li><div id=\"icon-technology\" ng-bind-html=\"icon_Type\"></div></li><li><div id=\"icon-technology\" ng-bind-html=\"icon_Phase\"></div></li></ul></div><div class=\"summary\"><a ng-href=\"\{\{article.url}}\" id=\"\{\{article.id}}\"><h4 id=\"article-headline\">\{\{article.title}}</h4></a><p>\{\{article.summary}} ...</p></div></div>");
     $templateCache.put('/angular/jade-html/component/user/articles', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Articles_Controller\"><div class=\"section row\"><article-box ng-repeat=\"article in articles\" class=\"article-box\"></article-box></div></div>");
     $templateCache.put('/angular/jade-html/component/user/breadcrumbs', "<div ng-controller=\"Breadcrumbs_Controller\"><dl ng-show=\"breadcrumbs\" class=\"breadcrumbs\"><dd ng-repeat=\"breadcrumb in breadcrumbs\" class=\"active\"><a ng-href=\"#\" ng-click=\"load_Query(breadcrumb)\">\{\{breadcrumb.title}}</a></dd></dl></div>");
-    $templateCache.put('/angular/jade-html/component/user/filters', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><div ng-show=\"view_Filters\" class=\"section row\"><dl><div id=\"filters\" ng-repeat=\"filter in filters\" ng-hide=\"hide_Metadata[filter.title]\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{filter.title}}</span></div></dt><div id=\"results\"><div ng-repeat=\"result in filter.results\"><dd ng-show=\"result.size &gt; 0\"><a href=\"#\" ng-click=\"apply_Filter(result.id, result.title, filter.title)\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></a></dd></div></div></div></dl></div></div>");
+    $templateCache.put('/angular/jade-html/component/user/filters', "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><div ng-controller=\"Filters_Controller\"><div ng-show=\"view_Filters\" class=\"section row\"><dl><!--#filters(ng-repeat ='filter in filters' ng-hide='hide_Metadata[filter.title]')--><div ng-repeat=\"(title,filter) in filters\" class=\"filters\"><dt><div class=\"label no-underline\"><icon class=\"Filter\"></icon><span class=\"text\"> \{\{title}}</span></div></dt><div id=\"results\"><div ng-repeat=\"result in filter\"><dd ng-show=\"result.size &gt; 0\"><a href=\"#\" ng-click=\"apply_Filter(result.id, result.title, title)\"><span><span id=\"filter-icon\" ng-bind-html=\"result.icon\"></span><span class=\"text\">\{\{result.title}}</span></span><span class=\"badge\">\{\{result.size}}</span></a></dd></div></div></div></dl></div></div>");
     $templateCache.put('/angular/jade-html/component/user/filters_active', "<div ng-controller=\"Filters_Active_Controller\" class=\"section row\"><div ng-repeat=\"(key, value) in current_Filters\" class=\"active-filter\"><ul class=\"display-inline\"><li><span class=\"icon-Design\"><span class=\"path1\"></span><span class=\"path2\"></span></span></li><li><span class=\"text\">\{\{value}}</span></li><li><span class=\"close\"><a href=\"#\" ng-click=\"clear_Filter(key)\"><span class=\"icon-Close\"><span class=\"path1\"></span></span></a></span></li></ul></div></div>");
-    $templateCache.put('/angular/jade-html/component/user/pagination', "<span ng-controller=\"Pagination_Controller\"><div ng-show=\"model.pages\" class=\"section row\"><div class=\"pagination\"><div class=\"previous\"><a href=\"#\" ng-click=\"previous_Page()\"><span class=\"icon-Arrow-Left\"></span><span class=\"text\">back</span></a></div><div id=\"current_Page\" class=\"number\"><select ng-model=\"model.page\" ng-change=\"set_Page()\" ng-options=\"page for page in model.pages\"></select></div><div class=\"next\"><a href=\"#\" ng-click=\"next_Page()\"><span class=\"icon-Arrow-Right\"></span><span class=\"text\">next</span></a></div></div><div id=\"page_Splits\" class=\"number-of-results\"><form><input type=\"radio\" name=\"results-per-page\" id=\"four\"/><label for=\"four\">4</label><input type=\"radio\" name=\"results-per-page\" id=\"ten\"/><label for=\"ten\">10</label><input type=\"radio\" name=\"results-per-page\" id=\"twenty\"/><label for=\"twenty\">20</label></form><!--select(ng-model='model.page_Split', ng-change='set_Page_Split()', ng-options='page_Split for page_Split in model.page_Splits')--></div></div></span>");
+    $templateCache.put('/angular/jade-html/component/user/pagination', "<span ng-controller=\"Pagination_Controller\"><div ng-show=\"model.pages\" class=\"section row\"><div class=\"pagination\"><div class=\"previous\"><a href=\"#\" ng-click=\"previous_Page()\"><span class=\"icon-Arrow-Left\"></span><span class=\"text\">back</span></a></div><div id=\"current_Page\" class=\"number\"><select ng-model=\"model.page\" ng-change=\"set_Page()\" ng-options=\"page for page in model.pages\"></select></div><div class=\"next\"><a href=\"#\" ng-click=\"next_Page()\"><span class=\"icon-Arrow-Right\"></span><span class=\"text\">next</span></a></div></div><div id=\"page_Splits\" class=\"number-of-results\"><form><input type=\"radio\" name=\"results-per-page\" id=\"four\"/><label for=\"four\">4</label><input type=\"radio\" name=\"results-per-page\" id=\"ten\"/><label for=\"ten\">10</label><input type=\"radio\" name=\"results-per-page\" id=\"twenty\"/><label for=\"twenty\">20</label></form><ul><li><span class=\"text\">results per page</span></li></ul><!--select(ng-model='model.page_Split', ng-change='set_Page_Split()', ng-options='page_Split for page_Split in model.page_Splits')--></div></div></span>");
     $templateCache.put('/angular/jade-html/component/user/queries', "<!--include ../../mixins/icons.jade--><div ng-controller=\"Queries_Controller\"><dl><dt><span id=\"query_title\" class=\"label no-underline\">\{\{title}}</span><span class=\"sub-nav__icon\"><!--a(ng-click=\"show_Previous_Query()\")+back-icon --></span></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><!--if container.size > 0--><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>");
     $templateCache.put('/angular/jade-html/component/user/queries_history', "<div ng-controller=\"Queries_History_Controller\"><nav><ul class=\"display-inline\"><li ng-repeat=\"(key, value) in history\"><a ng-href=\"#\" ng-click=\"load_Query(key)\">\{\{value}}</a></li></ul></nav></div>");
     $templateCache.put('/angular/jade-html/component/user/results', "<div ng-controller=\"Results_Controller\"><section ng-hide=\"results_Size\" class=\"row__label\"><div id=\"noResultsTitle\" class=\"label\">Query has no results</div></section><section ng-show=\"results_Size\" class=\"row__label\"><div id=\"resultsTitle\" class=\"label\">Query has \{\{results_Size}} articles , Page #\{\{current_Page}} (\{\{current_Page_Split}} articles per page)</div><ul class=\"display-inline text-right\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result icon-Filter\"></a></li></ul></section></div>");
@@ -333,6 +333,206 @@
 }).call(this);
 
 (function() {
+  var Map_Directives,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Map_Directives = (function() {
+    function Map_Directives(options) {
+      this.map_All = bind(this.map_All, this);
+      this.map_Components = bind(this.map_Components, this);
+      this.app = options.app;
+      this.design_Components = ['all_icons', 'events'];
+      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
+      this.navigation_Components = ['landing_bar', 'left_navigation'];
+      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
+      this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
+    }
+
+    Map_Directives.prototype.resolve_Directive_Name = function(name) {
+      var directive_Name, i, index, len, ref, segment;
+      directive_Name = "";
+      ref = name.split('_');
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        segment = ref[index];
+        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+      }
+      return directive_Name;
+    };
+
+    Map_Directives.prototype.map_Components = function(path, components) {
+      var component, i, len, results;
+      results = [];
+      for (i = 0, len = components.length; i < len; i++) {
+        component = components[i];
+        results.push((function(_this) {
+          return function(component) {
+            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
+              return {
+                templateUrl: "/angular/jade-html/component" + path + "/" + component
+              };
+            });
+          };
+        })(this)(component));
+      }
+      return results;
+    };
+
+    Map_Directives.prototype.map_All = function() {
+      this.map_Components('', this.root_Components);
+      this.map_Components('/design', this.design_Components);
+      this.map_Components('/guest', this.guest_Components);
+      this.map_Components('/navigation', this.navigation_Components);
+      return this.map_Components('/user', this.user_Components);
+    };
+
+    return Map_Directives;
+
+  })();
+
+  String.prototype.upper_Case_First_Letter = function() {
+    return this.charAt(0).toUpperCase() + this.substr(1);
+  };
+
+  new Map_Directives({
+    app: angular.module('TM_App')
+  }).map_All();
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('icon', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        if (attribute["class"]) {
+          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
+        }
+        if (attribute.type) {
+          return icon_Service.element_Html(attribute.type);
+        }
+        return icon_Service.element_Html('Default');
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showAllIcons', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var all_Icons_Html, i, key, len, ref;
+        all_Icons_Html = "";
+        ref = icon_Service.mappings.keys();
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          all_Icons_Html += icon_Service.element_Html(key);
+          if (attribute.$attr.withTitles) {
+            all_Icons_Html += " " + key + " <br/>";
+          }
+        }
+        return all_Icons_Html;
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        if ($location.$$path && $location.$$path !== '/') {
+          component_Name = $location.$$path.substring(1);
+          if (component_Name !== '') {
+            component = document.createElement(component_Name);
+            return element.replaceWith($compile(component)($scope));
+          }
+        }
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
+    }
+    return results;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        controller: 'Article_Controller',
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    return $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+}).call(this);
+
+(function() {
   var Icon_Service, mappings,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -521,7 +721,7 @@
     Query_Service.prototype.load_Query = function(query_Id, filters, from, to) {
       from = from || this.default_Page_From;
       to = to || this.default_Page_To;
-      return this.TM_API.query_view_model(query_Id, filters, this.default_Page_From, this.default_Page_To, (function(_this) {
+      return this.TM_API.query_view_model(query_Id, filters, from, to, (function(_this) {
         return function(data) {
           return _this.$rootScope.$broadcast('view_model_data', data);
         };
@@ -819,197 +1019,8 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        controller: 'Article_Controller',
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    return $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-  });
-
-}).call(this);
-
-(function() {
-  var Map_Directives,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  Map_Directives = (function() {
-    function Map_Directives(options) {
-      this.map_All = bind(this.map_All, this);
-      this.map_Components = bind(this.map_Components, this);
-      this.app = options.app;
-      this.design_Components = ['all_icons', 'events'];
-      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
-      this.navigation_Components = ['landing_bar', 'left_navigation'];
-      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
-      this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
-    }
-
-    Map_Directives.prototype.resolve_Directive_Name = function(name) {
-      var directive_Name, i, index, len, ref, segment;
-      directive_Name = "";
-      ref = name.split('_');
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        segment = ref[index];
-        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-      }
-      return directive_Name;
-    };
-
-    Map_Directives.prototype.map_Components = function(path, components) {
-      var component, i, len, results;
-      results = [];
-      for (i = 0, len = components.length; i < len; i++) {
-        component = components[i];
-        results.push((function(_this) {
-          return function(component) {
-            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
-              return {
-                templateUrl: "/angular/jade-html/component" + path + "/" + component
-              };
-            });
-          };
-        })(this)(component));
-      }
-      return results;
-    };
-
-    Map_Directives.prototype.map_All = function() {
-      this.map_Components('', this.root_Components);
-      this.map_Components('/design', this.design_Components);
-      this.map_Components('/guest', this.guest_Components);
-      this.map_Components('/navigation', this.navigation_Components);
-      return this.map_Components('/user', this.user_Components);
-    };
-
-    return Map_Directives;
-
-  })();
-
-  String.prototype.upper_Case_First_Letter = function() {
-    return this.charAt(0).toUpperCase() + this.substr(1);
-  };
-
-  new Map_Directives({
-    app: angular.module('TM_App')
-  }).map_All();
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('icon', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        if (attribute["class"]) {
-          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
-        }
-        if (attribute.type) {
-          return icon_Service.element_Html(attribute.type);
-        }
-        return icon_Service.element_Html('Default');
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showAllIcons', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        var all_Icons_Html, i, key, len, ref;
-        all_Icons_Html = "";
-        ref = icon_Service.mappings.keys();
-        for (i = 0, len = ref.length; i < len; i++) {
-          key = ref[i];
-          all_Icons_Html += icon_Service.element_Html(key);
-          if (attribute.$attr.withTitles) {
-            all_Icons_Html += " " + key + " <br/>";
-          }
-        }
-        return all_Icons_Html;
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showComponent', function($compile, $location) {
-    return {
-      link: function($scope, element) {
-        var component, component_Name;
-        if ($location.$$path && $location.$$path !== '/') {
-          component_Name = $location.$$path.substring(1);
-          if (component_Name !== '') {
-            component = document.createElement(component_Name);
-            return element.replaceWith($compile(component)($scope));
-          }
-        }
-      }
-    };
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -1088,13 +1099,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, icon_Service) {
     return using($scope, function() {
       var ref, ref1, ref2;
@@ -1164,15 +1168,17 @@
       }
     });
     $scope.$on('view_model_data', function(event, data) {
-      var article, articles, i, id, len, title;
+      var article, articles, i, id, len, ref, ref1, title;
       articles = [];
       if (data != null ? data.articles : void 0) {
         articles = data.articles;
         for (i = 0, len = articles.length; i < len; i++) {
           article = articles[i];
-          id = article.id.remove('article-');
-          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-          article.url = '/angular/user/article/' + id + '/' + title;
+          if (article) {
+            id = (ref = article.id) != null ? ref.remove('article-') : void 0;
+            title = (ref1 = article.title) != null ? ref1.replace(new RegExp(' ', 'g'), '-').remove('.') : void 0;
+            article.url = '/angular/user/article/' + id + '/' + title;
+          }
         }
       }
       return $scope.articles = articles;
@@ -1273,14 +1279,17 @@
       $scope.current_Query_Id = query_Id;
       return $scope.refresh_Filters();
     });
-    $scope.refresh_Filters = function() {
+    $scope.$on('set_page', function(event, page, from, to) {
+      return $scope.refresh_Filters(from, to);
+    });
+    $scope.refresh_Filters = function(from, to) {
       var filters, query_Id;
       query_Id = $scope.current_Query_Id;
       filters = $scope.current_Filters.keys().join(',');
       if (filters === '') {
-        return query_Service.load_Query(query_Id);
+        return query_Service.load_Query(query_Id, null, from, to);
       } else {
-        return query_Service.load_Query(query_Id, filters);
+        return query_Service.load_Query(query_Id, filters, from, to);
       }
     };
     return $scope.clear_Filter = function(filter_Id) {
@@ -1297,19 +1306,18 @@
     $scope.current_Filters = {};
     $scope.hide_Metadata = {};
     $scope.$on('view_model_data', function(event, data) {
-      var filter, i, len, ref, result, results;
+      var key, ref, result, results, value;
       if (data != null ? data.filters : void 0) {
         $scope.filters = data.filters;
         ref = $scope.filters;
         results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          filter = ref[i];
+        for (key in ref) {
+          value = ref[key];
           results.push((function() {
-            var j, len1, ref1, results1;
-            ref1 = filter.results;
+            var i, len, results1;
             results1 = [];
-            for (j = 0, len1 = ref1.length; j < len1; j++) {
-              result = ref1[j];
+            for (i = 0, len = value.length; i < len; i++) {
+              result = value[i];
               results1.push(result.icon = $sce.trustAsHtml(icon_Service.element_Html(result.title)));
             }
             return results1;
@@ -1356,7 +1364,7 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Index_Controller', function($scope, query_Service) {
+  angular.module('TM_App').controller('Index_Controller', function($scope, query_Service, $stateParams, $location, $rootScope, $timeout) {
     return using($scope, function() {
       this.history = {};
       this.view_Filters = false;
@@ -1375,7 +1383,11 @@
           }
         };
       })(this));
-      return query_Service.reload_Data();
+      if ($stateParams.query_Id) {
+        return query_Service.load_Query($stateParams.query_Id);
+      } else {
+        return query_Service.reload_Data();
+      }
     });
   });
 
@@ -1384,7 +1396,7 @@
 (function() {
   var modulo = function(a, b) { return (+a % (b = +b) + b) % b; };
 
-  angular.module('TM_App').controller('Pagination_Controller', function($scope, $rootScope, query_Service, $timeout) {
+  angular.module('TM_App').controller('Pagination_Controller', function($scope, $rootScope) {
     var model;
     model = {
       page: 1,
@@ -1416,14 +1428,11 @@
       }
     });
     $scope.set_Page = function() {
+      var from, to;
       if (model.page) {
-        $rootScope.$broadcast('set_page', model.page);
-        return $timeout(function() {
-          var from, to;
-          from = (model.page - 1) * model.page_Split;
-          to = model.page * model.page_Split;
-          return query_Service.load_Query($scope.query_Id, null, from, to);
-        });
+        from = (model.page - 1) * model.page_Split;
+        to = model.page * model.page_Split;
+        return $rootScope.$broadcast('set_page', model.page, from, to);
       }
     };
     $scope.set_Page_Split = function() {
@@ -1455,7 +1464,7 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope) {
+  angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, $location) {
     $scope.$on('view_model_data', function(event, data) {
       $scope.title = data.title;
       return $scope.containers = data.queries;

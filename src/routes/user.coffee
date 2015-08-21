@@ -16,12 +16,17 @@ app.config ($stateProvider, routes_Names) ->
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"
 
 
-  $stateProvider.state 'article'    ,
+  $stateProvider.state 'article',
     url        : "/article/:article_Id/:article_Title"
     controller : 'Article_Controller'
     templateUrl: '/angular/jade-html/views/user/article'
 
   $stateProvider.state 'article-box'    ,
-      url        : "/article-box/:article_Id/:article_Title"
-      controller : 'Article_Controller'
-      templateUrl: '/angular/jade-html/views/user/article_box'
+    url        : "/article-box/:article_Id/:article_Title"
+    controller : 'Article_Controller'
+    templateUrl: '/angular/jade-html/views/user/article_box'
+
+  $stateProvider.state 'index_query_id'    ,
+    url        : "/index/:query_Id"
+    #controller : 'Index_Controller'
+    templateUrl: '/angular/jade-html/views/user/index'

@@ -14,9 +14,10 @@ angular.module('TM_App')
               #$scope.$broadcast 'show_page' , 0
                articles = data.articles
                for article in articles
-                 id    = article.id.remove('article-')
-                 title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
-                 article.url = '/angular/user/article/' + id + '/' + title
+                 if article
+                   id    = article.id?.remove('article-')
+                   title = article.title?.replace(new RegExp(' ','g'),'-').remove('.')
+                   article.url = '/angular/user/article/' + id + '/' + title
             $scope.articles = articles
 
           $scope.$on 'clear_articles', ()->
