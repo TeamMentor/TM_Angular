@@ -32,12 +32,12 @@ describe '| controllers | Filters-Controller.test',->
     scope.$broadcast 'view_model_data'
     scope.filters.assert_Is []
 
-  it '$on filter_data (good data)', ()->
+  it '$on view_model_data (good data)', ()->
     data =
-      filters : [ { results : [ { title: 'Java'  }] } ]
+      filters : { 'Technology' : [ { title: 'Java'  }] }
     scope.$broadcast 'view_model_data', data
     scope.filters.assert_Is data.filters
-    iconValue = scope.filters[0].results[0].icon.$$unwrapTrustedValue()
+    iconValue = scope.filters['Technology'][0].icon.$$unwrapTrustedValue()
     expect(iconValue).to.contain 'icon-Java'
 
   it '$on view_filters',->

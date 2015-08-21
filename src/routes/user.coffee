@@ -1,6 +1,8 @@
 app = angular.module('TM_App')
 
 app.config ($stateProvider, routes_Names) ->
+
+
   for view_Name in routes_Names.views.user_Root
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
@@ -12,7 +14,8 @@ app.config ($stateProvider, routes_Names) ->
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"
 
-  $stateProvider.state 'article'    ,
+
+  $stateProvider.state 'article',
     url        : "/article/:article_Id/:article_Title"
     controller : 'Article_Controller'
     templateUrl: '/angular/jade-html/views/user/article'
@@ -23,14 +26,14 @@ app.config ($stateProvider, routes_Names) ->
     templateUrl: '/angular/jade-html/views/user/article'
 
   $stateProvider.state 'article-box'    ,
-      url        : "/article-box/:article_Id/:article_Title"
-      controller : 'Article_Controller'
-      templateUrl: '/angular/jade-html/views/user/article_box'
+    url        : "/article-box/:article_Id/:article_Title"
+    controller : 'Article_Controller'
+    templateUrl: '/angular/jade-html/views/user/article_box'
 
-  $stateProvider.state 'logout'    ,
-    url        : "/logout"
-    controller : 'Logout_Controller'
-    templateUrl: '/angular/jade-html/views/user/main'
+  $stateProvider.state 'index_query_id'    ,
+    url        : "/index/:query_Id"
+    #controller : 'Index_Controller'
+    templateUrl: '/angular/jade-html/views/user/index'
 
 
 app.run ($rootScope, $location,$window,TM_API) ->
@@ -39,13 +42,8 @@ app.run ($rootScope, $location,$window,TM_API) ->
       if data?.UserEnabled
         return
       else
-          if next.templateUrl == "/angular/jade-html/views/guest/login"
-            return
-          else
-           $window.location.href = '/angular/user/login'
+        if next.templateUrl == "/angular/jade-html/views/guest/login"
+          return
+        else
+          $window.location.href = '/angular/user/login'
     return
-
-app.controller 'AuthController', ($scope,TM_API)->
-  TM_API.currentuser (data) ->
-    if data?.UserEnabled
-      $window.location.href = '/angular/user/login'

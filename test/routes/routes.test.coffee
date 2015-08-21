@@ -1,8 +1,8 @@
-describe '| routes | user.routes' , ->
+describe '| routes | routes' , ->
   beforeEach ->
     module('TM_App')
 
-  it 'check routes (via routes_Names)', ->
+  it 'Check routes (via routes_Names)', ->
     inject ($state,routes_Names,$rootScope, $httpBackend) ->
 
       $httpBackend.expectGET('/angular/jade-html/views/main'         ).respond {}
@@ -21,3 +21,12 @@ describe '| routes | user.routes' , ->
       $httpBackend.flush()
       $httpBackend.verifyNoOutstandingExpectation()
       $httpBackend.verifyNoOutstandingRequest()
+
+  it 'Check GET request via $location.path()', ->
+    inject ($state,$rootScope, $location,$httpBackend) ->
+      $httpBackend.expectGET('/angular/jade-html/views/user/articles').respond {}
+
+      $state.current.assert_Is { name: '', url: '^', views: null, abstract: true }
+      $location.path('articles')
+      $rootScope.$digest()
+
