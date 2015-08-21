@@ -144,60 +144,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
-    $scope.show_Doc = function(article) {
-      if (article) {
-        return TM_API.docs_Page(article.Id, function(article_Data) {
-          $scope.title = article.Title;
-          return $scope.content = $sce.trustAsHtml(article_Data.html);
-        });
-      }
-    };
-    $scope.load_Library = function() {
-      return TM_API.docs_Library(function(library) {
-        var ref, ref1, ref2;
-        if (library != null ? library.Views : void 0) {
-          $scope.Views = library.Views;
-          return $scope.show_Doc((ref = library.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? ref2.first() : void 0 : void 0 : void 0);
-        }
-      });
-    };
-    return $scope.load_Library();
-  });
-
-}).call(this);
-
-(function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['main', 'docs', 'terms_and_conditions'],
-      user_User: ['index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
-
-}).call(this);
-
-(function() {
   var expect,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     hasProp = {}.hasOwnProperty;
@@ -333,6 +279,60 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up', 'logout'],
+      user_Root: ['main', 'docs', 'terms_and_conditions'],
+      user_User: ['index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    $scope.show_Doc = function(article) {
+      if (article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      }
+    };
+    $scope.load_Library = function() {
+      return TM_API.docs_Library(function(library) {
+        var ref, ref1, ref2;
+        if (library != null ? library.Views : void 0) {
+          $scope.Views = library.Views;
+          return $scope.show_Doc((ref = library.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? ref2.first() : void 0 : void 0 : void 0);
+        }
+      });
+    };
+    return $scope.load_Library();
+  });
+
+}).call(this);
+
+(function() {
   var Map_Directives,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -456,81 +456,107 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.login = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...logging in ...";
-      return TM_API.login($scope.username, $scope.password, (function(_this) {
-        return function(data) {
-          var ref;
-          if (data.result === 'OK') {
-            $scope.infoMessage = 'Login OK';
-            return $timeout(function() {
-              return $window.location.href = '/angular/user/main';
-            });
-          } else {
-            $scope.infoMessage = null;
-            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
-          }
-        };
-      })(this));
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
+    }
+    return results;
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.get_Password = function() {
-      $scope.infoMessage = "...sending request ...";
-      return TM_API.pwd_reset($scope.email, function(data) {
-        return $scope.infoMessage = data != null ? data.message : void 0;
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
       });
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleId', {
+      url: "/:article_Id",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      controller: 'Article_Controller',
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    return $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller',
+      templateUrl: '/angular/jade-html/views/user/main'
+    });
   });
 
-}).call(this);
+  app.run(function($rootScope, $location, $window, TM_API) {
+    return $rootScope.$on('$stateChangeStart', function(event, next, current) {
+      TM_API.currentuser(function(data) {
+        if (data != null ? data.UserEnabled : void 0) {
 
-(function() {
-  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.signup = function() {
-      $scope.errorMessage = null;
-      $scope.infoMessage = "...Signing  up ...";
-      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
-        var ref;
-        if ((data != null ? data.result : void 0) === 'OK') {
-          $scope.infoMessage = 'Signup OK';
-          return $timeout(function() {
-            return $window.location.href = '/angular/user/main';
-          });
         } else {
-          $scope.infoMessage = null;
-          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
+          if (next.templateUrl === "/angular/jade-html/views/guest/login") {
+
+          } else {
+            return $window.location.href = '/angular/user/login';
+          }
         }
       });
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+    });
+  });
+
+  app.controller('AuthController', function($scope, TM_API) {
+    return TM_API.currentuser(function(data) {
+      if (data != null ? data.UserEnabled : void 0) {
+        return $window.location.href = '/angular/user/login';
+      }
+    });
   });
 
 }).call(this);
@@ -760,7 +786,9 @@
   TM_API = (function() {
     function TM_API(q, http, timeout) {
       this.pwd_reset = bind(this.pwd_reset, this);
+      this.currentuser = bind(this.currentuser, this);
       this.signup = bind(this.signup, this);
+      this.logout = bind(this.logout, this);
       this.login = bind(this.login, this);
       this.article = bind(this.article, this);
       this.docs_Page = bind(this.docs_Page, this);
@@ -899,6 +927,13 @@
       return this.$http.post(url, postData).success(callback);
     };
 
+    TM_API.prototype.logout = function() {
+      var postData, url;
+      url = "/json/user/login";
+      postData = {};
+      return this.$http.post(url, postData).success(callback);
+    };
+
     TM_API.prototype.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
       var postData, url;
       url = "/json/user/signup";
@@ -915,6 +950,16 @@
         state: state
       };
       return this.$http.post(url, postData).success(callback);
+    };
+
+    TM_API.prototype.currentuser = function(callback) {
+      var url;
+      url = "/json/user/currentuser";
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
     };
 
     TM_API.prototype.pwd_reset = function(email, callback) {
@@ -988,73 +1033,82 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
+    $scope.login = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...logging in ...";
+      return TM_API.login($scope.username, $scope.password, (function(_this) {
+        return function(data) {
+          var ref;
+          if (data.result === 'OK') {
+            $scope.infoMessage = 'Login OK';
+            $rootScope.loggedInUser = true;
+            return $timeout(function() {
+              return $window.location.href = '/angular/user/main';
+            });
+          } else {
+            $scope.infoMessage = null;
+            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+          }
+        };
+      })(this));
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.infoMessage = "...sending request ...";
+      return TM_API.pwd_reset($scope.email, function(data) {
+        return $scope.infoMessage = data != null ? data.message : void 0;
       });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.infoMessage = "...Signing  up ...";
+      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref;
+        if ((data != null ? data.result : void 0) === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return $window.location.href = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          return $scope.errorMessage = (data != null ? (ref = data.viewModel) != null ? ref.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
+        }
       });
-    }
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    return $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);
@@ -1072,17 +1126,24 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    return TM_API.article($stateParams.article_Id, function(article) {
-      var id, title;
-      id = article.id.remove('article-');
-      title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-      article.url = '/angular/user/article/' + id + '/' + title;
-      $scope.article = article;
-      $scope.article_Html = $sce.trustAsHtml(article.article_Html);
-      $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-      $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-      return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service, $window) {
+    return TM_API.currentuser(function(data) {
+      if (data != null ? data.UserEnabled : void 0) {
+        return TM_API.article($stateParams.article_Id, function(article) {
+          var id, title;
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+          $scope.article = article;
+          $scope.article_Html = $sce.trustAsHtml(article.article_Html);
+          $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+          $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+          return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+        });
+      } else {
+        $scope.redirectUrl = $window.location.href;
+        return $window.location.href = '/angular/user/login';
+      }
     });
   });
 
@@ -1308,6 +1369,15 @@
         };
       })(this));
       return query_Service.reload_Data();
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Logout_Controller', function(TM_API, $window) {
+    return TM_API.logout(function(callback) {
+      return $window.location.href = '/angular/guest/home';
     });
   });
 
