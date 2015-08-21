@@ -68,6 +68,19 @@ class TM_API
         @.cache_Articles[article_Id]= data
         callback(data)
 
+  recent_Articles:  (callback)=>
+    url             = "/json/recentarticles"
+    recent_Articles = []
+    @.$http.get(url)
+      .success (data)=>
+        callback(data)
+
+  top_Articles:  (callback)=>
+    url             = "/json/toparticles"
+    @.$http.get(url)
+    .success (data)=>
+      callback(data)
+
   login:  (username, password, callback)=>
     url      = "/json/user/login"
     postData = { username: username, password: password}
@@ -83,6 +96,13 @@ class TM_API
     url      = "/json/user/pwd_reset"
     postData = { email:email }
     @.$http.post(url, postData).success callback
+
+  popular_Search : (callback)=>
+    url             = "/json/search/recentsearch"
+    @.$http.get(url)
+    .success (data)=>
+      callback(data)
+
 
 app.service 'TM_API', ($q, $http, $timeout)=>
   return new TM_API($q, $http, $timeout)
