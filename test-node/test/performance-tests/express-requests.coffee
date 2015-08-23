@@ -1,11 +1,11 @@
 require 'fluentnode'
 async = require 'async'
 
-describe.only 'Check express timeouts', ->
+describe 'Check express timeouts', ->
 
   open_Root = (url, on_Data)->
     (index, next)->
-      console.log url.GET
+      url.GET
       url.GET (data)->
         on_Data(data)
         next()
@@ -18,7 +18,7 @@ describe.only 'Check express timeouts', ->
       data.assert_Is 'Moved Temporarily. Redirecting to /index.html'
 
     async.eachSeries [0..50], open_Root(url, on_Data), ->
-      (new Date().getTime() - start).assert_Smaller_Than 200
+      (new Date().getTime() - start).assert_Smaller_Than 400
       #async.eachSeries [0..500], open_Root(url, on_Data), ->
       #  console.log new Date().getTime() - start  + ' , '
       done()
@@ -47,7 +47,7 @@ describe.only 'Check express timeouts', ->
       #data.json_Parse().id.assert_Is 'query-a14e68cb74b3'
 
     async.eachSeries [0..30], open_Root(url, on_Data), ->
-      (new Date().getTime() - start).assert_Smaller_Than 200
+      (new Date().getTime() - start).assert_Smaller_Than 400
       #async.eachSeries [0..500], open_Root(url, on_Data), ->
       #  console.log 'graphDB query: [500] ' + (new Date().getTime() - start)
       done()
@@ -59,7 +59,7 @@ describe.only 'Check express timeouts', ->
       data.assert_Is 'Moved Temporarily. Redirecting to docs'
 
     async.eachSeries [0..50], open_Root(url, on_Data), ->
-      (new Date().getTime() - start).assert_Smaller_Than 100
+      (new Date().getTime() - start).assert_Smaller_Than 300
       #async.eachSeries [0..500], open_Root(url, on_Data), ->
       #  console.log new Date().getTime() - start
       done()

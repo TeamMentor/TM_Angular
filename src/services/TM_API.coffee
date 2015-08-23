@@ -56,30 +56,25 @@ class TM_API
             callback(data)
 
   docs_Page:  (article_Id, callback)=>
-    url     = "/json/docs/#{article_Id}"
+    url = "/json/docs/#{article_Id}"
     @.$http.get(url).success callback
 
   article:  (article_Id, callback)=>
     if @.cache_Articles[article_Id]
       @.$timeout => callback @.cache_Articles[article_Id]
     else
-      url     = "/json/article/#{article_Id}"
+      url  = "/json/article/#{article_Id}"
       @.$http.get(url).success (data)=>
         @.cache_Articles[article_Id]= data
         callback(data)
 
   recent_Articles:  (callback)=>
-    url             = "/json/recentarticles"
-    recent_Articles = []
-    @.$http.get(url)
-      .success (data)=>
-        callback(data)
+    url = "/json/recentarticles"
+    @.$http.get(url).success callback
 
   top_Articles:  (callback)=>
-    url             = "/json/toparticles"
-    @.$http.get(url)
-    .success (data)=>
-      callback(data)
+    url = "/json/toparticles"
+    @.$http.get(url).success callback
 
   login:  (username, password, callback)=>
     url      = "/json/user/login"

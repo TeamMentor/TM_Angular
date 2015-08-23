@@ -78,7 +78,6 @@ describe 'build-step-save-GraphDB-data', ->
     #@.timeout 4000
     get_Data  = (query_Id, filters, from, to, next)->
       key      = "query_view_model_filtered_#{query_Id}_#{filters}_#{from}_#{to}"
-
       graphDB.query_view_model_filtered query_Id, filters, from, to, (data)->
         graphDB_Data[key] = data
         using graphDB_Data[key], ->
