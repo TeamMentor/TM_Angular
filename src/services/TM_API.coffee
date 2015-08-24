@@ -81,7 +81,7 @@ class TM_API
     postData = { username: username, password: password}
     @.$http.post(url, postData).success callback
 
-  logout:()=>
+  logout:(callback)=>
     url ="/json/user/login"
     postData = {}
     @.$http.post(url,postData).success callback
