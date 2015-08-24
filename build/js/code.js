@@ -1477,6 +1477,27 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Recommendations_Controller', function($scope, $rootScope, TM_API) {
+    console.log('in Recommendations_Controller');
+    $rootScope.$on('search_term', function(event, term) {
+      if (term === '') {
+        return $scope.words = [];
+      } else {
+        return TM_API.get_Words(term, function(words) {
+          console.log(words);
+          return $scope.words = words;
+        });
+      }
+    });
+    $scope.select_Word = function(word) {
+      return $scope.text = word;
+    };
+    return $scope.words = [];
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Results_Controller', function($scope, $rootScope, query_Service) {
     $scope.current_Page = 1;
     $scope.current_Page_Split = 10;
@@ -1587,19 +1608,9 @@
         });
       }
     };
-    $scope.get_Words = function(term) {
-      if (term === '') {
-        return $scope.words = ['....sugestions....'];
-      } else {
-        return TM_API.get_Words(term, function(words) {
-          return $scope.words = words;
-        });
-      }
+    return $scope.get_Words = function(term) {
+      return $rootScope.$broadcast('search_term', term);
     };
-    $scope.select_Word = function(word) {
-      return $scope.text = word;
-    };
-    return $scope.words = ['....sugestions....'];
   });
 
 }).call(this);
