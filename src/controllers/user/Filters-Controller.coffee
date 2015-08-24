@@ -10,8 +10,8 @@ angular.module('TM_App')
           $scope.$on 'view_model_data', (event, data)->
             if data?.filters
               $scope.filters = data.filters
-              for filter in $scope.filters
-                for result in filter.results
+              for key, value of $scope.filters
+                for result in value
                   result.icon = $sce.trustAsHtml icon_Service.element_Html result.title
             else
               $scope.filters = []

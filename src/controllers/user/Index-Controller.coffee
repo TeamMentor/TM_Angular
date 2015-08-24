@@ -1,5 +1,5 @@
 angular.module 'TM_App'
-       .controller 'Index_Controller', ($scope, query_Service)->
+       .controller 'Index_Controller', ($scope, query_Service, $stateParams, $location, $rootScope,$timeout)->
 
           #console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
@@ -21,4 +21,9 @@ angular.module 'TM_App'
                 @.column_Middle = 'col-9'
                 @.column_Right  = 'col-0'
 
-            query_Service.reload_Data()
+            if $stateParams.query_Id
+              query_Service.load_Query $stateParams.query_Id
+
+              #query_Service.load_Query query_Service.index_Query, $stateParams.query_Id
+            else
+              query_Service.reload_Data()

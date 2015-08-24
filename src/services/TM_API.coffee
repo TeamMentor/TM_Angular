@@ -56,17 +56,25 @@ class TM_API
             callback(data)
 
   docs_Page:  (article_Id, callback)=>
-    url     = "/json/docs/#{article_Id}"
+    url = "/json/docs/#{article_Id}"
     @.$http.get(url).success callback
 
   article:  (article_Id, callback)=>
     if @.cache_Articles[article_Id]
       @.$timeout => callback @.cache_Articles[article_Id]
     else
-      url     = "/json/article/#{article_Id}"
+      url  = "/json/article/#{article_Id}"
       @.$http.get(url).success (data)=>
         @.cache_Articles[article_Id]= data
         callback(data)
+
+  recent_Articles:  (callback)=>
+    url = "/json/recentarticles"
+    @.$http.get(url).success callback
+
+  top_Articles:  (callback)=>
+    url = "/json/toparticles"
+    @.$http.get(url).success callback
 
   login:  (username, password, callback)=>
     url      = "/json/user/login"
@@ -93,6 +101,13 @@ class TM_API
     url      = "/json/user/pwd_reset"
     postData = { email:email }
     @.$http.post(url, postData).success callback
+
+  popular_Search : (callback)=>
+    url             = "/json/search/recentsearch"
+    @.$http.get(url)
+    .success (data)=>
+      callback(data)
+
 
 app.service 'TM_API', ($q, $http, $timeout)=>
   return new TM_API($q, $http, $timeout)
