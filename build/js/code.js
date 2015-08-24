@@ -934,7 +934,7 @@
 
     TM_API.prototype.logout = function(callback) {
       var postData, url;
-      url = "/json/user/login";
+      url = "/json/user/logout";
       postData = {};
       return this.$http.post(url, postData).success(callback);
     };

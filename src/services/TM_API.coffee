@@ -82,7 +82,7 @@ class TM_API
     @.$http.post(url, postData).success callback
 
   logout:(callback)=>
-    url ="/json/user/login"
+    url ="/json/user/logout"
     postData = {}
     @.$http.post(url,postData).success callback
 
