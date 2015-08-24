@@ -68,7 +68,7 @@
 
 (function() {
   angular.module('TM_App').run(function($templateCache, $browser, $log) {
-    if (false) {
+    if (true) {
       if ($browser.isMock === false) {
         $log.info('Since we are running in a real browser, removing all template caches (for now)');
         return $templateCache.removeAll();
@@ -510,25 +510,44 @@
       view_Name = ref1[j];
       $stateProvider.state(view_Name, {
         url: "/" + view_Name,
-        controller: 'Article_Controller',
         templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
     }
     $stateProvider.state('article', {
       url: "/article/:article_Id/:article_Title",
-      controller: 'Article_Controller',
       templateUrl: '/angular/jade-html/views/user/article'
     });
     $stateProvider.state('article-box', {
       url: "/article-box/:article_Id/:article_Title",
-      controller: 'Article_Controller',
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
-    return $stateProvider.state('index_query_id', {
+    $stateProvider.state('index_query_id', {
       url: "/index/:query_Id",
       templateUrl: '/angular/jade-html/views/user/index'
     });
+    return $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
   });
+
+  app.run((function(_this) {
+    return function($rootScope, $location, $window, TM_API, routes_Names) {
+      $rootScope.$on('$stateChangeStart', function(event, next, current) {
+        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
+
+        } else {
+          return TM_API.currentuser(function(data) {
+            if (data != null ? data.UserEnabled : void 0) {
+              return;
+            } else {
+              $window.location.href = '/angular/user/login';
+            }
+          });
+        }
+      });
+    };
+  })(this));
 
 }).call(this);
 
@@ -758,7 +777,9 @@
     function TM_API(q, http, timeout) {
       this.popular_Search = bind(this.popular_Search, this);
       this.pwd_reset = bind(this.pwd_reset, this);
+      this.currentuser = bind(this.currentuser, this);
       this.signup = bind(this.signup, this);
+      this.logout = bind(this.logout, this);
       this.login = bind(this.login, this);
       this.top_Articles = bind(this.top_Articles, this);
       this.recent_Articles = bind(this.recent_Articles, this);
@@ -872,7 +893,6 @@
 
     TM_API.prototype.article = function(article_Id, callback) {
       var url;
-      console.log(article_Id);
       if (this.cache_Articles[article_Id]) {
         return this.$timeout((function(_this) {
           return function() {
@@ -912,6 +932,13 @@
       return this.$http.post(url, postData).success(callback);
     };
 
+    TM_API.prototype.logout = function() {
+      var postData, url;
+      url = "/json/user/login";
+      postData = {};
+      return this.$http.post(url, postData).success(callback);
+    };
+
     TM_API.prototype.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
       var postData, url;
       url = "/json/user/signup";
@@ -928,6 +955,16 @@
         state: state
       };
       return this.$http.post(url, postData).success(callback);
+    };
+
+    TM_API.prototype.currentuser = function(callback) {
+      var url;
+      url = "/json/user/currentuser";
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
     };
 
     TM_API.prototype.pwd_reset = function(email, callback) {
@@ -1018,7 +1055,7 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout) {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
       $scope.infoMessage = "...logging in ...";
@@ -1027,6 +1064,7 @@
           var ref;
           if (data.result === 'OK') {
             $scope.infoMessage = 'Login OK';
+            $rootScope.loggedInUser = true;
             return $timeout(function() {
               return $window.location.href = '/angular/user/main';
             });
@@ -1104,7 +1142,7 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    return TM_API.article($stateParams.article_Id, function(article) {
+    TM_API.article($stateParams.article_Id, function(article) {
       var id, title;
       if (!angular.isObject(article)) {
         return;
@@ -1117,6 +1155,36 @@
       $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
       $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
       return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+    });
+    TM_API.recent_Articles(function(articles) {
+      $scope.recent_Articles = [];
+      if ((articles != null)) {
+        return angular.forEach(articles, function(article) {
+          var id, title;
+          article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+          article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+          article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+          return $scope.recent_Articles.push(article);
+        });
+      }
+    });
+    return TM_API.top_Articles(function(articles) {
+      $scope.top_Articles = [];
+      if ((articles != null)) {
+        return angular.forEach(articles, function(article) {
+          var id, title;
+          article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+          article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+          article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+          return $scope.top_Articles.push(article);
+        });
+      }
     });
   });
 
@@ -1350,6 +1418,15 @@
       } else {
         return query_Service.reload_Data();
       }
+    });
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Logout_Controller', function(TM_API, $window) {
+    return TM_API.logout(function(callback) {
+      return $window.location.href = '/angular/guest/home';
     });
   });
 
