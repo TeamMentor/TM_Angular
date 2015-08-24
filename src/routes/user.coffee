@@ -22,7 +22,7 @@ app.config ($stateProvider, routes_Names) ->
 
   $stateProvider.state 'articleId'    ,
     url        : "/:article_Id"
-    controller : 'Article_Controller'
+    controller : 'Logout_Controller'
     templateUrl: '/angular/jade-html/views/user/article'
 
   $stateProvider.state 'article-box'    ,
@@ -30,20 +30,25 @@ app.config ($stateProvider, routes_Names) ->
     controller : 'Article_Controller'
     templateUrl: '/angular/jade-html/views/user/article_box'
 
+  $stateProvider.state 'logout'    ,
+    url        : "/logout"
+    controller : 'Logout_Controller'
+
   $stateProvider.state 'index_query_id'    ,
     url        : "/index/:query_Id"
     #controller : 'Index_Controller'
     templateUrl: '/angular/jade-html/views/user/index'
 
 
-app.run ($rootScope, $location,$window,TM_API) ->
-  $rootScope.$on '$stateChangeStart', (event, next, current) ->
-    TM_API.currentuser (data) ->
-      if data?.UserEnabled
-        return
-      else
-        if next.templateUrl == "/angular/jade-html/views/guest/login"
+app.run ($rootScope, $location,$window,TM_API,routes_Names) =>
+  $rootScope.$on '$stateChangeStart', (event, next, current) =>
+    if routes_Names.views.guest.indexOf(next.name) > -1 || next.name =="docs"
+      return
+    else
+      console.log($rootScope.loggedInUser)
+      TM_API.currentuser (data) ->
+        if data?.UserEnabled
           return
         else
-          $window.location.href = '/angular/user/login'
-    return
+            $window.location.href = '/angular/guest/login'
+      return

@@ -286,7 +286,7 @@
   routes_Names = {
     components: {},
     views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up', 'logout'],
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
       user_Root: ['main', 'docs', 'terms_and_conditions'],
       user_User: ['index', 'articles']
     }
@@ -520,7 +520,7 @@
     });
     $stateProvider.state('articleId', {
       url: "/:article_Id",
-      controller: 'Article_Controller',
+      controller: 'Logout_Controller',
       templateUrl: '/angular/jade-html/views/user/article'
     });
     $stateProvider.state('article-box', {
@@ -528,27 +528,34 @@
       controller: 'Article_Controller',
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
     return $stateProvider.state('index_query_id', {
       url: "/index/:query_Id",
       templateUrl: '/angular/jade-html/views/user/index'
     });
   });
 
-  app.run(function($rootScope, $location, $window, TM_API) {
-    return $rootScope.$on('$stateChangeStart', function(event, next, current) {
-      TM_API.currentuser(function(data) {
-        if (data != null ? data.UserEnabled : void 0) {
+  app.run((function(_this) {
+    return function($rootScope, $location, $window, TM_API, routes_Names) {
+      return $rootScope.$on('$stateChangeStart', function(event, next, current) {
+        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
 
         } else {
-          if (next.templateUrl === "/angular/jade-html/views/guest/login") {
+          console.log($rootScope.loggedInUser);
+          TM_API.currentuser(function(data) {
+            if (data != null ? data.UserEnabled : void 0) {
 
-          } else {
-            return $window.location.href = '/angular/user/login';
-          }
+            } else {
+              return $window.location.href = '/angular/guest/login';
+            }
+          });
         }
       });
-    });
-  });
+    };
+  })(this));
 
 }).call(this);
 
@@ -918,9 +925,9 @@
       return this.$http.post(url, postData).success(callback);
     };
 
-    TM_API.prototype.logout = function() {
+    TM_API.prototype.logout = function(callback) {
       var postData, url;
-      url = "/json/user/login";
+      url = "/json/user/logout";
       postData = {};
       return this.$http.post(url, postData).success(callback);
     };
@@ -1374,10 +1381,12 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Logout_Controller', function(TM_API, $window) {
-    return TM_API.logout(function(callback) {
-      return $window.location.href = '/angular/guest/home';
-    });
+  angular.module('TM_App').controller('Logout_Controller', function(TM_API, $window, $rootScope) {
+    return TM_API.logout((function(_this) {
+      return function(callback) {
+        return $window.location.href = '/angular/guest/home';
+      };
+    })(this));
   });
 
 }).call(this);
