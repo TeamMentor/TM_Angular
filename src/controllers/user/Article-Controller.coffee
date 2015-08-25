@@ -16,7 +16,8 @@ angular.module('TM_App')
             $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
             $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
 
-           TM_API.recent_Articles (articles)->
+
+          TM_API.recent_Articles (articles)->
              $scope.recent_Articles =[]
              if (articles?)
                angular.forEach articles, (article)->

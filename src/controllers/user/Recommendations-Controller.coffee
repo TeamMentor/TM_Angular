@@ -3,15 +3,15 @@ angular.module 'TM_App'
 
           $rootScope.$on 'apply_query', (event,term)->
             $scope.words = []
+
           $rootScope.$on 'search_term', (event,term)->
             if term is ''
               $scope.words = []
             else
               TM_API.get_Words term, (words)->
-                console.log words
                 $scope.words = words
 
           $scope.select_Word = (word)->
-            $scope.text = word
+            $rootScope.$broadcast 'set_search', word
 
           $scope.words = []

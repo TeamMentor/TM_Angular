@@ -42,6 +42,10 @@ angular.module('TM_App')
 
               $scope.selected_Technology = $scope.technologies[0]
 
+          $scope.$on 'set_search', (event, text)->
+            $scope.text = text
+            $scope.submit()
+
           $scope.select_Technology = ()->
             if $scope.selected_Technology
               $scope.ignore_Events = true                                     # prevent clear_filter from firing

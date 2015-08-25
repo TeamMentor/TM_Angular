@@ -17,6 +17,8 @@ describe '| controllers | Article-Controller.test',->
         article: (article_Id, callback)->
           article_Id.assert_Is stateParams.article_Id
           callback article
+        recent_Articles: ()->
+        top_Articles: ()->
 
       $controller('Article_Controller', { $scope: scope , $stateParams: stateParams,  TM_API: TM_API})
 
