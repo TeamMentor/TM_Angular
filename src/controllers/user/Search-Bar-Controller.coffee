@@ -64,6 +64,11 @@ angular.module('TM_App')
               TM_API.query_from_text_search $scope.text, (query_id)->
                 $rootScope.$broadcast 'apply_query', query_id
 
+          #$scope.with_Focus = (value)=>
+          #  if value
+          #    $rootScope.$broadcast 'search_term', $scope.text
+          #  else
+          #    $rootScope.$broadcast 'search_term', ''
 
           $scope.get_Words = (term)->
             $rootScope.$broadcast 'search_term', term
