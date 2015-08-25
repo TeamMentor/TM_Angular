@@ -41,6 +41,6 @@ app.run ($rootScope, $location,$window,TM_API,routes_Names) =>
         if data?.UserEnabled
           return
         else
-          $window.location.href = '/angular/user/login'
+          $window.location.href = '/angular/guest/login'
         return
   return
