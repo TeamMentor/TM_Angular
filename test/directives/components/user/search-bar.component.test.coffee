@@ -11,7 +11,10 @@ describe '| directive | search-bar', ->
     module('TM_App')
 
   beforeEach ()->
-    inject ($compile,$rootScope, graph_db_data)->
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
+
+    inject ($compile, $rootScope, graph_db_data)->
 
       element_Raw = angular.element('<search-bar/>')
       element     = $compile(element_Raw)($rootScope.$new())[0]
@@ -41,10 +44,24 @@ describe '| directive | search-bar', ->
       texts.first().assert_Is 'All'
       texts.assert_Is 	[ 'All', '.NET','Android','C++','HTML5',
                          'iOS','Java','PHP','Scala Play',
-                         'Technology Independent','WCF','Web Application' , '....sugestions....']
+                         'Technology Independent','WCF','Web Application']
+
+  it 'Check options after filter_data $broadcast (with sample data)',->
+    results      = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
+    scope.technologies.assert_Is {}
+    scope.$broadcast 'view_model_data', { filters: {'Technology' : results   } }
+    scope.$digest()
+    inject ($$)->
+      options = element_Raw.find('option')
+      options.length.assert_Is 3
+      seed = Number $$(options[0]).$attr().value.split(':')[1]  # need this since the object:{n} value can vary
+      $$(options[0]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'All'   , selected: 'selected' }
+      $$(options[1]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'tech 1'                       }
+      $$(options[2]).$attr().assert_Is 		{ value: 'object:' + seed   , label: 'tech 2'                       }
 
 
-  # this is not working (I can't seem to be able to trigger the select_Technology from the options)
+
+# this is not working (I can't seem to be able to trigger the select_Technology from the options)
   ###
 
   fit 'Check that selecting an option trigger $scope.select_Technology', ->
@@ -77,24 +94,6 @@ describe '| directive | search-bar', ->
         #scope.$digest()
         console.log scope.selected_Technology
   ###
-
-
-
-  it 'Check options after filter_data $broadcast (with sample data)',->
-    results      = [{title:'tech 1', id: 'id_1'}, {title: 'tech 2', id: 'id_2'}]
-    scope.technologies.assert_Is {}
-    scope.$broadcast 'view_model_data', { filters: {'Technology' : results   } }
-    scope.$digest()
-    inject ($$)->
-      options = element_Raw.find('option')
-      options.length.assert_Is 4
-      seed = Number $$(options[0]).$attr().value.split(':')[1]  # need this since the object:{n} value can vary
-      $$(options[0]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'All'   , selected: 'selected' }
-      $$(options[1]).$attr().assert_Is 		{ value: 'object:' + seed++ , label: 'tech 1'                       }
-      $$(options[2]).$attr().assert_Is 		{ value: 'object:' + seed   , label: 'tech 2'                       }
-
-      $$(options[3]).$attr().assert_Is    { 'ng-repeat': 'word in words', value: 'word', class: 'ng-binding ng-scope' }
-
 
 # not completed
   #it 'Check selected option',->

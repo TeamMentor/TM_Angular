@@ -27,7 +27,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       expect(@.technologies       ).to.deep.equal {}
       expect(@.technologies_By_Id ).to.deep.equal {}
       expect(@.text               ).to.     equal ''
-      expect(@.words              ).to.deep.equal [ '....sugestions....' ]
+      expect(@.words              ).to.deep.equal []
 
       expect(@.$$listeners.keys().size()).to.equal 4
 
@@ -38,7 +38,6 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
       expect(@.get_Words        ).to.be.an('function')
       expect(@.select_Technology).to.be.an('function')
-      expect(@.select_Word      ).to.be.an('function')
       expect(@.submit           ).to.be.an('function')
 
   it '$on clear_Search', ->
@@ -107,6 +106,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
   it 'submit (check state change)', ->
     inject ($state, $httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
       using scope, ->
         $state.current.name.assert_Is ''
         @.submit()
@@ -115,18 +115,19 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
   it 'submit (no text)', ->
     inject ($httpBackend)->
-      #$httpBackend.expectGET('/api/data/query_tree/query-6234f2d47eb7').respond {}
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
       using scope, ->
         @.$on 'clear_query', (event)->
           event.name.assert_Is 'clear_query'
         @.$on 'apply_query', (event, query_Id)->
           query_Id.assert_Is 'query-6234f2d47eb7'
         @.submit()
-        #@.$digest()
-        #$httpBackend.flush()
+        @.$digest()
+        $httpBackend.flush()
 
   it 'submit (valid text)', ->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
       $httpBackend.expectGET('/api/search/query_from_text_search/xss').respond 'search-xss'
       #$httpBackend.expectGET('/api/data/query_view_model/search-xss/0/10').respond 'search-xss'
       using scope, ->
@@ -160,21 +161,14 @@ describe '| controllers | user | Search-Bar-Controller.test',->
   it 'get_Words', ->
     inject ($httpBackend)->
       using scope, ->
-        $httpBackend.expectGET('/angular/api/auto-complete?term=a').respond { a : 'aaa', b: 'bbb'}
-        @.words.assert_Is ['....sugestions....']
+        $httpBackend.expectGET('/json/user/currentuser').respond {}
+        #$httpBackend.expectGET('/angular/api/auto-complete?term=a').respond { a : 'aaa', b: 'bbb'}
+        @.words.assert_Is []
         @.get_Words 'a'
         $httpBackend.flush()
-        @.words.assert_Is [ 'a', 'b']
+        @.words.assert_Is []
 
         @.get_Words ''
 
-        @.words.assert_Is ['....sugestions....']
-
-
-  it 'select_Word', ->
-    using scope, ->
-      @.text.assert_Is ''
-      @.select_Word 'bbbb'
-      @.text.assert_Is 'bbbb'
-
+        @.words.assert_Is []
 

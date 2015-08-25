@@ -16,6 +16,7 @@ describe '| controllers | user | User-Navigation-Controller.test',->
 
   it 'open_Query_State (check state change)', ->
     inject ($state, $httpBackend, $timeout)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
       using scope, ->
         $state.current.name.assert_Is ''
         @.open_Query_State()
@@ -25,6 +26,7 @@ describe '| controllers | user | User-Navigation-Controller.test',->
 
   it 'open_Query_State (check Loading image change)', ->
     inject ($state, $httpBackend, $timeout)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
       using scope, ->
         @.show_Loading_Image.assert_Is_False()
         @.open_Query_State()

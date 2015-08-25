@@ -3,12 +3,17 @@ describe '| routes | user.routes' , ->
     module('TM_App')
 
   it '/index', ->
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
     inject ($state,$rootScope) ->
       $state.go 'index'
       $rootScope.$digest()
       $state.current.assert_Is 	{ url: '/index', templateUrl: '/angular/jade-html/views/user/index', name: 'index' }
 
-  fit '/index', ->
+  it '/index_query_id', ->
+    inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
+      $httpBackend.expectGET('/json/user/currentuser').respond {}
     inject ($state,$rootScope, $location) ->
       $state.go 'index_query_id'
       $rootScope.$digest()
@@ -24,7 +29,7 @@ describe '| routes | user.routes' , ->
         $rootScope.$digest()
         #$httpBackend.flush()
 
-        query_Service.load_Query.calls.all()[0].args.assert_Is ['query-6234f2d47eb7', 'an-query-id']
+        query_Service.load_Query.calls.all()[0].args.assert_Is [ 'an-query-id']
 
       #inject ($compile,$rootScope)->
       #  element_Raw = angular.element('<index/>')
