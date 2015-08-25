@@ -19,6 +19,11 @@ app.config ($stateProvider, routes_Names) ->
     url        : "/article/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article'
 
+  $stateProvider.state 'guid',
+    url        : "/:article_Id"
+    templateUrl: '/angular/jade-html/views/user/article'
+
+
   $stateProvider.state 'article-box'    ,
     url        : "/article-box/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article_box'
@@ -41,6 +46,6 @@ app.run ($rootScope, $location,$window,TM_API,routes_Names) =>
         if data?.UserEnabled
           return
         else
-          $window.location.href = '/angular/user/login'
+          $window.location.href = '/angular/guest/login'
         return
   return
