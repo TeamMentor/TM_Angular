@@ -144,6 +144,141 @@
 }).call(this);
 
 (function() {
+  var expect,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    hasProp = {}.hasOwnProperty;
+
+  Array.prototype.contains = function(value) {
+    var i, item, len;
+    if (value instanceof Array) {
+      for (i = 0, len = value.length; i < len; i++) {
+        item = value[i];
+        if (!(indexOf.call(this, item) >= 0)) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+
+    }
+    return indexOf.call(this, value) >= 0;
+  };
+
+  Array.prototype.first = function() {
+    return this.item(0);
+  };
+
+  Array.prototype.item = function(index) {
+    if (typeof index === 'number') {
+      if ((this.length > index && index > -1)) {
+        return this[index];
+      }
+    }
+    return null;
+  };
+
+  Array.prototype.size = function() {
+    return this.length;
+  };
+
+  Array.prototype.take = function(size) {
+    if (size === -1) {
+      return this;
+    } else {
+      return this.slice(0, size);
+    }
+  };
+
+  String.prototype.remove = function(value) {
+    var result;
+    result = this;
+    while (result.contains(value)) {
+      result = result.replace(value, '');
+    }
+    return result;
+  };
+
+  String.prototype.contains = function(value) {
+    var i, item, len, regex;
+    if (value instanceof RegExp) {
+      regex = new RegExp(value);
+      return regex.exec(this) !== null;
+    }
+    if (value instanceof Array) {
+      for (i = 0, len = value.length; i < len; i++) {
+        item = value[i];
+        if (this.indexOf(item) === -1) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return this.indexOf(value) > -1;
+  };
+
+  Object.defineProperty(Object.prototype, 'keys', {
+    enumerable: false,
+    writable: true,
+    value: function() {
+      var key;
+      return (function() {
+        var results;
+        results = [];
+        for (key in this) {
+          if (!hasProp.call(this, key)) continue;
+          results.push(key);
+        }
+        return results;
+      }).call(this);
+    }
+  }, window.using = function(target, callback) {
+    return callback.apply(target);
+  });
+
+  if (window['chai']) {
+    expect = chai.expect;
+    Object.defineProperty(Object.prototype, 'assert_Is', {
+      enumerable: false,
+      writable: true,
+      value: function(target) {
+        expect(this).to.deep.equal(target);
+        return this;
+      }
+    });
+    String.prototype.assert_Is = function(target, message) {
+      expect(this.toString()).to.equal(target, message);
+      return this;
+    };
+    Number.prototype.assert_Is = function(target, message) {
+      expect(this.toString()).to.equal(target.toString(), message);
+      return this;
+    };
+    Boolean.prototype.assert_Is_False = function() {
+      expect(this.valueOf()).to.equal(false);
+      return false;
+    };
+    Boolean.prototype.assert_Is_True = function() {
+      expect(this.valueOf()).to.equal(true);
+      return true;
+    };
+    Array.prototype.assert_Contains = function(value, message) {
+      var i, item, len;
+      message = message || "[assert_Contains]";
+      if (value instanceof Array) {
+        for (i = 0, len = value.length; i < len; i++) {
+          item = value[i];
+          this.contains(item).assert_Is_True(item + " not found in array: " + this);
+        }
+      } else {
+        this.contains(value).assert_Is_True(message);
+      }
+      return this;
+    };
+  }
+
+}).call(this);
+
+(function() {
   var app, routes_Names;
 
   app = angular.module('TM_App');
@@ -406,7 +541,7 @@
             if (data != null ? data.UserEnabled : void 0) {
               return;
             } else {
-              $window.location.href = '/angular/user/login';
+              $window.location.href = '/angular/guest/login';
             }
           });
         }
@@ -909,141 +1044,6 @@
     };
     return $$;
   });
-
-}).call(this);
-
-(function() {
-  var expect,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-    hasProp = {}.hasOwnProperty;
-
-  Array.prototype.contains = function(value) {
-    var i, item, len;
-    if (value instanceof Array) {
-      for (i = 0, len = value.length; i < len; i++) {
-        item = value[i];
-        if (!(indexOf.call(this, item) >= 0)) {
-          return false;
-        }
-      }
-      return true;
-    } else {
-
-    }
-    return indexOf.call(this, value) >= 0;
-  };
-
-  Array.prototype.first = function() {
-    return this.item(0);
-  };
-
-  Array.prototype.item = function(index) {
-    if (typeof index === 'number') {
-      if ((this.length > index && index > -1)) {
-        return this[index];
-      }
-    }
-    return null;
-  };
-
-  Array.prototype.size = function() {
-    return this.length;
-  };
-
-  Array.prototype.take = function(size) {
-    if (size === -1) {
-      return this;
-    } else {
-      return this.slice(0, size);
-    }
-  };
-
-  String.prototype.remove = function(value) {
-    var result;
-    result = this;
-    while (result.contains(value)) {
-      result = result.replace(value, '');
-    }
-    return result;
-  };
-
-  String.prototype.contains = function(value) {
-    var i, item, len, regex;
-    if (value instanceof RegExp) {
-      regex = new RegExp(value);
-      return regex.exec(this) !== null;
-    }
-    if (value instanceof Array) {
-      for (i = 0, len = value.length; i < len; i++) {
-        item = value[i];
-        if (this.indexOf(item) === -1) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return this.indexOf(value) > -1;
-  };
-
-  Object.defineProperty(Object.prototype, 'keys', {
-    enumerable: false,
-    writable: true,
-    value: function() {
-      var key;
-      return (function() {
-        var results;
-        results = [];
-        for (key in this) {
-          if (!hasProp.call(this, key)) continue;
-          results.push(key);
-        }
-        return results;
-      }).call(this);
-    }
-  }, window.using = function(target, callback) {
-    return callback.apply(target);
-  });
-
-  if (window['chai']) {
-    expect = chai.expect;
-    Object.defineProperty(Object.prototype, 'assert_Is', {
-      enumerable: false,
-      writable: true,
-      value: function(target) {
-        expect(this).to.deep.equal(target);
-        return this;
-      }
-    });
-    String.prototype.assert_Is = function(target, message) {
-      expect(this.toString()).to.equal(target, message);
-      return this;
-    };
-    Number.prototype.assert_Is = function(target, message) {
-      expect(this.toString()).to.equal(target.toString(), message);
-      return this;
-    };
-    Boolean.prototype.assert_Is_False = function() {
-      expect(this.valueOf()).to.equal(false);
-      return false;
-    };
-    Boolean.prototype.assert_Is_True = function() {
-      expect(this.valueOf()).to.equal(true);
-      return true;
-    };
-    Array.prototype.assert_Contains = function(value, message) {
-      var i, item, len;
-      message = message || "[assert_Contains]";
-      if (value instanceof Array) {
-        for (i = 0, len = value.length; i < len; i++) {
-          item = value[i];
-          this.contains(item).assert_Is_True(item + " not found in array: " + this);
-        }
-      } else {
-        this.contains(value).assert_Is_True(message);
-      }
-      return this;
-    };
-  }
 
 }).call(this);
 
