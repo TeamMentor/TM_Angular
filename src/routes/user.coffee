@@ -19,6 +19,11 @@ app.config ($stateProvider, routes_Names) ->
     url        : "/article/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article'
 
+  $stateProvider.state 'guid',
+    url        : "/:article_Id"
+    templateUrl: '/angular/jade-html/views/user/article'
+
+
   $stateProvider.state 'article-box'    ,
     url        : "/article-box/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article_box'
