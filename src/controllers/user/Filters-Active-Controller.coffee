@@ -32,6 +32,7 @@ angular.module('TM_App')
           $scope.refresh_Filters = (from, to)->
             query_Id = $scope.current_Query_Id
             filters =  $scope.current_Filters.keys().join(',')
+
             if filters is ''
               query_Service.load_Query query_Id, null   , from, to
             else

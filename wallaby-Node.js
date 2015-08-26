@@ -5,7 +5,8 @@ module.exports = function (wallaby) {
   console.log('[in Wallaby-Node] ');
 
   return {
-    files:  ['test-node/src/**/*.coffee'],
+    files:  ['test-node/src/**/*.coffee',
+             'test-node/tm.config.json'],
 
     tests: ['test-node/test/**/*.coffee'],
 

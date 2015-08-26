@@ -4,7 +4,9 @@ cheerio = require 'cheerio'
 
 class TM_Flare_Http
   constructor: ->
-    @.server = "http://localhost:12345"
+    @.config_File = process.env.localProjectDir.path_Combine('../../config/SiteData_TM/TM/tm.config.json')
+    @.config      = @.config_File.load_Json()
+    @.server      = "http://localhost:#{@.config.tm_design.port}"
 
   component: (name, callback)=>
     @.open "/angular/jade-html/component/#{name}", callback

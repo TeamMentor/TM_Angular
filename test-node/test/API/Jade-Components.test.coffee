@@ -26,7 +26,7 @@ describe '| API | Jade-Components |', ->
                          'user/article_box', 'user/article','user/articles',
                          'user/breadcrumbs', 'user/filters','user/filters_active', 'user/pagination'
                          'user/queries', 'user/queries_history',
-                         'user/results', 'user/search_bar']
+                         'user/results', 'user/recommendations', 'user/search_bar']
 
   expected_Views      = ['alert_application', 'docs'
                          'curated_content', 'curated_content_article','error',
