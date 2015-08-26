@@ -9,7 +9,7 @@ angular.module('TM_App')
                 $scope.infoMessage  = 'Login OK'
                 $rootScope.loggedInUser =true
                 $timeout ->
-                  $window.location.href = '/angular/user/main'
+                  $window.location.href = '/angular/user/index'
               else
                 $scope.infoMessage = null
                 $scope.errorMessage = data.viewModel?.errorMessage || 'Login Failed (Server error)'

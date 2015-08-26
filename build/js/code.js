@@ -1071,7 +1071,7 @@
             $scope.infoMessage = 'Login OK';
             $rootScope.loggedInUser = true;
             return $timeout(function() {
-              return $window.location.href = '/angular/user/main';
+              return $window.location.href = '/angular/user/index';
             });
           } else {
             $scope.infoMessage = null;
@@ -1400,6 +1400,7 @@
 
 (function() {
   angular.module('TM_App').controller('Index_Controller', function($scope, query_Service, $stateParams, $location, $rootScope, $timeout) {
+    console.log('in Index_Controller ' + new Date().getMilliseconds());
     return using($scope, function() {
       this.history = {};
       this.view_Filters = false;

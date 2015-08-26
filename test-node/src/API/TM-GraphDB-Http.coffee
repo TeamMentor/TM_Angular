@@ -4,7 +4,10 @@ cheerio = require 'cheerio'
 
 class TM_GraphDB_Http
   constructor: ->
-    @.server      = 'http://localhost:12346'
+    @.config_File = process.env.localProjectDir.path_Combine('../../config/SiteData_TM/TM/tm.config.json')
+    @.config      = @.config_File.load_Json()
+    @.server      = "http://localhost:#{@.config.tm_graph.port}"
+    #@.server      = 'http://localhost:12346'
     @.index_Query = 'query-6234f2d47eb7'
     @.java_Query = 'query-7d9a1b64c045'
 

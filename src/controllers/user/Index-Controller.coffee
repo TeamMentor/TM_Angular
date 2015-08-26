@@ -1,7 +1,7 @@
 angular.module 'TM_App'
        .controller 'Index_Controller', ($scope, query_Service, $stateParams, $location, $rootScope,$timeout)->
 
-          #console.log 'in Index_Controller ' + new Date().getMilliseconds()
+          console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
           using $scope, ->
             @.history       = {}
