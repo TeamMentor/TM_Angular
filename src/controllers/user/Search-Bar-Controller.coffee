@@ -12,7 +12,7 @@ angular.module('TM_App')
           $scope.ignore_Events       = false
           $scope.words               = []
 
-          $scope.$on 'clear_Search', ()->
+          $scope.$on 'clear_search', ()->
             $scope.text = ''
 
           $scope.$on 'clear_filter', (event, filter_Id)->

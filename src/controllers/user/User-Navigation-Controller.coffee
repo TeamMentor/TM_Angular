@@ -1,8 +1,9 @@
 angular.module('TM_App')
-       .controller 'User_Navigation_Controller', ($scope, $state, $timeout)->
+       .controller 'User_Navigation_Controller', ($scope, $state, $timeout, $window)->
 
           $scope.open_Query_State = ->
-            $state.go('index')
+            $window.location.href = '/angular/user/index'     # for now reload the whole thing
+            #$state.go('index')
 
           $scope.show_Loading_Image = false
 

@@ -31,7 +31,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
       expect(@.$$listeners.keys().size()).to.equal 4
 
-      expect(@.$$listeners['clear_Search'    ][0]).to.be.an('function')
+      expect(@.$$listeners['clear_search'    ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filter'    ][0]).to.be.an('function')
       expect(@.$$listeners['apply_filter'    ][0]).to.be.an('function')
       expect(@.$$listeners['view_model_data' ][0]).to.be.an('function')
@@ -40,10 +40,10 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       expect(@.select_Technology).to.be.an('function')
       expect(@.submit           ).to.be.an('function')
 
-  it '$on clear_Search', ->
+  it '$on clear_search', ->
     using scope, ->
       @.text = 'aaaa'
-      @.$broadcast 'clear_Search'
+      @.$broadcast 'clear_search'
       @.text.assert_Is ''
 
   it '$on clear_filter', ->

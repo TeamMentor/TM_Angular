@@ -1579,7 +1579,7 @@
     $scope.text = '';
     $scope.ignore_Events = false;
     $scope.words = [];
-    $scope.$on('clear_Search', function() {
+    $scope.$on('clear_search', function() {
       return $scope.text = '';
     });
     $scope.$on('clear_filter', function(event, filter_Id) {
@@ -1680,9 +1680,9 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $timeout) {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $timeout, $window) {
     $scope.open_Query_State = function() {
-      return $state.go('index');
+      return $window.location.href = '/angular/user/index';
     };
     $scope.show_Loading_Image = false;
     $scope.$on('http_start', function() {

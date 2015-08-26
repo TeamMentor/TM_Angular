@@ -3,6 +3,10 @@ angular.module 'TM_App'
 
           console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
+          #$rootScope.$broadcast 'clear_search'
+          #$rootScope.$broadcast 'clear_filter'
+          #$rootScope.$broadcast 'clear_query'
+
           using $scope, ->
             @.history       = {}
             @.view_Filters  = false
@@ -23,7 +27,7 @@ angular.module 'TM_App'
 
             if $stateParams.query_Id
               query_Service.load_Query $stateParams.query_Id
-
               #query_Service.load_Query query_Service.index_Query, $stateParams.query_Id
             else
               query_Service.reload_Data()
+
