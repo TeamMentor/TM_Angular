@@ -3,6 +3,7 @@ angular.module('TM_App')
 
           $scope.login = ->
             $scope.errorMessage  = null
+            $scope.supportEmail  = false
             $scope.infoMessage  = "...logging in ..."
             TM_API.login $scope.username, $scope.password, (data)=>
               if data.result is 'OK'
@@ -12,10 +13,15 @@ angular.module('TM_App')
                   $window.location.href = '/angular/user/index'
               else
                 $scope.infoMessage  = null
-                $scope.supportEmail = true
+                if data?.viewModel?.errorMessage?.contains('please contact us at')
+                  $scope.supportEmail = true
                 $scope.errorMessage = data.viewModel?.errorMessage || 'Login Failed (Server error)'
 
           $scope.showErrorMessage =  ->
             return $scope.errorMessage
+
+          $scope.showSupportEmail = ->
+            return $scope.supportEmail
+
           $scope.showInfoMessage =  ->
             return $scope.infoMessage

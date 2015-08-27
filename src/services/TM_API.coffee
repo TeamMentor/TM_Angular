@@ -113,6 +113,20 @@ class TM_API
     .success (data)=>
       callback(data)
 
+  tmConfig :(callback)=>
+    url             = "/json/tm/config"
+    @.$http.get(url)
+    .success (data)=>
+      callback(data)
+
+  verifyInternalUser: (userEmail, callback)->
+    @tmConfig (config) =>
+      allowedEmailDomains              = config.options.tm_design?.allowedEmailDomains
+      email                            = userEmail
+      allowedEmailDomains?.some (domain)->
+        if email?.match(domain.toString())
+          callback config.options.tm_design?.githubContentUrl
+    callback null
 
 app.service 'TM_API', ($q, $http, $timeout)=>
   return new TM_API($q, $http, $timeout)
