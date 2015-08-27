@@ -126,6 +126,7 @@ class TM_API
       allowedEmailDomains?.some (domain)->
         if email?.match(domain.toString())
           callback config.githubContentUrl
+          
     callback null
 
 app.service 'TM_API', ($q, $http, $timeout)=>
