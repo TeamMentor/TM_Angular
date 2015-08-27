@@ -15,6 +15,10 @@ app.config ($stateProvider, routes_Names) ->
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"
 
 
+  $stateProvider.state 'logout'    ,
+    url        : "/logout"
+    controller : 'Logout_Controller'
+    
   $stateProvider.state 'article',
     url        : "/article/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article'
@@ -33,11 +37,7 @@ app.config ($stateProvider, routes_Names) ->
     #controller : 'Index_Controller'
     templateUrl: '/angular/jade-html/views/user/index'
 
-  $stateProvider.state 'logout'    ,
-    url        : "/logout"
-    controller : 'Logout_Controller'
-
-app.run ($rootScope, $location,$window,TM_API,routes_Names) =>
+app.run ($rootScope,$window,TM_API,routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
     if routes_Names.views.guest.indexOf(next.name) > -1 || next.name =="docs"
       return

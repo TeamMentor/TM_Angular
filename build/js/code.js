@@ -514,6 +514,10 @@
         templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
     }
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
     $stateProvider.state('article', {
       url: "/article/:article_Id/:article_Title",
       templateUrl: '/angular/jade-html/views/user/article'
@@ -526,18 +530,14 @@
       url: "/article-box/:article_Id/:article_Title",
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
-    $stateProvider.state('index_query_id', {
+    return $stateProvider.state('index_query_id', {
       url: "/index/:query_Id",
       templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
     });
   });
 
   app.run((function(_this) {
-    return function($rootScope, $location, $window, TM_API, routes_Names) {
+    return function($rootScope, $window, TM_API, routes_Names) {
       $rootScope.$on('$stateChangeStart', function(event, next, current) {
         if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
 
