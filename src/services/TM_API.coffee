@@ -26,8 +26,7 @@ class TM_API
     else
       url     = "/api/data/query_view_model/#{id}/#{from}/#{to}"
     if @.cache_Query_View_Model[url]
-      @.$timeout =>
-        callback @.cache_Query_View_Model[url]
+      callback @.cache_Query_View_Model[url]
     else
       @.$http.get url
              .success (data)=>

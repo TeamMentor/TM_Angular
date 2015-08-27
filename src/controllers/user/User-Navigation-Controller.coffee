@@ -8,7 +8,6 @@ angular.module('TM_App')
             if $state.current?.name is 'index'
               $rootScope.$broadcast 'clear_search'
               $rootScope.$broadcast 'clear_filter', 'All'
-              $rootScope.$broadcast 'clear_query'
               query_Service.reload_Data()
             else
               $state.go('index')

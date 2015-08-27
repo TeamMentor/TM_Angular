@@ -799,8 +799,7 @@
       this.$http = http;
       this.$timeout = timeout;
       this.cache_Articles = {};
-      this.cache_Query_Tree = {};
-      this.cache_Query_Tree_Queries = {};
+      this.cache_Query_View_Model = {};
     }
 
     TM_API.prototype.get_Words = function(term, callback) {
@@ -838,11 +837,16 @@
       } else {
         url = "/api/data/query_view_model/" + id + "/" + from + "/" + to;
       }
-      return this.$http.get(url).success((function(_this) {
-        return function(data) {
-          return callback(data);
-        };
-      })(this));
+      if (this.cache_Query_View_Model[url]) {
+        return callback(this.cache_Query_View_Model[url]);
+      } else {
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.cache_Query_View_Model[url] = data;
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.query_from_text_search = function(text, callback) {
@@ -1231,6 +1235,7 @@
       this.history = {};
       this.current_Path = '';
       this.breadcrumbs = [];
+      this.visible = false;
       this.$on('clear_query', (function(_this) {
         return function(event, data) {
           _this.current_Path = '';
@@ -1239,6 +1244,7 @@
       })(this));
       this.$on('view_model_data', (function(_this) {
         return function(event, data) {
+          $scope.visible = true;
           if (data) {
             if (_this.current_Path.indexOf(data.id) === -1) {
               _this.current_Path += "/" + data.id;
@@ -1340,8 +1346,10 @@
   angular.module('TM_App').controller('Filters_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
     $scope.current_Filters = {};
     $scope.hide_Metadata = {};
+    $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
       var key, ref, result, results, value;
+      $scope.visible = true;
       if (data != null ? data.filters : void 0) {
         $scope.filters = data.filters;
         ref = $scope.filters;
@@ -1451,8 +1459,10 @@
     };
     $scope.query_Id = null;
     $scope.model = model;
+    $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
       var i, results, split;
+      $scope.visible = true;
       if (!(data != null ? data.size : void 0)) {
         return model.pages = null;
       } else {
@@ -1510,7 +1520,9 @@
 
 (function() {
   angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, $location) {
+    $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
+      $scope.visible = true;
       $scope.title = data.title;
       return $scope.containers = data.queries;
     });
@@ -1548,7 +1560,9 @@
     $scope.current_Page = 1;
     $scope.current_Page_Split = 10;
     $scope.results_Size = 0;
+    $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
+      $scope.visible = true;
       return $scope.results_Size = data != null ? data.size : void 0;
     });
     $scope.$on('set_page', (function(_this) {
@@ -1680,9 +1694,17 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $timeout, $window) {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $timeout, $rootScope, query_Service) {
+    console.log('in User_Navigation_Controller ' + new Date().getMilliseconds());
     $scope.open_Query_State = function() {
-      return $window.location.href = '/angular/user/index';
+      var ref;
+      if (((ref = $state.current) != null ? ref.name : void 0) === 'index') {
+        $rootScope.$broadcast('clear_search');
+        $rootScope.$broadcast('clear_filter', 'All');
+        return query_Service.reload_Data();
+      } else {
+        return $state.go('index');
+      }
     };
     $scope.show_Loading_Image = false;
     $scope.$on('http_start', function() {
