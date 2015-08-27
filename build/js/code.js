@@ -1009,13 +1009,12 @@
     TM_API.prototype.verifyInternalUser = function(userEmail, callback) {
       this.tmConfig((function(_this) {
         return function(config) {
-          var allowedEmailDomains, email, ref;
-          allowedEmailDomains = (ref = config.options.tm_design) != null ? ref.allowedEmailDomains : void 0;
+          var allowedEmailDomains, email;
+          allowedEmailDomains = config.allowedEmailDomains;
           email = userEmail;
           return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
-            var ref1;
             if (email != null ? email.match(domain.toString()) : void 0) {
-              return callback((ref1 = config.options.tm_design) != null ? ref1.githubContentUrl : void 0);
+              return callback(config.githubContentUrl);
             }
           }) : void 0;
         };
