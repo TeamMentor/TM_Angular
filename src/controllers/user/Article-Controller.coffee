@@ -1,7 +1,8 @@
 angular.module('TM_App')
        .controller 'Article_Controller', ($sce, $scope, $stateParams,$window, TM_API, icon_Service)=>
-          $scope.articleUrl   = $window.location.href
-          $scope.showFeedback = false
+          $scope.articleUrl    = $window.location.href
+          $scope.showFeedback  = false
+          $scope.articleLoaded = false
           TM_API.article $stateParams.article_Id, (article)->
             if !angular.isObject(article)
               return;
@@ -20,12 +21,16 @@ angular.module('TM_App')
             TM_API.currentuser (userProfile)->
               if (userProfile)
                 TM_API.verifyInternalUser userProfile.Email, (callback)->
+                  $scope.articleLoaded = true
                   if callback?
                     $scope.githubContentUrl = callback
                     $scope.showFeedback     = true
 
           $scope.showFeedbackBanner =  ->
             return $scope.showFeedback
+
+          $scope.fullArticleLoaded = ->
+            return $scope.articleLoaded
 
           $scope.showGeneralFeedback =  ->
             return !$scope.showFeedback

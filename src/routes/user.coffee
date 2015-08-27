@@ -18,7 +18,7 @@ app.config ($stateProvider, routes_Names) ->
   $stateProvider.state 'logout'    ,
     url        : "/logout"
     controller : 'Logout_Controller'
-    
+
   $stateProvider.state 'article',
     url        : "/article/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article'

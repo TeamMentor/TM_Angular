@@ -1196,6 +1196,7 @@
     return function($sce, $scope, $stateParams, $window, TM_API, icon_Service) {
       $scope.articleUrl = $window.location.href;
       $scope.showFeedback = false;
+      $scope.articleLoaded = false;
       TM_API.article($stateParams.article_Id, function(article) {
         var id, title;
         if (!angular.isObject(article)) {
@@ -1212,6 +1213,7 @@
         return TM_API.currentuser(function(userProfile) {
           if (userProfile) {
             return TM_API.verifyInternalUser(userProfile.Email, function(callback) {
+              $scope.articleLoaded = true;
               if (callback != null) {
                 $scope.githubContentUrl = callback;
                 return $scope.showFeedback = true;
@@ -1222,6 +1224,9 @@
       });
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
+      };
+      $scope.fullArticleLoaded = function() {
+        return $scope.articleLoaded;
       };
       $scope.showGeneralFeedback = function() {
         return !$scope.showFeedback;
