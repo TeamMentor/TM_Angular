@@ -1095,10 +1095,11 @@
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
+      $scope.supportEmail = false;
       $scope.infoMessage = "...logging in ...";
       return TM_API.login($scope.username, $scope.password, (function(_this) {
         return function(data) {
-          var ref;
+          var ref, ref1, ref2;
           if (data.result === 'OK') {
             $scope.infoMessage = 'Login OK';
             $rootScope.loggedInUser = true;
@@ -1107,14 +1108,19 @@
             });
           } else {
             $scope.infoMessage = null;
-            $scope.supportEmail = true;
-            return $scope.errorMessage = ((ref = data.viewModel) != null ? ref.errorMessage : void 0) || 'Login Failed (Server error)';
+            if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
+              $scope.supportEmail = true;
+            }
+            return $scope.errorMessage = ((ref2 = data.viewModel) != null ? ref2.errorMessage : void 0) || 'Login Failed (Server error)';
           }
         };
       })(this));
     };
     $scope.showErrorMessage = function() {
       return $scope.errorMessage;
+    };
+    $scope.showSupportEmail = function() {
+      return $scope.supportEmail;
     };
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
