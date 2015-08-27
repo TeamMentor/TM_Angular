@@ -7,8 +7,9 @@ class TM_API
     @.$http            = http
     @.$timeout         = timeout
     @.cache_Articles           = {}
-    @.cache_Query_Tree         = {}
-    @.cache_Query_Tree_Queries = {}
+    #@.cache_Query_Tree         = {}
+    #@.cache_Query_Tree_Queries = {}
+    @.cache_Query_View_Model   = {}
 
 
   get_Words: (term, callback)=>
@@ -24,9 +25,13 @@ class TM_API
       url     = "/api/data/query_view_model_filtered/#{id}/#{filters}/#{from}/#{to}"
     else
       url     = "/api/data/query_view_model/#{id}/#{from}/#{to}"
-    @.$http.get url
-           .success (data)=>
-              callback(data)
+    if @.cache_Query_View_Model[url]
+      callback @.cache_Query_View_Model[url]
+    else
+      @.$http.get url
+             .success (data)=>
+                @.cache_Query_View_Model[url] = data
+                callback(data)
 
   query_from_text_search: (text, callback)=>
     url     = "/api/search/query_from_text_search/#{text}"

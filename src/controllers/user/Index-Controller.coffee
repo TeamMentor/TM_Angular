@@ -3,10 +3,6 @@ angular.module 'TM_App'
 
           console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
-          #$rootScope.$broadcast 'clear_search'
-          #$rootScope.$broadcast 'clear_filter'
-          #$rootScope.$broadcast 'clear_query'
-
           using $scope, ->
             @.history       = {}
             @.view_Filters  = false

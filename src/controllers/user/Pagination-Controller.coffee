@@ -12,8 +12,10 @@ angular.module('TM_App')
 
           $scope.query_Id  =  null
           $scope.model     = model
+          $scope.visible   = false
 
           $scope.$on 'view_model_data', (event, data)->
+            $scope.visible = true
 
             if not (data?.size)
               model.pages = null
