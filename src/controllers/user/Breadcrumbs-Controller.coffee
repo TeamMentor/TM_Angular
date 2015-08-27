@@ -7,12 +7,15 @@ angular.module 'TM_App'
             @.history      = {}
             @.current_Path = ''
             @.breadcrumbs  = []
+            @.visible      = false
 
             @.$on 'clear_query', (event, data)=>
               @.current_Path = ''
               @.breadcrumbs  = []
 
             @.$on 'view_model_data', (event, data)=>
+              $scope.visible = true
+
               if data
                 if @.current_Path.indexOf(data.id) is -1
                   @.current_Path += "/#{data.id}"

@@ -5,9 +5,11 @@ angular.module('TM_App')
 
           $scope.current_Filters = {}
           $scope.hide_Metadata  = {}
+          $scope.visible        = false
 
 
           $scope.$on 'view_model_data', (event, data)->
+            $scope.visible = true
             if data?.filters
               $scope.filters = data.filters
               for key, value of $scope.filters
