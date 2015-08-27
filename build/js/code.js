@@ -780,6 +780,7 @@
 
   TM_API = (function() {
     function TM_API(q, http, timeout) {
+      this.tmConfig = bind(this.tmConfig, this);
       this.popular_Search = bind(this.popular_Search, this);
       this.pwd_reset = bind(this.pwd_reset, this);
       this.currentuser = bind(this.currentuser, this);
@@ -991,6 +992,33 @@
       })(this));
     };
 
+    TM_API.prototype.tmConfig = function(callback) {
+      var url;
+      url = "/json/tm/config";
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
+    };
+
+    TM_API.prototype.verifyInternalUser = function(userEmail, callback) {
+      this.tmConfig((function(_this) {
+        return function(config) {
+          var allowedEmailDomains, email, ref;
+          allowedEmailDomains = (ref = config.options.tm_design) != null ? ref.allowedEmailDomains : void 0;
+          email = userEmail;
+          return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
+            var ref1;
+            if (email != null ? email.match(domain.toString()) : void 0) {
+              return callback((ref1 = config.options.tm_design) != null ? ref1.githubContentUrl : void 0);
+            }
+          }) : void 0;
+        };
+      })(this));
+      return callback(null);
+    };
+
     return TM_API;
 
   })();
@@ -1146,52 +1174,72 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Article_Controller', function($sce, $scope, $stateParams, TM_API, icon_Service) {
-    TM_API.article($stateParams.article_Id, function(article) {
-      var id, title;
-      if (!angular.isObject(article)) {
-        return;
-      }
-      id = article.id.remove('article-');
-      title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-      article.url = '/angular/user/article/' + id + '/' + title;
-      $scope.article = article;
-      $scope.article_Html = $sce.trustAsHtml(article.article_Html);
-      $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-      $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-      return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-    });
-    TM_API.recent_Articles(function(articles) {
-      $scope.recent_Articles = [];
-      if ((articles != null)) {
-        return angular.forEach(articles, function(article) {
-          var id, title;
-          article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-          article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-          article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-          id = article.id.remove('article-');
-          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-          article.url = '/angular/user/article/' + id + '/' + title;
-          return $scope.recent_Articles.push(article);
+  angular.module('TM_App').controller('Article_Controller', (function(_this) {
+    return function($sce, $scope, $stateParams, $window, TM_API, icon_Service) {
+      $scope.articleUrl = $window.location.href;
+      $scope.showFeedback = false;
+      TM_API.article($stateParams.article_Id, function(article) {
+        var id, title;
+        if (!angular.isObject(article)) {
+          return;
+        }
+        id = article.id.remove('article-');
+        title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+        article.url = '/angular/user/article/' + id + '/' + title;
+        $scope.article = article;
+        $scope.article_Html = $sce.trustAsHtml(article.article_Html);
+        $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+        $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+        $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+        return TM_API.currentuser(function(userProfile) {
+          if (userProfile) {
+            return TM_API.verifyInternalUser(userProfile.Email, function(callback) {
+              if (callback != null) {
+                $scope.githubContentUrl = callback;
+                return $scope.showFeedback = true;
+              }
+            });
+          }
         });
-      }
-    });
-    return TM_API.top_Articles(function(articles) {
-      $scope.top_Articles = [];
-      if ((articles != null)) {
-        return angular.forEach(articles, function(article) {
-          var id, title;
-          article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-          article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-          article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-          id = article.id.remove('article-');
-          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-          article.url = '/angular/user/article/' + id + '/' + title;
-          return $scope.top_Articles.push(article);
-        });
-      }
-    });
-  });
+      });
+      $scope.showFeedbackBanner = function() {
+        return $scope.showFeedback;
+      };
+      $scope.showGeneralFeedback = function() {
+        return !$scope.showFeedback;
+      };
+      TM_API.recent_Articles(function(articles) {
+        $scope.recent_Articles = [];
+        if ((articles != null)) {
+          return angular.forEach(articles, function(article) {
+            var id, title;
+            article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+            article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+            article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+            id = article.id.remove('article-');
+            title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+            article.url = '/angular/user/article/' + id + '/' + title;
+            return $scope.recent_Articles.push(article);
+          });
+        }
+      });
+      return TM_API.top_Articles(function(articles) {
+        $scope.top_Articles = [];
+        if ((articles != null)) {
+          return angular.forEach(articles, function(article) {
+            var id, title;
+            article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+            article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+            article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+            id = article.id.remove('article-');
+            title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+            article.url = '/angular/user/article/' + id + '/' + title;
+            return $scope.top_Articles.push(article);
+          });
+        }
+      });
+    };
+  })(this));
 
 }).call(this);
 
