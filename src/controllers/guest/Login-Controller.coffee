@@ -11,11 +11,11 @@ angular.module('TM_App')
                 $timeout ->
                   $window.location.href = '/angular/user/index'
               else
-                $scope.infoMessage = null
+                $scope.infoMessage  = null
+                $scope.supportEmail = true
                 $scope.errorMessage = data.viewModel?.errorMessage || 'Login Failed (Server error)'
 
           $scope.showErrorMessage =  ->
             return $scope.errorMessage
-
           $scope.showInfoMessage =  ->
             return $scope.infoMessage
