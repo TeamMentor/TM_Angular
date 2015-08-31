@@ -37,15 +37,14 @@ app.config ($stateProvider, routes_Names) ->
     #controller : 'Index_Controller'
     templateUrl: '/angular/jade-html/views/user/index'
 
-app.run ($rootScope,$window,TM_API,routes_Names) =>
+app.run ($rootScope,$window,AuthService,routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
     if routes_Names.views.guest.indexOf(next.name) > -1 || next.name =="docs"
       return
     else
-      TM_API.currentuser (data) ->
-        if data?.UserEnabled
-          return
-        else
-          $window.location.href = '/angular/guest/login'
+      userInfo = AuthService.currentUser()
+      if (userInfo? && userInfo?.UserEnabled)
         return
+      else
+        $window.location.href = '/angular/guest/login'
   return
