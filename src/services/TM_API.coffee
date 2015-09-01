@@ -121,11 +121,12 @@ class TM_API
 
   verifyInternalUser: (userEmail, callback)->
     @tmConfig (config) =>
-      allowedEmailDomains              = config.options.tm_design?.allowedEmailDomains
+      allowedEmailDomains              = config.allowedEmailDomains
       email                            = userEmail
       allowedEmailDomains?.some (domain)->
         if email?.match(domain.toString())
-          callback config.options.tm_design?.githubContentUrl
+          callback config.githubContentUrl
+          
     callback null
 
 app.service 'TM_API', ($q, $http, $timeout)=>

@@ -1,11 +1,11 @@
 angular.module('TM_App')
-       .controller 'Login_Controller', ($scope, TM_API, $window, $timeout,$rootScope)->
+       .controller 'Login_Controller', ($scope, TM_API,AuthService, $window, $timeout,$rootScope)->
 
           $scope.login = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
-            $scope.infoMessage  = "...logging in ..."
-            TM_API.login $scope.username, $scope.password, (data)=>
+            $scope.infoMessage   = "...logging in ..."
+            AuthService.login  $scope.username, $scope.password, (data)=>
               if data.result is 'OK'
                 $scope.infoMessage  = 'Login OK'
                 $rootScope.loggedInUser =true

@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'User_Navigation_Controller', ($scope, $state, $timeout, $rootScope, query_Service)->
+       .controller 'User_Navigation_Controller', ($scope, $state,$window, $timeout, $rootScope, query_Service)->
 
           console.log 'in User_Navigation_Controller ' + new Date().getMilliseconds()
 
@@ -10,7 +10,8 @@ angular.module('TM_App')
               $rootScope.$broadcast 'clear_filter', 'All'
               query_Service.reload_Data()
             else
-              $state.go('index')
+              $timeout ->
+                $window.location.href = '/angular/user/index'
 
           $scope.show_Loading_Image = false
 
