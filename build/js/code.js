@@ -1139,6 +1139,94 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, AuthService, $window, $timeout, $rootScope) {
+    $scope.login = function() {
+      $scope.errorMessage = null;
+      $scope.supportEmail = false;
+      $scope.infoMessage = "...logging in ...";
+      return AuthService.login($scope.username, $scope.password, (function(_this) {
+        return function(data) {
+          var ref, ref1, ref2;
+          if (data.result === 'OK') {
+            $scope.infoMessage = 'Login OK';
+            $rootScope.loggedInUser = true;
+            return $timeout(function() {
+              return $window.location.href = '/angular/user/index';
+            });
+          } else {
+            $scope.infoMessage = null;
+            if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
+              $scope.supportEmail = true;
+            }
+            return $scope.errorMessage = ((ref2 = data.viewModel) != null ? ref2.errorMessage : void 0) || 'Login Failed (Server error)';
+          }
+        };
+      })(this));
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    $scope.showSupportEmail = function() {
+      return $scope.supportEmail;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.infoMessage = "...sending request ...";
+      return TM_API.pwd_reset($scope.email, function(data) {
+        return $scope.infoMessage = data != null ? data.message : void 0;
+      });
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.supportEmail = false;
+      $scope.infoMessage = "...Signing  up ...";
+      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref, ref1, ref2;
+        if ((data != null ? data.result : void 0) === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return $window.location.href = '/angular/user/main';
+          });
+        } else {
+          $scope.infoMessage = null;
+          if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
+            $scope.supportEmail = true;
+          }
+          return $scope.errorMessage = (data != null ? (ref2 = data.viewModel) != null ? ref2.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    $scope.showSupportEmail = function() {
+      return $scope.supportEmail;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Article_Box_Controller', function($sce, $scope, icon_Service) {
     return using($scope, function() {
       var ref, ref1, ref2;
@@ -1721,7 +1809,7 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $timeout, $rootScope, query_Service) {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $window, $timeout, $rootScope, query_Service) {
     console.log('in User_Navigation_Controller ' + new Date().getMilliseconds());
     $scope.open_Query_State = function() {
       var ref;
@@ -1730,7 +1818,9 @@
         $rootScope.$broadcast('clear_filter', 'All');
         return query_Service.reload_Data();
       } else {
-        return $state.go('index');
+        return $timeout(function() {
+          return $window.location.href = '/angular/user/index';
+        });
       }
     };
     $scope.show_Loading_Image = false;
@@ -1742,94 +1832,6 @@
         return $scope.show_Loading_Image = false;
       });
     });
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, AuthService, $window, $timeout, $rootScope) {
-    $scope.login = function() {
-      $scope.errorMessage = null;
-      $scope.supportEmail = false;
-      $scope.infoMessage = "...logging in ...";
-      return AuthService.login($scope.username, $scope.password, (function(_this) {
-        return function(data) {
-          var ref, ref1, ref2;
-          if (data.result === 'OK') {
-            $scope.infoMessage = 'Login OK';
-            $rootScope.loggedInUser = true;
-            return $timeout(function() {
-              return $window.location.href = '/angular/user/index';
-            });
-          } else {
-            $scope.infoMessage = null;
-            if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
-              $scope.supportEmail = true;
-            }
-            return $scope.errorMessage = ((ref2 = data.viewModel) != null ? ref2.errorMessage : void 0) || 'Login Failed (Server error)';
-          }
-        };
-      })(this));
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    $scope.showSupportEmail = function() {
-      return $scope.supportEmail;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.get_Password = function() {
-      $scope.infoMessage = "...sending request ...";
-      return TM_API.pwd_reset($scope.email, function(data) {
-        return $scope.infoMessage = data != null ? data.message : void 0;
-      });
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.signup = function() {
-      $scope.errorMessage = null;
-      $scope.supportEmail = false;
-      $scope.infoMessage = "...Signing  up ...";
-      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
-        var ref, ref1, ref2;
-        if ((data != null ? data.result : void 0) === 'OK') {
-          $scope.infoMessage = 'Signup OK';
-          return $timeout(function() {
-            return $window.location.href = '/angular/user/main';
-          });
-        } else {
-          $scope.infoMessage = null;
-          if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
-            $scope.supportEmail = true;
-          }
-          return $scope.errorMessage = (data != null ? (ref2 = data.viewModel) != null ? ref2.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
-        }
-      });
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    $scope.showSupportEmail = function() {
-      return $scope.supportEmail;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
   });
 
 }).call(this);
