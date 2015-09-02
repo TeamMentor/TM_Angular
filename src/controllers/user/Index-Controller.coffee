@@ -1,5 +1,5 @@
 angular.module 'TM_App'
-       .controller 'Index_Controller', ($scope, query_Service, $stateParams, $location, $rootScope,$timeout)->
+       .controller 'Index_Controller', ($scope, query_Service, $stateParams ,  $location,$state, $window, $rootScope , $timeout)->
 
           console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
@@ -21,9 +21,30 @@ angular.module 'TM_App'
                 @.column_Middle = 'col-9'
                 @.column_Right  = 'col-0'
 
-            if $stateParams.query_Id
-              query_Service.load_Query $stateParams.query_Id
-              #query_Service.load_Query query_Service.index_Query, $stateParams.query_Id
-            else
-              query_Service.reload_Data()
+            $scope.load_Index_Data = ()->
+              search_Text = $location?.search?().text
+              query_Id    = $location?.search?().query
+              filters     = $location?.search?().filters
 
+              if search_Text
+                $rootScope.$broadcast 'set_search', search_Text
+              else if query_Id
+                $rootScope.$broadcast 'apply_query', query_Id
+                query_Service.load_Query query_Id, filters
+                $rootScope.$broadcast 'apply_filter', filters
+              else
+                query_Service.reload_Data()
+
+            $scope.update_Location_Url = (query_Id, filters)->
+              url = 'index?'
+              url += "query=#{query_Id}"   if query_Id
+              url += "&filters=#{filters}"  if filters
+
+              if url isnt 'index?query=query-6234f2d47eb7' # don't update url for the index query
+                $timeout ->
+                  window.history.pushState('Object', 'Title', url)
+
+            $rootScope.$on 'loading_query', (event, query_Id, filters, from, to)->
+              $scope.update_Location_Url query_Id, filters
+
+            $scope.load_Index_Data()

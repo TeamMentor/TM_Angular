@@ -15,6 +15,7 @@ class Query_Service
   load_Query: (query_Id, filters, from, to )=>
     from = from || @.default_Page_From
     to   = to || @.default_Page_To
+    @.$rootScope.$broadcast 'loading_query', query_Id, filters, from, to
     @.TM_API.query_view_model query_Id, filters, from, to, (data)=>
       @.$rootScope.$broadcast 'view_model_data', data
 

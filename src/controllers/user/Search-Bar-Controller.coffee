@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'Search_Bar_Controller', ($rootScope, $scope, $state, query_Service, TM_API)->
+       .controller 'Search_Bar_Controller', ($rootScope, $scope, $state, $location, $timeout, query_Service, TM_API)->
 
           #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
 
@@ -60,19 +60,16 @@ angular.module('TM_App')
               $scope.ignore_Events = false
 
           $scope.submit = ()->
-            $state.go('index')
+            if $state.current?.name isnt 'index'
+              $state.go('index')
+
             $rootScope.$broadcast 'clear_query', null
+
             if $scope.text is ''
               $rootScope.$broadcast 'apply_query', query_Service.index_Query
             else
               TM_API.query_from_text_search $scope.text, (query_id)->
                 $rootScope.$broadcast 'apply_query', query_id
-
-          #$scope.with_Focus = (value)=>
-          #  if value
-          #    $rootScope.$broadcast 'search_term', $scope.text
-          #  else
-          #    $rootScope.$broadcast 'search_term', ''
 
           $scope.get_Words = (term)->
             $rootScope.$broadcast 'search_term', term
