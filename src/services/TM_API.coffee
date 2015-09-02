@@ -1,15 +1,19 @@
 app     = angular.module('TM_App')
 
 class TM_API
-  constructor: (q, http,timeout)->
+  constructor: (q, http,timeout,state)->
     #console.log 'in TM_API CTOR'
-    @.$q               = q
-    @.$http            = http
-    @.$timeout         = timeout
-    @.cache_Articles           = {}
+    @.$q                        = q
+    @.$http                     = http
+    @.$timeout                  = timeout
+    @.cache_Articles            = {}
     #@.cache_Query_Tree         = {}
     #@.cache_Query_Tree_Queries = {}
-    @.cache_Query_View_Model   = {}
+    @.cache_Query_View_Model    = {}
+    @.currentUser               = null
+    @.config                    = null
+    @.tmrecentArticles          = null
+    @.topArticles               = null
 
 
   get_Words: (term, callback)=>
@@ -74,12 +78,22 @@ class TM_API
         callback(data)
 
   recent_Articles:  (callback)=>
-    url = "/json/recentarticles"
-    @.$http.get(url).success callback
+    if @.tmrecentArticles
+      callback @.tmrecentArticles
+    else
+      url = "/json/recentarticles"
+      @.$http.get(url).success (data) =>
+        @.tmrecentArticles = data
+        callback data
 
   top_Articles:  (callback)=>
-    url = "/json/toparticles"
-    @.$http.get(url).success callback
+    if @.topArticles
+      callback @.topArticles
+    else
+      url = "/json/toparticles"
+      @.$http.get(url).success (data) =>
+        @.topArticles = data
+        callback data
 
   login:  (username, password, callback)=>
     url      = "/json/user/login"
@@ -99,8 +113,12 @@ class TM_API
 
   currentuser :(callback) =>
     url      = "/json/user/currentuser"
-    @.$http.get(url).success (data)=>
-      callback(data)
+    if  @.currentUser
+      callback  @.currentUser
+    else
+      @.$http.get(url).success (data)=>
+        @.currentUser = data
+        callback(data)
 
   pwd_reset: (email, callback)=>
     url      = "/json/user/pwd_reset"
@@ -115,17 +133,20 @@ class TM_API
 
   tmConfig :(callback)=>
     url             = "/json/tm/config"
-    @.$http.get(url)
-    .success (data)=>
-      callback(data)
+    if @.config
+      callback @.config
+    else
+      @.$http.get(url).success (data) =>
+        @.config  = data
+        callback(data)
 
   verifyInternalUser: (userEmail, callback)->
-    @tmConfig (config) =>
-      allowedEmailDomains              = config.allowedEmailDomains
+    @tmConfig (configFile) =>
+      allowedEmailDomains              = configFile.allowedEmailDomains
       email                            = userEmail
       allowedEmailDomains?.some (domain)->
         if email?.match(domain.toString())
-          callback config.githubContentUrl
+          callback configFile.githubContentUrl
           
     callback null
 

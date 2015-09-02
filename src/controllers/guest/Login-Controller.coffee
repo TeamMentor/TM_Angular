@@ -1,16 +1,20 @@
 angular.module('TM_App')
-       .controller 'Login_Controller', ($scope, TM_API,AuthService, $window, $timeout,$rootScope)->
+       .controller 'Login_Controller', ($scope, TM_API, $window, $timeout,$rootScope)->
 
           $scope.login = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
             $scope.infoMessage   = "...logging in ..."
-            AuthService.login  $scope.username, $scope.password, (data)=>
+            TM_API.login  $scope.username, $scope.password, (data)=>
               if data.result is 'OK'
-                $scope.infoMessage  = 'Login OK'
-                $rootScope.loggedInUser =true
-                $timeout ->
-                  $window.location.href = '/angular/user/index'
+                TM_API.currentuser (userInfo)->
+                  if (userInfo?.UserEnabled)
+                    $scope.infoMessage  = 'Login OK'
+                    $rootScope.loggedInUser =true
+                    $timeout ->
+                      $window.location.href = '/angular/user/index'
+                  else
+                    $scope.errorMessage = 'User account is disabled'
               else
                 $scope.infoMessage  = null
                 if data?.viewModel?.errorMessage?.contains('please contact us at')

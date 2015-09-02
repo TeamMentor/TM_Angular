@@ -537,70 +537,22 @@
   });
 
   app.run((function(_this) {
-    return function($rootScope, $window, AuthService, routes_Names) {
+    return function($rootScope, $window, TM_API, routes_Names) {
       $rootScope.$on('$stateChangeStart', function(event, next, current) {
-        var userInfo;
         if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
 
         } else {
-          userInfo = AuthService.currentUser();
-          if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
+          return TM_API.currentuser(function(userInfo) {
+            if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
 
-          } else {
-            return $window.location.href = '/angular/guest/login';
-          }
+            } else {
+              return $window.location.href = '/angular/guest/login';
+            }
+          });
         }
       });
     };
   })(this));
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.factory('AuthService', function($http, $q, $window, TM_API) {
-    return {
-      login: function(userName, password, callback) {
-        var deferred;
-        deferred = $q.defer();
-        $window.sessionStorage["userInfo"] = null;
-        TM_API.login(userName, password, (function(_this) {
-          return function(data) {
-            deferred.resolve(data);
-            if (data) {
-              return TM_API.currentuser(function(userData) {
-                var userInfo;
-                if (userData) {
-                  userInfo = userData;
-                  $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
-                  deferred.resolve(userInfo);
-                  return callback(data);
-                } else {
-                  return deferred.reject;
-                }
-              });
-            } else {
-              return deferred.reject;
-            }
-          };
-        })(this));
-        return;
-        return deferred.promise;
-      },
-      currentUser: function() {
-        var userInfo;
-        if ($window.sessionStorage["userInfo"]) {
-          userInfo = JSON.parse($window.sessionStorage["userInfo"]);
-          return userInfo;
-        } else {
-          return null;
-        }
-      }
-    };
-  });
 
 }).call(this);
 
@@ -827,7 +779,7 @@
   app = angular.module('TM_App');
 
   TM_API = (function() {
-    function TM_API(q, http, timeout) {
+    function TM_API(q, http, timeout, state) {
       this.tmConfig = bind(this.tmConfig, this);
       this.popular_Search = bind(this.popular_Search, this);
       this.pwd_reset = bind(this.pwd_reset, this);
@@ -849,6 +801,10 @@
       this.$timeout = timeout;
       this.cache_Articles = {};
       this.cache_Query_View_Model = {};
+      this.currentUser = null;
+      this.config = null;
+      this.tmrecentArticles = null;
+      this.topArticles = null;
     }
 
     TM_API.prototype.get_Words = function(term, callback) {
@@ -970,14 +926,32 @@
 
     TM_API.prototype.recent_Articles = function(callback) {
       var url;
-      url = "/json/recentarticles";
-      return this.$http.get(url).success(callback);
+      if (this.tmrecentArticles) {
+        return callback(this.tmrecentArticles);
+      } else {
+        url = "/json/recentarticles";
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.tmrecentArticles = data;
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.top_Articles = function(callback) {
       var url;
-      url = "/json/toparticles";
-      return this.$http.get(url).success(callback);
+      if (this.topArticles) {
+        return callback(this.topArticles);
+      } else {
+        url = "/json/toparticles";
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.topArticles = data;
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.login = function(username, password, callback) {
@@ -1018,11 +992,16 @@
     TM_API.prototype.currentuser = function(callback) {
       var url;
       url = "/json/user/currentuser";
-      return this.$http.get(url).success((function(_this) {
-        return function(data) {
-          return callback(data);
-        };
-      })(this));
+      if (this.currentUser) {
+        return callback(this.currentUser);
+      } else {
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.currentUser = data;
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.pwd_reset = function(email, callback) {
@@ -1047,22 +1026,27 @@
     TM_API.prototype.tmConfig = function(callback) {
       var url;
       url = "/json/tm/config";
-      return this.$http.get(url).success((function(_this) {
-        return function(data) {
-          return callback(data);
-        };
-      })(this));
+      if (this.config) {
+        return callback(this.config);
+      } else {
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            _this.config = data;
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.verifyInternalUser = function(userEmail, callback) {
       this.tmConfig((function(_this) {
-        return function(config) {
+        return function(configFile) {
           var allowedEmailDomains, email;
-          allowedEmailDomains = config.allowedEmailDomains;
+          allowedEmailDomains = configFile.allowedEmailDomains;
           email = userEmail;
           return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
             if (email != null ? email.match(domain.toString()) : void 0) {
-              return callback(config.githubContentUrl);
+              return callback(configFile.githubContentUrl);
             }
           }) : void 0;
         };
@@ -1139,19 +1123,25 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, AuthService, $window, $timeout, $rootScope) {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
       $scope.supportEmail = false;
       $scope.infoMessage = "...logging in ...";
-      return AuthService.login($scope.username, $scope.password, (function(_this) {
+      return TM_API.login($scope.username, $scope.password, (function(_this) {
         return function(data) {
           var ref, ref1, ref2;
           if (data.result === 'OK') {
-            $scope.infoMessage = 'Login OK';
-            $rootScope.loggedInUser = true;
-            return $timeout(function() {
-              return $window.location.href = '/angular/user/index';
+            return TM_API.currentuser(function(userInfo) {
+              if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
+                $scope.infoMessage = 'Login OK';
+                $rootScope.loggedInUser = true;
+                return $timeout(function() {
+                  return $window.location.href = '/angular/user/index';
+                });
+              } else {
+                return $scope.errorMessage = 'User account is disabled';
+              }
             });
           } else {
             $scope.infoMessage = null;
@@ -1240,12 +1230,12 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', (function(_this) {
-    return function($sce, $scope, $stateParams, $window, TM_API, AuthService, icon_Service) {
+    return function($sce, $scope, $stateParams, $window, TM_API, icon_Service) {
       $scope.articleUrl = $window.location.href;
       $scope.showFeedback = false;
       $scope.articleLoaded = false;
       TM_API.article($stateParams.article_Id, function(article) {
-        var id, title, userInfo;
+        var id, title;
         if (!angular.isObject(article)) {
           return;
         }
@@ -1257,16 +1247,17 @@
         $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
         $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
         $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-        userInfo = AuthService.currentUser();
-        if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
-          return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
-            $scope.articleLoaded = true;
-            if (callback != null) {
-              $scope.showFeedback = true;
-              return $scope.githubContentUrl = callback;
-            }
-          });
-        }
+        return TM_API.currentuser(function(userInfo) {
+          if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
+            return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
+              $scope.articleLoaded = true;
+              if (callback != null) {
+                $scope.showFeedback = true;
+                return $scope.githubContentUrl = callback;
+              }
+            });
+          }
+        });
       });
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
