@@ -1415,8 +1415,13 @@
     $scope.current_Filters = {};
     $scope.current_Query_Id = null;
     $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title) {
+      var icon;
       if (filter_Id) {
-        $scope.current_Filters[filter_Id] = filter_Title;
+        icon = $sce.trustAsHtml(icon_Service.element_Html(filter_Title));
+        $scope.current_Filters[filter_Id] = {
+          filter_Title: filter_Title,
+          filter_Icon: icon
+        };
         return $scope.refresh_Filters();
       }
     });
