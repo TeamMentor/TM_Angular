@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'Article_Controller', ($sce, $scope, $stateParams,$window, TM_API,AuthService, icon_Service)=>
+       .controller 'Article_Controller', ($sce, $scope, $stateParams,$window, TM_API, icon_Service)=>
           $scope.articleUrl    = $window.location.href
           $scope.showFeedback  = false
           $scope.articleLoaded = false
@@ -18,13 +18,13 @@ angular.module('TM_App')
             $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
             $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
 
-            userInfo = AuthService.currentUser()
-            if (userInfo? && userInfo?.UserEnabled)
-              TM_API.verifyInternalUser userInfo.Email, (callback)->
-                $scope.articleLoaded = true
-                if callback?
-                  $scope.showFeedback     = true
-                  $scope.githubContentUrl = callback
+            TM_API.currentuser (userInfo) ->
+              if (userInfo? && userInfo?.UserEnabled)
+                TM_API.verifyInternalUser userInfo.Email, (callback)->
+                  $scope.articleLoaded = true
+                  if callback?
+                    $scope.showFeedback     = true
+                    $scope.githubContentUrl = callback
 
           $scope.showFeedbackBanner =  ->
             return $scope.showFeedback
