@@ -1141,6 +1141,7 @@
                   return $window.location.href = '/angular/user/index';
                 });
               } else {
+                $scope.infoMessage = null;
                 return $scope.errorMessage = 'User account is disabled';
               }
             });
