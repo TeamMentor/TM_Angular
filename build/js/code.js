@@ -280,130 +280,6 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    return $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-  app.run((function(_this) {
-    return function($rootScope, $window, TM_API, routes_Names) {
-      $rootScope.$on('$stateChangeStart', function(event, next, current) {
-        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
-
-        } else {
-          return TM_API.currentuser(function(userInfo) {
-            if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
-
-            } else {
-              return $window.location.href = '/angular/guest/login';
-            }
-          });
-        }
-      });
-    };
-  })(this));
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
-    $scope.show_Doc = function(article) {
-      if (article) {
-        return TM_API.docs_Page(article.Id, function(article_Data) {
-          $scope.title = article.Title;
-          return $scope.content = $sce.trustAsHtml(article_Data.html);
-        });
-      }
-    };
-    $scope.load_Library = function() {
-      return TM_API.docs_Library(function(library) {
-        var ref, ref1, ref2;
-        if (library != null ? library.Views : void 0) {
-          $scope.Views = library.Views;
-          return $scope.show_Doc((ref = library.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? ref2.first() : void 0 : void 0 : void 0);
-        }
-      });
-    };
-    return $scope.load_Library();
-  });
-
-}).call(this);
-
-(function() {
   var app, routes_Names;
 
   app = angular.module('TM_App');
@@ -430,6 +306,30 @@
   };
 
   angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
+    $scope.show_Doc = function(article) {
+      if (article) {
+        return TM_API.docs_Page(article.Id, function(article_Data) {
+          $scope.title = article.Title;
+          return $scope.content = $sce.trustAsHtml(article_Data.html);
+        });
+      }
+    };
+    $scope.load_Library = function() {
+      return TM_API.docs_Library(function(library) {
+        var ref, ref1, ref2;
+        if (library != null ? library.Views : void 0) {
+          $scope.Views = library.Views;
+          return $scope.show_Doc((ref = library.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? ref2.first() : void 0 : void 0 : void 0);
+        }
+      });
+    };
+    return $scope.load_Library();
+  });
 
 }).call(this);
 
@@ -553,6 +453,106 @@
       }
     };
   });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
+    }
+    return results;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    return $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+  app.run((function(_this) {
+    return function($rootScope, $window, TM_API, routes_Names) {
+      $rootScope.$on('$stateChangeStart', function(event, next, current) {
+        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
+
+        } else {
+          return TM_API.currentuser(function(userInfo) {
+            if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
+
+            } else {
+              return $window.location.href = '/angular/guest/login';
+            }
+          });
+        }
+      });
+    };
+  })(this));
 
 }).call(this);
 
@@ -1231,12 +1231,50 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', (function(_this) {
-    return function($sce, $scope, $stateParams, $window, TM_API, icon_Service) {
+    return function($sce, $scope, $state, $stateParams, $window, TM_API, icon_Service) {
       $scope.articleUrl = $window.location.href;
       $scope.showFeedback = false;
       $scope.articleLoaded = false;
+      $scope.top_Articles = [];
+      $scope.recent_Articles = [];
+      $scope.topArticles = function() {
+        return TM_API.top_Articles(function(articles) {
+          if ((articles != null)) {
+            return angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              article.url = '/angular/user/article/' + id + '/' + title;
+              return $scope.top_Articles.push(article);
+            });
+          }
+        });
+      };
+      $scope.recentArticles = function() {
+        return TM_API.recent_Articles(function(articles) {
+          if ((articles != null)) {
+            return angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              article.url = '/angular/user/article/' + id + '/' + title;
+              return $scope.recent_Articles.push(article);
+            });
+          }
+        });
+      };
       TM_API.article($stateParams.article_Id, function(article) {
         var id, title;
+        if ($state.current.name === "main") {
+          $scope.topArticles();
+          $scope.recentArticles();
+        }
         if (!angular.isObject(article)) {
           return;
         }
@@ -1266,39 +1304,9 @@
       $scope.fullArticleLoaded = function() {
         return $scope.articleLoaded;
       };
-      $scope.showGeneralFeedback = function() {
+      return $scope.showGeneralFeedback = function() {
         return !$scope.showFeedback;
       };
-      TM_API.recent_Articles(function(articles) {
-        $scope.recent_Articles = [];
-        if ((articles != null)) {
-          return angular.forEach(articles, function(article) {
-            var id, title;
-            article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-            article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-            article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-            id = article.id.remove('article-');
-            title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-            article.url = '/angular/user/article/' + id + '/' + title;
-            return $scope.recent_Articles.push(article);
-          });
-        }
-      });
-      return TM_API.top_Articles(function(articles) {
-        $scope.top_Articles = [];
-        if ((articles != null)) {
-          return angular.forEach(articles, function(article) {
-            var id, title;
-            article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-            article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-            article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-            id = article.id.remove('article-');
-            title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-            article.url = '/angular/user/article/' + id + '/' + title;
-            return $scope.top_Articles.push(article);
-          });
-        }
-      });
     };
   })(this));
 
@@ -1642,7 +1650,7 @@
         return $scope.set_Page();
       }
     };
-    return $scope.$on('keyup', function(event, data) {
+    $scope.$on('keyup', function(event, data) {
       if (data.keyIdentifier === 'Left') {
         $scope.previous_Page();
       }
@@ -1650,6 +1658,16 @@
         return $scope.next_Page();
       }
     });
+    $scope.goToTop = function() {
+      var div;
+      div = document.querySelector('.scrolling-results');
+      return angular.element(div)[0].scrollTop = 0;
+    };
+    return $scope.ShowTopButton = function() {
+      var div;
+      div = document.querySelector('.scrolling-results');
+      return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight;
+    };
   });
 
 }).call(this);
