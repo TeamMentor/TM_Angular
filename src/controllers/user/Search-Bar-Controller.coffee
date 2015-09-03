@@ -31,7 +31,7 @@ angular.module('TM_App')
           $scope.$on 'view_model_data', (event, data)->
             $scope.query_Id = data?.id
             if not $scope.selected_Technology
-              $scope.technologies       = [{ title: 'All', id: query_Service.index_Query }]
+              $scope.technologies       = [{ title: 'All Technologies', id: query_Service.index_Query }]
               $scope.technologies_By_Id = { 'All' : $scope.technologies[0]}
               if data?.filters
                 for key,value of data.filters
@@ -51,7 +51,7 @@ angular.module('TM_App')
               $scope.ignore_Events = true                                     # prevent clear_filter from firing
               $rootScope.$broadcast 'clear_filter', $scope.previous_Filter_Id
 
-              if $scope.selected_Technology.title isnt 'All'
+              if $scope.selected_Technology.title isnt 'All Technologies'
                 $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
               else
                 $scope.submit()

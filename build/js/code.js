@@ -1780,7 +1780,7 @@
       if (!$scope.selected_Technology) {
         $scope.technologies = [
           {
-            title: 'All',
+            title: 'All Technologies',
             id: query_Service.index_Query
           }
         ];
@@ -1811,7 +1811,7 @@
       if ($scope.selected_Technology) {
         $scope.ignore_Events = true;
         $rootScope.$broadcast('clear_filter', $scope.previous_Filter_Id);
-        if ($scope.selected_Technology.title !== 'All') {
+        if ($scope.selected_Technology.title !== 'All Technologies') {
           $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology');
         } else {
           $scope.submit();
