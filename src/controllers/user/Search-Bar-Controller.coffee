@@ -11,7 +11,7 @@ angular.module('TM_App')
           $scope.text                = ''
           $scope.ignore_Events       = false
           $scope.words               = []
-
+          $scope.searchPlaceholder   = "Search All of TEAM Mentor"
           $scope.$on 'clear_search', ()->
             $scope.text = ''
 
@@ -47,12 +47,14 @@ angular.module('TM_App')
             $scope.submit()
 
           $scope.select_Technology = ()->
+            $scope.searchPlaceholder = "Search All of TEAM Mentor"
             if $scope.selected_Technology
               $scope.ignore_Events = true                                     # prevent clear_filter from firing
               $rootScope.$broadcast 'clear_filter', $scope.previous_Filter_Id
 
               if $scope.selected_Technology.title isnt 'All Technologies'
                 $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
+                $scope.searchPlaceholder = "Search " + $scope.selected_Technology.title
               else
                 $scope.submit()
 

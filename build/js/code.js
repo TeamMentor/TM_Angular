@@ -1752,6 +1752,7 @@
     $scope.text = '';
     $scope.ignore_Events = false;
     $scope.words = [];
+    $scope.searchPlaceholder = "Search All of TEAM Mentor";
     $scope.$on('clear_search', function() {
       return $scope.text = '';
     });
@@ -1808,11 +1809,13 @@
       return $scope.submit();
     });
     $scope.select_Technology = function() {
+      $scope.searchPlaceholder = "Search All of TEAM Mentor";
       if ($scope.selected_Technology) {
         $scope.ignore_Events = true;
         $rootScope.$broadcast('clear_filter', $scope.previous_Filter_Id);
         if ($scope.selected_Technology.title !== 'All Technologies') {
           $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology');
+          $scope.searchPlaceholder = "Search " + $scope.selected_Technology.title;
         } else {
           $scope.submit();
         }
