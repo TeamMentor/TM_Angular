@@ -8,7 +8,8 @@ angular.module('TM_App')
 
           $scope.$on 'apply_filter', (event,filter_Id, filter_Title, metadata_Title )->
             if filter_Id
-              $scope.current_Filters[filter_Id] = filter_Title
+              icon =  $sce.trustAsHtml icon_Service.element_Html filter_Title
+              $scope.current_Filters[filter_Id] = filter_Title:filter_Title, filter_Icon : icon
               $scope.refresh_Filters()
 
           $scope.$on 'clear_filter' , (event, filter_Id)->
