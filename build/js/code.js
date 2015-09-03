@@ -557,6 +557,11 @@
 }).call(this);
 
 (function() {
+
+
+}).call(this);
+
+(function() {
   var Icon_Service, mappings,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -1230,12 +1235,50 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', (function(_this) {
-    return function($sce, $scope, $stateParams, $window, TM_API, icon_Service) {
+    return function($sce, $scope, $state, $stateParams, $window, TM_API, icon_Service) {
       $scope.articleUrl = $window.location.href;
       $scope.showFeedback = false;
       $scope.articleLoaded = false;
+      $scope.top_Articles = [];
+      $scope.recent_Articles = [];
+      $scope.topArticles = function() {
+        return TM_API.top_Articles(function(articles) {
+          if ((articles != null)) {
+            return angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              article.url = '/angular/user/article/' + id + '/' + title;
+              return $scope.top_Articles.push(article);
+            });
+          }
+        });
+      };
+      $scope.recentArticles = function() {
+        return TM_API.recent_Articles(function(articles) {
+          if ((articles != null)) {
+            return angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              article.url = '/angular/user/article/' + id + '/' + title;
+              return $scope.recent_Articles.push(article);
+            });
+          }
+        });
+      };
       TM_API.article($stateParams.article_Id, function(article) {
         var id, title;
+        if ($state.current.name === "main") {
+          $scope.topArticles();
+          $scope.recentArticles();
+        }
         if (!angular.isObject(article)) {
           return;
         }
@@ -1265,39 +1308,9 @@
       $scope.fullArticleLoaded = function() {
         return $scope.articleLoaded;
       };
-      $scope.showGeneralFeedback = function() {
+      return $scope.showGeneralFeedback = function() {
         return !$scope.showFeedback;
       };
-      TM_API.recent_Articles(function(articles) {
-        $scope.recent_Articles = [];
-        if ((articles != null)) {
-          return angular.forEach(articles, function(article) {
-            var id, title;
-            article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-            article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-            article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-            id = article.id.remove('article-');
-            title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-            article.url = '/angular/user/article/' + id + '/' + title;
-            return $scope.recent_Articles.push(article);
-          });
-        }
-      });
-      return TM_API.top_Articles(function(articles) {
-        $scope.top_Articles = [];
-        if ((articles != null)) {
-          return angular.forEach(articles, function(article) {
-            var id, title;
-            article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-            article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-            article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-            id = article.id.remove('article-');
-            title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-            article.url = '/angular/user/article/' + id + '/' + title;
-            return $scope.top_Articles.push(article);
-          });
-        }
-      });
     };
   })(this));
 
@@ -1612,7 +1625,7 @@
         return $scope.set_Page();
       }
     };
-    return $scope.$on('keyup', function(event, data) {
+    $scope.$on('keyup', function(event, data) {
       if (data.keyIdentifier === 'Left') {
         $scope.previous_Page();
       }
@@ -1620,6 +1633,16 @@
         return $scope.next_Page();
       }
     });
+    $scope.goToTop = function() {
+      var div;
+      div = document.querySelector('.scrolling-results');
+      return angular.element(div)[0].scrollTop = 0;
+    };
+    return $scope.ShowTopButton = function() {
+      var div;
+      div = document.querySelector('.scrolling-results');
+      return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight;
+    };
   });
 
 }).call(this);

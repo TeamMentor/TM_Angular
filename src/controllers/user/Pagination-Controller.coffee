@@ -65,4 +65,10 @@ angular.module('TM_App')
             if data.keyIdentifier is 'Right'
               $scope.next_Page()
 
+          $scope.goToTop = () ->
+              div = document.querySelector('.scrolling-results')
+              angular.element(div)[0].scrollTop=0
 
+          $scope.ShowTopButton =  ->
+            div = document.querySelector('.scrolling-results')
+            return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight
