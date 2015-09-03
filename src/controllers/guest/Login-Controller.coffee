@@ -14,6 +14,7 @@ angular.module('TM_App')
                     $timeout ->
                       $window.location.href = '/angular/user/index'
                   else
+                    $scope.infoMessage  = null
                     $scope.errorMessage = 'User account is disabled'
               else
                 $scope.infoMessage  = null
