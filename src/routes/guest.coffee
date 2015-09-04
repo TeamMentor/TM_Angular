@@ -1,4 +1,4 @@
-app = angular.module('TM_App')
+###app = angular.module('TM_App')
 
 app.service 'ui_Routes',  ()->
 

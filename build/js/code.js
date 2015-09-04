@@ -461,43 +461,9 @@
 
   app = angular.module('TM_App');
 
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider, routes_Names) {
+    var i, j, k, len, len1, len2, ref, ref1, ref2, view_Name;
+    $locationProvider.html5Mode(true);
     ref = routes_Names.views.user_Root;
     for (i = 0, len = ref.length; i < len; i++) {
       view_Name = ref[i];
@@ -506,9 +472,17 @@
         templateUrl: "/angular/jade-html/views/" + view_Name
       });
     }
-    ref1 = routes_Names.views.user_User;
+    ref1 = routes_Names.views.guest;
     for (j = 0, len1 = ref1.length; j < len1; j++) {
       view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      });
+    }
+    ref2 = routes_Names.views.user_User;
+    for (k = 0, len2 = ref2.length; k < len2; k++) {
+      view_Name = ref2[k];
       $stateProvider.state(view_Name, {
         url: "/" + view_Name,
         templateUrl: "/angular/jade-html/views/user/" + view_Name
@@ -530,10 +504,21 @@
       url: "/article-box/:article_Id/:article_Title",
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
-    return $stateProvider.state('index_query_id', {
+    $stateProvider.state('index_query_id', {
       url: "/index/:query_Id",
       templateUrl: '/angular/jade-html/views/user/index'
     });
+    $stateProvider.state('404', {
+      templateUrl: '/angular/jade-html/views/404'
+    });
+    return $urlRouterProvider.otherwise((function(_this) {
+      return function($injector, $location) {
+        var state;
+        state = $injector.get('$state');
+        state.go('404');
+        return $location.path();
+      };
+    })(this));
   });
 
   app.run((function(_this) {
@@ -551,8 +536,88 @@
           }
         }
       });
+      return $rootScope.$on('$stateChangeError', function(event) {
+        return $state.go('404');
+      });
     };
   })(this));
+
+}).call(this);
+
+
+/*
+app = angular.module('TM_App')
+
+app.config ($stateProvider, routes_Names) ->
+ */
+
+
+/*
+
+  for view_Name in routes_Names.views.user_Root
+    $stateProvider.state view_Name    ,
+      url        : "/#{view_Name}"
+      templateUrl: "/angular/jade-html/views/#{view_Name}"
+
+  for view_Name in routes_Names.views.guest
+    $stateProvider.state view_Name    ,
+      url        : "/#{view_Name}"
+      templateUrl: "/angular/jade-html/views/guest/#{view_Name}"
+
+  for view_Name in routes_Names.views.user_User
+    $stateProvider.state view_Name    ,
+      url        : "/#{view_Name}",
+      templateUrl: "/angular/jade-html/views/user/#{view_Name}"
+
+
+  $stateProvider.state 'logout'    ,
+    url        : "/logout"
+    controller : 'Logout_Controller'
+
+  $stateProvider.state 'article',
+    url        : "/article/:article_Id/:article_Title"
+    templateUrl: '/angular/jade-html/views/user/article'
+
+  $stateProvider.state 'guid',
+    url        : "/:article_Id"
+    templateUrl: '/angular/jade-html/views/user/article'
+
+
+  $stateProvider.state 'article-box'    ,
+    url        : "/article-box/:article_Id/:article_Title"
+    templateUrl: '/angular/jade-html/views/user/article_box'
+
+  $stateProvider.state 'index_query_id'    ,
+    url        : "/index/:query_Id"
+    #controller : 'Index_Controller'
+    templateUrl: '/angular/jade-html/views/user/index'
+
+  $stateProvider.state '404'    ,
+    templateUrl: '/angular/jade-html/views/404'
+
+  $urlRouterProvider.otherwise ($injector, $location) =>
+    state = $injector.get '$state'
+    state.go '404'
+    return $location.path()
+ */
+
+
+/*
+app.run ($rootScope,$window,AuthService,routes_Names) =>
+  $rootScope.$on '$stateChangeStart', (event, next, current) =>
+    if routes_Names.views.guest.indexOf(next.name) > -1 || next.name =="docs"
+      return
+    else
+      userInfo = AuthService.currentUser()
+      if (userInfo? && userInfo?.UserEnabled)
+        return
+      else
+        $window.location.href = '/angular/guest/login'
+  return
+ */
+
+(function() {
+
 
 }).call(this);
 

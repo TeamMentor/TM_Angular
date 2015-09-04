@@ -1,13 +1,19 @@
+###
 app = angular.module('TM_App')
 
 app.config ($stateProvider, routes_Names) ->
-
+###
+###
 
   for view_Name in routes_Names.views.user_Root
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/#{view_Name}"
 
+  for view_Name in routes_Names.views.guest
+    $stateProvider.state view_Name    ,
+      url        : "/#{view_Name}"
+      templateUrl: "/angular/jade-html/views/guest/#{view_Name}"
 
   for view_Name in routes_Names.views.user_User
     $stateProvider.state view_Name    ,
@@ -37,6 +43,15 @@ app.config ($stateProvider, routes_Names) ->
     #controller : 'Index_Controller'
     templateUrl: '/angular/jade-html/views/user/index'
 
+  $stateProvider.state '404'    ,
+    templateUrl: '/angular/jade-html/views/404'
+
+  $urlRouterProvider.otherwise ($injector, $location) =>
+    state = $injector.get '$state'
+    state.go '404'
+    return $location.path()
+###
+###
 app.run ($rootScope,$window,AuthService,routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
     if routes_Names.views.guest.indexOf(next.name) > -1 || next.name =="docs"
@@ -48,3 +63,5 @@ app.run ($rootScope,$window,AuthService,routes_Names) =>
       else
         $window.location.href = '/angular/guest/login'
   return
+
+###
