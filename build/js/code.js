@@ -280,6 +280,36 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
   var app;
 
   app = angular.module('TM_App');
@@ -400,36 +430,6 @@
     };
     return $scope.load_Library();
   });
-
-}).call(this);
-
-(function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
 
 }).call(this);
 
@@ -915,7 +915,7 @@
           };
         })(this));
       } else {
-        url = "/json/article/" + article_Id;
+        url = "/jade/json/article/" + article_Id;
         return this.$http.get(url).success((function(_this) {
           return function(data) {
             _this.cache_Articles[article_Id] = data;
@@ -1117,13 +1117,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
@@ -1214,6 +1207,13 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
