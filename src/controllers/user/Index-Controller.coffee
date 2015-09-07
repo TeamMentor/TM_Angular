@@ -42,7 +42,7 @@ angular.module 'TM_App'
 
               if url isnt 'index?query=query-6234f2d47eb7' # don't update url for the index query
                 $timeout ->
-                  window.history.pushState('Object', 'Title', url)
+                  window.history.replaceState('Object', 'Title', url)
 
             $rootScope.$on 'loading_query', (event, query_Id, filters, from, to)->
               $scope.update_Location_Url query_Id, filters
