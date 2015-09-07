@@ -81,7 +81,7 @@ class TM_API
     if @.tmrecentArticles
       callback @.tmrecentArticles
     else
-      url = "/json/recentarticles"
+      url = "/jade/json/recentarticles"
       @.$http.get(url).success (data) =>
         @.tmrecentArticles = data
         callback data
@@ -90,7 +90,7 @@ class TM_API
     if @.topArticles
       callback @.topArticles
     else
-      url = "/json/toparticles"
+      url = "/jade/json/toparticles"
       @.$http.get(url).success (data) =>
         @.topArticles = data
         callback data
@@ -126,7 +126,7 @@ class TM_API
     @.$http.post(url, postData).success callback
 
   popular_Search : (callback)=>
-    url             = "/json/search/recentsearch"
+    url             = "/jade/json/search/recentsearch"
     @.$http.get(url)
     .success (data)=>
       callback(data)
