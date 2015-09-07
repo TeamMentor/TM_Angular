@@ -7,6 +7,7 @@ angular.module 'TM_App'
           $scope.current_Page_Split = 10
           $scope.results_Size       = 0
           $scope.visible            = false
+          $scope.pagingMessage      = ''
 
           $scope.$on 'view_model_data', (event,data)->
             $scope.visible      = true

@@ -1613,13 +1613,14 @@
       page: 1,
       page_Split: 10,
       pages: [],
-      page_Splits: [4, 10, 20, 50, 100]
+      page_Splits: [4, 10, 20, 50, 100],
+      pagingMessage: ''
     };
     $scope.query_Id = null;
     $scope.model = model;
     $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
-      var i, results, split;
+      var i, results, rows, split;
       $scope.visible = true;
       if (!(data != null ? data.size : void 0)) {
         return model.pages = null;
@@ -1633,11 +1634,17 @@
             split++;
           }
         }
-        return model.pages = (function() {
+        model.pages = (function() {
           results = [];
           for (var i = 1; 1 <= split ? i <= split : i >= split; 1 <= split ? i++ : i--){ results.push(i); }
           return results;
         }).apply(this);
+        rows = data.size;
+        if (rows > model.page_Split) {
+          return model.pagingMessage = "Showing " + model.page_Split * model.page + " articles out of " + rows;
+        } else {
+          return model.pagingMessage = "Showing " + rows + " articles out of " + rows;
+        }
       }
     });
     $scope.set_Page = function() {
@@ -1729,6 +1736,7 @@
     $scope.current_Page_Split = 10;
     $scope.results_Size = 0;
     $scope.visible = false;
+    $scope.pagingMessage = '';
     $scope.$on('view_model_data', function(event, data) {
       $scope.visible = true;
       return $scope.results_Size = data != null ? data.size : void 0;

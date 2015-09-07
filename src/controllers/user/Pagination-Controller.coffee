@@ -3,12 +3,12 @@ angular.module('TM_App')
 
 
           model =
-              page       : 1
-              page_Split : 10
+              page        : 1
+              page_Split   : 10
 
-              pages      : []
-              page_Splits: [4, 10,20,50,100]
-
+              pages        : []
+              page_Splits  : [4, 10,20,50,100]
+              pagingMessage : ''
 
           $scope.query_Id  =  null
           $scope.model     = model
@@ -31,11 +31,18 @@ angular.module('TM_App')
 
               model.pages =  [1.. split]
 
+              rows = data.size;
+              if rows > model.page_Split
+
+                model.pagingMessage = "Showing " +  model.page_Split * model.page + " articles out of " + rows
+              else
+                model.pagingMessage = "Showing " +  rows + " articles out of " + rows
+
+
           $scope.set_Page = ()->
             if model.page
               from = (model.page - 1) * model.page_Split
               to   = (model.page    ) * model.page_Split
-
               $rootScope.$broadcast 'set_page', model.page, from, to
 
           $scope.set_Page_Split = ()->
