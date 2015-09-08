@@ -1194,7 +1194,7 @@
         if ((data != null ? data.result : void 0) === 'OK') {
           $scope.infoMessage = 'Signup OK';
           return $timeout(function() {
-            return $window.location.href = '/angular/user/main';
+            return $window.location.href = '/angular/user/index';
           });
         } else {
           $scope.infoMessage = null;
