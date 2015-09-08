@@ -145,36 +145,6 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
-
-}).call(this);
-
-(function() {
   var expect,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     hasProp = {}.hasOwnProperty;
@@ -306,6 +276,36 @@
       return this;
     };
   }
+
+}).call(this);
+
+(function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
 
 }).call(this);
 
@@ -894,7 +894,7 @@
 
     TM_API.prototype.docs_Library = function(callback) {
       var url;
-      url = "/json/docs/library";
+      url = "/jade/json/docs/library";
       return this.$http.get(url).success(function(data) {
         return callback(data);
       });
@@ -902,7 +902,7 @@
 
     TM_API.prototype.docs_Page = function(article_Id, callback) {
       var url;
-      url = "/json/docs/" + article_Id;
+      url = "/jade/json/docs/" + article_Id;
       return this.$http.get(url).success(callback);
     };
 
