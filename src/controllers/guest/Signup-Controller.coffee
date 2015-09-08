@@ -8,7 +8,7 @@ angular.module('TM_App')
               if data?.result is 'OK'
                 $scope.infoMessage  = 'Signup OK'
                 $timeout ->
-                  $window.location.href = '/angular/user/main'
+                  $window.location.href = '/angular/user/index'
               else
                 $scope.infoMessage = null
                 if data?.viewModel?.errorMessage?.contains('please contact us at')

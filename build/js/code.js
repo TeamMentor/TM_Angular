@@ -1194,7 +1194,7 @@
         if ((data != null ? data.result : void 0) === 'OK') {
           $scope.infoMessage = 'Signup OK';
           return $timeout(function() {
-            return $window.location.href = '/angular/user/main';
+            return $window.location.href = '/angular/user/index';
           });
         } else {
           $scope.infoMessage = null;
@@ -1506,20 +1506,28 @@
       return $scope.map_Visibility();
     });
     $scope.apply_Filter = function(filter_Id, filter_Title, metadata_Title) {
+      var div;
+      div = document.querySelector('.scrolling-results');
+      angular.element(div).css('height', '75%');
       return $rootScope.$broadcast('apply_filter', filter_Id, filter_Title, metadata_Title);
     };
     return $scope.map_Visibility = function() {
-      var item, ref, results, value;
+      var div, item, ref, results, value;
       delete $scope.hide_Metadata['Technology'];
       delete $scope.hide_Metadata['Type'];
       delete $scope.hide_Metadata['Phase'];
-      ref = $scope.current_Filters;
-      results = [];
-      for (item in ref) {
-        value = ref[item];
-        results.push($scope.hide_Metadata[value.metadata_Title] = true);
+      if (Object.keys($scope.current_Filters).length > 0) {
+        ref = $scope.current_Filters;
+        results = [];
+        for (item in ref) {
+          value = ref[item];
+          results.push($scope.hide_Metadata[value.metadata_Title] = true);
+        }
+        return results;
+      } else {
+        div = document.querySelector('.scrolling-results');
+        return angular.element(div).css('height', '80%');
       }
-      return results;
     };
   });
 
@@ -1640,7 +1648,10 @@
         return $rootScope.$broadcast('set_page', model.page, from, to);
       }
     };
-    $scope.set_Page_Split = function() {
+    $scope.set_Page_Split = function(recordsPerPage) {
+      if (recordsPerPage) {
+        model.page_Split = recordsPerPage;
+      }
       $scope.set_Page();
       return $rootScope.$broadcast('set_page_split', model.page_Split);
     };
