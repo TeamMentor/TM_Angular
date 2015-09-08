@@ -59,13 +59,13 @@ class TM_API
            callback(matches) if callback
 
   docs_Library:  (callback)=>
-    url     = "/json/docs/library"
+    url     = "/jade/json/docs/library"
     @.$http.get url
          .success (data)->
             callback(data)
 
   docs_Page:  (article_Id, callback)=>
-    url = "/json/docs/#{article_Id}"
+    url = "/jade/json/docs/#{article_Id}"
     @.$http.get(url).success callback
 
   article:  (article_Id, callback)=>
