@@ -45,7 +45,9 @@ angular.module('TM_App')
               to   = (model.page    ) * model.page_Split
               $rootScope.$broadcast 'set_page', model.page, from, to
 
-          $scope.set_Page_Split = ()->
+          $scope.set_Page_Split = (recordsPerPage)->
+            if recordsPerPage
+              model.page_Split = recordsPerPage
             $scope.set_Page()
             $rootScope.$broadcast 'set_page_split', model.page_Split
 
@@ -58,6 +60,7 @@ angular.module('TM_App')
             if model.page < model.pages.size()
               model.page++
               $scope.set_Page()
+
 
           #$scope.reset = ()->
           #  model.page       = 1
