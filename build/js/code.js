@@ -915,7 +915,7 @@
           };
         })(this));
       } else {
-        url = "/json/article/" + article_Id;
+        url = "/jade/json/article/" + article_Id;
         return this.$http.get(url).success((function(_this) {
           return function(data) {
             _this.cache_Articles[article_Id] = data;
@@ -1580,7 +1580,7 @@
         }
         if (url !== 'index?query=query-6234f2d47eb7') {
           return $timeout(function() {
-            return window.history.pushState('Object', 'Title', url);
+            return window.history.replaceState('Object', 'Title', url);
           });
         }
       };

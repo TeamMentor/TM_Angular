@@ -72,7 +72,7 @@ class TM_API
     if @.cache_Articles[article_Id]
       @.$timeout => callback @.cache_Articles[article_Id]
     else
-      url  = "/json/article/#{article_Id}"
+      url  = "/jade/json/article/#{article_Id}"     # needs to be refactored into /jade
       @.$http.get(url).success (data)=>
         @.cache_Articles[article_Id]= data
         callback(data)
