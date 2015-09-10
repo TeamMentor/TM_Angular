@@ -7,6 +7,7 @@ class TM_API
     @.$http                     = http
     @.$timeout                  = timeout
     @.cache_Articles            = {}
+    @.cache_Guides              = null
     #@.cache_Query_Tree         = {}
     #@.cache_Query_Tree_Queries = {}
     @.cache_Query_View_Model    = {}
@@ -113,7 +114,7 @@ class TM_API
 
   currentuser :(callback) =>
     url      = "/json/user/currentuser"
-    if  @.currentUser
+    if  @.currentUser? &&  @.currentUser.UserEnabled
       callback  @.currentUser
     else
       @.$http.get(url).success (data)=>
@@ -130,6 +131,16 @@ class TM_API
     @.$http.get(url)
     .success (data)=>
       callback(data)
+
+  gatewaysLibrary: (callback) =>
+    if @.cache_Guides
+      callback @.cache_Guides
+    else
+      url             = "/jade/json/gateways/library"
+      @.$http.get(url)
+      .success (data)=>
+        callback(data)
+
 
   tmConfig :(callback)=>
     url             = "/json/tm/config"

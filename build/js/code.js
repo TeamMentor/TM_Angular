@@ -514,6 +514,10 @@
         templateUrl: "/angular/jade-html/views/user/" + view_Name
       });
     }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/curated_content"
+    });
     $stateProvider.state('logout', {
       url: "/logout",
       controller: 'Logout_Controller'
@@ -782,6 +786,7 @@
   TM_API = (function() {
     function TM_API(q, http, timeout, state) {
       this.tmConfig = bind(this.tmConfig, this);
+      this.gatewaysLibrary = bind(this.gatewaysLibrary, this);
       this.popular_Search = bind(this.popular_Search, this);
       this.pwd_reset = bind(this.pwd_reset, this);
       this.currentuser = bind(this.currentuser, this);
@@ -801,6 +806,7 @@
       this.$http = http;
       this.$timeout = timeout;
       this.cache_Articles = {};
+      this.cache_Guides = null;
       this.cache_Query_View_Model = {};
       this.currentUser = null;
       this.config = null;
@@ -993,7 +999,7 @@
     TM_API.prototype.currentuser = function(callback) {
       var url;
       url = "/json/user/currentuser";
-      if (this.currentUser) {
+      if ((this.currentUser != null) && this.currentUser.UserEnabled) {
         return callback(this.currentUser);
       } else {
         return this.$http.get(url).success((function(_this) {
@@ -1022,6 +1028,20 @@
           return callback(data);
         };
       })(this));
+    };
+
+    TM_API.prototype.gatewaysLibrary = function(callback) {
+      var url;
+      if (this.cache_Guides) {
+        return callback(this.cache_Guides);
+      } else {
+        url = "/jade/json/gateways/library";
+        return this.$http.get(url).success((function(_this) {
+          return function(data) {
+            return callback(data);
+          };
+        })(this));
+      }
     };
 
     TM_API.prototype.tmConfig = function(callback) {
@@ -1232,7 +1252,7 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', (function(_this) {
-    return function($sce, $scope, $state, $stateParams, $window, TM_API, icon_Service) {
+    return function($sce, $scope, $state, $stateParams, $window, $timeout, TM_API, icon_Service) {
       $scope.articleUrl = $window.location.href;
       $scope.showFeedback = false;
       $scope.articleLoaded = false;
@@ -1279,6 +1299,7 @@
         if (!angular.isObject(article)) {
           return;
         }
+        $scope.mapGuideArticle(article);
         id = article.id.remove('article-');
         title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
         article.url = '/angular/user/article/' + id + '/' + title;
@@ -1299,6 +1320,35 @@
           }
         });
       });
+      $scope.mapGuideArticle = function(article) {
+        return TM_API.gatewaysLibrary(function(data) {
+          var i, len, ref, results, rowArticle, view;
+          if (data) {
+            ref = data.Views;
+            results = [];
+            for (i = 0, len = ref.length; i < len; i++) {
+              view = ref[i];
+              results.push((function() {
+                var j, len1, ref1, results1;
+                ref1 = view.Articles;
+                results1 = [];
+                for (j = 0, len1 = ref1.length; j < len1; j++) {
+                  rowArticle = ref1[j];
+                  if ((article.id === rowArticle.id) || (article.id === rowArticle.guid)) {
+                    results1.push($timeout(function() {
+                      return $window.location.href = '/angular/user/guides#' + article.id;
+                    }));
+                  } else {
+                    results1.push(void 0);
+                  }
+                }
+                return results1;
+              })());
+            }
+            return results;
+          }
+        });
+      };
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
       };
@@ -1529,6 +1579,64 @@
         return angular.element(div).css('height', '80%');
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Gateways_Controller', function($sce, $scope, TM_API, $location) {
+    $scope.Library = {};
+    $scope.show_Article = function(article) {
+      if (article) {
+        return TM_API.article(article, function(article_Data) {
+          if (article_Data) {
+            $scope.article = article_Data;
+            $scope.title = article_Data.title;
+            $scope.content = $sce.trustAsHtml(article_Data.article_Html);
+            return TM_API.currentuser(function(userInfo) {
+              if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
+                return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
+                  $scope.articleLoaded = true;
+                  if (callback != null) {
+                    $scope.showFeedback = true;
+                    return $scope.githubContentUrl = callback;
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    };
+    $scope.showFeedbackBanner = function() {
+      return $scope.showFeedback;
+    };
+    $scope.fullArticleLoaded = function() {
+      return $scope.articleLoaded;
+    };
+    $scope.showGeneralFeedback = function() {
+      return !$scope.showFeedback;
+    };
+    $scope.load_Library = function() {
+      return TM_API.gatewaysLibrary(function(data) {
+        var articleId, ref, ref1, ref2, ref3;
+        if (data) {
+          $scope.Library.title = data.title;
+          $scope.Library.Views = data.Views;
+          articleId = $location.$$hash;
+          if (articleId) {
+            return $scope.show_Article(articleId);
+          } else {
+            return $scope.show_Article(data != null ? (ref = data.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? (ref3 = ref2.first()) != null ? ref3.id : void 0 : void 0 : void 0 : void 0 : void 0);
+          }
+        }
+      });
+    };
+    $scope.showMetadata = function() {
+      var ref, ref1, ref2;
+      return (((ref = $scope.article) != null ? ref.phase : void 0) != null) || (((ref1 = $scope.article) != null ? ref1.technology : void 0) != null) || (((ref2 = $scope.article) != null ? ref2.technology : void 0) != null);
+    };
+    return $scope.load_Library();
   });
 
 }).call(this);
