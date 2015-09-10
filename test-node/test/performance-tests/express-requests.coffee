@@ -1,7 +1,7 @@
 require 'fluentnode'
 async = require 'async'
 
-describe.only 'Check express timeouts', ->
+describe 'Check express timeouts', ->
 
   url_Website = null
   url_Graphdb = null
