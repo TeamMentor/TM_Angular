@@ -14,6 +14,9 @@ app.config ($stateProvider, routes_Names) ->
       url        : "/#{view_Name}",
       templateUrl: "/angular/jade-html/views/user/#{view_Name}"
 
+  $stateProvider.state 'guides'    ,
+    url        : "/guides"
+    templateUrl: "/angular/jade-html/views/curated_content"
 
   $stateProvider.state 'logout'    ,
     url        : "/logout"

@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'Article_Controller', ($sce, $scope,$state, $stateParams,$window, TM_API, icon_Service)=>
+       .controller 'Article_Controller', ($sce, $scope,$state, $stateParams,$window,$timeout, TM_API, icon_Service)=>
           $scope.articleUrl     = $window.location.href
           $scope.showFeedback   = false
           $scope.articleLoaded  = false
@@ -37,6 +37,8 @@ angular.module('TM_App')
 
             if !angular.isObject(article)
               return;
+            $scope.mapGuideArticle(article)
+
             id    = article.id.remove('article-')
             title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
             article.url = '/angular/user/article/' + id + '/' + title
@@ -56,6 +58,16 @@ angular.module('TM_App')
                   if callback?
                     $scope.showFeedback     = true
                     $scope.githubContentUrl = callback
+
+          $scope.mapGuideArticle =(article)->
+            TM_API.gatewaysLibrary (data)->
+              if data
+                for view in data.Views
+                  for rowArticle in view.Articles
+                    if ((article.id == rowArticle.id) || (article.id==rowArticle.guid))
+                      $timeout ->
+                        $window.location.href ='/angular/user/guides#'+ article.id
+
 
           $scope.showFeedbackBanner =  ->
             return $scope.showFeedback
