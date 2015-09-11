@@ -39,7 +39,7 @@ app.config ($stateProvider, routes_Names) ->
 
 app.run ($rootScope,$window,TM_API, routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
-    if routes_Names.views.guest.indexOf(next.name) > -1 || next.name =="docs"
+    if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
       return
     else
       TM_API.currentuser (userInfo) =>

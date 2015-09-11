@@ -542,7 +542,7 @@
   app.run((function(_this) {
     return function($rootScope, $window, TM_API, routes_Names) {
       $rootScope.$on('$stateChangeStart', function(event, next, current) {
-        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
+        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs" || next.name === 'terms_and_conditions') {
 
         } else {
           return TM_API.currentuser(function(userInfo) {
