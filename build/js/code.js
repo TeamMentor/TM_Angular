@@ -348,7 +348,7 @@
       this.design_Components = ['all_icons', 'events'];
       this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
       this.navigation_Components = ['landing_bar', 'left_navigation'];
-      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
+      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'found_issue', 'pagination', 'queries', 'queries_history', 'results', 'search_bar'];
       this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
     }
 
@@ -546,7 +546,7 @@
   app.run((function(_this) {
     return function($rootScope, $window, TM_API, routes_Names) {
       $rootScope.$on('$stateChangeStart', function(event, next, current) {
-        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs") {
+        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs" || next.name === 'terms_and_conditions') {
 
         } else {
           return TM_API.currentuser(function(userInfo) {

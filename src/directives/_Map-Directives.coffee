@@ -9,7 +9,7 @@ class Map_Directives
     @.design_Components     = [ 'all_icons', 'events']
     @.guest_Components      = [ 'login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form']
     @.navigation_Components = [ 'landing_bar', 'left_navigation']
-    @.user_Components       = [ 'active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters','filters_active', 'pagination', 'queries', 'queries_history', 'results', 'search_bar']
+    @.user_Components       = [ 'active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters','filters_active', 'found_issue', 'pagination', 'queries', 'queries_history', 'results', 'search_bar']
     @.root_Components       = [ 'alert_ok', 'alert_bad' , 'help_navigation']
 
   resolve_Directive_Name:  (name)->
