@@ -1646,6 +1646,9 @@
 
 (function() {
   angular.module('TM_App').controller('Index_Controller', function($scope, query_Service, $stateParams, $location, $state, $window, $rootScope, $timeout) {
+    window._state = $state;
+    window._scope = $scope;
+    window._stateParams = $stateParams;
     console.log('in Index_Controller ' + new Date().getMilliseconds());
     return using($scope, function() {
       this.history = {};
@@ -1673,11 +1676,17 @@
         if (search_Text) {
           return $rootScope.$broadcast('set_search', search_Text);
         } else if (query_Id) {
-          $rootScope.$broadcast('apply_query', query_Id);
-          query_Service.load_Query(query_Id, filters);
-          return $rootScope.$broadcast('apply_filter', filters);
+          console.log('in load_Query');
+          return $timeout(function() {
+            $rootScope.$broadcast('apply_query', query_Id);
+            query_Service.load_Query(query_Id, filters);
+            return $rootScope.$broadcast('apply_filter', filters);
+          });
         } else {
-          return query_Service.reload_Data();
+          console.log('...... in reload_Data');
+          return $timeout(function() {
+            return query_Service.reload_Data();
+          });
         }
       };
       $scope.update_Location_Url = function(query_Id, filters) {
@@ -1789,12 +1798,18 @@
     $scope.goToTop = function() {
       var div;
       div = document.querySelector('.scrolling-results');
-      return angular.element(div)[0].scrollTop = 0;
+      if (angular.element(div)[0]) {
+        return angular.element(div)[0].scrollTop = 0;
+      }
     };
     return $scope.ShowTopButton = function() {
       var div;
       div = document.querySelector('.scrolling-results');
-      return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight;
+      if (angular.element(div)[0]) {
+        return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight;
+      } else {
+        return false;
+      }
     };
   });
 
@@ -2127,9 +2142,7 @@
         $rootScope.$broadcast('clear_filter', 'All');
         return query_Service.reload_Data();
       } else {
-        return $timeout(function() {
-          return $window.location.href = '/angular/user/index';
-        });
+        return $state.go('index');
       }
     };
     $scope.show_Loading_Image = false;
