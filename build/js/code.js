@@ -737,6 +737,7 @@
     function Query_Service(options) {
       this.reload_Data = bind(this.reload_Data, this);
       this.load_Query = bind(this.load_Query, this);
+      this.index_Query_Filters = bind(this.index_Query_Filters, this);
       this.load_Data = bind(this.load_Data, this);
       this.TM_API = options.TM_API;
       this.$rootScope = options.$rootScope;
@@ -747,6 +748,14 @@
 
     Query_Service.prototype.load_Data = function() {
       return this.load_Query(this.index_Query);
+    };
+
+    Query_Service.prototype.index_Query_Filters = function(callback) {
+      return this.TM_API.query_view_model(this.index_Query, null, 0, 0, (function(_this) {
+        return function(data) {
+          return callback(data.filters);
+        };
+      })(this));
     };
 
     Query_Service.prototype.load_Query = function(query_Id, filters, from, to) {
@@ -1918,164 +1927,31 @@
       return $scope.submit();
     });
     $scope.set_technologies_By_Id = function() {
-      $scope.technologies_By_Id = {
-        "All": {
-          "title": "All Technologies",
-          "id": "query-6234f2d47eb7",
-          "$$hashKey": "object:31"
-        },
-        "query-b925cdfcbecf": {
-          "id": "query-b925cdfcbecf",
-          "title": "Web Application",
-          "size": 100,
-          "icon": {},
-          "$$hashKey": "object:32"
-        },
-        "query-a2818a65b92e": {
-          "id": "query-a2818a65b92e",
-          "title": "Technology Independent",
-          "size": 687,
-          "icon": {},
-          "$$hashKey": "object:33"
-        },
-        "query-671d16362ce4": {
-          "id": "query-671d16362ce4",
-          "title": "C++",
-          "size": 153,
-          "icon": {},
-          "$$hashKey": "object:34"
-        },
-        "query-184728a6e3ba": {
-          "id": "query-184728a6e3ba",
-          "title": "iOS",
-          "size": 62,
-          "icon": {},
-          "$$hashKey": "object:35"
-        },
-        "query-7d9a1b64c045": {
-          "id": "query-7d9a1b64c045",
-          "title": "Java",
-          "size": 326,
-          "icon": {},
-          "$$hashKey": "object:36"
-        },
-        "query-2cade36725e4": {
-          "id": "query-2cade36725e4",
-          "title": "Android",
-          "size": 51,
-          "icon": {},
-          "$$hashKey": "object:37"
-        },
-        "query-8c511380a4f5": {
-          "id": "query-8c511380a4f5",
-          "title": ".NET",
-          "size": 346,
-          "icon": {},
-          "$$hashKey": "object:38"
-        },
-        "query-522e32547f58": {
-          "id": "query-522e32547f58",
-          "title": "Scala Play",
-          "size": 106,
-          "icon": {},
-          "$$hashKey": "object:39"
-        },
-        "query-8abb89a8b279": {
-          "id": "query-8abb89a8b279",
-          "title": "PHP",
-          "size": 215,
-          "icon": {},
-          "$$hashKey": "object:40"
-        },
-        "query-a37f08332895": {
-          "id": "query-a37f08332895",
-          "title": "WCF",
-          "size": 79,
-          "icon": {},
-          "$$hashKey": "object:41"
-        },
-        "query-3b01497554f8": {
-          "id": "query-3b01497554f8",
-          "title": "HTML5",
-          "size": 81,
-          "icon": {},
-          "$$hashKey": "object:42"
+      return query_Service.index_Query_Filters(function(filters) {
+        var filter, i, key, len, value;
+        $scope.technologies = [
+          {
+            title: 'All Technologies',
+            id: query_Service.index_Query
+          }
+        ];
+        $scope.technologies_By_Id = {
+          'All': $scope.technologies[0]
+        };
+        if (filters) {
+          for (key in filters) {
+            value = filters[key];
+            if (key === 'Technology' && value.size) {
+              for (i = 0, len = value.length; i < len; i++) {
+                filter = value[i];
+                $scope.technologies.push(filter);
+                $scope.technologies_By_Id[filter.id] = filter;
+              }
+            }
+          }
         }
-      };
-      $scope.technologies = [
-        {
-          "title": "All Technologies",
-          "id": "query-6234f2d47eb7",
-          "$$hashKey": "object:31"
-        }, {
-          "id": "query-b925cdfcbecf",
-          "title": "Web Application",
-          "size": 100,
-          "icon": {},
-          "$$hashKey": "object:32"
-        }, {
-          "id": "query-a2818a65b92e",
-          "title": "Technology Independent",
-          "size": 687,
-          "icon": {},
-          "$$hashKey": "object:33"
-        }, {
-          "id": "query-671d16362ce4",
-          "title": "C++",
-          "size": 153,
-          "icon": {},
-          "$$hashKey": "object:34"
-        }, {
-          "id": "query-184728a6e3ba",
-          "title": "iOS",
-          "size": 62,
-          "icon": {},
-          "$$hashKey": "object:35"
-        }, {
-          "id": "query-7d9a1b64c045",
-          "title": "Java",
-          "size": 326,
-          "icon": {},
-          "$$hashKey": "object:36"
-        }, {
-          "id": "query-2cade36725e4",
-          "title": "Android",
-          "size": 51,
-          "icon": {},
-          "$$hashKey": "object:37"
-        }, {
-          "id": "query-8c511380a4f5",
-          "title": ".NET",
-          "size": 346,
-          "icon": {},
-          "$$hashKey": "object:38"
-        }, {
-          "id": "query-522e32547f58",
-          "title": "Scala Play",
-          "size": 106,
-          "icon": {},
-          "$$hashKey": "object:39"
-        }, {
-          "id": "query-8abb89a8b279",
-          "title": "PHP",
-          "size": 215,
-          "icon": {},
-          "$$hashKey": "object:40"
-        }, {
-          "id": "query-a37f08332895",
-          "title": "WCF",
-          "size": 79,
-          "icon": {},
-          "$$hashKey": "object:41"
-        }, {
-          "id": "query-3b01497554f8",
-          "title": "HTML5",
-          "size": 81,
-          "icon": {},
-          "$$hashKey": "object:42"
-        }
-      ];
-      return $scope.selected_Technology = $scope.technologies[0];
+        return $scope.selected_Technology = $scope.technologies[0];
+      });
     };
     $scope.select_Technology = function() {
       $scope.searchPlaceholder = "Search All of TEAM Mentor";

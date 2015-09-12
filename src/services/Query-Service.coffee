@@ -11,6 +11,10 @@ class Query_Service
   load_Data: ()=>
     @.load_Query @.index_Query
 
+  index_Query_Filters: (callback)=>
+    @.TM_API.query_view_model @.index_Query, null, 0, 0, (data)=>
+      callback data.filters
+
   #load_Query
   load_Query: (query_Id, filters, from, to )=>
     from = from || @.default_Page_From
