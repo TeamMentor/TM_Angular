@@ -1,6 +1,10 @@
 angular.module 'TM_App'
        .controller 'Index_Controller', ($scope, query_Service, $stateParams ,  $location,$state, $window, $rootScope , $timeout)->
 
+
+          window._state = $state
+          window._scope = $scope
+          window._stateParams = $stateParams
           console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
           using $scope, ->
@@ -29,11 +33,15 @@ angular.module 'TM_App'
               if search_Text
                 $rootScope.$broadcast 'set_search', search_Text
               else if query_Id
-                $rootScope.$broadcast 'apply_query', query_Id
-                query_Service.load_Query query_Id, filters
-                $rootScope.$broadcast 'apply_filter', filters
+                console.log 'in load_Query'
+                $timeout ->
+                  $rootScope.$broadcast 'apply_query', query_Id
+                  query_Service.load_Query query_Id, filters
+                  $rootScope.$broadcast 'apply_filter', filters
               else
-                query_Service.reload_Data()
+                console.log '...... in reload_Data'
+                $timeout ->
+                  query_Service.reload_Data()
 
             $scope.update_Location_Url = (query_Id, filters)->
               url = 'index?'

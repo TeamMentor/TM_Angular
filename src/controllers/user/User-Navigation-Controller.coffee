@@ -10,8 +10,9 @@ angular.module('TM_App')
               $rootScope.$broadcast 'clear_filter', 'All'
               query_Service.reload_Data()
             else
-              $timeout ->
-                $window.location.href = '/angular/user/index'
+              $state.go 'index'
+              #$timeout ->
+              #  $window.location.href = '/angular/user/index'
 
           $scope.show_Loading_Image = false
 

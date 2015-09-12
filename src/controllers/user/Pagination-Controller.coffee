@@ -70,8 +70,12 @@ angular.module('TM_App')
 
           $scope.goToTop = () ->
               div = document.querySelector('.scrolling-results')
-              angular.element(div)[0].scrollTop=0
+              if angular.element(div)[0]
+                angular.element(div)[0].scrollTop=0
 
           $scope.ShowTopButton =  ->
             div = document.querySelector('.scrolling-results')
-            return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight
+            if angular.element(div)[0]
+              return angular.element(div)[0].scrollHeight > angular.element(div)[0].clientHeight
+            else
+              return false
