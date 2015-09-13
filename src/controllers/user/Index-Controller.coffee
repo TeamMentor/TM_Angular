@@ -49,8 +49,9 @@ angular.module 'TM_App'
                 $timeout ->
 
                   #$rootScope.$broadcast 'apply_query', query_Id
-                  query_Service.load_Query query_Id, filters
-                  $rootScope.$broadcast 'apply_filter', filters
+                  query_Service.load_Query query_Id, filters, null, null, ->
+                    $rootScope.$broadcast 'apply_filters', filters
+                  #$rootScope.$broadcast 'apply_filter', filters
 
               else
                 $timeout ->

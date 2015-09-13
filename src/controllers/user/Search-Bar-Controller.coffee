@@ -28,6 +28,17 @@ angular.module('TM_App')
                 $scope.selected_Technology =  $scope.technologies_By_Id[filter_Id]
                 $scope.previous_Filter_Id = filter_Id
 
+          $scope.$on 'apply_filters', (event, filters)->
+            if not $scope.filters_By_Id
+              console.log '$scope.filters_By_Id NOT READY'
+              return
+            if filters
+              for filter_Id in filters.split(',')
+                filter = $scope.filters_By_Id[filter_Id]
+                if filter
+                  $rootScope.$broadcast 'apply_filter', filter.id, filter.title, filter.metadata_Title, false
+
+
 #          $scope.$on 'view_model_data', (event, data)->
 #            $scope.query_Id = data?.id
 #            if not $scope.selected_Technology
@@ -52,9 +63,13 @@ angular.module('TM_App')
 
               $scope.technologies       = [{ title: 'All Technologies', id: query_Service.index_Query }]
               $scope.technologies_By_Id = { 'All' : $scope.technologies[0]}
+              $scope.filters_By_Id      = {}
               if filters
                 for key,value of filters
-                  if key is 'Technology' and value.size
+                  for filter in value                                     # map filters_By_Id
+                    filter.metadata_Title= key
+                    $scope.filters_By_Id[filter.id] = filter
+                  if key is 'Technology' and value.size                   # map technologies_By_Id and technologies
                     for filter in value
                       $scope.technologies.push(filter)
                       $scope.technologies_By_Id[filter.id] = filter

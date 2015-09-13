@@ -6,11 +6,12 @@ angular.module('TM_App')
 
           #console.log 'in Filters_Controller ' + new Date().getMilliseconds()
 
-          $scope.$on 'apply_filter', (event,filter_Id, filter_Title, metadata_Title )->
+          $scope.$on 'apply_filter', (event,filter_Id, filter_Title, metadata_Title, filter_Refresh = true )->
             if filter_Id
               icon =  $sce.trustAsHtml icon_Service.element_Html filter_Title
               $scope.current_Filters[filter_Id] = filter_Title:filter_Title, filter_Icon : icon
-              $scope.refresh_Filters()
+              if filter_Refresh
+                $scope.refresh_Filters()
 
           $scope.$on 'clear_filter' , (event, filter_Id)->
             delete $scope.current_Filters[filter_Id]

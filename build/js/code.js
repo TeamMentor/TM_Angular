@@ -762,13 +762,16 @@
       })(this));
     };
 
-    Query_Service.prototype.load_Query = function(query_Id, filters, from, to) {
+    Query_Service.prototype.load_Query = function(query_Id, filters, from, to, callback) {
       from = from || this.default_Page_From;
       to = to || this.default_Page_To;
       this.$rootScope.$broadcast('loading_query', query_Id, filters, from, to);
       return this.TM_API.query_view_model(query_Id, filters, from, to, (function(_this) {
         return function(data) {
-          return _this.$rootScope.$broadcast('view_model_data', data);
+          _this.$rootScope.$broadcast('view_model_data', data);
+          if (callback) {
+            return callback();
+          }
         };
       })(this));
     };
@@ -1481,15 +1484,20 @@
   angular.module('TM_App').controller('Filters_Active_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
     $scope.current_Filters = {};
     $scope.current_Query_Id = null;
-    $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title) {
+    $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title, filter_Refresh) {
       var icon;
+      if (filter_Refresh == null) {
+        filter_Refresh = true;
+      }
       if (filter_Id) {
         icon = $sce.trustAsHtml(icon_Service.element_Html(filter_Title));
         $scope.current_Filters[filter_Id] = {
           filter_Title: filter_Title,
           filter_Icon: icon
         };
-        return $scope.refresh_Filters();
+        if (filter_Refresh) {
+          return $scope.refresh_Filters();
+        }
       }
     });
     $scope.$on('clear_filter', function(event, filter_Id) {
@@ -1703,8 +1711,9 @@
           return $rootScope.$broadcast('set_search', search_Text);
         } else if (query_Id) {
           return $timeout(function() {
-            query_Service.load_Query(query_Id, filters);
-            return $rootScope.$broadcast('apply_filter', filters);
+            return query_Service.load_Query(query_Id, filters, null, null, function() {
+              return $rootScope.$broadcast('apply_filters', filters);
+            });
           });
         } else {
           return $timeout(function() {
@@ -1939,13 +1948,34 @@
         }
       }
     });
+    $scope.$on('apply_filters', function(event, filters) {
+      var filter, filter_Id, i, len, ref, results;
+      if (!$scope.filters_By_Id) {
+        console.log('$scope.filters_By_Id NOT READY');
+        return;
+      }
+      if (filters) {
+        ref = filters.split(',');
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter_Id = ref[i];
+          filter = $scope.filters_By_Id[filter_Id];
+          if (filter) {
+            results.push($rootScope.$broadcast('apply_filter', filter.id, filter.title, filter.metadata_Title, false));
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
+    });
     $scope.$on('set_search', function(event, text) {
       $scope.text = text;
       return $scope.submit();
     });
     $scope.set_technologies_By_Id = function() {
       return query_Service.index_Query_Filters(function(filters) {
-        var filter, i, key, len, value;
+        var filter, i, j, key, len, len1, value;
         $scope.technologies = [
           {
             title: 'All Technologies',
@@ -1955,12 +1985,18 @@
         $scope.technologies_By_Id = {
           'All': $scope.technologies[0]
         };
+        $scope.filters_By_Id = {};
         if (filters) {
           for (key in filters) {
             value = filters[key];
+            for (i = 0, len = value.length; i < len; i++) {
+              filter = value[i];
+              filter.metadata_Title = key;
+              $scope.filters_By_Id[filter.id] = filter;
+            }
             if (key === 'Technology' && value.size) {
-              for (i = 0, len = value.length; i < len; i++) {
-                filter = value[i];
+              for (j = 0, len1 = value.length; j < len1; j++) {
+                filter = value[j];
                 $scope.technologies.push(filter);
                 $scope.technologies_By_Id[filter.id] = filter;
               }
