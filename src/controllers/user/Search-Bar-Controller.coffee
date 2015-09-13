@@ -3,15 +3,18 @@ angular.module('TM_App')
 
           #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
 
-          $scope.query_Id            = null
-          $scope.selected_Technology = null
-          $scope.previous_Filter_Id  = null
-          $scope.technologies        = {}
-          $scope.technologies_By_Id  = {}
-          $scope.text                = ''
-          $scope.ignore_Events       = false
-          $scope.words               = []
-          $scope.searchPlaceholder   = "Search All of TEAM Mentor"
+          using $scope, ->
+            @.query_Id            = null
+            @.selected_Technology = null
+            @.previous_Filter_Id  = null
+            @.technologies        = {}
+            @.technologies_By_Id  = {}
+            @.text                = ''
+            @.ignore_Events       = false
+            @.words               = []
+            @.searchPlaceholder   = "Search All of TEAM Mentor"
+            @.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
+
           $scope.$on 'clear_search', ()->
             $scope.text = ''
 
@@ -92,8 +95,12 @@ angular.module('TM_App')
               $scope.ignore_Events = false
 
           $scope.submit = ()->
-            if $state.current?.name isnt 'index'
+
+
+            #if $state.current?.name isnt 'index'
+            if not @.index_States.contains($state.current?.name)
               $state.go('index')
+              $scope.previous_Filter_Id = null
 
             #$rootScope.$broadcast 'clear_query', null
 
@@ -107,7 +114,7 @@ angular.module('TM_App')
             if technology_Id isnt $scope.previous_Filter_Id
               $rootScope.$broadcast 'clear_filters',query_Id
               if $scope.selected_Technology.title isnt 'All Technologies'
-                $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
+                $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology', false
 
             $rootScope.$broadcast 'apply_query',query_Id
 

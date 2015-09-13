@@ -283,36 +283,6 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
     $scope.show_Doc = function(article) {
       if (article) {
@@ -779,7 +749,6 @@
     Query_Service.prototype.reload_Data = function() {
       this.$rootScope.$broadcast('clear_filters');
       this.$rootScope.$broadcast('clear_query');
-      this.$rootScope.$broadcast('clear_search');
       return this.load_Data();
     };
 
@@ -1156,6 +1125,43 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
@@ -1246,13 +1252,6 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -1920,15 +1919,18 @@
 
 (function() {
   angular.module('TM_App').controller('Search_Bar_Controller', function($rootScope, $scope, $state, $location, $timeout, query_Service, TM_API) {
-    $scope.query_Id = null;
-    $scope.selected_Technology = null;
-    $scope.previous_Filter_Id = null;
-    $scope.technologies = {};
-    $scope.technologies_By_Id = {};
-    $scope.text = '';
-    $scope.ignore_Events = false;
-    $scope.words = [];
-    $scope.searchPlaceholder = "Search All of TEAM Mentor";
+    using($scope, function() {
+      this.query_Id = null;
+      this.selected_Technology = null;
+      this.previous_Filter_Id = null;
+      this.technologies = {};
+      this.technologies_By_Id = {};
+      this.text = '';
+      this.ignore_Events = false;
+      this.words = [];
+      this.searchPlaceholder = "Search All of TEAM Mentor";
+      return this.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
+    });
     $scope.$on('clear_search', function() {
       return $scope.text = '';
     });
@@ -2021,8 +2023,9 @@
     };
     $scope.submit = function() {
       var ref;
-      if (((ref = $state.current) != null ? ref.name : void 0) !== 'index') {
+      if (!this.index_States.contains((ref = $state.current) != null ? ref.name : void 0)) {
         $state.go('index');
+        $scope.previous_Filter_Id = null;
       }
       if ($scope.text === '') {
         return $scope.submit_Event($scope.selected_Technology.id, query_Service.index_Query);
@@ -2036,7 +2039,7 @@
       if (technology_Id !== $scope.previous_Filter_Id) {
         $rootScope.$broadcast('clear_filters', query_Id);
         if ($scope.selected_Technology.title !== 'All Technologies') {
-          $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology');
+          $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology', false);
         }
       }
       $rootScope.$broadcast('apply_query', query_Id);
@@ -2070,7 +2073,6 @@
     $scope.open_Query_State = function() {
       var ref;
       if (((ref = $state.current) != null ? ref.name : void 0) === 'index') {
-        $rootScope.$broadcast('clear_search');
         $rootScope.$broadcast('clear_filter', 'All');
         return query_Service.reload_Data();
       } else {

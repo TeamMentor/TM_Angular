@@ -28,7 +28,7 @@ class Query_Service
   reload_Data: ()=>
     @.$rootScope.$broadcast 'clear_filters'
     @.$rootScope.$broadcast 'clear_query'
-    @.$rootScope.$broadcast 'clear_search'
+    #@.$rootScope.$broadcast 'clear_search'
     @.load_Data()
 
 app.service 'query_Service', ($rootScope, TM_API)->

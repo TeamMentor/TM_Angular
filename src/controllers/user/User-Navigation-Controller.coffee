@@ -6,7 +6,7 @@ angular.module('TM_App')
           $scope.open_Query_State = ->
 
             if $state.current?.name is 'index'
-              $rootScope.$broadcast 'clear_search'
+              #$rootScope.$broadcast 'clear_search'
               $rootScope.$broadcast 'clear_filter', 'All'
               query_Service.reload_Data()
             else
