@@ -537,8 +537,12 @@
       url: "/article-box/:article_Id/:article_Title",
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
-    return $stateProvider.state('index_query_id', {
+    $stateProvider.state('index_query_id', {
       url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
       templateUrl: '/angular/jade-html/views/user/index'
     });
   });
@@ -1658,13 +1662,26 @@
     window._state = $state;
     window._scope = $scope;
     window._stateParams = $stateParams;
+    window._location = $location;
+    window._window = $window;
     console.log('in Index_Controller ' + new Date().getMilliseconds());
+    if ($stateParams.filters) {
+      if ($location.url() !== ("/index/" + $stateParams.query_Id + "/" + $stateParams.filters)) {
+        return;
+      }
+    } else {
+      if ($stateParams.query_Id && $location.url() !== ("/index/" + $stateParams.query_Id)) {
+        return;
+      }
+    }
     return using($scope, function() {
       this.history = {};
       this.view_Filters = false;
       this.column_Left = 'col-3';
       this.column_Middle = 'col-9';
       this.column_Right = 'col-0';
+      this.current_Query_Id = null;
+      this.current_Filters = null;
       this.$on('toggle_filters', (function(_this) {
         return function(event) {
           $scope.view_Filters = !$scope.view_Filters;
@@ -1680,41 +1697,41 @@
       $scope.load_Index_Data = function() {
         var filters, query_Id, search_Text;
         search_Text = $location != null ? typeof $location.search === "function" ? $location.search().text : void 0 : void 0;
-        query_Id = $location != null ? typeof $location.search === "function" ? $location.search().query : void 0 : void 0;
-        filters = $location != null ? typeof $location.search === "function" ? $location.search().filters : void 0 : void 0;
+        query_Id = $stateParams.query_Id;
+        filters = $stateParams.filters;
         if (search_Text) {
           return $rootScope.$broadcast('set_search', search_Text);
         } else if (query_Id) {
-          console.log('in load_Query');
           return $timeout(function() {
-            $rootScope.$broadcast('apply_query', query_Id);
             query_Service.load_Query(query_Id, filters);
             return $rootScope.$broadcast('apply_filter', filters);
           });
         } else {
-          console.log('...... in reload_Data');
           return $timeout(function() {
             return query_Service.reload_Data();
           });
         }
       };
       $scope.update_Location_Url = function(query_Id, filters) {
-        var url;
-        url = 'index?';
-        if (query_Id) {
-          url += "query=" + query_Id;
+        var state_name;
+        if ((!filters) && query_Id === 'query-6234f2d47eb7') {
+          return;
         }
-        if (filters) {
-          url += "&filters=" + filters;
-        }
-        if (url !== 'index?query=query-6234f2d47eb7') {
-          return $timeout(function() {
-            return window.history.replaceState('Object', 'Title', url);
-          });
-        }
+        state_name = filters ? 'index_query_id_filters' : 'index_query_id';
+        $state.go(state_name, {
+          query_Id: query_Id,
+          filters: filters
+        }, {
+          notify: false,
+          reload: false
+        });
+        $scope.current_Query_Id = query_Id;
+        return $scope.current_Filters = filters;
       };
-      $rootScope.$on('loading_query', function(event, query_Id, filters, from, to) {
-        return $scope.update_Location_Url(query_Id, filters);
+      $scope.$on('loading_query', function(event, query_Id, filters, from, to) {
+        if ($scope.current_Query_Id !== query_Id || $scope.current_Filters !== filters) {
+          return $scope.update_Location_Url(query_Id, filters);
+        }
       });
       return $scope.load_Index_Data();
     });
@@ -1841,10 +1858,10 @@
 
 (function() {
   angular.module('TM_App').controller('Recommendations_Controller', function($scope, $rootScope, TM_API) {
-    $rootScope.$on('apply_query', function(event, term) {
+    $scope.$on('apply_query', function(event, term) {
       return $scope.words = [];
     });
-    $rootScope.$on('search_term', function(event, term) {
+    $scope.$on('search_term', function(event, term) {
       if (term === '') {
         return $scope.words = [];
       } else {

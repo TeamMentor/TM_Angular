@@ -35,10 +35,20 @@ app.config ($stateProvider, routes_Names) ->
     url        : "/article-box/:article_Id/:article_Title"
     templateUrl: '/angular/jade-html/views/user/article_box'
 
+#  $stateProvider.state 'index_query_id'    ,
+#    url        : "/index?:query_Id&:text12&:filters12"
+#    #controller : 'Index_Controller'
+#    templateUrl: '/angular/jade-html/views/user/index'
+
   $stateProvider.state 'index_query_id'    ,
     url        : "/index/:query_Id"
-    #controller : 'Index_Controller'
     templateUrl: '/angular/jade-html/views/user/index'
+
+  $stateProvider.state 'index_query_id_filters'    ,
+      url        : "/index/:query_Id/:filters"
+      templateUrl: '/angular/jade-html/views/user/index'
+
+
 
 app.run ($rootScope,$window,TM_API, routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
