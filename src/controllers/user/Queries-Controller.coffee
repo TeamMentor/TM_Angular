@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'Queries_Controller', ($scope, $rootScope, $location)->
+       .controller 'Queries_Controller', ($scope, $rootScope, $window)->
 
           $scope.visible = false
 
@@ -10,3 +10,6 @@ angular.module('TM_App')
 
           $scope.load_Query = (query_Id)->
             $rootScope.$broadcast 'apply_query', query_Id
+
+          $scope.show_Previous_Query = ()->
+            $window.history.back()

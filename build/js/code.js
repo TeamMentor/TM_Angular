@@ -1156,13 +1156,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
@@ -1253,6 +1246,13 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -1851,15 +1851,18 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, $location) {
+  angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, $window) {
     $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
       $scope.visible = true;
       $scope.title = data.title;
       return $scope.containers = data.queries;
     });
-    return $scope.load_Query = function(query_Id) {
+    $scope.load_Query = function(query_Id) {
       return $rootScope.$broadcast('apply_query', query_Id);
+    };
+    return $scope.show_Previous_Query = function() {
+      return $window.history.back();
     };
   });
 
