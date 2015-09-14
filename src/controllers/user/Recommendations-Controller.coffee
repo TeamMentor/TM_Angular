@@ -1,10 +1,10 @@
 angular.module 'TM_App'
        .controller 'Recommendations_Controller', ($scope, $rootScope, TM_API)->
 
-          $rootScope.$on 'apply_query', (event,term)->
+          $scope.$on 'apply_query', (event,term)->
             $scope.words = []
 
-          $rootScope.$on 'search_term', (event,term)->
+          $scope.$on 'search_term', (event,term)->
             if term is ''
               $scope.words = []
             else

@@ -3,15 +3,18 @@ angular.module('TM_App')
 
           #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
 
-          $scope.query_Id            = null
-          $scope.selected_Technology = null
-          $scope.previous_Filter_Id  = null
-          $scope.technologies        = {}
-          $scope.technologies_By_Id  = {}
-          $scope.text                = ''
-          $scope.ignore_Events       = false
-          $scope.words               = []
-          $scope.searchPlaceholder   = "Search All of TEAM Mentor"
+          using $scope, ->
+            @.query_Id            = null
+            @.selected_Technology = null
+            @.previous_Filter_Id  = null
+            @.technologies        = {}
+            @.technologies_By_Id  = {}
+            @.text                = ''
+            @.ignore_Events       = false
+            @.words               = []
+            @.searchPlaceholder   = "Search All of TEAM Mentor"
+            @.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
+
           $scope.$on 'clear_search', ()->
             $scope.text = ''
 
@@ -27,6 +30,17 @@ angular.module('TM_App')
               if filter_Title isnt $scope.selected_Technology?.title
                 $scope.selected_Technology =  $scope.technologies_By_Id[filter_Id]
                 $scope.previous_Filter_Id = filter_Id
+
+          $scope.$on 'apply_filters', (event, filters)->
+            if not $scope.filters_By_Id
+              console.log '$scope.filters_By_Id NOT READY'
+              return
+            if filters
+              for filter_Id in filters.split(',')
+                filter = $scope.filters_By_Id[filter_Id]
+                if filter
+                  $rootScope.$broadcast 'apply_filter', filter.id, filter.title, filter.metadata_Title, false
+
 
 #          $scope.$on 'view_model_data', (event, data)->
 #            $scope.query_Id = data?.id
@@ -52,9 +66,13 @@ angular.module('TM_App')
 
               $scope.technologies       = [{ title: 'All Technologies', id: query_Service.index_Query }]
               $scope.technologies_By_Id = { 'All' : $scope.technologies[0]}
+              $scope.filters_By_Id      = {}
               if filters
                 for key,value of filters
-                  if key is 'Technology' and value.size
+                  for filter in value                                     # map filters_By_Id
+                    filter.metadata_Title= key
+                    $scope.filters_By_Id[filter.id] = filter
+                  if key is 'Technology' and value.size                   # map technologies_By_Id and technologies
                     for filter in value
                       $scope.technologies.push(filter)
                       $scope.technologies_By_Id[filter.id] = filter
@@ -77,8 +95,12 @@ angular.module('TM_App')
               $scope.ignore_Events = false
 
           $scope.submit = ()->
-            if $state.current?.name isnt 'index'
+
+
+            #if $state.current?.name isnt 'index'
+            if not @.index_States.contains($state.current?.name)
               $state.go('index')
+              $scope.previous_Filter_Id = null
 
             #$rootScope.$broadcast 'clear_query', null
 
@@ -92,7 +114,7 @@ angular.module('TM_App')
             if technology_Id isnt $scope.previous_Filter_Id
               $rootScope.$broadcast 'clear_filters',query_Id
               if $scope.selected_Technology.title isnt 'All Technologies'
-                $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
+                $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology', false
 
             $rootScope.$broadcast 'apply_query',query_Id
 

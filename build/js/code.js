@@ -533,45 +533,41 @@
       url: "/article/:article_Id/:article_Title",
       templateUrl: '/angular/jade-html/views/user/article'
     });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
     $stateProvider.state('guid', {
       url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
       templateUrl: '/angular/jade-html/views/user/article'
     });
     $stateProvider.state('article-box', {
       url: "/article-box/:article_Id/:article_Title",
       templateUrl: '/angular/jade-html/views/user/article_box'
     });
-    return $stateProvider.state('index_query_id', {
+    $stateProvider.state('index_query_id', {
       url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
       templateUrl: '/angular/jade-html/views/user/index'
     });
   });
 
 
   /*
-  app.run ($rootScope,$window,$state,$location,$timeout,TM_API, routes_Names) =>
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
     $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if $rootScope.stateChangeBypass || routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        $rootScope.stateChangeBypass = false;
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
         return
-      event.preventDefault();
-      $rootScope.$evalAsync ->
+      else
         TM_API.currentuser (userInfo) =>
           if (userInfo? && userInfo?.UserEnabled)
-            $rootScope.stateChangeBypass = true
-  
-            if ($location.$$hash?.length > 0)
-              $location.path($location.$$url)
-              $state.go('guidehash', current)
-            else
-              $location.path($location.$$path)
-              $state.go(next,current)
+            return
           else
             $window.location.href = '/angular/guest/login'
+    return
    */
 
 }).call(this);
@@ -771,13 +767,16 @@
       })(this));
     };
 
-    Query_Service.prototype.load_Query = function(query_Id, filters, from, to) {
+    Query_Service.prototype.load_Query = function(query_Id, filters, from, to, callback) {
       from = from || this.default_Page_From;
       to = to || this.default_Page_To;
       this.$rootScope.$broadcast('loading_query', query_Id, filters, from, to);
       return this.TM_API.query_view_model(query_Id, filters, from, to, (function(_this) {
         return function(data) {
-          return _this.$rootScope.$broadcast('view_model_data', data);
+          _this.$rootScope.$broadcast('view_model_data', data);
+          if (callback) {
+            return callback();
+          }
         };
       })(this));
     };
@@ -785,7 +784,6 @@
     Query_Service.prototype.reload_Data = function() {
       this.$rootScope.$broadcast('clear_filters');
       this.$rootScope.$broadcast('clear_query');
-      this.$rootScope.$broadcast('clear_search');
       return this.load_Data();
     };
 
@@ -1490,15 +1488,20 @@
   angular.module('TM_App').controller('Filters_Active_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
     $scope.current_Filters = {};
     $scope.current_Query_Id = null;
-    $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title) {
+    $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title, filter_Refresh) {
       var icon;
+      if (filter_Refresh == null) {
+        filter_Refresh = true;
+      }
       if (filter_Id) {
         icon = $sce.trustAsHtml(icon_Service.element_Html(filter_Title));
         $scope.current_Filters[filter_Id] = {
           filter_Title: filter_Title,
           filter_Icon: icon
         };
-        return $scope.refresh_Filters();
+        if (filter_Refresh) {
+          return $scope.refresh_Filters();
+        }
       }
     });
     $scope.$on('clear_filter', function(event, filter_Id) {
@@ -1671,13 +1674,26 @@
     window._state = $state;
     window._scope = $scope;
     window._stateParams = $stateParams;
+    window._location = $location;
+    window._window = $window;
     console.log('in Index_Controller ' + new Date().getMilliseconds());
+    if ($stateParams.filters) {
+      if ($location.url() !== ("/index/" + $stateParams.query_Id + "/" + $stateParams.filters)) {
+        return;
+      }
+    } else {
+      if ($stateParams.query_Id && $location.url() !== ("/index/" + $stateParams.query_Id)) {
+        return;
+      }
+    }
     return using($scope, function() {
       this.history = {};
       this.view_Filters = false;
       this.column_Left = 'col-3';
       this.column_Middle = 'col-9';
       this.column_Right = 'col-0';
+      this.current_Query_Id = null;
+      this.current_Filters = null;
       this.$on('toggle_filters', (function(_this) {
         return function(event) {
           $scope.view_Filters = !$scope.view_Filters;
@@ -1693,41 +1709,42 @@
       $scope.load_Index_Data = function() {
         var filters, query_Id, search_Text;
         search_Text = $location != null ? typeof $location.search === "function" ? $location.search().text : void 0 : void 0;
-        query_Id = $location != null ? typeof $location.search === "function" ? $location.search().query : void 0 : void 0;
-        filters = $location != null ? typeof $location.search === "function" ? $location.search().filters : void 0 : void 0;
+        query_Id = $stateParams.query_Id;
+        filters = $stateParams.filters;
         if (search_Text) {
           return $rootScope.$broadcast('set_search', search_Text);
         } else if (query_Id) {
-          console.log('in load_Query');
           return $timeout(function() {
-            $rootScope.$broadcast('apply_query', query_Id);
-            query_Service.load_Query(query_Id, filters);
-            return $rootScope.$broadcast('apply_filter', filters);
+            return query_Service.load_Query(query_Id, filters, null, null, function() {
+              return $rootScope.$broadcast('apply_filters', filters);
+            });
           });
         } else {
-          console.log('...... in reload_Data');
           return $timeout(function() {
             return query_Service.reload_Data();
           });
         }
       };
       $scope.update_Location_Url = function(query_Id, filters) {
-        var url;
-        url = 'index?';
-        if (query_Id) {
-          url += "query=" + query_Id;
+        var state_name;
+        if ((!filters) && query_Id === 'query-6234f2d47eb7') {
+          return;
         }
-        if (filters) {
-          url += "&filters=" + filters;
-        }
-        if (url !== 'index?query=query-6234f2d47eb7') {
-          return $timeout(function() {
-            return window.history.replaceState('Object', 'Title', url);
-          });
-        }
+        state_name = filters ? 'index_query_id_filters' : 'index_query_id';
+        $state.go(state_name, {
+          query_Id: query_Id,
+          filters: filters
+        }, {
+          notify: false,
+          reload: false
+        });
+        $scope.current_Query_Id = query_Id;
+        return $scope.current_Filters = filters;
       };
-      $rootScope.$on('loading_query', function(event, query_Id, filters, from, to) {
-        return $scope.update_Location_Url(query_Id, filters);
+      $scope.$on('loading_query', function(event, query_Id, filters, from, to) {
+        if ($scope.current_Query_Id !== query_Id || $scope.current_Filters !== filters) {
+          return $scope.update_Location_Url(query_Id, filters);
+        }
       });
       return $scope.load_Index_Data();
     });
@@ -1838,15 +1855,18 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, $location) {
+  angular.module('TM_App').controller('Queries_Controller', function($scope, $rootScope, $window) {
     $scope.visible = false;
     $scope.$on('view_model_data', function(event, data) {
       $scope.visible = true;
       $scope.title = data.title;
       return $scope.containers = data.queries;
     });
-    return $scope.load_Query = function(query_Id) {
+    $scope.load_Query = function(query_Id) {
       return $rootScope.$broadcast('apply_query', query_Id);
+    };
+    return $scope.show_Previous_Query = function() {
+      return $window.history.back();
     };
   });
 
@@ -1854,10 +1874,10 @@
 
 (function() {
   angular.module('TM_App').controller('Recommendations_Controller', function($scope, $rootScope, TM_API) {
-    $rootScope.$on('apply_query', function(event, term) {
+    $scope.$on('apply_query', function(event, term) {
       return $scope.words = [];
     });
-    $rootScope.$on('search_term', function(event, term) {
+    $scope.$on('search_term', function(event, term) {
       if (term === '') {
         return $scope.words = [];
       } else {
@@ -1904,15 +1924,18 @@
 
 (function() {
   angular.module('TM_App').controller('Search_Bar_Controller', function($rootScope, $scope, $state, $location, $timeout, query_Service, TM_API) {
-    $scope.query_Id = null;
-    $scope.selected_Technology = null;
-    $scope.previous_Filter_Id = null;
-    $scope.technologies = {};
-    $scope.technologies_By_Id = {};
-    $scope.text = '';
-    $scope.ignore_Events = false;
-    $scope.words = [];
-    $scope.searchPlaceholder = "Search All of TEAM Mentor";
+    using($scope, function() {
+      this.query_Id = null;
+      this.selected_Technology = null;
+      this.previous_Filter_Id = null;
+      this.technologies = {};
+      this.technologies_By_Id = {};
+      this.text = '';
+      this.ignore_Events = false;
+      this.words = [];
+      this.searchPlaceholder = "Search All of TEAM Mentor";
+      return this.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
+    });
     $scope.$on('clear_search', function() {
       return $scope.text = '';
     });
@@ -1935,13 +1958,34 @@
         }
       }
     });
+    $scope.$on('apply_filters', function(event, filters) {
+      var filter, filter_Id, i, len, ref, results;
+      if (!$scope.filters_By_Id) {
+        console.log('$scope.filters_By_Id NOT READY');
+        return;
+      }
+      if (filters) {
+        ref = filters.split(',');
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          filter_Id = ref[i];
+          filter = $scope.filters_By_Id[filter_Id];
+          if (filter) {
+            results.push($rootScope.$broadcast('apply_filter', filter.id, filter.title, filter.metadata_Title, false));
+          } else {
+            results.push(void 0);
+          }
+        }
+        return results;
+      }
+    });
     $scope.$on('set_search', function(event, text) {
       $scope.text = text;
       return $scope.submit();
     });
     $scope.set_technologies_By_Id = function() {
       return query_Service.index_Query_Filters(function(filters) {
-        var filter, i, key, len, value;
+        var filter, i, j, key, len, len1, value;
         $scope.technologies = [
           {
             title: 'All Technologies',
@@ -1951,12 +1995,18 @@
         $scope.technologies_By_Id = {
           'All': $scope.technologies[0]
         };
+        $scope.filters_By_Id = {};
         if (filters) {
           for (key in filters) {
             value = filters[key];
+            for (i = 0, len = value.length; i < len; i++) {
+              filter = value[i];
+              filter.metadata_Title = key;
+              $scope.filters_By_Id[filter.id] = filter;
+            }
             if (key === 'Technology' && value.size) {
-              for (i = 0, len = value.length; i < len; i++) {
-                filter = value[i];
+              for (j = 0, len1 = value.length; j < len1; j++) {
+                filter = value[j];
                 $scope.technologies.push(filter);
                 $scope.technologies_By_Id[filter.id] = filter;
               }
@@ -1978,8 +2028,9 @@
     };
     $scope.submit = function() {
       var ref;
-      if (((ref = $state.current) != null ? ref.name : void 0) !== 'index') {
+      if (!this.index_States.contains((ref = $state.current) != null ? ref.name : void 0)) {
         $state.go('index');
+        $scope.previous_Filter_Id = null;
       }
       if ($scope.text === '') {
         return $scope.submit_Event($scope.selected_Technology.id, query_Service.index_Query);
@@ -1993,7 +2044,7 @@
       if (technology_Id !== $scope.previous_Filter_Id) {
         $rootScope.$broadcast('clear_filters', query_Id);
         if ($scope.selected_Technology.title !== 'All Technologies') {
-          $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology');
+          $rootScope.$broadcast('apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title, 'Technology', false);
         }
       }
       $rootScope.$broadcast('apply_query', query_Id);
@@ -2027,7 +2078,6 @@
     $scope.open_Query_State = function() {
       var ref;
       if (((ref = $state.current) != null ? ref.name : void 0) === 'index') {
-        $rootScope.$broadcast('clear_search');
         $rootScope.$broadcast('clear_filter', 'All');
         return query_Service.reload_Data();
       } else {
