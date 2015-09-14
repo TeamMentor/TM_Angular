@@ -126,7 +126,8 @@ angular.module('TM_App')
 
           $scope.submit_Event = (technology_Id, query_Id)->
             if technology_Id isnt $scope.previous_Filter_Id
-              $rootScope.$broadcast 'clear_filters',query_Id
+              #$rootScope.$broadcast 'clear_filters',query_Id
+              $rootScope.$broadcast 'clear_filter',query_Id, 'Technology'
               if $scope.selected_Technology.title isnt 'All Technologies'
                 $rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology', false
 

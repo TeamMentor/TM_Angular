@@ -9,12 +9,17 @@ angular.module('TM_App')
           $scope.$on 'apply_filter', (event,filter_Id, filter_Title, metadata_Title, filter_Refresh = true )->
             if filter_Id
               icon =  $sce.trustAsHtml icon_Service.element_Html filter_Title
-              $scope.current_Filters[filter_Id] = filter_Title:filter_Title, filter_Icon : icon
+              $scope.current_Filters[filter_Id] = filter_Title:filter_Title, filter_Icon : icon, metadata_Title: metadata_Title
               if filter_Refresh
                 $scope.refresh_Filters()
 
-          $scope.$on 'clear_filter' , (event, filter_Id)->
-            delete $scope.current_Filters[filter_Id]
+          $scope.$on 'clear_filter' , (event, filter_Id, metadata_Title)->
+            if metadata_Title
+              for key, value of $scope.current_Filters
+                if value.metadata_Title is metadata_Title
+                  delete $scope.current_Filters[key]
+            else
+              delete $scope.current_Filters[filter_Id]
 
           $scope.$on 'clear_filters' , ->
             $scope.current_Filters = {}

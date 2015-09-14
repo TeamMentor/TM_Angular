@@ -2,11 +2,13 @@ angular.module 'TM_App'
        .controller 'Index_Controller', ($scope, query_Service, $stateParams ,  $location,$state, $window, $rootScope , $timeout)->
 
 
-          window._state = $state
-          window._scope = $scope
+          window._state       = $state
+          window._scope       = $scope
           window._stateParams = $stateParams
-          window._location = $location
-          window._window = $window
+          window._location    = $location
+          window._window      = $window
+          window._rootScope   = $rootScope
+
           console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
           using $scope, ->
