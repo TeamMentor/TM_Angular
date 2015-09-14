@@ -551,36 +551,28 @@
     });
   });
 
-  app.run((function(_this) {
-    return function($rootScope, $window, $state, $location, $timeout, TM_API, routes_Names) {
-      return $rootScope.$on('$stateChangeStart', function(event, next, current) {
-        if ($rootScope.stateChangeBypass || routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs" || next.name === 'terms_and_conditions') {
-          $rootScope.stateChangeBypass = false;
-          return;
-        }
-        event.preventDefault();
-        return $rootScope.$evalAsync(function() {
-          return TM_API.currentuser((function(_this) {
-            return function(userInfo) {
-              var ref;
-              if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
-                $rootScope.stateChangeBypass = true;
-                if (((ref = $location.$$hash) != null ? ref.length : void 0) > 0) {
-                  $location.path($location.$$url);
-                  return $state.go('guidehash', current);
-                } else {
-                  $location.path($location.$$path);
-                  return $state.go(next, current);
-                }
-              } else {
-                return $window.location.href = '/angular/guest/login';
-              }
-            };
-          })(this));
-        });
-      });
-    };
-  })(this));
+
+  /*
+  app.run ($rootScope,$window,$state,$location,$timeout,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if $rootScope.stateChangeBypass || routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        $rootScope.stateChangeBypass = false;
+        return
+      event.preventDefault();
+      $rootScope.$evalAsync ->
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            $rootScope.stateChangeBypass = true
+  
+            if ($location.$$hash?.length > 0)
+              $location.path($location.$$url)
+              $state.go('guidehash', current)
+            else
+              $location.path($location.$$path)
+              $state.go(next,current)
+          else
+            $window.location.href = '/angular/guest/login'
+   */
 
 }).call(this);
 

@@ -49,6 +49,7 @@ app.config ($stateProvider, routes_Names) ->
     #controller : 'Index_Controller'
     templateUrl: '/angular/jade-html/views/user/index'
 
+###
 app.run ($rootScope,$window,$state,$location,$timeout,TM_API, routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
     if $rootScope.stateChangeBypass || routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
@@ -67,4 +68,4 @@ app.run ($rootScope,$window,$state,$location,$timeout,TM_API, routes_Names) =>
             $location.path($location.$$path)
             $state.go(next,current)
         else
-          $window.location.href = '/angular/guest/login'
+          $window.location.href = '/angular/guest/login'###
