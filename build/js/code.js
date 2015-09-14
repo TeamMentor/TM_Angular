@@ -1725,13 +1725,29 @@
           });
         }
       };
+      $scope.resolve_Index_State = function(query_Id, filters) {
+        var value;
+        value = 'index';
+        if (query_Id && filters) {
+          value += '_query_id_filters';
+        }
+        if (query_Id && !filters) {
+          value += '_query_id';
+        }
+        return value;
+        if (query_Id && filters) {
+          return 'index_query_id_filters';
+        }
+        if (query_Id && !filters) {
+          return 'index_query_id';
+        }
+        return 'index';
+      };
       $scope.update_Location_Url = function(query_Id, filters) {
-        var state_name;
         if ((!filters) && query_Id === 'query-6234f2d47eb7') {
           return;
         }
-        state_name = filters ? 'index_query_id_filters' : 'index_query_id';
-        $state.go(state_name, {
+        $state.go($scope.resolve_Index_State(query_Id, filters), {
           query_Id: query_Id,
           filters: filters
         }, {
@@ -2075,10 +2091,12 @@
 (function() {
   angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $window, $timeout, $rootScope, query_Service) {
     console.log('in User_Navigation_Controller ' + new Date().getMilliseconds());
+    $scope.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
     $scope.open_Query_State = function() {
       var ref;
-      if (((ref = $state.current) != null ? ref.name : void 0) === 'index') {
+      if (this.index_States.contains((ref = $state.current) != null ? ref.name : void 0)) {
         $rootScope.$broadcast('clear_filter', 'All');
+        $rootScope.$broadcast('loading_query', null, null);
         return query_Service.reload_Data();
       } else {
         return $state.go('index');
