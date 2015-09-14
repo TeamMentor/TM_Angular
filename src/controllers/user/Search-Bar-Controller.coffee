@@ -121,6 +121,6 @@ angular.module('TM_App')
             $scope.previous_Filter_Id = technology_Id
 
           $scope.get_Words = (term)->
-            $rootScope.$broadcast 'search_term', term
+            $rootScope.$broadcast 'search_term', term, $scope.selected_Technology
 
           $scope.set_technologies_By_Id()

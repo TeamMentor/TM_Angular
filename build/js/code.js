@@ -1893,13 +1893,17 @@
     $scope.$on('apply_query', function(event, term) {
       return $scope.words = [];
     });
-    $scope.$on('search_term', function(event, term) {
-      if (term === '') {
+    $scope.$on('search_term', function(event, term, selected_Technology) {
+      if ((selected_Technology != null ? selected_Technology.title : void 0) !== "All Technologies") {
         return $scope.words = [];
       } else {
-        return TM_API.get_Words(term, function(words) {
-          return $scope.words = words;
-        });
+        if (term === '') {
+          return $scope.words = [];
+        } else {
+          return TM_API.get_Words(term, function(words) {
+            return $scope.words = words;
+          });
+        }
       }
     });
     $scope.select_Word = function(word) {
@@ -2067,7 +2071,7 @@
       return $scope.previous_Filter_Id = technology_Id;
     };
     $scope.get_Words = function(term) {
-      return $rootScope.$broadcast('search_term', term);
+      return $rootScope.$broadcast('search_term', term, $scope.selected_Technology);
     };
     return $scope.set_technologies_By_Id();
   });
