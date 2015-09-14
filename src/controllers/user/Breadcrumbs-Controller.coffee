@@ -42,3 +42,5 @@ angular.module 'TM_App'
               if breadcrumb?.query_Id
                 @.current_Path = breadcrumb.path
                 $rootScope.$broadcast 'apply_query', breadcrumb.query_Id
+                if breadcrumb.query_Id?.contains 'search-'
+                  $rootScope.$broadcast 'update_search', breadcrumb.title

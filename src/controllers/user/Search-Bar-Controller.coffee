@@ -60,6 +60,9 @@ angular.module('TM_App')
             $scope.text = text
             $scope.submit()
 
+          $scope.$on 'update_search', (event, text)->
+            $scope.text = text
+
           $scope.set_technologies_By_Id = ()->
 
             query_Service.index_Query_Filters (filters)->
