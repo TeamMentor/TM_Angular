@@ -283,6 +283,36 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Help_Controller', function($sce, $scope, TM_API) {
     $scope.show_Doc = function(article) {
       if (article) {
@@ -491,6 +521,10 @@
       url: "/guides",
       templateUrl: "/angular/jade-html/views/curated_content"
     });
+    $stateProvider.state('guidehash', {
+      url: "/guides#:id",
+      templateUrl: "/angular/jade-html/views/curated_content"
+    });
     $stateProvider.state('logout', {
       url: "/logout",
       controller: 'Logout_Controller'
@@ -501,6 +535,10 @@
     });
     $stateProvider.state('guid', {
       url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
       templateUrl: '/angular/jade-html/views/user/article'
     });
     $stateProvider.state('article-box', {
@@ -517,23 +555,20 @@
     });
   });
 
-  app.run((function(_this) {
-    return function($rootScope, $window, TM_API, routes_Names) {
-      $rootScope.$on('$stateChangeStart', function(event, next, current) {
-        if (routes_Names.views.guest.indexOf(next.name) > -1 || next.name === "docs" || next.name === 'terms_and_conditions') {
 
-        } else {
-          return TM_API.currentuser(function(userInfo) {
-            if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
-
-            } else {
-              return $window.location.href = '/angular/guest/login';
-            }
-          });
-        }
-      });
-    };
-  })(this));
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
 
 }).call(this);
 
@@ -1121,36 +1156,6 @@
     };
     return $$;
   });
-
-}).call(this);
-
-(function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
 
 }).call(this);
 
