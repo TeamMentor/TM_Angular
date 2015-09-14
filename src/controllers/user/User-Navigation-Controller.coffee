@@ -3,11 +3,14 @@ angular.module('TM_App')
 
           console.log 'in User_Navigation_Controller ' + new Date().getMilliseconds()
 
+          $scope.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
           $scope.open_Query_State = ->
 
-            if $state.current?.name is 'index'
+            if @.index_States.contains($state.current?.name)
               #$rootScope.$broadcast 'clear_search'
               $rootScope.$broadcast 'clear_filter', 'All'
+              $rootScope.$broadcast 'loading_query', null, null   # to clear existing query_Ids and Filter mappings
+
               query_Service.reload_Data()
             else
               $state.go 'index'

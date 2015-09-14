@@ -57,13 +57,22 @@ angular.module 'TM_App'
                 $timeout ->
                   query_Service.reload_Data()
 
+            $scope.resolve_Index_State = (query_Id, filters)->
+              value = 'index'
+              value+= '_query_id_filters' if     query_Id and     filters
+              value+= '_query_id'         if     query_Id and not filters
+              return value
+
+              return 'index_query_id_filters' if     query_Id and     filters
+              return 'index_query_id'         if     query_Id and not filters
+              return 'index'
+
             $scope.update_Location_Url = (query_Id, filters)->
 
               if (not filters) and query_Id is 'query-6234f2d47eb7'  # don't update url for the index query
                 return
 
-              state_name = if filters then 'index_query_id_filters'  else 'index_query_id'
-              $state.go state_name, { query_Id: query_Id , filters: filters},
+              $state.go $scope.resolve_Index_State(query_Id,filters), { query_Id: query_Id , filters: filters},
                     notify:false          # prevent the events onStart and onSuccess from firing
                     reload:false          # prevent reload of the current state
                     #location:'replace'    # replace the last record when changing the params so you don't hit the back button and get old params
