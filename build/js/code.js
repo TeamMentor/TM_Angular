@@ -2033,7 +2033,8 @@
             }
           }
         }
-        return $scope.selected_Technology = $scope.technologies[0];
+        $scope.selected_Technology = $scope.technologies[0];
+        return $scope.previous_Filter_Id = $scope.technologies[0].id;
       });
     };
     $scope.select_Technology = function() {
@@ -2053,6 +2054,7 @@
         $scope.previous_Filter_Id = null;
       }
       if ($scope.text === '') {
+        $rootScope.$broadcast('loading_query', null, null);
         return $scope.submit_Event($scope.selected_Technology.id, query_Service.index_Query);
       } else {
         return TM_API.query_from_text_search($scope.text, function(query_Id) {

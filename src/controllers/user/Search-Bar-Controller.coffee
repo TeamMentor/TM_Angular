@@ -78,6 +78,7 @@ angular.module('TM_App')
                       $scope.technologies_By_Id[filter.id] = filter
 
               $scope.selected_Technology = $scope.technologies[0]
+              $scope.previous_Filter_Id  = $scope.technologies[0].id
 
           $scope.select_Technology = ()->
             $scope.searchPlaceholder = "Search All of TEAM Mentor"
@@ -105,6 +106,7 @@ angular.module('TM_App')
             #$rootScope.$broadcast 'clear_query', null
 
             if $scope.text is ''
+              $rootScope.$broadcast 'loading_query', null,null
               $scope.submit_Event $scope.selected_Technology.id, query_Service.index_Query
             else
               TM_API.query_from_text_search $scope.text, (query_Id)->
