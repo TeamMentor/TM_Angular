@@ -1,7 +1,7 @@
 angular.module('TM_App')
        .controller 'Search_Bar_Controller', ($rootScope, $scope, $state, $location, $timeout, query_Service, TM_API)->
 
-          #console.log 'in Articles_Controller ' + new Date().getMilliseconds()
+          console.log 'in Search_Bar_Controller  ' + new Date().getMilliseconds()
 
           using $scope, ->
             @.query_Id            = null
@@ -103,14 +103,23 @@ angular.module('TM_App')
               $state.go('index')
               $scope.previous_Filter_Id = null
 
+
+            after_Timeout = ()->
+              if $scope.text is ''
+                $rootScope.$broadcast 'loading_query', null,null
+                $scope.submit_Event $scope.selected_Technology.id, query_Service.index_Query
+              else
+                TM_API.query_from_text_search $scope.text, (query_Id)->
+                  $scope.submit_Event $scope.selected_Technology.id, query_Id
             #$rootScope.$broadcast 'clear_query', null
 
-            if $scope.text is ''
-              $rootScope.$broadcast 'loading_query', null,null
-              $scope.submit_Event $scope.selected_Technology.id, query_Service.index_Query
-            else
-              TM_API.query_from_text_search $scope.text, (query_Id)->
-                $scope.submit_Event $scope.selected_Technology.id, query_Id
+
+            $timeout after_Timeout,250      # I really don't like doing timeouts like this,but the child directives in Index_Controller
+                                            # are only wired after a couple ms of Index_Controller loading
+                                            # which means that they would miss the apply_query and view_model_data events
+
+
+
 
           $scope.submit_Event = (technology_Id, query_Id)->
             if technology_Id isnt $scope.previous_Filter_Id

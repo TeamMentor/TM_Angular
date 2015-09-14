@@ -305,7 +305,7 @@
 
   tm_angular_config = {
     log_Events: true,
-    log_Urls: true
+    log_Urls: false
   };
 
   angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
@@ -1944,6 +1944,7 @@
 
 (function() {
   angular.module('TM_App').controller('Search_Bar_Controller', function($rootScope, $scope, $state, $location, $timeout, query_Service, TM_API) {
+    console.log('in Search_Bar_Controller  ' + new Date().getMilliseconds());
     using($scope, function() {
       this.query_Id = null;
       this.selected_Technology = null;
@@ -2048,19 +2049,22 @@
       }
     };
     $scope.submit = function() {
-      var ref;
+      var after_Timeout, ref;
       if (!this.index_States.contains((ref = $state.current) != null ? ref.name : void 0)) {
         $state.go('index');
         $scope.previous_Filter_Id = null;
       }
-      if ($scope.text === '') {
-        $rootScope.$broadcast('loading_query', null, null);
-        return $scope.submit_Event($scope.selected_Technology.id, query_Service.index_Query);
-      } else {
-        return TM_API.query_from_text_search($scope.text, function(query_Id) {
-          return $scope.submit_Event($scope.selected_Technology.id, query_Id);
-        });
-      }
+      after_Timeout = function() {
+        if ($scope.text === '') {
+          $rootScope.$broadcast('loading_query', null, null);
+          return $scope.submit_Event($scope.selected_Technology.id, query_Service.index_Query);
+        } else {
+          return TM_API.query_from_text_search($scope.text, function(query_Id) {
+            return $scope.submit_Event($scope.selected_Technology.id, query_Id);
+          });
+        }
+      };
+      return $timeout(after_Timeout, 250);
     };
     $scope.submit_Event = function(technology_Id, query_Id) {
       if (technology_Id !== $scope.previous_Filter_Id) {
