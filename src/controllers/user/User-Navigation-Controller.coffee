@@ -13,9 +13,8 @@ angular.module('TM_App')
 
               query_Service.reload_Data()
             else
-              $state.go 'index'
-              #$timeout ->
-              #  $window.location.href = '/angular/user/index'
+              $timeout ->
+                $state.go 'index'
 
           $scope.show_Loading_Image = false
 

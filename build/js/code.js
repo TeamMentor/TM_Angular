@@ -304,8 +304,8 @@
   var tm_angular_config;
 
   tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
+    log_Events: true,
+    log_Urls: true
   };
 
   angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
@@ -1677,16 +1677,7 @@
     window._location = $location;
     window._window = $window;
     console.log('in Index_Controller ' + new Date().getMilliseconds());
-    if ($stateParams.filters) {
-      if ($location.url() !== ("/index/" + $stateParams.query_Id + "/" + $stateParams.filters)) {
-        return;
-      }
-    } else {
-      if ($stateParams.query_Id && $location.url() !== ("/index/" + $stateParams.query_Id)) {
-        return;
-      }
-    }
-    return using($scope, function() {
+    using($scope, function() {
       this.history = {};
       this.view_Filters = false;
       this.column_Left = 'col-3';
@@ -1694,7 +1685,7 @@
       this.column_Right = 'col-0';
       this.current_Query_Id = null;
       this.current_Filters = null;
-      this.$on('toggle_filters', (function(_this) {
+      return this.$on('toggle_filters', (function(_this) {
         return function(event) {
           $scope.view_Filters = !$scope.view_Filters;
           if ($scope.view_Filters) {
@@ -1706,64 +1697,73 @@
           }
         };
       })(this));
-      $scope.load_Index_Data = function() {
-        var filters, query_Id, search_Text;
-        search_Text = $location != null ? typeof $location.search === "function" ? $location.search().text : void 0 : void 0;
-        query_Id = $stateParams.query_Id;
-        filters = $stateParams.filters;
-        if (search_Text) {
-          return $rootScope.$broadcast('set_search', search_Text);
-        } else if (query_Id) {
-          return $timeout(function() {
-            return query_Service.load_Query(query_Id, filters, null, null, function() {
-              return $rootScope.$broadcast('apply_filters', filters);
-            });
-          });
-        } else {
-          return $timeout(function() {
-            return query_Service.reload_Data();
-          });
-        }
-      };
-      $scope.resolve_Index_State = function(query_Id, filters) {
-        var value;
-        value = 'index';
-        if (query_Id && filters) {
-          value += '_query_id_filters';
-        }
-        if (query_Id && !filters) {
-          value += '_query_id';
-        }
-        return value;
-        if (query_Id && filters) {
-          return 'index_query_id_filters';
-        }
-        if (query_Id && !filters) {
-          return 'index_query_id';
-        }
-        return 'index';
-      };
-      $scope.update_Location_Url = function(query_Id, filters) {
-        if ((!filters) && query_Id === 'query-6234f2d47eb7') {
-          return;
-        }
-        $state.go($scope.resolve_Index_State(query_Id, filters), {
-          query_Id: query_Id,
-          filters: filters
-        }, {
-          notify: false,
-          reload: false
-        });
-        $scope.current_Query_Id = query_Id;
-        return $scope.current_Filters = filters;
-      };
-      $scope.$on('loading_query', function(event, query_Id, filters, from, to) {
-        if ($scope.current_Query_Id !== query_Id || $scope.current_Filters !== filters) {
-          return $scope.update_Location_Url(query_Id, filters);
-        }
-      });
-      return $scope.load_Index_Data();
     });
+    $scope.load_Index_Data = function() {
+      var filters, query_Id, search_Text;
+      search_Text = $location != null ? typeof $location.search === "function" ? $location.search().text : void 0 : void 0;
+      query_Id = $stateParams.query_Id;
+      filters = $stateParams.filters;
+      if (search_Text) {
+        return $rootScope.$broadcast('set_search', search_Text);
+      } else if (query_Id) {
+        return $timeout(function() {
+          return query_Service.load_Query(query_Id, filters, null, null, function() {
+            return $rootScope.$broadcast('apply_filters', filters);
+          });
+        });
+      } else {
+        return $timeout(function() {
+          return query_Service.reload_Data();
+        });
+      }
+    };
+    $scope.resolve_Index_State = function(query_Id, filters) {
+      var value;
+      value = 'index';
+      if (query_Id && filters) {
+        value += '_query_id_filters';
+      }
+      if (query_Id && !filters) {
+        value += '_query_id';
+      }
+      return value;
+      if (query_Id && filters) {
+        return 'index_query_id_filters';
+      }
+      if (query_Id && !filters) {
+        return 'index_query_id';
+      }
+      return 'index';
+    };
+    $scope.update_Location_Url = function(query_Id, filters) {
+      if ((!filters) && query_Id === 'query-6234f2d47eb7') {
+        return;
+      }
+      $state.go($scope.resolve_Index_State(query_Id, filters), {
+        query_Id: query_Id,
+        filters: filters
+      }, {
+        notify: false,
+        reload: false
+      });
+      $scope.current_Query_Id = query_Id;
+      return $scope.current_Filters = filters;
+    };
+    $scope.$on('loading_query', function(event, query_Id, filters, from, to) {
+      if ($scope.current_Query_Id !== query_Id || $scope.current_Filters !== filters) {
+        return $scope.update_Location_Url(query_Id, filters);
+      }
+    });
+    if ($window.location.href && !$window.location.href.contains('index')) {
+      return;
+    }
+    if ($stateParams.filters && $stateParams.query_Id && $location.url() !== ("/index/" + $stateParams.query_Id + "/" + $stateParams.filters)) {
+      return;
+    }
+    if ($stateParams.query_Id && !$stateParams.filters && $location.url() !== ("/index/" + $stateParams.query_Id)) {
+      return;
+    }
+    return $scope.load_Index_Data();
   });
 
 }).call(this);
@@ -2105,7 +2105,9 @@
         $rootScope.$broadcast('loading_query', null, null);
         return query_Service.reload_Data();
       } else {
-        return $state.go('index');
+        return $timeout(function() {
+          return $state.go('index');
+        });
       }
     };
     $scope.show_Loading_Image = false;
