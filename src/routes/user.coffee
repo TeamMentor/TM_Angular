@@ -18,6 +18,10 @@ app.config ($stateProvider, routes_Names) ->
     url        : "/guides"
     templateUrl: "/angular/jade-html/views/curated_content"
 
+  $stateProvider.state 'guidehash'    ,
+    url        : "/guides#:id"
+    templateUrl: "/angular/jade-html/views/curated_content"
+
   $stateProvider.state 'logout'    ,
     url        : "/logout"
     controller : 'Logout_Controller'
@@ -30,6 +34,9 @@ app.config ($stateProvider, routes_Names) ->
     url        : "/:article_Id"
     templateUrl: '/angular/jade-html/views/user/article'
 
+  $stateProvider.state 'articleguid',
+    url        : "/article/:article_Id"
+    templateUrl: '/angular/jade-html/views/user/article'
 
   $stateProvider.state 'article-box'    ,
     url        : "/article-box/:article_Id/:article_Title"
@@ -50,6 +57,7 @@ app.config ($stateProvider, routes_Names) ->
 
 
 
+###
 app.run ($rootScope,$window,TM_API, routes_Names) =>
   $rootScope.$on '$stateChangeStart', (event, next, current) =>
     if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
@@ -60,4 +68,4 @@ app.run ($rootScope,$window,TM_API, routes_Names) =>
           return
         else
           $window.location.href = '/angular/guest/login'
-  return
+  return###
