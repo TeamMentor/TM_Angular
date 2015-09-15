@@ -10,7 +10,6 @@ angular.module('TM_App')
             @.technologies        = {}
             @.technologies_By_Id  = {}
             @.text                = ''
-            @.ignore_Events       = false
             @.words               = []
             @.searchPlaceholder   = "Search All of TEAM Mentor"
             @.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
@@ -21,8 +20,6 @@ angular.module('TM_App')
           $scope.$on 'clear_filter', (event, filter_Id)->
             if filter_Id
               if $scope.technologies_By_Id[filter_Id]
-                if $scope.ignore_Events
-                  return
                 $scope.selected_Technology = $scope.technologies_By_Id['All']
 
           $scope.$on 'apply_filter', (event, filter_Id, filter_Title, metadata_Title)->
@@ -30,6 +27,7 @@ angular.module('TM_App')
               if filter_Title isnt $scope.selected_Technology?.title
                 $scope.selected_Technology =  $scope.technologies_By_Id[filter_Id]
                 $scope.previous_Filter_Id = filter_Id
+                $scope.update_Placeholder_Text()
 
           $scope.$on 'apply_filters', (event, filters)->
             if not $scope.filters_By_Id
@@ -83,25 +81,16 @@ angular.module('TM_App')
               $scope.selected_Technology = $scope.technologies[0]
               $scope.previous_Filter_Id  = $scope.technologies[0].id
 
-          $scope.select_Technology = ()->
+          $scope.update_Placeholder_Text = ()->
             $scope.searchPlaceholder = "Search All of TEAM Mentor"
             if $scope.selected_Technology
-              $scope.ignore_Events = true                                     # prevent clear_filter from firing
-              #$rootScope.$broadcast 'clear_filter', $scope.previous_Filter_Id
-
               if $scope.selected_Technology.title isnt 'All Technologies'
-                #$rootScope.$broadcast 'apply_filter', $scope.selected_Technology.id, $scope.selected_Technology.title , 'Technology'
                 $scope.searchPlaceholder = "Search " + $scope.selected_Technology.title
-              #else
-              #  $scope.submit()
 
-              #$scope.previous_Filter_Id = $scope.selected_Technology.id
-              $scope.ignore_Events = false
+          $scope.select_Technology = ()->
+            $scope.update_Placeholder_Text()
 
           $scope.submit = ()->
-
-
-            #if $state.current?.name isnt 'index'
             if not @.index_States.contains($state.current?.name)
               $state.go('index')
               $scope.previous_Filter_Id = null
