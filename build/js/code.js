@@ -1787,18 +1787,43 @@
     model = {
       page: 1,
       page_Split: 10,
+      data_Size: 0,
       pages: [],
       page_Splits: [4, 10, 20, 50, 100]
     };
     $scope.query_Id = null;
     $scope.model = model;
     $scope.visible = false;
+    $scope.set_Paging_Message = function() {
+      var currentPage, endNo, recordsPerPage, startNo, totalRecords;
+      recordsPerPage = model.page_Split;
+      totalRecords = model.data_Size;
+      currentPage = model.page;
+      if (currentPage === 1 && recordsPerPage > totalRecords) {
+        $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+        return;
+      }
+      if (currentPage === 1) {
+        return $rootScope.pagginMessage = "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords;
+      } else {
+        startNo = ((currentPage - 1) * recordsPerPage) + 1;
+        if ((currentPage * recordsPerPage) + 1 > totalRecords) {
+          endNo = totalRecords;
+          $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+          return;
+        } else {
+          endNo = (currentPage * recordsPerPage) + 1;
+        }
+        return $rootScope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords;
+      }
+    };
     $scope.$on('view_model_data', function(event, data) {
       var i, results, split;
       $scope.visible = true;
       if (!(data != null ? data.size : void 0)) {
         return model.pages = null;
       } else {
+        model.data_Size = data != null ? data.size : void 0;
         $scope.query_Id = data.id;
         if (data.size < model.page_Split) {
           split = 1;
@@ -1808,11 +1833,12 @@
             split++;
           }
         }
-        return model.pages = (function() {
+        model.pages = (function() {
           results = [];
           for (var i = 1; 1 <= split ? i <= split : i >= split; 1 <= split ? i++ : i--){ results.push(i); }
           return results;
         }).apply(this);
+        return $scope.set_Paging_Message();
       }
     });
     $scope.set_Page = function() {
@@ -1820,10 +1846,13 @@
       if (model.page) {
         from = (model.page - 1) * model.page_Split;
         to = model.page * model.page_Split;
-        return $rootScope.$broadcast('set_page', model.page, from, to);
+        $rootScope.$broadcast('set_page', model.page, from, to);
       }
+      return $scope.set_Paging_Message;
     };
     $scope.set_Page_Split = function(recordsPerPage) {
+      angular.element(document.querySelector('#current_Page select'))[0].value = "number:1";
+      angular.element(document.querySelector('#current_Page select'))[0].text = "1";
       if (recordsPerPage) {
         model.page_Split = recordsPerPage;
       }
