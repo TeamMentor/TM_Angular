@@ -16,7 +16,7 @@ app.config ($stateProvider, routes_Names) ->
 
   $stateProvider.state 'guides'    ,
     url        : "/guides"
-    templateUrl: "/angular/jade-html/views/curated_content"
+    templateUrl: "/angular/jade-html/views/user/guides"
 
   $stateProvider.state 'guidehash'    ,
     url        : "/guides#:id"
