@@ -1964,8 +1964,7 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Search_Bar_Controller', function($rootScope, $scope, $state, $location, $timeout, query_Service, TM_API) {
-    console.log('in Search_Bar_Controller  ' + new Date().getMilliseconds());
+  angular.module('TM_App').controller('Search_Bar_Controller', function($rootScope, $scope, $state, $location, $timeout, query_Service, $element, $document, TM_API) {
     using($scope, function() {
       this.query_Id = null;
       this.selected_Technology = null;
@@ -1983,9 +1982,10 @@
     $scope.$on('clear_filter', function(event, filter_Id) {
       if (filter_Id) {
         if ($scope.technologies_By_Id[filter_Id]) {
-          return $scope.selected_Technology = $scope.technologies_By_Id['All'];
+          $scope.selected_Technology = $scope.technologies_By_Id['All'];
         }
       }
+      return $scope.select_Technology();
     });
     $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title) {
       var ref;
@@ -1993,7 +1993,7 @@
         if (filter_Title !== ((ref = $scope.selected_Technology) != null ? ref.title : void 0)) {
           $scope.selected_Technology = $scope.technologies_By_Id[filter_Id];
           $scope.previous_Filter_Id = filter_Id;
-          return $scope.update_Placeholder_Text();
+          return $scope.select_Technology();
         }
       }
     });
@@ -2067,8 +2067,18 @@
         }
       }
     };
+    $scope.update_Select_List = function() {
+      var flex_Extra_Size, input_Size, ref, ref1, select_Size, title_Size;
+      title_Size = ((ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0) * 1.2 || 16;
+      flex_Extra_Size = title_Size;
+      select_Size = (5 + flex_Extra_Size) + '%';
+      input_Size = (85 - flex_Extra_Size) + '%';
+      $element.find('select').css('flex', select_Size);
+      return $element.find('input').css('flex', input_Size);
+    };
     $scope.select_Technology = function() {
-      return $scope.update_Placeholder_Text();
+      $scope.update_Placeholder_Text();
+      return $scope.update_Select_List();
     };
     $scope.submit = function() {
       var after_Timeout, ref;
@@ -2101,7 +2111,8 @@
     $scope.get_Words = function(term) {
       return $rootScope.$broadcast('search_term', term, $scope.selected_Technology);
     };
-    return $scope.set_technologies_By_Id();
+    $scope.set_technologies_By_Id();
+    return $scope.select_Technology();
   });
 
 }).call(this);
