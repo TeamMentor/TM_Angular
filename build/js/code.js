@@ -523,7 +523,7 @@
     });
     $stateProvider.state('guidehash', {
       url: "/guides#:id",
-      templateUrl: "/angular/jade-html/views/curated_content"
+      templateUrl: "/angular/jade-html/views/user/guides"
     });
     $stateProvider.state('logout', {
       url: "/logout",
@@ -1612,15 +1612,45 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Gateways_Controller', function($sce, $scope, TM_API, $location) {
+  angular.module('TM_App').directive('dynamic', function($compile) {
+    return {
+      restrict: 'A',
+      replace: true,
+      link: function(scope, ele, attrs) {
+        scope.$watch(attrs.dynamic, function(html) {
+          ele.html(html);
+          $compile(ele.contents())(scope);
+        });
+      }
+    };
+  }).controller('Gateways_Controller', function($sce, $scope, TM_API, $location) {
     $scope.Library = {};
     $scope.show_Article = function(article) {
       if (article) {
         return TM_API.article(article, function(article_Data) {
+          var attr, href, i, len, link, links, originalHtml, value;
           if (article_Data) {
             $scope.article = article_Data;
             $scope.title = article_Data.title;
-            $scope.content = $sce.trustAsHtml(article_Data.article_Html);
+            links = angular.element(article_Data.article_Html).find('a');
+            if ((links != null) && links.length > 0) {
+              for (i = 0, len = links.length; i < len; i++) {
+                link = links[i];
+                originalHtml = link.outerHTML;
+                href = link.attributes.href;
+                if (href.value.contains("/article/")) {
+                  href.value = href.value.replace("/article/", '');
+                }
+                if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(href.value)) {
+                  value = href.value.split('-')[4];
+                  attr = "show_Article('" + value + "')";
+                  link.attributes.href.value = link.attributes.href.value.replace(href.value, '#article-' + value);
+                  link.setAttribute("ng-click", attr);
+                  article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML);
+                }
+              }
+              $scope.content = article_Data.article_Html;
+            }
             return TM_API.currentuser(function(userInfo) {
               if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
                 return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
@@ -1809,10 +1839,10 @@
         startNo = ((currentPage - 1) * recordsPerPage) + 1;
         if ((currentPage * recordsPerPage) + 1 > totalRecords) {
           endNo = totalRecords;
-          $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+          $rootScope.pagginMessage = "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords;
           return;
         } else {
-          endNo = (currentPage * recordsPerPage) + 1;
+          endNo = currentPage * recordsPerPage;
         }
         return $rootScope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords;
       }
@@ -1846,13 +1876,10 @@
       if (model.page) {
         from = (model.page - 1) * model.page_Split;
         to = model.page * model.page_Split;
-        $rootScope.$broadcast('set_page', model.page, from, to);
+        return $rootScope.$broadcast('set_page', model.page, from, to);
       }
-      return $scope.set_Paging_Message;
     };
     $scope.set_Page_Split = function(recordsPerPage) {
-      angular.element(document.querySelector('#current_Page select'))[0].value = "number:1";
-      angular.element(document.querySelector('#current_Page select'))[0].text = "1";
       if (recordsPerPage) {
         model.page_Split = recordsPerPage;
       }

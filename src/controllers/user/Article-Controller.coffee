@@ -37,6 +37,7 @@ angular.module('TM_App')
 
             if !angular.isObject(article)
               return;
+
             $scope.mapGuideArticle(article)
 
             id    = article.id.remove('article-')

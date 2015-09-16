@@ -15,6 +15,7 @@ angular.module('TM_App')
           $scope.visible   = false
 
           $scope.set_Paging_Message = ()->
+
             recordsPerPage = model.page_Split
             totalRecords   = model.data_Size
             currentPage    = model.page
@@ -29,10 +30,10 @@ angular.module('TM_App')
               startNo = (((currentPage - 1) * (recordsPerPage))  + 1 );
               if ((currentPage  * recordsPerPage) + 1 > totalRecords)
                 endNo =totalRecords
-                $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+                $rootScope.pagginMessage = "Showing article " + (((currentPage - 1)  * recordsPerPage) + 1 ) + " to "+ totalRecords  + " out of " + totalRecords;
                 return
               else
-                endNo =(currentPage * recordsPerPage) + 1 ;
+                endNo =(currentPage * recordsPerPage)  ;
 
               $rootScope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords
 
@@ -58,11 +59,11 @@ angular.module('TM_App')
               from    = (model.page - 1) * model.page_Split
               to      = (model.page    ) * model.page_Split
               $rootScope.$broadcast 'set_page', model.page, from, to
-            $scope.set_Paging_Message
+
 
           $scope.set_Page_Split = (recordsPerPage)->
-            angular.element(document.querySelector('#current_Page select'))[0].value="number:1"
-            angular.element(document.querySelector('#current_Page select'))[0].text="1"
+            #angular.element(document.querySelector('#current_Page select'))[0].value="number:1"
+            #angular.element(document.querySelector('#current_Page select'))[0].text="1"
             if recordsPerPage
               model.page_Split = recordsPerPage
             $scope.set_Page()
