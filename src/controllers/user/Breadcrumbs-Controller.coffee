@@ -1,46 +1,29 @@
 angular.module 'TM_App'
-       .controller 'Breadcrumbs_Controller', ($scope, $rootScope)->
+       .controller 'Breadcrumbs_Controller', ($scope, $rootScope,breadcrumbs_Service)->
           using $scope, ->
 
             #console.log 'in Breadcrumbs_Controller ' + new Date().getMilliseconds()
 
-            @.history      = {}
-            @.current_Path = ''
-            @.breadcrumbs  = []
             @.visible      = false
+            @.breadcrumbs_Service = breadcrumbs_Service
 
             @.$on 'clear_query', (event, data)=>
-              @.current_Path = ''
-              @.breadcrumbs  = []
+              @.breadcrumbs_Service.clear_query()
 
             @.$on 'view_model_data', (event, data)=>
-              $scope.visible = true
+              @.breadcrumbs_Service.add_Breadcrumb data.id, data.title
+              @.refresh_Breadcrumbs()
 
-              if data
-                if @.current_Path.indexOf(data.id) is -1
-                  @.current_Path += "/#{data.id}"
-                  @.history[data.id] =
-                    title     : data.title
-                    query_Id  : data.id
+            @.$on 'pop_state', (event, url)=>
+              @.breadcrumbs_Service.move_Back()
+              @.refresh_Breadcrumbs()
 
-                  @.refresh_Breadcrumbs()
+
+            @.$on 'refresh_breadcrumbs', (event, data)=>
+              @.refresh_Breadcrumbs()
 
             @.refresh_Breadcrumbs = ()=>
-              @.breadcrumbs = []
-              path = ''
-              for key in @.current_Path.split('/') when key
-                item = @.history[key]
-                if item
-                  @.breadcrumbs.push {
-                                       query_Id     : item.query_Id
-                                       title        : item.title
-                                       path         : path
-                                     }
-                  path += "/#{key}"
+              @.breadcrumbs = @.breadcrumbs_Service.current_Breadcrumbs()
+              @.visible = true
 
-            @.load_Query = (breadcrumb)=>
-              if breadcrumb?.query_Id
-                @.current_Path = breadcrumb.path
-                $rootScope.$broadcast 'apply_query', breadcrumb.query_Id
-                if breadcrumb.query_Id?.contains 'search-'
-                  $rootScope.$broadcast 'update_search', breadcrumb.title
+            @.load_Query = @.breadcrumbs_Service.on_Selected
