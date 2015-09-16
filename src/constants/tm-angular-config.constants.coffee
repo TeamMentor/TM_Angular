@@ -1,5 +1,5 @@
 tm_angular_config =
-  log_Events : false
+  log_Events : true
   log_Urls   : false
 
 angular.module('TM_App')

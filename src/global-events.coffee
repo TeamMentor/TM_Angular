@@ -17,8 +17,9 @@ angular.module('TM_App')
                 console.log { event: name ,  time: (new Date()).getMilliseconds(), params: params}
 
             events = [ 'apply_filter', 'apply_query'
-                       'clear_articles', 'clear_filter', 'clear_query', 'clear_search'
+                       'clear_articles', 'clear_filter', 'clear_query', 'clear_search', 'set_search', 'update_search'
                        #'keydown', 'keyup'
+                       'pop_state',
                        'query_data', 'article_data', 'filter_data'
                        #'http_start', 'http_end'
                        'set_page', 'set_page_split'
@@ -27,6 +28,14 @@ angular.module('TM_App')
                        'test']
 
             log_Event(name) for name in  events
+
+
+          # capture back button
+
+          window.onpopstate = (event)->
+            if event?.path[0].location?.pathname
+              $rootScope.$broadcast 'pop_state', event.path[0].location.pathname
+
 
 angular.module('TM_App')
        .factory 'httpInterceptor',  ($q, tm_angular_config)->
