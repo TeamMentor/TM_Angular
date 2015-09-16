@@ -51,10 +51,11 @@ angular.module('TM_App')
             $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
             $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
 
+            $scope.articleLoaded = true
+
             TM_API.currentuser (userInfo) ->
               if (userInfo? && userInfo?.UserEnabled)
                 TM_API.verifyInternalUser userInfo.Email, (callback)->
-                  $scope.articleLoaded = true
                   if callback?
                     $scope.showFeedback     = true
                     $scope.githubContentUrl = callback

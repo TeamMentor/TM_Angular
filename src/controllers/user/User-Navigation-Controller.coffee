@@ -1,7 +1,7 @@
 angular.module('TM_App')
        .controller 'User_Navigation_Controller', ($scope, $state,$window, $timeout, $rootScope, query_Service)->
 
-          console.log 'in User_Navigation_Controller ' + new Date().getMilliseconds()
+          #console.log 'in User_Navigation_Controller ' + new Date().getMilliseconds()
 
           $scope.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
           $scope.open_Query_State = ->

@@ -86,7 +86,7 @@
   var slice = [].slice;
 
   angular.module('TM_App').run(function($rootScope, tm_angular_config) {
-    var body, events, i, len, log_Event, name, results;
+    var body, events, i, len, log_Event, name;
     body = angular.element(document.body);
     body.on('keydown', function(event) {
       if (event) {
@@ -110,14 +110,18 @@
           });
         });
       };
-      events = ['apply_filter', 'apply_query', 'clear_articles', 'clear_filter', 'clear_query', 'clear_search', 'set_search', 'update_search', 'query_data', 'article_data', 'filter_data', 'set_page', 'set_page_split', 'toggle_filters', 'view_filters', 'view_model_data', 'test'];
-      results = [];
+      events = ['apply_filter', 'apply_query', 'clear_articles', 'clear_filter', 'clear_query', 'clear_search', 'set_search', 'update_search', 'pop_state', 'query_data', 'article_data', 'filter_data', 'set_page', 'set_page_split', 'toggle_filters', 'view_filters', 'view_model_data', 'test'];
       for (i = 0, len = events.length; i < len; i++) {
         name = events[i];
-        results.push(log_Event(name));
+        log_Event(name);
       }
-      return results;
     }
+    return window.onpopstate = function(event) {
+      var ref;
+      if (event != null ? (ref = event.path[0].location) != null ? ref.pathname : void 0 : void 0) {
+        return $rootScope.$broadcast('pop_state', event.path[0].location.pathname);
+      }
+    };
   });
 
   angular.module('TM_App').factory('httpInterceptor', function($q, tm_angular_config) {
@@ -569,6 +573,105 @@
             $window.location.href = '/angular/guest/login'
     return
    */
+
+}).call(this);
+
+(function() {
+  var Breadcrumbs_Service,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Breadcrumbs_Service = (function() {
+    Breadcrumbs_Service.$inject = ['$rootScope'];
+
+    function Breadcrumbs_Service(rootScope) {
+      this.rootScope = rootScope;
+      this.on_Selected = bind(this.on_Selected, this);
+      this.move_Back = bind(this.move_Back, this);
+      this.current_Breadcrumbs = bind(this.current_Breadcrumbs, this);
+      this.clear_query = bind(this.clear_query, this);
+      this.add_Breadcrumbs = bind(this.add_Breadcrumbs, this);
+      this.add_Breadcrumb = bind(this.add_Breadcrumb, this);
+      this.history = {};
+      this.current_Path = '';
+      this.now = new Date().getMilliseconds();
+    }
+
+    Breadcrumbs_Service.prototype.add_Breadcrumb = function(id, title) {
+      if (id && title) {
+        if (this.current_Path.indexOf(id) === -1) {
+          this.current_Path += "/" + id;
+          this.history[id] = {
+            title: title,
+            query_Id: id
+          };
+          return true;
+        } else {
+          console.log('breadcrumb was already there');
+        }
+      }
+      return false;
+    };
+
+    Breadcrumbs_Service.prototype.add_Breadcrumbs = function(breadcrumbs) {
+      var breadcrumb, i, len, results;
+      results = [];
+      for (i = 0, len = breadcrumbs.length; i < len; i++) {
+        breadcrumb = breadcrumbs[i];
+        results.push(this.add_Breadcrumb(breadcrumb.id, breadcrumb.title));
+      }
+      return results;
+    };
+
+    Breadcrumbs_Service.prototype.clear_query = function() {
+      return this.current_Path = '';
+    };
+
+    Breadcrumbs_Service.prototype.current_Breadcrumbs = function() {
+      var breadcrumbs, i, item, key, len, path, ref;
+      breadcrumbs = [];
+      path = '';
+      ref = this.current_Path.split('/');
+      for (i = 0, len = ref.length; i < len; i++) {
+        key = ref[i];
+        if (!(key)) {
+          continue;
+        }
+        item = this.history[key];
+        if (item) {
+          breadcrumbs.push({
+            query_Id: item.query_Id,
+            title: item.title,
+            path: path
+          });
+          path += "/" + key;
+        }
+      }
+      return breadcrumbs;
+    };
+
+    Breadcrumbs_Service.prototype.move_Back = function() {
+      var path;
+      path = this.current_Path.split('/');
+      path.pop();
+      return this.current_Path = path.join('/');
+    };
+
+    Breadcrumbs_Service.prototype.on_Selected = function(breadcrumb) {
+      var ref;
+      if (breadcrumb != null ? breadcrumb.query_Id : void 0) {
+        this.current_Path = breadcrumb.path;
+        this.rootScope.$broadcast('apply_query', breadcrumb.query_Id);
+        if ((ref = breadcrumb.query_Id) != null ? ref.contains('search-') : void 0) {
+          return this.rootScope.$broadcast('update_search', breadcrumb.title);
+        }
+      }
+    };
+
+    return Breadcrumbs_Service;
+
+  })();
+
+  angular.module('TM_App').service('breadcrumbs_Service', Breadcrumbs_Service);
 
 }).call(this);
 
@@ -1331,10 +1434,10 @@
         $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
         $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
         $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+        $scope.articleLoaded = true;
         return TM_API.currentuser(function(userInfo) {
           if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
             return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
-              $scope.articleLoaded = true;
               if (callback != null) {
                 $scope.showFeedback = true;
                 return $scope.githubContentUrl = callback;
@@ -1417,72 +1520,39 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Breadcrumbs_Controller', function($scope, $rootScope) {
+  angular.module('TM_App').controller('Breadcrumbs_Controller', function($scope, $rootScope, breadcrumbs_Service) {
     return using($scope, function() {
-      this.history = {};
-      this.current_Path = '';
-      this.breadcrumbs = [];
       this.visible = false;
+      this.breadcrumbs_Service = breadcrumbs_Service;
       this.$on('clear_query', (function(_this) {
         return function(event, data) {
-          _this.current_Path = '';
-          return _this.breadcrumbs = [];
+          return _this.breadcrumbs_Service.clear_query();
         };
       })(this));
       this.$on('view_model_data', (function(_this) {
         return function(event, data) {
-          $scope.visible = true;
-          if (data) {
-            if (_this.current_Path.indexOf(data.id) === -1) {
-              _this.current_Path += "/" + data.id;
-              _this.history[data.id] = {
-                title: data.title,
-                query_Id: data.id
-              };
-              return _this.refresh_Breadcrumbs();
-            }
-          }
+          _this.breadcrumbs_Service.add_Breadcrumb(data.id, data.title);
+          return _this.refresh_Breadcrumbs();
+        };
+      })(this));
+      this.$on('pop_state', (function(_this) {
+        return function(event, url) {
+          _this.breadcrumbs_Service.move_Back();
+          return _this.refresh_Breadcrumbs();
+        };
+      })(this));
+      this.$on('refresh_breadcrumbs', (function(_this) {
+        return function(event, data) {
+          return _this.refresh_Breadcrumbs();
         };
       })(this));
       this.refresh_Breadcrumbs = (function(_this) {
         return function() {
-          var i, item, key, len, path, ref, results;
-          _this.breadcrumbs = [];
-          path = '';
-          ref = _this.current_Path.split('/');
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            key = ref[i];
-            if (!(key)) {
-              continue;
-            }
-            item = _this.history[key];
-            if (item) {
-              _this.breadcrumbs.push({
-                query_Id: item.query_Id,
-                title: item.title,
-                path: path
-              });
-              results.push(path += "/" + key);
-            } else {
-              results.push(void 0);
-            }
-          }
-          return results;
+          _this.breadcrumbs = _this.breadcrumbs_Service.current_Breadcrumbs();
+          return _this.visible = true;
         };
       })(this);
-      return this.load_Query = (function(_this) {
-        return function(breadcrumb) {
-          var ref;
-          if (breadcrumb != null ? breadcrumb.query_Id : void 0) {
-            _this.current_Path = breadcrumb.path;
-            $rootScope.$broadcast('apply_query', breadcrumb.query_Id);
-            if ((ref = breadcrumb.query_Id) != null ? ref.contains('search-') : void 0) {
-              return $rootScope.$broadcast('update_search', breadcrumb.title);
-            }
-          }
-        };
-      })(this);
+      return this.load_Query = this.breadcrumbs_Service.on_Selected;
     });
   });
 
@@ -2133,7 +2203,6 @@
 
 (function() {
   angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $window, $timeout, $rootScope, query_Service) {
-    console.log('in User_Navigation_Controller ' + new Date().getMilliseconds());
     $scope.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
     $scope.open_Query_State = function() {
       var ref;
