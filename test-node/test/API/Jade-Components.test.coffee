@@ -8,7 +8,7 @@ describe '| API | Jade-Components |', ->
 
   jade_Components = new Jade_Components()
 
-  expected_Components = ['alert_bad', 'alert_ok', 'help_navigation',
+  expected_Components = ['alert_bad', 'alert_ok', 'gateway_navigation', 'help_navigation',
                          'result_saved_article','result_saved_search_term',
                          'result_search_term', 'results_delete_share',
                          'search_result', 'start_view', 'user_panel'
@@ -24,18 +24,21 @@ describe '| API | Jade-Components |', ->
                          'navigation/left_navigation'
                           #user
                          'user/article_box', 'user/article','user/articles',
-                         'user/breadcrumbs', 'user/filters','user/filters_active', 'user/pagination'
+                         'user/breadcrumbs', 'user/customer_search_bar'
+                         'user/filters','user/filters_active', 'user/found_issue'
+                         'user/loading_bar', 'user/modal'
+                         'user/pagination'
                          'user/queries', 'user/queries_history',
                          'user/results', 'user/recommendations', 'user/search_bar']
 
-  expected_Views      = ['alert_application', 'docs'
-                         'curated_content', 'curated_content_article','error',
+  expected_Views      = ['article_editor', 'article_view_editor_option',
+                         'curated_content', 'docs'
                          'new_user_onboard' ,'pwd_reset' ,'pwd_sent' ,
                          'terms_and_conditions', 'user',
                          # guest
                          'guest/about','guest/features','guest/home','guest/login', 'guest/pwd_forgot', 'guest/sign_up',
                          # user
-                         'user/article','user/article_box', 'user/index', 'user/main']
+                         'user/article','user/article_box', 'user/error','user/guides', 'user/index', 'user/main']
 
 
   it 'constructor', ->
@@ -46,7 +49,6 @@ describe '| API | Jade-Components |', ->
   it 'components (check expected)', ->
     using jade_Components, ->
       for component in @.components()
-        #console.log component
         expected_Components.assert_Contains component
       @.components().assert_Contains expected_Components
       expected_Components.assert_Contains @.components()

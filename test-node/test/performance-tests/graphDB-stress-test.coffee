@@ -20,13 +20,13 @@ describe '| graphBD-stress-test', ->
 
   it 'Check multiple calls to /data/query_tree_filtered/query-6f0946ab5b19/query-8c511380a4f5', (done)->
     id     = 'query-6f0946ab5b19'
-    filter = 'query-8c511380a4f5'
+    filter = 'query-28e28f5aa0e5'
 
     target = "/data/query_tree_filtered/#{id}/#{filter}"
 
     open_And_Check_Results = (id, next)->
       graphDB.open target, (data)->
-        data.results.assert_Size_Is 5
+        data.results.assert_Size_Is 6
         data.containers.assert_Size_Is 6
         data.filters.assert_Size_Is 3
         next()

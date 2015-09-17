@@ -22,6 +22,6 @@ describe '| API | TM-Flare-Http |', ->
 
   it 'open', (done)->
     flare.open '/', (html, $)->
-      html.assert_Is     'Moved Temporarily. Redirecting to /index.html'
-      $.html().assert_Is 'Moved Temporarily. Redirecting to /index.html'
+      html.assert_Is     'Moved Temporarily. Redirecting to /jade'
+      $.html().assert_Is 'Moved Temporarily. Redirecting to /jade'
       done()
