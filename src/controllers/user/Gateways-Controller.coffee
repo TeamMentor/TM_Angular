@@ -36,7 +36,7 @@ angular.module('TM_App')
                 link.setAttribute("ng-click", attr);
                 article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML)
 
-            $scope.content = article_Data.article_Html
+          $scope.content = article_Data.article_Html
 
           TM_API.currentuser (userInfo) ->
             if (userInfo? && userInfo?.UserEnabled)

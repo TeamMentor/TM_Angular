@@ -1739,8 +1739,8 @@
                   article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML);
                 }
               }
-              $scope.content = article_Data.article_Html;
             }
+            $scope.content = article_Data.article_Html;
             return TM_API.currentuser(function(userInfo) {
               if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
                 return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
