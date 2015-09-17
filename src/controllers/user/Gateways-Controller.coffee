@@ -1,4 +1,15 @@
 angular.module('TM_App')
+
+.directive 'dynamic', ($compile) ->
+  restrict: 'A'
+  replace: true
+  link: (scope, ele, attrs) ->
+    scope.$watch attrs.dynamic, (html) ->
+      ele.html html
+      $compile(ele.contents()) scope
+      return
+    return
+
 .controller 'Gateways_Controller', ($sce, $scope, TM_API, $location)->
   $scope.Library    = {}
 
@@ -8,7 +19,25 @@ angular.module('TM_App')
         if (article_Data)
           $scope.article = article_Data
           $scope.title   = article_Data.title
-          $scope.content = $sce.trustAsHtml(article_Data.article_Html)
+
+          links = angular.element(article_Data.article_Html).find('a')
+          if (links? && links.length> 0)
+            for link in links
+              originalHtml = link.outerHTML
+              href = link.attributes.href
+              if (href.value.contains("/article/"))
+                href.value = href.value.replace("/article/",'')
+
+               #if link is a guid
+              if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(href.value))
+                value = href.value.split('-')[4]
+                attr = "show_Article('"+ value + "')"
+                link.attributes.href.value = link.attributes.href.value.replace(href.value, '#article-'+ value)
+                link.setAttribute("ng-click", attr);
+                article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML)
+
+            $scope.content = article_Data.article_Html
+
           TM_API.currentuser (userInfo) ->
             if (userInfo? && userInfo?.UserEnabled)
               TM_API.verifyInternalUser userInfo.Email, (callback)->

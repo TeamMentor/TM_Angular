@@ -523,11 +523,11 @@
     }
     $stateProvider.state('guides', {
       url: "/guides",
-      templateUrl: "/angular/jade-html/views/curated_content"
+      templateUrl: "/angular/jade-html/views/user/guides"
     });
     $stateProvider.state('guidehash', {
       url: "/guides#:id",
-      templateUrl: "/angular/jade-html/views/curated_content"
+      templateUrl: "/angular/jade-html/views/user/guides"
     });
     $stateProvider.state('logout', {
       url: "/logout",
@@ -1702,15 +1702,45 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Gateways_Controller', function($sce, $scope, TM_API, $location) {
+  angular.module('TM_App').directive('dynamic', function($compile) {
+    return {
+      restrict: 'A',
+      replace: true,
+      link: function(scope, ele, attrs) {
+        scope.$watch(attrs.dynamic, function(html) {
+          ele.html(html);
+          $compile(ele.contents())(scope);
+        });
+      }
+    };
+  }).controller('Gateways_Controller', function($sce, $scope, TM_API, $location) {
     $scope.Library = {};
     $scope.show_Article = function(article) {
       if (article) {
         return TM_API.article(article, function(article_Data) {
+          var attr, href, i, len, link, links, originalHtml, value;
           if (article_Data) {
             $scope.article = article_Data;
             $scope.title = article_Data.title;
-            $scope.content = $sce.trustAsHtml(article_Data.article_Html);
+            links = angular.element(article_Data.article_Html).find('a');
+            if ((links != null) && links.length > 0) {
+              for (i = 0, len = links.length; i < len; i++) {
+                link = links[i];
+                originalHtml = link.outerHTML;
+                href = link.attributes.href;
+                if (href.value.contains("/article/")) {
+                  href.value = href.value.replace("/article/", '');
+                }
+                if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(href.value)) {
+                  value = href.value.split('-')[4];
+                  attr = "show_Article('" + value + "')";
+                  link.attributes.href.value = link.attributes.href.value.replace(href.value, '#article-' + value);
+                  link.setAttribute("ng-click", attr);
+                  article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML);
+                }
+              }
+              $scope.content = article_Data.article_Html;
+            }
             return TM_API.currentuser(function(userInfo) {
               if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
                 return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
@@ -1878,18 +1908,43 @@
     model = {
       page: 1,
       page_Split: 10,
+      data_Size: 0,
       pages: [],
       page_Splits: [4, 10, 20, 50, 100]
     };
     $scope.query_Id = null;
     $scope.model = model;
     $scope.visible = false;
+    $scope.set_Paging_Message = function() {
+      var currentPage, endNo, recordsPerPage, startNo, totalRecords;
+      recordsPerPage = model.page_Split;
+      totalRecords = model.data_Size;
+      currentPage = model.page;
+      if (currentPage === 1 && recordsPerPage > totalRecords) {
+        $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+        return;
+      }
+      if (currentPage === 1) {
+        return $rootScope.pagginMessage = "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords;
+      } else {
+        startNo = ((currentPage - 1) * recordsPerPage) + 1;
+        if ((currentPage * recordsPerPage) + 1 > totalRecords) {
+          endNo = totalRecords;
+          $rootScope.pagginMessage = "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords;
+          return;
+        } else {
+          endNo = currentPage * recordsPerPage;
+        }
+        return $rootScope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords;
+      }
+    };
     $scope.$on('view_model_data', function(event, data) {
       var i, results, split;
       $scope.visible = true;
       if (!(data != null ? data.size : void 0)) {
         return model.pages = null;
       } else {
+        model.data_Size = data != null ? data.size : void 0;
         $scope.query_Id = data.id;
         if (data.size < model.page_Split) {
           split = 1;
@@ -1899,11 +1954,12 @@
             split++;
           }
         }
-        return model.pages = (function() {
+        model.pages = (function() {
           results = [];
           for (var i = 1; 1 <= split ? i <= split : i >= split; 1 <= split ? i++ : i--){ results.push(i); }
           return results;
         }).apply(this);
+        return $scope.set_Paging_Message();
       }
     });
     $scope.set_Page = function() {

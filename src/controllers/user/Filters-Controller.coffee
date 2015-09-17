@@ -37,8 +37,8 @@ angular.module('TM_App')
             delete $scope.hide_Metadata['Technology']
             delete $scope.hide_Metadata['Type']
             delete $scope.hide_Metadata['Phase']
-
-
+            #angular.element(document.querySelector('#current_Page select'))[0].value="number:1"
+            #angular.element(document.querySelector('#current_Page select'))[0].text="1"
             if (Object.keys($scope.current_Filters).length > 0)
               for item,value of $scope.current_Filters
                 #if value.metadata_Title is 'Technology'
