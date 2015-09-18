@@ -29,11 +29,10 @@ angular.module('TM_App')
 
             log_Event(name) for name in  events
 
-
           # capture back button
 
           window.onpopstate = (event)->
-            if event?.path[0].location?.pathname
+            if event?.path and event?.path[0]?.location?.pathname
               $rootScope.$broadcast 'pop_state', event.path[0].location.pathname
 
 

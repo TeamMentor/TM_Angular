@@ -64,7 +64,7 @@
     $templateCache.put('/angular/jade-html/views/user/article_box', "<div class=\"main\"><div class=\"section row\"><div class=\"col-3\"><article-box></article-box></div><div class=\"col-9\"></div></div></div>");
     $templateCache.put('/angular/jade-html/views/user/error', "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><div class=\"main\"><div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div><div ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span><div ng-show=\"showSupportEmail()\"><a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.com\">support@securityinnovation.com</a></div></div></div></div></div>");
     $templateCache.put('/angular/jade-html/views/user/guides', "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection') --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection') --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results') --><!-- Getting Started--><div ng-controller=\"Gateways_Controller\" class=\"main help\"><div class=\"col-3 application-scroll\"><dl class=\"help scroll\"><span ng-repeat=\"view in Library.Views\"><dt class=\"vertical-align\"><p>\{\{view.title}}</p></dt><dd ng-repeat=\"article in view.Articles\"><a href=\"#\{\{article.id}}\" ng-click=\"show_Article(article.id)\">\{\{article.title}}</a></dd></span></dl></div><div class=\"col-9 application-scroll\"><div class=\"article curated-content\"><h1 class=\"article-title\">\{\{title}}</h1><br/><div id=\"html\" dynamic=\"content\" class=\"article-content\"></div><br/><br/><br/><div class=\"footer\"><p>TEAM Mentor 4.0, a Security Innovation eKnowledge Product.</p> <p>© Security Innovation 2007-2015, all rights reserved.</p> <ul class=\"text-center\"><li><p><a href=\"mailto:support@securityinnovation.com\"><span class=\"icon-Mail\"></span><span class=\"text\">support@securityinnovation.com</span></a></p></li><li class=\"text-center\"><p><a ui-sref=\"terms_and_conditions\"><span class=\"icon-Paperclip\"></span><span class=\"text\">Terms & Conditions</span></a></p></li></ul></div></div><div class=\"section article-info curated-content\"><ul class=\"display-inline\"><li><a class=\"button btn-result\"><span class=\"icon\"><icon class=\"Share\"></icon></span><span class=\"text\">Share</span></a></li></ul><div class=\"section row__label\"><div class=\"label\">Metadata:</div></div><div class=\"section row\"><ul><li><span class=\"icon\"><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></span><span class=\"text\">\{\{article.technology}}</span></li><li><span class=\"icon\"><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></span><span class=\"text\">\{\{article.type}}</span></li><li><span class=\"icon\"><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></span><span class=\"text\">\{\{article.phase}}</span></li><li><span class=\"icon\"><icon class=\"Curated-Content\"></icon></span><span class=\"text\">This article is part of the <a href=\"guides\">Security Guide</a></span></li></ul></div><div class=\"section row fixed-bottom\"><div class=\"alert alert-neutral\"><div ng-show=\"showFeedbackBanner()\"><span class=\"text\">Have a comment about this article?<a id=\"tm-support-email\" href=\"\{\{githubContentUrl}}/new?title=\{\{article.title}} &amp;body=\{\{articleUrl}}\" target=\"_blank\">     Open an issue here.</a></span></div><div ng-show=\"showGeneralFeedback()\"><span class=\"text\">Have a comment about this article? Send our team<a href=\"mailto:support@securityinnovation.com\"> an email.</a></span></div></div></div></div></div></div>");
-    $templateCache.put('/angular/jade-html/views/user/index', "<div ng-controller=\"Index_Controller\" class=\"main\"><!--include ../../component/user/loading_bar--><div class=\"\{\{column_Left}} application-scroll left-col\"><queries></queries></div><div class=\"\{\{column_Middle}} middle-col\"><div class=\"display-desktop\"><breadcrumbs></breadcrumbs></div><results></results><filters_active></filters_active><div class=\"scrolling-results\"><articles></articles><pagination></pagination></div></div><div class=\"\{\{column_Right}} application-scroll right-col\"><div class=\"display-desktop\"><found_issue></found_issue></div><filters class=\"filters\"></filters></div></div>");
+    $templateCache.put('/angular/jade-html/views/user/index', "<div ng-controller=\"Index_Controller\" class=\"main\"><div class=\"\{\{column_Left}} application-scroll left-col\"><queries></queries></div><div class=\"\{\{column_Middle}} middle-col\"><div class=\"display-desktop\"><breadcrumbs></breadcrumbs></div><results></results><filters_active></filters_active><div class=\"scrolling-results\"><articles></articles><pagination></pagination></div></div><div class=\"\{\{column_Right}} application-scroll right-col\"><div class=\"display-desktop\"><found_issue></found_issue></div><filters class=\"filters\"></filters></div></div>");
     $templateCache.put('/angular/jade-html/views/user/main', "<!-- Terms and Conditions Navigation--><div class=\"main\"><div class=\"col-3 application-scroll\"><div><dl><dt><p id=\"query_title\">Welcome to TEAM Mentor</p></dt><div id=\"containers\" class=\"scroll\"><div><a href=\"#popular_Search_Terms\"><dd><span class=\"text\">Popular Search Terms</span><span class=\"badge\">3</span></dd></a><a href=\"#recently_Viewed_Articles\"><dd><span class=\"text\">Recently Viewed Articles</span><span class=\"badge\">3</span></dd></a><a href=\"#top_Articles\"><dd><span class=\"text\">Top Articles</span><span class=\"badge\">3</span></dd></a><!--a(href='#')--><!--  dd--><!--    a(href='#my_Searches')--><!--      span.text My Searches--><!--      span.badge 12--></div></div></dl></div></div><div class=\"col-9 application-scroll\"><div ng-controller=\"Article_Controller\"><a name=\"popular_Search_Terms\"></a><div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Popular Search Terms</div></div><div ng-controller=\"Search_Controller\" class=\"section row\"><div ng-repeat=\"search in top_Search\" class=\"search-term\"><span class=\"icon\"><icon class=\"Star\"></icon></span><span class=\"link\"><a href=\"\{\{search.url}}\"><span>\{\{search.title}}</span></a></span></div></div></div><a name=\"recently_Viewed_Articles\"></a><div class=\"section row\"><div class=\"section row__label\"><div ng-show=\"recent_Articles.length &gt; 0\" class=\"label\">Recently Viewed Articles</div></div><div class=\"section row\"><article-box ng-repeat=\"article in recent_Articles\" class=\"article-box\"></article-box></div></div><a name=\"top_Articles\"></a><div class=\"section row\"><div class=\"section row__label\"><div class=\"label\">Top Articles</div></div><div class=\"section row\"><article-box ng-repeat=\"article in top_Articles\" class=\"article-box article-box\"></article-box></div><div class=\"section row__label\"><a name=\"top_Articles\"><div class=\"label\">Top Articles</div></a></div></div></div></div></div>");
     return $templateCache.put('/angular/jade-html/views/user', "Moved Temporarily. Redirecting to /error");
   });
@@ -118,8 +118,8 @@
       }
     }
     return window.onpopstate = function(event) {
-      var ref;
-      if (event != null ? (ref = event.path[0].location) != null ? ref.pathname : void 0 : void 0) {
+      var ref, ref1;
+      if ((event != null ? event.path : void 0) && (event != null ? (ref = event.path[0]) != null ? (ref1 = ref.location) != null ? ref1.pathname : void 0 : void 0 : void 0)) {
         return $rootScope.$broadcast('pop_state', event.path[0].location.pathname);
       }
     };
@@ -1383,72 +1383,45 @@
       $scope.articleLoaded = false;
       $scope.top_Articles = [];
       $scope.recent_Articles = [];
-      $scope.topArticles = function() {
-        return TM_API.top_Articles(function(articles) {
-          if ((articles != null)) {
-            return angular.forEach(articles, function(article) {
-              var id, title;
-              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-              id = article.id.remove('article-');
-              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-              article.url = '/angular/user/article/' + id + '/' + title;
-              return $scope.top_Articles.push(article);
-            });
+      $scope.fullArticleLoaded = function() {
+        return $scope.articleLoaded;
+      };
+      $scope.load_Article = function(article_Id) {
+        return TM_API.article(article_Id, function(article) {
+          var id, title;
+          if ($state.current.name === "main") {
+            $scope.topArticles();
+            $scope.recentArticles();
           }
+          if (!angular.isObject(article)) {
+            return;
+          }
+          $scope.mapGuideArticle(article);
+          id = article.id.remove('article-');
+          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+          article.url = '/angular/user/article/' + id + '/' + title;
+          $scope.article = article;
+          $scope.article_Html = $sce.trustAsHtml(article.article_Html);
+          $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+          $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+          $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+          $scope.articleLoaded = true;
+          return TM_API.currentuser(function(userInfo) {
+            if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
+              return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
+                if (callback != null) {
+                  $scope.showFeedback = true;
+                  return $scope.githubContentUrl = callback;
+                }
+              });
+            }
+          });
         });
       };
-      $scope.recentArticles = function() {
-        return TM_API.recent_Articles(function(articles) {
-          if ((articles != null)) {
-            return angular.forEach(articles, function(article) {
-              var id, title;
-              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-              id = article.id.remove('article-');
-              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-              article.url = '/angular/user/article/' + id + '/' + title;
-              return $scope.recent_Articles.push(article);
-            });
-          }
-        });
-      };
-      TM_API.article($stateParams.article_Id, function(article) {
-        var id, title;
-        if ($state.current.name === "main") {
-          $scope.topArticles();
-          $scope.recentArticles();
-        }
-        if (!angular.isObject(article)) {
-          return;
-        }
-        $scope.mapGuideArticle(article);
-        id = article.id.remove('article-');
-        title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-        article.url = '/angular/user/article/' + id + '/' + title;
-        $scope.article = article;
-        $scope.article_Html = $sce.trustAsHtml(article.article_Html);
-        $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-        $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-        $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-        $scope.articleLoaded = true;
-        return TM_API.currentuser(function(userInfo) {
-          if ((userInfo != null) && (userInfo != null ? userInfo.UserEnabled : void 0)) {
-            return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
-              if (callback != null) {
-                $scope.showFeedback = true;
-                return $scope.githubContentUrl = callback;
-              }
-            });
-          }
-        });
-      });
       $scope.mapGuideArticle = function(article) {
         return TM_API.gatewaysLibrary(function(data) {
           var i, len, ref, results, rowArticle, view;
-          if (data) {
+          if (data != null ? data.size : void 0) {
             ref = data.Views;
             results = [];
             for (i = 0, len = ref.length; i < len; i++) {
@@ -1474,15 +1447,45 @@
           }
         });
       };
+      $scope.recentArticles = function() {
+        return TM_API.recent_Articles(function(articles) {
+          if ((articles != null)) {
+            return angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              article.url = '/angular/user/article/' + id + '/' + title;
+              return $scope.recent_Articles.push(article);
+            });
+          }
+        });
+      };
+      $scope.showGeneralFeedback = function() {
+        return !$scope.showFeedback;
+      };
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
       };
-      $scope.fullArticleLoaded = function() {
-        return $scope.articleLoaded;
+      $scope.topArticles = function() {
+        return TM_API.top_Articles(function(articles) {
+          if ((articles != null)) {
+            return angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              article.url = '/angular/user/article/' + id + '/' + title;
+              return $scope.top_Articles.push(article);
+            });
+          }
+        });
       };
-      return $scope.showGeneralFeedback = function() {
-        return !$scope.showFeedback;
-      };
+      return $scope.load_Article($stateParams.article_Id);
     };
   })(this));
 

@@ -32,6 +32,24 @@ describe '| global-events',->
 
       $httpBackend.flush()
 
+  it 'window.onpopstate', ->
+    inject ($window, $rootScope)->
+      (typeof $window.onpopstate).assert_Is 'function'
+      $window.onpopstate.assert_Is window.onpopstate
+      spyOn($rootScope, '$broadcast')
+      $window.onpopstate()
+      $window.onpopstate({})
+      $window.onpopstate( path: '')
+      $window.onpopstate( path: [ ])
+      $window.onpopstate( path: [ {}])
+      $window.onpopstate( path: [ { location: ''}])
+      $window.onpopstate( path: [ { location:  pathname: null}])
+      $rootScope.$broadcast.calls.count().assert_Is 0
+      $window.onpopstate( path: [ { location:  pathname: '/aaaaa/bbbb'}])
+      $rootScope.$broadcast.calls.count().assert_Is 1
+      $rootScope.$broadcast.calls.all()[0].args.assert_Is [ 'pop_state', '/aaaaa/bbbb' ]
+
+
   it '$broadcast "test" (to be picked up by tm_angular_config.log_Events)', ->
     inject ($rootScope)->
       $rootScope.$broadcast 'test'

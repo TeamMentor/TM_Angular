@@ -27,14 +27,23 @@ describe '| directive | |views | index', ->
         body.append element
 
       $state.go('index')
-      $httpBackend.flush()
+      scope.$digest()
 
       using $$(element[0]).$query,->
-        @('div'       ).$attr().assert_Is class: 'ng-scope'  , 'ng-controller': 'Index_Controller'
-        @('section'   ).$attr().assert_Is class: 'row__label', 'ng-hide' : 'results_Size'
-        @('.main'     ).$attr().assert_Is class: 'main'
-        @('queries'   ).$attr().assert_Is {}
-        @('articles'  ).$attr().assert_Is {}
-        @('filters'   ).$attr().assert_Is {}
-        #@('queries_breadcrumbs').$attr().assert_Is {}
+        @('ui-view'       ).$attr().assert_Is class: 'ng-scope'
+        @('div.main'      ).$attr().assert_Is class: 'main ng-scope'  , 'ng-controller': 'Index_Controller'
+        @('div.left-col'  ).$attr().assert_Is class: 'col-3 application-scroll left-col'
+        @('div.middle-col').$attr().assert_Is class: 'col-6 middle-col'
+        @('div.right-col' ).$attr().assert_Is class: 'col-3 application-scroll right-col'
 
+        @('.display-desktop').$attr()                      .assert_Is class: 'display-desktop'
+        @('.display-desktop').$query('breadcrumbs').$attr().assert_Is {}
+        @('results'         ).$attr()                      .assert_Is {}
+        @('filters_active'  ).$attr()                      .assert_Is {}
+
+        @('.scrolling-results').$attr()                      .assert_Is class: 'scrolling-results'
+        @('.scrolling-results').$query('articles'   ).$attr().assert_Is {}
+        @('.scrolling-results').$query('pagination' ).$attr().assert_Is {}
+        @('filters'           ).$attr()                      .assert_Is class: 'filters'
+
+        @('.right-col .display-desktop').$query('found_issue').$attr().assert_Is {}
