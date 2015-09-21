@@ -1917,12 +1917,16 @@
     $scope.model = model;
     $scope.visible = false;
     $scope.set_Paging_Message = function() {
-      var currentPage, endNo, recordsPerPage, startNo, totalRecords;
+      var currentPage, endNo, recordsPerPage, remainingArticles, startNo, totalRecords;
       recordsPerPage = model.page_Split;
       totalRecords = model.data_Size;
       currentPage = model.page;
       if (currentPage === 1 && recordsPerPage > totalRecords) {
-        $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+        if (totalRecords === 1) {
+          $rootScope.pagginMessage = "Showing " + totalRecords + " article";
+        } else {
+          $rootScope.pagginMessage = "Showing " + totalRecords + " articles";
+        }
         return;
       }
       if (currentPage === 1) {
@@ -1931,7 +1935,12 @@
         startNo = ((currentPage - 1) * recordsPerPage) + 1;
         if ((currentPage * recordsPerPage) + 1 > totalRecords) {
           endNo = totalRecords;
-          $rootScope.pagginMessage = "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords;
+          remainingArticles = (((currentPage - 1) * recordsPerPage) + 1) - endNo;
+          if (remainingArticles === 0) {
+            $rootScope.pagginMessage = "Showing article " + totalRecords + " out of  " + totalRecords;
+          } else {
+            $rootScope.pagginMessage = "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords;
+          }
           return;
         } else {
           endNo = currentPage * recordsPerPage;
@@ -1969,9 +1978,13 @@
         from = (model.page - 1) * model.page_Split;
         to = model.page * model.page_Split;
         return $rootScope.$broadcast('set_page', model.page, from, to);
+      } else {
+        model.page = 1;
+        return $scope.set_Paging_Message();
       }
     };
     $scope.set_Page_Split = function(recordsPerPage) {
+      model.page = 1;
       if (recordsPerPage) {
         model.page_Split = recordsPerPage;
       }
