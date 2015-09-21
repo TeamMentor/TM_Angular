@@ -9,7 +9,7 @@ class TM_GraphDB_Http
     @.server      = "http://localhost:#{@.config.tm_graph.port}"
     #@.server      = 'http://localhost:12346'
     @.index_Query = 'query-6234f2d47eb7'
-    @.java_Query = 'query-7d9a1b64c045'
+    @.java_Query = 'query-28e28f5aa0e5'
 
   cache_path: (callback)->
     @.open '/graph-db/cache_path', callback

@@ -25,7 +25,7 @@ describe 'Check express timeouts', ->
   it 'TM Website (root)', (done)->
     start = new Date().getTime()
     on_Data = (data)->
-      data.assert_Is 'Moved Temporarily. Redirecting to /index.html'
+      data.assert_Is 'Moved Temporarily. Redirecting to /jade'
 
     async.eachSeries [0..50], open_Root(url_Website, on_Data), ->
       (new Date().getTime() - start).assert_Smaller_Than 400
@@ -36,11 +36,11 @@ describe 'Check express timeouts', ->
 
   it 'TM Website (query-a14e68cb74b3)', (done)->
     start = new Date().getTime()
-    url = "#{url_Website}/api/data/query_view_model/query-a14e68cb74b3/0/10"
+    url = "#{url_Website}/api/data/query_view_model/query-28e28f5aa0e5/0/10"
 
     on_Data = (data)->
       if data
-        data.json_Parse().assert_Is {"error":"user login required"}
+        data.json_Parse().assert_Is { "error":"user login required" }
 
     async.eachSeries [0..50], open_Root(url, on_Data), ->
       (new Date().getTime() - start).assert_Smaller_Than 200
@@ -56,12 +56,12 @@ describe 'Check express timeouts', ->
     on_Data = (data)->
       using data.json_Parse(),->
         # this is wrong it should get the the query
-        console.log @.assert_Is { error: 'no query tree filtered' }
+        @.assert_Is { error: 'no query tree filtered' }
         #@._query_Id.assert_Is 'query-a14e68cb74b3'
 
 
     async.eachSeries [0..30], open_Root(url, on_Data), ->
-      console.log new Date().getTime() - start
+      #console.log new Date().getTime() - start
       (new Date().getTime() - start).assert_Smaller_Than 400
       #async.eachSeries [0..500], open_Root(url, on_Data), ->
       #  console.log 'graphDB query: [500] ' + (new Date().getTime() - start)

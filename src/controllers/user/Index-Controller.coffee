@@ -9,7 +9,7 @@ angular.module 'TM_App'
           window._window      = $window
           window._rootScope   = $rootScope
 
-          console.log 'in Index_Controller ' + new Date().getMilliseconds()
+          #console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
           using $scope, ->
             @.history       = {}

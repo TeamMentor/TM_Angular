@@ -20,9 +20,6 @@ describe 'build-step-save-components-html', ->
     jade_Components = new Jade_Components()
 
     throw_On_Error =  (name, html)->
-      if html.size() is 40
-        console.log "Error with component: #{name}"
-        html.assert_Is_Not 'Moved Temporarily. Redirecting to /error'
 
     process_Components = (callback)->
       file_Contents += " \n\n   # ------Components---\n\n"

@@ -83,7 +83,7 @@ describe 'build-step-save-GraphDB-data', ->
         using graphDB_Data[key], ->
           @.id            .assert_Is query_Id
           @.title         .assert_Is 'Index'
-          @._filters.assert_Is 'query-7d9a1b64c045'
+          @._filters.assert_Is 'query-28e28f5aa0e5'
           @.articles      .assert_Size_Is to - from
           @.queries       .assert_Size_Is 16
           @.filters.keys().assert_Size_Is 3

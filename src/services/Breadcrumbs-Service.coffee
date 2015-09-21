@@ -15,8 +15,8 @@ class Breadcrumbs_Service
           title     : title
           query_Id  : id
         return true
-      else
-        console.log 'breadcrumb was already there'
+      #else
+      #  console.log 'breadcrumb was already there'
     return false
 
   add_Breadcrumbs: (breadcrumbs)=>
