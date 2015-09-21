@@ -258,7 +258,6 @@
     };
     String.prototype.assert_Contains = function(target, message) {
       var source;
-      console.log('asd');
       source = this.toString();
       message = message || ("expected string '" + source + "' to contain the string/array '" + target + "'");
       expect(source).to.contain(target, message);
@@ -474,6 +473,119 @@
       }
     };
   });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, results, view_Name;
+    ref = routes_Names.views.guest;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      results.push($stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      }));
+    }
+    return results;
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('guidehash', {
+      url: "/guides#:id",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
 
 }).call(this);
 
@@ -1088,7 +1200,7 @@
       this.tmConfig((function(_this) {
         return function(configFile) {
           var allowedEmailDomains, email;
-          allowedEmailDomains = configFile.allowedEmailDomains;
+          allowedEmailDomains = configFile != null ? configFile.allowedEmailDomains : void 0;
           email = userEmail;
           return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
             if (email != null ? email.match(domain.toString()) : void 0) {
@@ -1158,119 +1270,6 @@
     };
     return $$;
   });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('guides', {
-      url: "/guides",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('guidehash', {
-      url: "/guides#:id",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('index_query_id_filters', {
-      url: "/index/:query_Id/:filters",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-
-  /*
-  app.run ($rootScope,$window,TM_API, routes_Names) =>
-    $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        return
-      else
-        TM_API.currentuser (userInfo) =>
-          if (userInfo? && userInfo?.UserEnabled)
-            return
-          else
-            $window.location.href = '/angular/guest/login'
-    return
-   */
 
 }).call(this);
 
@@ -1401,14 +1400,11 @@
           return null;
         }
         return TM_API.article(article_Id, function(article) {
-          var id, title;
           if (!article) {
             return;
           }
           $scope.map_Guide_Article(article);
-          id = article.id.remove('article-');
-          title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
-          article.url = '/angular/user/article/' + id + '/' + title;
+          $scope.map_Article_Url(article);
           $scope.article = article;
           $scope.article_Html = $sce.trustAsHtml(article.article_Html);
           $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
@@ -1417,46 +1413,56 @@
           return $scope.articleLoaded = true;
         });
       };
+      $scope.map_Article_Url = function(article) {
+        var id, ref, ref1, title;
+        if (article) {
+          id = (ref = article.id) != null ? ref.remove('article-') : void 0;
+          title = (ref1 = article.title) != null ? ref1.replace(new RegExp(' ', 'g'), '-').remove('.') : void 0;
+          return article.url = '/angular/user/article/' + id + '/' + title;
+        }
+      };
       $scope.map_Current_User = function() {
-        return TM_API != null ? typeof TM_API.currentuser === "function" ? TM_API.currentuser(function(userInfo) {
+        return typeof TM_API.currentuser === "function" ? TM_API.currentuser(function(userInfo) {
           if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
-            return TM_API.verifyInternalUser(userInfo.Email, function(callback) {
-              if (callback != null) {
+            return typeof TM_API.verifyInternalUser === "function" ? TM_API.verifyInternalUser(userInfo.Email, function(githubContentUrl) {
+              if (githubContentUrl) {
                 $scope.showFeedback = true;
-                return $scope.githubContentUrl = callback;
+                return $scope.githubContentUrl = githubContentUrl;
               }
-            });
+            }) : void 0;
           }
-        }) : void 0 : void 0;
+        }) : void 0;
       };
       $scope.map_Guide_Article = function(article) {
-        return TM_API.gatewaysLibrary(function(data) {
-          var i, len, ref, results, rowArticle, view;
-          if (data != null ? data.size : void 0) {
-            ref = data.Views;
-            results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              view = ref[i];
-              results.push((function() {
-                var j, len1, ref1, results1;
-                ref1 = view.Articles;
-                results1 = [];
-                for (j = 0, len1 = ref1.length; j < len1; j++) {
-                  rowArticle = ref1[j];
-                  if ((article.id === rowArticle.id) || (article.id === rowArticle.guid)) {
-                    results1.push($timeout(function() {
-                      return $window.location.href = '/angular/user/guides#' + article.id;
-                    }));
-                  } else {
-                    results1.push(void 0);
+        if (article) {
+          return typeof TM_API.gatewaysLibrary === "function" ? TM_API.gatewaysLibrary(function(data) {
+            var i, len, ref, ref1, results, rowArticle, view;
+            if (data != null ? (ref = data.Views) != null ? ref.size : void 0 : void 0) {
+              ref1 = data.Views;
+              results = [];
+              for (i = 0, len = ref1.length; i < len; i++) {
+                view = ref1[i];
+                results.push((function() {
+                  var j, len1, ref2, results1;
+                  ref2 = view.Articles;
+                  results1 = [];
+                  for (j = 0, len1 = ref2.length; j < len1; j++) {
+                    rowArticle = ref2[j];
+                    if ((article.id === rowArticle.id) || (article.id === rowArticle.guid)) {
+                      results1.push($timeout(function() {
+                        return $window.location.href = '/angular/user/guides#' + article.id;
+                      }));
+                    } else {
+                      results1.push(void 0);
+                    }
                   }
-                }
-                return results1;
-              })());
+                  return results1;
+                })());
+              }
+              return results;
             }
-            return results;
-          }
-        });
+          }) : void 0;
+        }
       };
       $scope.show_Article_Data = function() {
         return $scope.articleLoaded;

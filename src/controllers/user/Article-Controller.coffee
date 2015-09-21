@@ -13,15 +13,13 @@ angular.module('TM_App')
               if not article
                 return
 
-              $scope.map_Guide_Article(article)
+              $scope.map_Guide_Article article
 
-              id    = article.id.remove('article-')
-              title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
-              article.url = '/angular/user/article/' + id + '/' + title
+              $scope.map_Article_Url article
 
+              $scope.article         = article
+              $scope.article_Html    = $sce.trustAsHtml article.article_Html
 
-              $scope.article      = article
-              $scope.article_Html =  $sce.trustAsHtml article.article_Html
 
               $scope.icon_Technology = $sce.trustAsHtml icon_Service.element_Html(article.technology)
               $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
@@ -29,26 +27,34 @@ angular.module('TM_App')
 
               $scope.articleLoaded = true
 
+          $scope.map_Article_Url =  (article)->
+            if article
+              id    = article.id?.remove('article-')
+              title = article.title?.replace(new RegExp(' ','g'),'-').remove('.')
+              article.url = '/angular/user/article/' + id + '/' + title
+
           $scope.map_Current_User = ()->
-            TM_API?.currentuser? (userInfo) ->
-                if (userInfo?.UserEnabled)
-                  TM_API.verifyInternalUser userInfo.Email, (callback)->
-                    if callback?
-                      $scope.showFeedback     = true
-                      $scope.githubContentUrl = callback
+            TM_API.currentuser? (userInfo) ->
+              if (userInfo?.UserEnabled)
+                TM_API.verifyInternalUser? userInfo.Email, (githubContentUrl)->
+                  if githubContentUrl
+                    $scope.showFeedback     = true
+                    $scope.githubContentUrl = githubContentUrl
 
           $scope.map_Guide_Article =(article)->
-            TM_API.gatewaysLibrary (data)->
-              if data?.size
-                for view in data.Views
-                  for rowArticle in view.Articles
-                    if ((article.id == rowArticle.id) || (article.id==rowArticle.guid))
-                      $timeout ->
-                        $window.location.href ='/angular/user/guides#'+ article.id
+            if article
+              TM_API.gatewaysLibrary? (data)->
+                if data?.Views?.size
+                  for view in data.Views
+                    for rowArticle in view.Articles
+                      if ((article.id == rowArticle.id) || (article.id==rowArticle.guid))
+                        $timeout ->
+                          $window.location.href ='/angular/user/guides#'+ article.id
 
 
           $scope.show_Article_Data = ->
             return $scope.articleLoaded
+
           $scope.showGeneralFeedback =  ->
             return !$scope.showFeedback
 

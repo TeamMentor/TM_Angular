@@ -1,6 +1,6 @@
 expect = chai.expect;
 
-fdescribe '| controllers | Start-View-Controller.test',->
+describe '| controllers | Start-View-Controller.test',->
   scope = null
 
   beforeEach ->

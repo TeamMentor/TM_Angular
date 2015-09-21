@@ -153,9 +153,9 @@ class TM_API
 
   verifyInternalUser: (userEmail, callback)->
     @tmConfig (configFile) =>
-      allowedEmailDomains              = configFile.allowedEmailDomains
+      allowedEmailDomains              = configFile?.allowedEmailDomains
       email                            = userEmail
-      allowedEmailDomains?.some (domain)->
+      allowedEmailDomains?.some (domain)->                  # note: this will fire twice if there are two matches
         if email?.match(domain.toString())
           callback configFile.githubContentUrl
           

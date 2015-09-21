@@ -78,7 +78,6 @@ if window['chai']     # need to move this to a separate file only available duri
 
 
   String::assert_Contains = (target, message)->
-    console.log 'asd'
     source    = @.toString()
     message   = message || "expected string '#{source}' to contain the string/array '#{target}'"
     expect(source).to.contain(target, message)
