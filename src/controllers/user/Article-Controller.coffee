@@ -5,18 +5,15 @@ angular.module('TM_App')
             @.showFeedback    = false
             @.articleLoaded   = false
 
-          $scope.fullArticleLoaded = ->
-            return $scope.articleLoaded
-
           $scope.load_Article = (article_Id)->
             if not article_Id
               return null
             TM_API.article article_Id, (article)->
 
-              if !angular.isObject(article)
-                return;
+              if not article
+                return
 
-              $scope.mapGuideArticle(article)
+              $scope.map_Guide_Article(article)
 
               id    = article.id.remove('article-')
               title = article.title.replace(new RegExp(' ','g'),'-').remove('.')
@@ -32,14 +29,15 @@ angular.module('TM_App')
 
               $scope.articleLoaded = true
 
-              TM_API.currentuser (userInfo) ->
-                if (userInfo? && userInfo?.UserEnabled)
+          $scope.map_Current_User = ()->
+            TM_API?.currentuser? (userInfo) ->
+                if (userInfo?.UserEnabled)
                   TM_API.verifyInternalUser userInfo.Email, (callback)->
                     if callback?
                       $scope.showFeedback     = true
                       $scope.githubContentUrl = callback
 
-          $scope.mapGuideArticle =(article)->
+          $scope.map_Guide_Article =(article)->
             TM_API.gatewaysLibrary (data)->
               if data?.size
                 for view in data.Views
@@ -49,6 +47,8 @@ angular.module('TM_App')
                         $window.location.href ='/angular/user/guides#'+ article.id
 
 
+          $scope.show_Article_Data = ->
+            return $scope.articleLoaded
           $scope.showGeneralFeedback =  ->
             return !$scope.showFeedback
 
@@ -56,5 +56,7 @@ angular.module('TM_App')
             return $scope.showFeedback
 
 
+          # invoked on controller load
           $scope.load_Article $stateParams?.article_Id
+          $scope.map_Current_User()
 

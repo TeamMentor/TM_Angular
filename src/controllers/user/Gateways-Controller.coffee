@@ -38,18 +38,19 @@ angular.module('TM_App')
 
           $scope.content = article_Data.article_Html
 
-          TM_API.currentuser (userInfo) ->
-            if (userInfo? && userInfo?.UserEnabled)
-              TM_API.verifyInternalUser userInfo.Email, (callback)->
-                $scope.articleLoaded = true
-                if callback?
-                  $scope.showFeedback     = true
-                  $scope.githubContentUrl = callback
+  $scope.map_Current_User = ->
+    TM_API.currentuser (userInfo) ->
+      if (userInfo? && userInfo?.UserEnabled)
+        TM_API.verifyInternalUser userInfo.Email, (callback)->
+          $scope.articleLoaded = true
+          if callback?
+            $scope.showFeedback     = true
+            $scope.githubContentUrl = callback
 
   $scope.showFeedbackBanner =  ->
     return $scope.showFeedback
 
-  $scope.fullArticleLoaded = ->
+  $scope.show_Article_Data = ->
     return $scope.articleLoaded
 
   $scope.showGeneralFeedback =  ->
@@ -70,4 +71,6 @@ angular.module('TM_App')
   $scope.showMetadata = ->
     return $scope.article?.phase? || $scope.article?.technology? || $scope.article?.technology?
 
+  $scope.map_Current_User()
   $scope.load_Library()
+

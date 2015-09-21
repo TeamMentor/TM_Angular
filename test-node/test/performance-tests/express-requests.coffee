@@ -43,7 +43,7 @@ describe 'Check express timeouts', ->
         data.json_Parse().assert_Is { "error":"user login required" }
 
     async.eachSeries [0..50], open_Root(url, on_Data), ->
-      (new Date().getTime() - start).assert_Smaller_Than 200
+      (new Date().getTime() - start).assert_Smaller_Than 300
       #async.eachSeries [0..500], open_Root(url, on_Data), ->
       #  console.log 'website query: [500] ' + (new Date().getTime() - start) + ' , '
       done()

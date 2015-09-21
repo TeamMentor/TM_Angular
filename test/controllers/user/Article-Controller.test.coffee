@@ -25,15 +25,15 @@ fdescribe '| controllers | Article-Controller.test',->
         @.showFeedback    .assert_Is_False()
         @.articleLoaded   .assert_Is_False()
 
-  it 'fullArticleLoaded', ->
+  it 'show_Article_Data', ->
     new_Article_Controller (scope)->
       using scope, ->
         @.articleLoaded      .assert_Is_False()
-        @.fullArticleLoaded().assert_Is_False()
+        @.show_Article_Data().assert_Is_False()
 
         @.articleLoaded = true
         @.articleLoaded      .assert_Is_True()
-        @.fullArticleLoaded().assert_Is_True()
+        @.show_Article_Data().assert_Is_True()
 
   it 'load_Article (bad data)', ->
     TM_API =

@@ -10,8 +10,8 @@ describe '| API | Jade-Components |', ->
 
   expected_Components = ['alert_bad', 'alert_ok', 'gateway_navigation', 'help_navigation',
                          'result_saved_article','result_saved_search_term',
-                         'result_search_term', 'results_delete_share',
-                         'search_result', 'start_view', 'user_panel'
+                         'results_delete_share',
+                         'search_result', 'user_panel'
                           #design
                          'design/all_icons', 'design/events'
                           #guest
@@ -29,10 +29,9 @@ describe '| API | Jade-Components |', ->
                          'user/loading_bar', 'user/modal'
                          'user/pagination'
                          'user/queries', 'user/queries_history',
-                         'user/results', 'user/recommendations', 'user/search_bar']
+                         'user/results', 'user/recommendations', 'user/search_bar', 'user/start_view']
 
-  expected_Views      = ['article_editor', 'article_view_editor_option',
-                         'curated_content', 'docs'
+  expected_Views      = ['article_editor', 'article_view_editor_option','docs'
                          'new_user_onboard' ,'pwd_reset' ,'pwd_sent' ,
                          'terms_and_conditions', 'user',
                          # guest
