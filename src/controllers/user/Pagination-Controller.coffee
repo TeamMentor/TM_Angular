@@ -21,16 +21,25 @@ angular.module('TM_App')
             currentPage    = model.page
 
             if (currentPage==1 && recordsPerPage > totalRecords )
-              $rootScope.pagginMessage = "Showing " + totalRecords + " articles"
+              if totalRecords ==1
+                $rootScope.pagginMessage = "Showing " + totalRecords + " article"
+              else
+                $rootScope.pagginMessage = "Showing " + totalRecords + " articles"
               return;
 
             if currentPage == 1
               $rootScope.pagginMessage = "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords
             else
-              startNo = (((currentPage - 1) * (recordsPerPage))  + 1 );
+              startNo             = (((currentPage - 1) * (recordsPerPage))  + 1 );
+
               if ((currentPage  * recordsPerPage) + 1 > totalRecords)
-                endNo =totalRecords
-                $rootScope.pagginMessage = "Showing article " + (((currentPage - 1)  * recordsPerPage) + 1 ) + " to "+ totalRecords  + " out of " + totalRecords;
+                endNo             =totalRecords
+                remainingArticles = (((currentPage - 1)  * recordsPerPage) + 1 ) - endNo
+
+                if (remainingArticles==0)
+                  $rootScope.pagginMessage ="Showing article " + totalRecords + " out of  " + totalRecords
+                else
+                  $rootScope.pagginMessage = "Showing article " + (((currentPage - 1)  * recordsPerPage) + 1 ) + " to "+ totalRecords  + " out of " + totalRecords;
                 return
               else
                 endNo =(currentPage * recordsPerPage)  ;
@@ -59,9 +68,12 @@ angular.module('TM_App')
               from    = (model.page - 1) * model.page_Split
               to      = (model.page    ) * model.page_Split
               $rootScope.$broadcast 'set_page', model.page, from, to
-
+            else
+              model.page = 1
+              $scope.set_Paging_Message()
 
           $scope.set_Page_Split = (recordsPerPage)->
+            model.page =1
             #angular.element(document.querySelector('#current_Page select'))[0].value="number:1"
             #angular.element(document.querySelector('#current_Page select'))[0].text="1"
             if recordsPerPage
