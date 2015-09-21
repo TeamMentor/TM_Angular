@@ -258,7 +258,6 @@
     };
     String.prototype.assert_Contains = function(target, message) {
       var source;
-      console.log('asd');
       source = this.toString();
       message = message || ("expected string '" + source + "' to contain the string/array '" + target + "'");
       expect(source).to.contain(target, message);
@@ -297,6 +296,36 @@
       return this;
     };
   }
+
+}).call(this);
+
+(function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
 
 }).call(this);
 
@@ -1245,36 +1274,6 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Events_Controller', function($scope) {
     return $scope.test = 'asd';
   });
@@ -1401,17 +1400,22 @@
           return null;
         }
         return TM_API.article(article_Id, function(article) {
-          if (!article) {
-            return;
+          $scope.articleLoaded = true;
+          if (article) {
+            $scope.map_Guide_Article(article);
+            $scope.map_Article_Url(article);
+            $scope.article = article;
+            $scope.article_Html = $sce.trustAsHtml(article.article_Html);
+            $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+            $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+            return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+          } else {
+            $scope.article = {
+              id: article_Id,
+              title: 'Article not found'
+            };
+            return $scope.article_Html = $sce.trustAsHtml('<br/><br/>Please contact support if you got here following a link');
           }
-          $scope.map_Guide_Article(article);
-          $scope.map_Article_Url(article);
-          $scope.article = article;
-          $scope.article_Html = $sce.trustAsHtml(article.article_Html);
-          $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
-          $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
-          $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
-          return $scope.articleLoaded = true;
         });
       };
       $scope.map_Article_Url = function(article) {

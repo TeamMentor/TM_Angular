@@ -10,22 +10,30 @@ angular.module('TM_App')
               return null
             TM_API.article article_Id, (article)->
 
-              if not article
-                return
-
-              $scope.map_Guide_Article article
-
-              $scope.map_Article_Url article
-
-              $scope.article         = article
-              $scope.article_Html    = $sce.trustAsHtml article.article_Html
-
-
-              $scope.icon_Technology = $sce.trustAsHtml icon_Service.element_Html(article.technology)
-              $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
-              $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
-
               $scope.articleLoaded = true
+
+              if article
+                $scope.map_Guide_Article article
+
+                $scope.map_Article_Url article
+
+                $scope.article         = article
+                $scope.article_Html    = $sce.trustAsHtml article.article_Html
+
+
+                $scope.icon_Technology = $sce.trustAsHtml icon_Service.element_Html(article.technology)
+                $scope.icon_Type       = $sce.trustAsHtml icon_Service.element_Html(article.type)
+                $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
+
+              else
+
+                $scope.article =
+                  id    : article_Id
+                  title : 'Article not found'
+
+                $scope.article_Html = $sce.trustAsHtml '<br/><br/>Please contact support if you got here following a link'
+
+
 
           $scope.map_Article_Url =  (article)->
             if article
