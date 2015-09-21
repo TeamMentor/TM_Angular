@@ -1916,7 +1916,7 @@
     $scope.model = model;
     $scope.visible = false;
     $scope.set_Paging_Message = function() {
-      var currentPage, endNo, modulus, recordsPerPage, startNo, totalRecords;
+      var currentPage, endNo, recordsPerPage, remainingArticles, startNo, totalRecords;
       recordsPerPage = model.page_Split;
       totalRecords = model.data_Size;
       currentPage = model.page;
@@ -1934,8 +1934,8 @@
         startNo = ((currentPage - 1) * recordsPerPage) + 1;
         if ((currentPage * recordsPerPage) + 1 > totalRecords) {
           endNo = totalRecords;
-          modulus = (((currentPage - 1) * recordsPerPage) + 1) - endNo;
-          if (modulus === 0) {
+          remainingArticles = (((currentPage - 1) * recordsPerPage) + 1) - endNo;
+          if (remainingArticles === 0) {
             $rootScope.pagginMessage = "Showing article " + totalRecords + " out of  " + totalRecords;
           } else {
             $rootScope.pagginMessage = "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords;
