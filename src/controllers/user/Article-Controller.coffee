@@ -1,19 +1,17 @@
 angular.module('TM_App')
        .controller 'Article_Controller', ($sce, $scope,$state, $stateParams,$window,$timeout, TM_API, icon_Service)=>
-          $scope.articleUrl     = $window.location.href
-          $scope.showFeedback   = false
-          $scope.articleLoaded  = false
-          $scope.top_Articles   = []
-          $scope.recent_Articles = []
+          using $scope, ->
+            @.articleUrl      = $window.location.href
+            @.showFeedback    = false
+            @.articleLoaded   = false
 
           $scope.fullArticleLoaded = ->
             return $scope.articleLoaded
 
           $scope.load_Article = (article_Id)->
+            if not article_Id
+              return null
             TM_API.article article_Id, (article)->
-              if ($state.current.name == "main")
-                $scope.topArticles()
-                $scope.recentArticles()
 
               if !angular.isObject(article)
                 return;
@@ -50,17 +48,6 @@ angular.module('TM_App')
                       $timeout ->
                         $window.location.href ='/angular/user/guides#'+ article.id
 
-          $scope.recentArticles = ->
-            TM_API.recent_Articles (articles)->
-              if (articles?)
-                angular.forEach articles, (article)->
-                  article.icon_Technology   = $sce.trustAsHtml icon_Service.element_Html(article.technology)
-                  article.icon_Type         = $sce.trustAsHtml icon_Service.element_Html(article.type)
-                  article.icon_Phase        = $sce.trustAsHtml icon_Service.element_Html(article.phase)
-                  id                        = article.id.remove('article-')
-                  title                     = article.title.replace(new RegExp(' ','g'),'-').remove('.')
-                  article.url               = '/angular/user/article/' + id + '/' + title
-                  $scope.recent_Articles.push(article)
 
           $scope.showGeneralFeedback =  ->
             return !$scope.showFeedback
@@ -68,18 +55,6 @@ angular.module('TM_App')
           $scope.showFeedbackBanner =  ->
             return $scope.showFeedback
 
-          $scope.topArticles = ->
-            TM_API.top_Articles (articles)->
-              if (articles?)
-                angular.forEach articles, (article)->
-                  article.icon_Technology   = $sce.trustAsHtml icon_Service.element_Html(article.technology)
-                  article.icon_Type         = $sce.trustAsHtml icon_Service.element_Html(article.type)
-                  article.icon_Phase        = $sce.trustAsHtml icon_Service.element_Html(article.phase)
-                  id                        = article.id.remove('article-')
-                  title                     = article.title.replace(new RegExp(' ','g'),'-').remove('.')
-                  article.url               = '/angular/user/article/' + id + '/' + title
-                  $scope.top_Articles.push(article)
 
-
-          $scope.load_Article $stateParams.article_Id
+          $scope.load_Article $stateParams?.article_Id
 
