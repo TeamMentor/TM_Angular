@@ -41,6 +41,10 @@ describe '| _utils | _fluentnode_methods', ->
     'abc'.upper_Case_First_Letter().assert_Is 'Abc'
 
 
+  it 'String::assert_Contains', ->
+    'aaa'.assert_Contains('aa')
+    'aaa'.assert_Not_Contains('v')
+
   it 'assert_Contains', ->
     ['0'].assert_Contains '0',
     ['1'].assert_Contains('1', 'with message')

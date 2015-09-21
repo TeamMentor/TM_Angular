@@ -76,6 +76,20 @@ if window['chai']     # need to move this to a separate file only available duri
     expect(@.toString()).to.equal(target, message)
     @
 
+
+  String::assert_Contains = (target, message)->
+    console.log 'asd'
+    source    = @.toString()
+    message   = message || "expected string '#{source}' to contain the string/array '#{target}'"
+    expect(source).to.contain(target, message)
+    @
+
+  String::assert_Not_Contains         = (target)->
+    source    = @.toString()
+    message   = "expected string '#{source}' to not contain the string '#{target}'"
+    expect(source).to.not.contain(target,message)
+    @
+
   Number::assert_Is          = (target, message)->      # slight modified from fluentnode version
     expect(@.toString()).to.equal(target.toString(), message)
     @
