@@ -16,7 +16,7 @@ describe '| controllers | guest | Pwd-Forgot-Controller',->
 
   it 'get_Password (valid server response)',->
     inject ($httpBackend)->
-      $httpBackend.whenPOST('/json/user/pwd_reset')
+      $httpBackend.whenPOST('/jade/json/user/pwd_reset')
                   .respond message : 'an message'
       scope.get_Password()
       scope.$digest()
@@ -26,7 +26,7 @@ describe '| controllers | guest | Pwd-Forgot-Controller',->
 
   it 'get_Password (bad server response)',->
     inject ($httpBackend)->
-      $httpBackend.whenPOST('/json/user/pwd_reset')
+      $httpBackend.whenPOST('/jade/json/user/pwd_reset')
                   .respond null
       scope.get_Password()
       scope.$digest()

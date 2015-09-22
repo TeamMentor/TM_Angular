@@ -77,8 +77,8 @@ angular.module('TM_App')
             select_Size = (5 + flex_Extra_Size) + '%'
             input_Size  = (85 - flex_Extra_Size) + '%'
 
-            $element.find('select').css('flex', select_Size)
-            $element.find('input' ).css('flex', input_Size )
+            $element.find?('select').css('flex', select_Size)
+            $element.find?('input' ).css('flex', input_Size )
 
           $scope.select_Technology = ()->
             $scope.update_Placeholder_Text()
@@ -97,7 +97,6 @@ angular.module('TM_App')
               else
                 TM_API.query_from_text_search $scope.text, (query_Id)->
                   $scope.submit_Event $scope.selected_Technology.id, query_Id
-            #$rootScope.$broadcast 'clear_query', null
 
 
             $timeout after_Timeout,250      # I really don't like doing timeouts like this,but the child directives in Index_Controller
@@ -118,22 +117,5 @@ angular.module('TM_App')
           $scope.get_Words = (term)->
             $rootScope.$broadcast 'search_term', term, $scope.selected_Technology
 
-
-
           $scope.set_technologies_By_Id()
           $scope.select_Technology()
-
-
-#          $scope.$on 'view_model_data', (event, data)->
-#            $scope.query_Id = data?.id
-#            if not $scope.selected_Technology
-#              $scope.technologies       = [{ title: 'All Technologies', id: query_Service.index_Query }]
-#              $scope.technologies_By_Id = { 'All' : $scope.technologies[0]}
-#              if data?.filters
-#                for key,value of data.filters
-#                  if key is 'Technology' and value.size
-#                    for filter in value
-#                      $scope.technologies.push(filter)
-#                      $scope.technologies_By_Id[filter.id] = filter
-#
-#              $scope.selected_Technology = $scope.technologies[0]

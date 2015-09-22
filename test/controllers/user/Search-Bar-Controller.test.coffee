@@ -12,29 +12,40 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     module('TM_App')
     inject ($controller, $rootScope)->
       scope = $rootScope.$new()
-      $controller('Search_Bar_Controller', { $scope: scope })
+      $controller('Search_Bar_Controller', { $scope: scope, $element: {} })
+
+  beforeEach ->
+    inject ($httpBackend)=>
+      $httpBackend.expectGET('/api/data/query_view_model/query-6234f2d47eb7/0/0').respond {}
+      #$httpBackend.expectGET('/json/user/currentuser').respond {}
+      $httpBackend.flush()
+      #$httpBackend.expectGET('/json/user/currentuser').respond {}
+    #inject ($httpBackend)->
+    #  $httpBackend.flush()
 
   afterEach ->
     inject ($httpBackend)->
       $httpBackend.verifyNoOutstandingExpectation()
       $httpBackend.verifyNoOutstandingRequest()
 
-  it 'constructor', ()->
+  it 'constructor', ()->                          # some of these already have values due to the auto invocation of @.set_technologies_By_Id and @select_Technology
     using scope, ->
       expect(@.query_Id           ).to.     equal null
-      expect(@.selected_Technology).to.     equal null
-      expect(@.previous_Filter_Id ).to.     equal null
-      expect(@.technologies       ).to.deep.equal {}
-      expect(@.technologies_By_Id ).to.deep.equal {}
+      expect(@.selected_Technology).to.deep.equal { title: 'All Technologies', id: 'query-6234f2d47eb7' }
+      expect(@.previous_Filter_Id ).to.     equal 'query-6234f2d47eb7'
+      expect(@.technologies       ).to.deep.equal [{ title: 'All Technologies', id: 'query-6234f2d47eb7' }]
+      expect(@.technologies_By_Id ).to.deep.equal { All: { title: 'All Technologies', id: 'query-6234f2d47eb7' } }
       expect(@.text               ).to.     equal ''
       expect(@.words              ).to.deep.equal []
 
-      expect(@.$$listeners.keys().size()).to.equal 4
+      expect(@.$$listeners.keys().size()).to.equal 6
 
-      expect(@.$$listeners['clear_search'    ][0]).to.be.an('function')
-      expect(@.$$listeners['clear_filter'    ][0]).to.be.an('function')
-      expect(@.$$listeners['apply_filter'    ][0]).to.be.an('function')
-      expect(@.$$listeners['view_model_data' ][0]).to.be.an('function')
+      expect(@.$$listeners['clear_search' ][0]).to.be.an('function')
+      expect(@.$$listeners['clear_filter' ][0]).to.be.an('function')
+      expect(@.$$listeners['apply_filter' ][0]).to.be.an('function')
+      expect(@.$$listeners['apply_filters'][0]).to.be.an('function')
+      expect(@.$$listeners['set_search'   ][0]).to.be.an('function')
+      expect(@.$$listeners['update_search'][0]).to.be.an('function')
 
       expect(@.get_Words        ).to.be.an('function')
       expect(@.select_Technology).to.be.an('function')
@@ -52,28 +63,18 @@ describe '| controllers | user | Search-Bar-Controller.test',->
         an_id : 'an id'
         All   : 'all'
 
-      @.$broadcast 'clear_filter', 'an_id'
-      @.technologies_By_Id
-      @.selected_Technology.assert_Is 'all'
+      @.$broadcast 'clear_filter'
+      @.selected_Technology.assert_Is { title: 'All Technologies', id: 'query-6234f2d47eb7' }
 
-      @.selected_Technology = 'abc'
       @.ignore_Events      = true
       @.$broadcast 'clear_filter', 'an_id'
-      @.selected_Technology.assert_Is 'abc'
-
-  it '$on query_data (null data)', ->
-    using scope, ->
-      data = null
-      @.$broadcast 'view_model_data'
-      expect(@.query_Id).to.equal undefined
-      @.selected_Technology.assert_Is { title: 'All', id: 'query-6234f2d47eb7' }
-
+      @.selected_Technology.assert_Is 'all'
 
   it '$on apply_filter', ->
     using scope, ->
       @.$broadcast 'apply_filter', 'filter_Id', 'filter_Title', 'metadata_Title'
-      expect(@.selected_Technology).to.equal null
-      expect(@.previous_Filter_Id).to.equal null
+      @.selected_Technology.assert_Is { title: 'All Technologies', id: 'query-6234f2d47eb7' }
+      @.previous_Filter_Id .assert_Is 'query-6234f2d47eb7'
 
       @.technologies_By_Id = 'filter_Id' : 'abc'
       @.$broadcast 'apply_filter', 'filter_Id', 'filter_Title', 'Technology'
@@ -85,11 +86,13 @@ describe '| controllers | user | Search-Bar-Controller.test',->
     using scope, ->
       @.selected_Technology = id : 'an id', title : 'an title'
 
-      @.$on 'apply_filter' , (event, id, title)->
-        id.assert_Is 'an id'
-        title.assert_Is 'an title'
-
       @.select_Technology()
+      @.searchPlaceholder.assert_Is 'Search an title'
+
+      @.selected_Technology = null
+      @.select_Technology()
+      @.searchPlaceholder.assert_Is 'Search All of TEAM Mentor'
+
 
   it 'select_Technology (when title is All)', ->
     using scope, ->
@@ -102,12 +105,14 @@ describe '| controllers | user | Search-Bar-Controller.test',->
         expect(data).to.equal null
 
       @.select_Technology()
-      @.$digest()
+      @.searchPlaceholder.assert_Is 'Search All'
+
 
   it 'submit (check state change)', ->
     inject ($state, $httpBackend)->
       $httpBackend.expectGET('/json/user/currentuser').respond {}
       using scope, ->
+        console.log $state.current
         $state.current.name.assert_Is ''
         @.submit()
         @.$digest()
