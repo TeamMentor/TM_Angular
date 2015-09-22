@@ -20,16 +20,18 @@ describe '| controllers | user | Breadcrumbs-Controller',->
       @.visible.assert_Is_False
       @.breadcrumbs_Service.constructor.name.assert_Is 'Breadcrumbs_Service'
 
-      @.$$listeners.keys().size().assert_Is 2
-      expect(@.$$listeners['clear_query'    ][0]).to.be.an('function')
-      expect(@.$$listeners['view_model_data'][0] ).to.be.an('function')
+      @.$$listeners.keys().size().assert_Is 4
+      expect(@.$$listeners['clear_query'        ][0]).to.be.an('function')
+      expect(@.$$listeners['view_model_data'    ][0] ).to.be.an('function')
+      expect(@.$$listeners['pop_state'          ][0] ).to.be.an('function')
+      expect(@.$$listeners['refresh_breadcrumbs'][0] ).to.be.an('function')
 
       expect(@.refresh_Breadcrumbs).to.be.an 'function'
       expect(@.load_Query         ).to.be.an 'function'
 
-      @.breadcrumbs_Service.history     .assert_Is {}
-      @.breadcrumbs_Service.current_Path.assert_Is ''
-      @.breadcrumbs_Service.breadcrumbs .assert_Is []
+      @.breadcrumbs_Service.history              .assert_Is {}
+      @.breadcrumbs_Service.current_Path         .assert_Is ''
+      @.breadcrumbs_Service.current_Breadcrumbs().assert_Is []
 
 
   it 'refresh_Breadcrumbs', ->

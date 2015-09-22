@@ -122,7 +122,7 @@ class TM_API
         callback(data)
 
   pwd_reset: (email, callback)=>
-    url      = "/jade/json/user/pwd_reset"
+    url      = "/json/user/pwd_reset"
     postData = { email:email }
     @.$http.post(url, postData).success callback
 

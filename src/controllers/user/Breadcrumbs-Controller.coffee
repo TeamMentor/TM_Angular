@@ -18,7 +18,6 @@ angular.module 'TM_App'
               @.breadcrumbs_Service.move_Back()
               @.refresh_Breadcrumbs()
 
-
             @.$on 'refresh_breadcrumbs', (event, data)=>
               @.refresh_Breadcrumbs()
 

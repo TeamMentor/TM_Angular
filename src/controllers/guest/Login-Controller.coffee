@@ -4,7 +4,7 @@ angular.module('TM_App')
           $scope.login = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
-            $scope.infoMessage   = "...logging in ..."
+            $scope.infoMessage   = '...logging in ...'
             TM_API.login  $scope.username, $scope.password, (data)=>
               if data.result is 'OK'
                 TM_API.currentuser (userInfo)->

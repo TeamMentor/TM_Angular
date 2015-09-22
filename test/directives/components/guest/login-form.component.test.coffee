@@ -19,7 +19,7 @@ describe '| directives | guest | login-form', ->
   it 'check html elements',->
     inject ($$)->
       using $$(element).$query,->
-        @('form'       ).$attr().assert_Is                    id: 'login-form', class: 'ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength'             , role: 'form', 'ng-submit': 'login()'
+        @('form'       ).$attr().assert_Is                    id: 'login-form', class: 'access-form ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength' , role: 'form', 'ng-submit': 'login()'
         @('#username'  ).$attr().assert_Is  type: 'text'    , id: 'username'  , class: 'ng-pristine ng-untouched ng-invalid ng-invalid-required'                   , placeholder: 'Username', "ng-model": 'username', required: 'required'
         @('#password'  ).$attr().assert_Is  type: 'password', id: 'password'  , class: 'ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-maxlength', placeholder: 'Password', "ng-model": 'password', required: 'required', maxlength: '256'
         @('#btn-login' ).$attr().assert_Is  type: 'submit'  , id: 'btn-login' , class: 'full-width'

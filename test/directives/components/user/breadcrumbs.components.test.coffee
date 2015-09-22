@@ -18,10 +18,10 @@ describe '| directive | components | user | breadcrumbs', ->
       scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
       using  scope, ->
-        @.history['aaa'] = query_Id : 'aaa-id', title: 'aaa-title'
-        @.history['bbb'] = query_Id : 'bbb-id', title: 'bbb-title'
-        @.current_Path = '/aaa/bbb'
-        @.breadcrumbs = [{ query_Id: 'aaa-id', title: 'aaa-title', path: '' }]
+        #@.history['aaa'] = query_Id : 'aaa-id', title: 'aaa-title'
+        #@.history['bbb'] = query_Id : 'bbb-id', title: 'bbb-title'
+        #@.current_Path = '/aaa/bbb'
+        #@.breadcrumbs = [{ query_Id: 'aaa-id', title: 'aaa-title', path: '' }]
 
 
     inject ($document)->
@@ -40,10 +40,14 @@ describe '| directive | components | user | breadcrumbs', ->
   it '| controller | refresh_Breadcrumbs', ()->
     inject ($$)->
       using scope,->
+        @.breadcrumbs_Service.add_Breadcrumb('aaa-id','aaa-title')
+        @.breadcrumbs_Service.add_Breadcrumb('bbb-id','bbb-title')
+
         @.refresh_Breadcrumbs()
         @.$digest()
 
       using $$(element).$query,->
+        console.log @('dd'  ).$html()
         @('dd'  ).$attr().assert_Is 'ng-repeat'    : 'breadcrumb in breadcrumbs'              , class: 'active ng-scope'
         @('dd a').$attr().assert_Is 'ng-href'      : '#', 'ng-click': 'load_Query(breadcrumb)', class: 'ng-binding', href: '#'
 
@@ -61,7 +65,7 @@ describe '| directive | components | user | breadcrumbs', ->
   it '| controller | $on clear_query', ->
     inject ($$)->
       using scope,->
-        @.current_Path.assert_Is '/aaa/bbb'
+        @.breadcrumbs_Service.current_Path.assert_Is '/aaa/bbb'
         @.breadcrumbs.assert_Is [{ query_Id: 'aaa-id', title: 'aaa-title', path: '' }]
         @.$digest()
 

@@ -21,8 +21,8 @@ describe '| controllers  | Help-Controller.test',->
     article = html: 'an <h1>html</h1>'
     inject ($httpBackend)->
 
-      $httpBackend.expectGET('/json/docs/library').respond library
-      $httpBackend.expectGET('/json/docs/article-id').respond article
+      $httpBackend.expectGET('/jade/json/docs/library').respond library
+      $httpBackend.expectGET('/jade/json/docs/article-id').respond article
 
       using scope, ->
         @.$digest()         # @.load_Library() is called by the controller

@@ -52,7 +52,7 @@ describe '| controllers | guest | Signup-Controller',->
       expect(scope.errorMessage).to.equal null
       window.assert_Is location : href: '....'
       $timeout.flush();
-      window.assert_Is location : href: '/angular/user/main'
+      window.assert_Is location : href: '/angular/user/index'
 
 
   it 'showErrorMessage', ->

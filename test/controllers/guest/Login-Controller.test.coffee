@@ -31,16 +31,17 @@ describe '| controllers | Login-Controller.test',->
 
   it 'login (OK)', ()->
     inject ($httpBackend,$timeout)->
-
-      $httpBackend.whenPOST('/json/user/login',{}).respond ()->
-        return [200, { result: 'OK' }]
-
+      currentUser =
+        UserEnabled : true
+      $httpBackend.whenPOST('/json/user/login'      ,{}).respond ()-> return [200, { result: 'OK' }]
+      $httpBackend.whenGET('/json/user/currentuser'    ).respond ()-> return [200,  currentUser ]
       scope.login()
       $httpBackend.flush()
       window.assert_Is location : href: '....'
-      $timeout.flush();
       scope.infoMessage.assert_Is 'Login OK'
-      window.assert_Is location : href: '/angular/user/main'
+
+      $timeout.flush();
+      window.assert_Is location : href: '/angular/user/index'
 
   it 'showErrorMessage', ->
     scope.errorMessage = 'abc123'
