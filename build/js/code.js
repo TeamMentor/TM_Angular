@@ -1150,7 +1150,7 @@
 
     TM_API.prototype.pwd_reset = function(email, callback) {
       var postData, url;
-      url = "/json/user/pwd_reset";
+      url = "/jade/json/user/pwd_reset";
       postData = {
         email: email
       };
