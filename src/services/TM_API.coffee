@@ -126,6 +126,13 @@ class TM_API
     postData = { email:email }
     @.$http.post(url, postData).success callback
 
+
+
+  pwd_reset_Token: (username,token,password, callback)=>
+    url      = "/jade/json/passwordReset/"+ username+ "/"+ token
+    postData = { password:password, 'confirm-password':password }
+    @.$http.post(url, postData).success callback
+
   popular_Search : (callback)=>
     url             = "/jade/json/search/recentsearch"
     @.$http.get(url)

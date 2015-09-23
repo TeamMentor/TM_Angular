@@ -7,3 +7,7 @@ app.config ($stateProvider, routes_Names) ->
     $stateProvider.state view_Name    ,
       url        : "/#{view_Name}"
       templateUrl: "/angular/jade-html/views/guest/#{view_Name}"
+
+  $stateProvider.state 'pwd_reset'    ,
+    url        : "/pwd_reset/:username/:token"
+    templateUrl: "/angular/jade-html/views/guest/pwd_reset"

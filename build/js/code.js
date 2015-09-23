@@ -151,6 +151,155 @@
 }).call(this);
 
 (function() {
+  var expect,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    hasProp = {}.hasOwnProperty;
+
+  Array.prototype.contains = function(value) {
+    var i, item, len;
+    if (value instanceof Array) {
+      for (i = 0, len = value.length; i < len; i++) {
+        item = value[i];
+        if (!(indexOf.call(this, item) >= 0)) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+
+    }
+    return indexOf.call(this, value) >= 0;
+  };
+
+  Array.prototype.first = function() {
+    return this.item(0);
+  };
+
+  Array.prototype.item = function(index) {
+    if (typeof index === 'number') {
+      if ((this.length > index && index > -1)) {
+        return this[index];
+      }
+    }
+    return null;
+  };
+
+  Array.prototype.size = function() {
+    return this.length;
+  };
+
+  Array.prototype.take = function(size) {
+    if (size === -1) {
+      return this;
+    } else {
+      return this.slice(0, size);
+    }
+  };
+
+  String.prototype.remove = function(value) {
+    var result;
+    result = this;
+    while (result.contains(value)) {
+      result = result.replace(value, '');
+    }
+    return result;
+  };
+
+  String.prototype.contains = function(value) {
+    var i, item, len, regex;
+    if (value instanceof RegExp) {
+      regex = new RegExp(value);
+      return regex.exec(this) !== null;
+    }
+    if (value instanceof Array) {
+      for (i = 0, len = value.length; i < len; i++) {
+        item = value[i];
+        if (this.indexOf(item) === -1) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return this.indexOf(value) > -1;
+  };
+
+  Object.defineProperty(Object.prototype, 'keys', {
+    enumerable: false,
+    writable: true,
+    value: function() {
+      var key;
+      return (function() {
+        var results;
+        results = [];
+        for (key in this) {
+          if (!hasProp.call(this, key)) continue;
+          results.push(key);
+        }
+        return results;
+      }).call(this);
+    }
+  }, window.using = function(target, callback) {
+    return callback.apply(target);
+  });
+
+  if (window['chai']) {
+    expect = chai.expect;
+    Object.defineProperty(Object.prototype, 'assert_Is', {
+      enumerable: false,
+      writable: true,
+      value: function(target) {
+        expect(this).to.deep.equal(target);
+        return this;
+      }
+    });
+    String.prototype.assert_Is = function(target, message) {
+      expect(this.toString()).to.equal(target, message);
+      return this;
+    };
+    String.prototype.assert_Contains = function(target, message) {
+      var source;
+      source = this.toString();
+      message = message || ("expected string '" + source + "' to contain the string/array '" + target + "'");
+      expect(source).to.contain(target, message);
+      return this;
+    };
+    String.prototype.assert_Not_Contains = function(target) {
+      var message, source;
+      source = this.toString();
+      message = "expected string '" + source + "' to not contain the string '" + target + "'";
+      expect(source).to.not.contain(target, message);
+      return this;
+    };
+    Number.prototype.assert_Is = function(target, message) {
+      expect(this.toString()).to.equal(target.toString(), message);
+      return this;
+    };
+    Boolean.prototype.assert_Is_False = function() {
+      expect(this.valueOf()).to.equal(false);
+      return false;
+    };
+    Boolean.prototype.assert_Is_True = function() {
+      expect(this.valueOf()).to.equal(true);
+      return true;
+    };
+    Array.prototype.assert_Contains = function(value, message) {
+      var i, item, len;
+      message = message || "[assert_Contains]";
+      if (value instanceof Array) {
+        for (i = 0, len = value.length; i < len; i++) {
+          item = value[i];
+          this.contains(item).assert_Is_True(item + " not found in array: " + this);
+        }
+      } else {
+        this.contains(value).assert_Is_True(message);
+      }
+      return this;
+    };
+  }
+
+}).call(this);
+
+(function() {
   var app, routes_Names;
 
   app = angular.module('TM_App');
@@ -158,7 +307,7 @@
   routes_Names = {
     components: {},
     views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'pwd_reset', 'sign_up'],
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
       user_Root: ['docs', 'terms_and_conditions'],
       user_User: ['main', 'index', 'articles']
     }
@@ -172,7 +321,7 @@
   var tm_angular_config;
 
   tm_angular_config = {
-    log_Events: true,
+    log_Events: false,
     log_Urls: false
   };
 
@@ -201,6 +350,244 @@
     };
     return $scope.load_Library();
   });
+
+}).call(this);
+
+(function() {
+  var Map_Directives,
+    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+  Map_Directives = (function() {
+    function Map_Directives(options) {
+      this.map_All = bind(this.map_All, this);
+      this.map_Components = bind(this.map_Components, this);
+      this.app = options.app;
+      this.design_Components = ['all_icons', 'events'];
+      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
+      this.navigation_Components = ['landing_bar', 'left_navigation'];
+      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'found_issue', 'pagination', 'start_view', 'queries', 'queries_history', 'results', 'search_bar'];
+      this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
+    }
+
+    Map_Directives.prototype.resolve_Directive_Name = function(name) {
+      var directive_Name, i, index, len, ref, segment;
+      directive_Name = "";
+      ref = name.split('_');
+      for (index = i = 0, len = ref.length; i < len; index = ++i) {
+        segment = ref[index];
+        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
+      }
+      return directive_Name;
+    };
+
+    Map_Directives.prototype.map_Components = function(path, components) {
+      var component, i, len, results;
+      results = [];
+      for (i = 0, len = components.length; i < len; i++) {
+        component = components[i];
+        results.push((function(_this) {
+          return function(component) {
+            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
+              return {
+                templateUrl: "/angular/jade-html/component" + path + "/" + component
+              };
+            });
+          };
+        })(this)(component));
+      }
+      return results;
+    };
+
+    Map_Directives.prototype.map_All = function() {
+      this.map_Components('', this.root_Components);
+      this.map_Components('/design', this.design_Components);
+      this.map_Components('/guest', this.guest_Components);
+      this.map_Components('/navigation', this.navigation_Components);
+      return this.map_Components('/user', this.user_Components);
+    };
+
+    return Map_Directives;
+
+  })();
+
+  String.prototype.upper_Case_First_Letter = function() {
+    return this.charAt(0).toUpperCase() + this.substr(1);
+  };
+
+  new Map_Directives({
+    app: angular.module('TM_App')
+  }).map_All();
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('icon', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        if (attribute["class"]) {
+          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
+        }
+        if (attribute.type) {
+          return icon_Service.element_Html(attribute.type);
+        }
+        return icon_Service.element_Html('Default');
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showAllIcons', function(icon_Service) {
+    return {
+      template: function(element, attribute) {
+        var all_Icons_Html, i, key, len, ref;
+        all_Icons_Html = "";
+        ref = icon_Service.mappings.keys();
+        for (i = 0, len = ref.length; i < len; i++) {
+          key = ref[i];
+          all_Icons_Html += icon_Service.element_Html(key);
+          if (attribute.$attr.withTitles) {
+            all_Icons_Html += " " + key + " <br/>";
+          }
+        }
+        return all_Icons_Html;
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').directive('showComponent', function($compile, $location) {
+    return {
+      link: function($scope, element) {
+        var component, component_Name;
+        if ($location.$$path && $location.$$path !== '/') {
+          component_Name = $location.$$path.substring(1);
+          if (component_Name !== '') {
+            component = document.createElement(component_Name);
+            return element.replaceWith($compile(component)($scope));
+          }
+        }
+      }
+    };
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, view_Name;
+    ref = routes_Names.views.guest;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      });
+    }
+    return $stateProvider.state('pwd_reset', {
+      url: "/pwd_reset/:username/:token",
+      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('guidehash', {
+      url: "/guides#:id",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
 
 }).call(this);
 
@@ -540,6 +927,7 @@
       this.tmConfig = bind(this.tmConfig, this);
       this.gatewaysLibrary = bind(this.gatewaysLibrary, this);
       this.popular_Search = bind(this.popular_Search, this);
+      this.pwd_reset_Token = bind(this.pwd_reset_Token, this);
       this.pwd_reset = bind(this.pwd_reset, this);
       this.currentuser = bind(this.currentuser, this);
       this.signup = bind(this.signup, this);
@@ -772,6 +1160,16 @@
       return this.$http.post(url, postData).success(callback);
     };
 
+    TM_API.prototype.pwd_reset_Token = function(username, token, password, callback) {
+      var postData, url;
+      url = "/jade/json/passwordReset/" + username + "/" + token;
+      postData = {
+        password: password,
+        'confirm-password': password
+      };
+      return this.$http.post(url, postData).success(callback);
+    };
+
     TM_API.prototype.popular_Search = function(callback) {
       var url;
       url = "/jade/json/search/recentsearch";
@@ -889,391 +1287,6 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, results, view_Name;
-    ref = routes_Names.views.guest;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      results.push($stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      }));
-    }
-    return results;
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('guides', {
-      url: "/guides",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('guidehash', {
-      url: "/guides#:id",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('index_query_id_filters', {
-      url: "/index/:query_Id/:filters",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-
-  /*
-  app.run ($rootScope,$window,TM_API, routes_Names) =>
-    $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        return
-      else
-        TM_API.currentuser (userInfo) =>
-          if (userInfo? && userInfo?.UserEnabled)
-            return
-          else
-            $window.location.href = '/angular/guest/login'
-    return
-   */
-
-}).call(this);
-
-(function() {
-  var expect,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
-    hasProp = {}.hasOwnProperty;
-
-  Array.prototype.contains = function(value) {
-    var i, item, len;
-    if (value instanceof Array) {
-      for (i = 0, len = value.length; i < len; i++) {
-        item = value[i];
-        if (!(indexOf.call(this, item) >= 0)) {
-          return false;
-        }
-      }
-      return true;
-    } else {
-
-    }
-    return indexOf.call(this, value) >= 0;
-  };
-
-  Array.prototype.first = function() {
-    return this.item(0);
-  };
-
-  Array.prototype.item = function(index) {
-    if (typeof index === 'number') {
-      if ((this.length > index && index > -1)) {
-        return this[index];
-      }
-    }
-    return null;
-  };
-
-  Array.prototype.size = function() {
-    return this.length;
-  };
-
-  Array.prototype.take = function(size) {
-    if (size === -1) {
-      return this;
-    } else {
-      return this.slice(0, size);
-    }
-  };
-
-  String.prototype.remove = function(value) {
-    var result;
-    result = this;
-    while (result.contains(value)) {
-      result = result.replace(value, '');
-    }
-    return result;
-  };
-
-  String.prototype.contains = function(value) {
-    var i, item, len, regex;
-    if (value instanceof RegExp) {
-      regex = new RegExp(value);
-      return regex.exec(this) !== null;
-    }
-    if (value instanceof Array) {
-      for (i = 0, len = value.length; i < len; i++) {
-        item = value[i];
-        if (this.indexOf(item) === -1) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return this.indexOf(value) > -1;
-  };
-
-  Object.defineProperty(Object.prototype, 'keys', {
-    enumerable: false,
-    writable: true,
-    value: function() {
-      var key;
-      return (function() {
-        var results;
-        results = [];
-        for (key in this) {
-          if (!hasProp.call(this, key)) continue;
-          results.push(key);
-        }
-        return results;
-      }).call(this);
-    }
-  }, window.using = function(target, callback) {
-    return callback.apply(target);
-  });
-
-  if (window['chai']) {
-    expect = chai.expect;
-    Object.defineProperty(Object.prototype, 'assert_Is', {
-      enumerable: false,
-      writable: true,
-      value: function(target) {
-        expect(this).to.deep.equal(target);
-        return this;
-      }
-    });
-    String.prototype.assert_Is = function(target, message) {
-      expect(this.toString()).to.equal(target, message);
-      return this;
-    };
-    String.prototype.assert_Contains = function(target, message) {
-      var source;
-      source = this.toString();
-      message = message || ("expected string '" + source + "' to contain the string/array '" + target + "'");
-      expect(source).to.contain(target, message);
-      return this;
-    };
-    String.prototype.assert_Not_Contains = function(target) {
-      var message, source;
-      source = this.toString();
-      message = "expected string '" + source + "' to not contain the string '" + target + "'";
-      expect(source).to.not.contain(target, message);
-      return this;
-    };
-    Number.prototype.assert_Is = function(target, message) {
-      expect(this.toString()).to.equal(target.toString(), message);
-      return this;
-    };
-    Boolean.prototype.assert_Is_False = function() {
-      expect(this.valueOf()).to.equal(false);
-      return false;
-    };
-    Boolean.prototype.assert_Is_True = function() {
-      expect(this.valueOf()).to.equal(true);
-      return true;
-    };
-    Array.prototype.assert_Contains = function(value, message) {
-      var i, item, len;
-      message = message || "[assert_Contains]";
-      if (value instanceof Array) {
-        for (i = 0, len = value.length; i < len; i++) {
-          item = value[i];
-          this.contains(item).assert_Is_True(item + " not found in array: " + this);
-        }
-      } else {
-        this.contains(value).assert_Is_True(message);
-      }
-      return this;
-    };
-  }
-
-}).call(this);
-
-(function() {
-  var Map_Directives,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-  Map_Directives = (function() {
-    function Map_Directives(options) {
-      this.map_All = bind(this.map_All, this);
-      this.map_Components = bind(this.map_Components, this);
-      this.app = options.app;
-      this.design_Components = ['all_icons', 'events'];
-      this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
-      this.navigation_Components = ['landing_bar', 'left_navigation'];
-      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'found_issue', 'pagination', 'start_view', 'queries', 'queries_history', 'results', 'search_bar'];
-      this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
-    }
-
-    Map_Directives.prototype.resolve_Directive_Name = function(name) {
-      var directive_Name, i, index, len, ref, segment;
-      directive_Name = "";
-      ref = name.split('_');
-      for (index = i = 0, len = ref.length; i < len; index = ++i) {
-        segment = ref[index];
-        directive_Name += index ? segment.upper_Case_First_Letter() : segment;
-      }
-      return directive_Name;
-    };
-
-    Map_Directives.prototype.map_Components = function(path, components) {
-      var component, i, len, results;
-      results = [];
-      for (i = 0, len = components.length; i < len; i++) {
-        component = components[i];
-        results.push((function(_this) {
-          return function(component) {
-            return _this.app.directive(_this.resolve_Directive_Name(component), function() {
-              return {
-                templateUrl: "/angular/jade-html/component" + path + "/" + component
-              };
-            });
-          };
-        })(this)(component));
-      }
-      return results;
-    };
-
-    Map_Directives.prototype.map_All = function() {
-      this.map_Components('', this.root_Components);
-      this.map_Components('/design', this.design_Components);
-      this.map_Components('/guest', this.guest_Components);
-      this.map_Components('/navigation', this.navigation_Components);
-      return this.map_Components('/user', this.user_Components);
-    };
-
-    return Map_Directives;
-
-  })();
-
-  String.prototype.upper_Case_First_Letter = function() {
-    return this.charAt(0).toUpperCase() + this.substr(1);
-  };
-
-  new Map_Directives({
-    app: angular.module('TM_App')
-  }).map_All();
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('icon', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        if (attribute["class"]) {
-          return icon_Service.simple_Element_Html("icon-" + attribute["class"], attribute.title);
-        }
-        if (attribute.type) {
-          return icon_Service.element_Html(attribute.type);
-        }
-        return icon_Service.element_Html('Default');
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showAllIcons', function(icon_Service) {
-    return {
-      template: function(element, attribute) {
-        var all_Icons_Html, i, key, len, ref;
-        all_Icons_Html = "";
-        ref = icon_Service.mappings.keys();
-        for (i = 0, len = ref.length; i < len; i++) {
-          key = ref[i];
-          all_Icons_Html += icon_Service.element_Html(key);
-          if (attribute.$attr.withTitles) {
-            all_Icons_Html += " " + key + " <br/>";
-          }
-        }
-        return all_Icons_Html;
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').directive('showComponent', function($compile, $location) {
-    return {
-      link: function($scope, element) {
-        var component, component_Name;
-        if ($location.$$path && $location.$$path !== '/') {
-          component_Name = $location.$$path.substring(1);
-          if (component_Name !== '') {
-            component = document.createElement(component_Name);
-            return element.replaceWith($compile(component)($scope));
-          }
-        }
-      }
-    };
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Events_Controller', function($scope) {
     return $scope.test = 'asd';
   });
@@ -1341,14 +1354,46 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Pwd_Reset_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.reset_Password = function() {
-      return $scope.infoMessage = "...sending request ...";
+  angular.module('TM_App').controller('Pwd_Reset_Controller', (function(_this) {
+    return function($scope, TM_API, $location, $timeout, $stateParams) {
+      $scope.reset_Password = function() {
+        var token, url, username;
+        $scope.errorMessage = '';
+        $scope.infoMessage = "...sending request ...";
+        url = $location.$$url;
+        if ((url != null)) {
+          username = $stateParams.username;
+          token = $stateParams.token;
+          if ((username == null) || (token == null)) {
+            return $scope.errorMessage = "Request not valid";
+          }
+          if ($scope.password !== $scope.confirmpassword) {
+            $scope.infoMessage = '';
+            return $scope.errorMessage = "Passwords don't match, please verify";
+          }
+          return TM_API.pwd_reset_Token(username, token, $scope.password, (function(_this) {
+            return function(data) {
+              if ((data != null ? data.status : void 0) === "Ok") {
+                $scope.errorMessage = '';
+                return $scope.infoMessage = data != null ? data.message : void 0;
+              } else {
+                $scope.errorMessage = data != null ? data.message : void 0;
+                return $scope.infoMessage = '';
+              }
+            };
+          })(this));
+        } else {
+          return $scope.errorMessage = "Unable to process your request";
+        }
+      };
+      $scope.showInfoMessage = function() {
+        return $scope.infoMessage;
+      };
+      return $scope.showErrorMessage = function() {
+        return $scope.errorMessage;
+      };
     };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
+  })(this));
 
 }).call(this);
 
@@ -2121,7 +2166,6 @@
       this.technologies = {};
       this.technologies_By_Id = {};
       this.text = '';
-      this.words = [];
       this.searchPlaceholder = "Search All of TEAM Mentor";
       return this.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
     });
