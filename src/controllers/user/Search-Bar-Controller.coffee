@@ -7,7 +7,6 @@ angular.module('TM_App')
             @.technologies        = {}
             @.technologies_By_Id  = {}
             @.text                = ''
-            @.words               = []
             @.searchPlaceholder   = "Search All of TEAM Mentor"
             @.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
 

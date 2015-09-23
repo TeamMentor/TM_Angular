@@ -23,7 +23,7 @@ describe '| directives | component | filters', ->
   it 'Check html elements',->
     inject ($$)->
       using $$(element).$query,->
-        @('div'          ).$attr().assert_Is 'ng-controller': 'Filters_Controller'  , class: 'ng-scope'
+        @('div'          ).$attr().assert_Is 'ng-controller': 'Filters_Controller'  , class: 'ng-scope ng-hide' , 'ng-show' : 'visible'
         @('.section'     ).$attr().assert_Is 'ng-show'      : 'view_Filters'        , class: 'section row ng-hide'
 
   it 'controller | $on view_model_data',->
@@ -33,7 +33,7 @@ describe '| directives | component | filters', ->
 
     inject ($$)->
       using $$(element).$query,->
-        @('.filters'     ).$attr().assert_Is 'ng-repeat'    : '(title,filter) in filters'   , class: 'filters ng-scope'
+        @('#filters'     ).$attr().assert_Is id: 'filters', 'ng-repeat'    : '(title,filter) in filters'   , class: 'ng-scope'
         @('#results'     ).$attr().assert_Is id: 'results'
         @('#results div' ).$attr().assert_Is 'ng-repeat'    : 'result in filter', class: 'ng-scope'
         @('#results dd'  ).$attr().assert_Is 'ng-show'      : 'result.size > 0'

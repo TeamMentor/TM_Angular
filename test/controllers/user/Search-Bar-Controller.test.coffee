@@ -4,7 +4,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
   scope    = null
   window   = location : href : '....'
 
-  default_Technology = { title: 'All', id: 'query-6234f2d47eb7' }
+  default_Technology = { title: 'All Technologies', id: 'query-6234f2d47eb7' }
 
   #url_Query_Tree     = 'query_view_model_query-6234f2d47eb7_0_10'
 
@@ -17,11 +17,7 @@ describe '| controllers | user | Search-Bar-Controller.test',->
   beforeEach ->
     inject ($httpBackend)=>
       $httpBackend.expectGET('/api/data/query_view_model/query-6234f2d47eb7/0/0').respond {}
-      #$httpBackend.expectGET('/json/user/currentuser').respond {}
       $httpBackend.flush()
-      #$httpBackend.expectGET('/json/user/currentuser').respond {}
-    #inject ($httpBackend)->
-    #  $httpBackend.flush()
 
   afterEach ->
     inject ($httpBackend)->
@@ -36,7 +32,6 @@ describe '| controllers | user | Search-Bar-Controller.test',->
       expect(@.technologies       ).to.deep.equal [{ title: 'All Technologies', id: 'query-6234f2d47eb7' }]
       expect(@.technologies_By_Id ).to.deep.equal { All: { title: 'All Technologies', id: 'query-6234f2d47eb7' } }
       expect(@.text               ).to.     equal ''
-      expect(@.words              ).to.deep.equal []
 
       expect(@.$$listeners.keys().size()).to.equal 6
 
@@ -95,85 +90,76 @@ describe '| controllers | user | Search-Bar-Controller.test',->
 
 
   it 'select_Technology (when title is All)', ->
-    using scope, ->
-      @.selected_Technology = id : 'an id', title : 'All'
-
-      @.$on 'apply_query' , (event, query_Id)->
-        query_Id.assert_Is 'query-6234f2d47eb7'
-
-      @.$on 'clear_query' , (event, data)->
-        expect(data).to.equal null
-
-      @.select_Technology()
-      @.searchPlaceholder.assert_Is 'Search All'
-
-
-  it 'submit (check state change)', ->
-    inject ($state, $httpBackend)->
-      $httpBackend.expectGET('/json/user/currentuser').respond {}
+    inject ($rootScope)->
       using scope, ->
-        console.log $state.current
-        $state.current.name.assert_Is ''
-        @.submit()
-        @.$digest()
-        $state.current.name.assert_Is 'index'
+        @.selected_Technology = id : 'an id', title : 'All ABC'
 
-  it 'submit (no text)', ->
-    inject ($httpBackend)->
-      $httpBackend.expectGET('/json/user/currentuser').respond {}
+        spyOn($rootScope, '$broadcast')
+
+        @.select_Technology()
+        @.searchPlaceholder.assert_Is 'Search All ABC'
+        $rootScope.$broadcast.calls.all().size().assert_Is 0   # confirm there were no events fired
+
+
+  it 'submit (check $state change and empty $scope.text)', ()->
+    inject ($rootScope, $state, $httpBackend, $timeout)->
       using scope, ->
-        @.$on 'clear_query', (event)->
-          event.name.assert_Is 'clear_query'
-        @.$on 'apply_query', (event, query_Id)->
-          query_Id.assert_Is 'query-6234f2d47eb7'
+        scope.text =''
+        $state.current.assert_Is url: '/:article_Id', templateUrl: '/angular/jade-html/views/user/article', name: 'guid'
         @.submit()
-        @.$digest()
-        $httpBackend.flush()
+        scope.$digest()
+        $state.current.assert_Is url: '/index', templateUrl: '/angular/jade-html/views/user/index', name: 'index'
+        spyOn($rootScope, '$broadcast').and.callThrough()
+        $timeout.flush()
+
+        using $rootScope.$broadcast.calls.all(), ->
+          @.size().assert_Is 5
+          @[0].args.assert_Is [ 'loading_query'         , null                 , null                                   ]
+          @[1].args.assert_Is [ 'clear_filter'          , 'query-6234f2d47eb7' , 'Technology'                           ]
+          @[2].args.assert_Is [ 'apply_query'           , 'query-6234f2d47eb7'                                          ]
+          @[3].args.assert_Is [ '$locationChangeStart'  , 'http://server/index', 'http://server/', undefined, undefined ]
+          @[4].args.assert_Is [ '$locationChangeSuccess', 'http://server/index', 'http://server/', null     , undefined ]
+
+
 
   it 'submit (valid text)', ->
-    inject ($httpBackend)->
-      $httpBackend.expectGET('/json/user/currentuser').respond {}
+    inject ($rootScope, $httpBackend, $timeout)->
       $httpBackend.expectGET('/api/search/query_from_text_search/xss').respond 'search-xss'
-      #$httpBackend.expectGET('/api/data/query_view_model/search-xss/0/10').respond 'search-xss'
       using scope, ->
+        spyOn($rootScope, '$broadcast').and.callThrough()
         scope.text = 'xss'
         @.$on 'apply_query', (event, query_Id)->
           query_Id.assert_Is 'search-xss'
         @.submit()
+        $timeout.flush()
         $httpBackend.flush()
 
-
-  it 'Check query_data broadcast', ()->
-    # when query_tree returns no data
-    scope.$broadcast 'view_model_data', {}
-    scope.technologies.assert_Is [default_Technology]
-
-    # when query_tree returns filters but not technology
-    scope.$broadcast 'view_model_data',  { filters: [] }
-    expect(scope.technologies).to.deep.equal [default_Technology]
-
-    # when query_tree returns Technology filters but no results
-    scope.$broadcast 'view_model_data',  { filters: { 'Technology' : [] }  }
-    expect(scope.technologies).to.deep.equal [{ title: 'All', id: 'query-6234f2d47eb7' }]
-
-    # when query_tree returns Technology filters with results
-    scope.selected_Technology = null
-    results = [{title:'tech 1', id: 'id_1'}, { title: 'tech 2', id: 'id_2' }]
-    scope.$broadcast 'view_model_data', { filters: { 'Technology' : results }  }
-    expect(scope.technologies).to.deep.equal [default_Technology].concat(results)
-
+        using $rootScope.$broadcast.calls.all(), ->
+          @.size().assert_Is 11
+          @[0].args.assert_Is  [ '$stateChangeStart',  { url: '/index', templateUrl: '/angular/jade-html/views/user/index', name: 'index' }  , {}, { url: '/:article_Id', templateUrl: '/angular/jade-html/views/user/article',name: 'guid' }, { article_Id: '' } ]
+          @[1].args[0].assert_Is '$viewContentLoading' # too many objects to map
+          @[2].args.assert_Is  [ 'http_start']
+          @[3].args.assert_Is  [ 'http_end']
+          @[4].args.assert_Is  [ '$stateChangeSuccess', { url: '/index',templateUrl: '/angular/jade-html/views/user/index',name: 'index' },{},{ url: '/:article_Id',templateUrl: '/angular/jade-html/views/user/article',name: 'guid' },{ article_Id: '' } ]
+          @[5].args.assert_Is  [ '$locationChangeStart'  , 'http://server/index', 'http://server/', undefined, undefined ]
+          @[6].args.assert_Is  [ '$locationChangeSuccess', 'http://server/index', 'http://server/', null     , undefined ]
+          @[7].args.assert_Is  [ 'http_start']
+          @[8].args.assert_Is  [ 'http_end']
+          @[9].args.assert_Is  [ 'clear_filter'          , 'search-xss' , 'Technology'                                   ]
+          @[10].args.assert_Is [ 'apply_query'           , 'search-xss'                                                  ]
 
   it 'get_Words', ->
-    inject ($httpBackend)->
+    inject ($rootScope, $httpBackend)->
       using scope, ->
-        $httpBackend.expectGET('/json/user/currentuser').respond {}
-        #$httpBackend.expectGET('/angular/api/auto-complete?term=a').respond { a : 'aaa', b: 'bbb'}
-        @.words.assert_Is []
-        @.get_Words 'a'
-        $httpBackend.flush()
-        @.words.assert_Is []
+        spyOn($rootScope, '$broadcast').and.callThrough()
 
+        @.get_Words 'a'
         @.get_Words ''
 
-        @.words.assert_Is []
+        using $rootScope.$broadcast.calls.all(), ->
+          @.size().assert_Is 2
+          @[0].args.assert_Is [ 'search_term', 'a', { title: 'All Technologies', id: 'query-6234f2d47eb7' } ]
+          @[1].args.assert_Is [ 'search_term', '', { title: 'All Technologies', id: 'query-6234f2d47eb7' } ]
+
+
 
