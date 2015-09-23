@@ -2,11 +2,9 @@ expect = chai.expect;
 
 describe '| controllers | user | Search-Bar-Controller.test',->
   scope    = null
-  window   = location : href : '....'
 
   default_Technology = { title: 'All Technologies', id: 'query-6234f2d47eb7' }
 
-  #url_Query_Tree     = 'query_view_model_query-6234f2d47eb7_0_10'
 
   beforeEach ->
     module('TM_App')

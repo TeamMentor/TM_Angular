@@ -1,7 +1,6 @@
 angular.module('TM_App')
        .controller 'Pagination_Controller', ($scope, $rootScope)->
 
-
           model =
               page       : 1
               page_Split : 10
@@ -10,9 +9,10 @@ angular.module('TM_App')
               page_Splits: [4, 10,20,50,100]
 
 
-          $scope.query_Id  =  null
-          $scope.model     = model
-          $scope.visible   = false
+          $scope.query_Id      =  null
+          $scope.model         = model
+          $scope.visible       = false
+          $scope.pagginMessage = ''
 
           $scope.set_Paging_Message = ()->
 
@@ -22,13 +22,13 @@ angular.module('TM_App')
 
             if (currentPage==1 && recordsPerPage > totalRecords )
               if totalRecords ==1
-                $rootScope.pagginMessage = "Showing " + totalRecords + " article"
+                $scope.pagginMessage = "Showing " + totalRecords + " article"
               else
-                $rootScope.pagginMessage = "Showing " + totalRecords + " articles"
+                $scope.pagginMessage = "Showing " + totalRecords + " articles"
               return;
 
             if currentPage == 1
-              $rootScope.pagginMessage = "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords
+              $scope.pagginMessage = "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords
             else
               startNo             = (((currentPage - 1) * (recordsPerPage))  + 1 );
 
@@ -37,14 +37,14 @@ angular.module('TM_App')
                 remainingArticles = (((currentPage - 1)  * recordsPerPage) + 1 ) - endNo
 
                 if (remainingArticles==0)
-                  $rootScope.pagginMessage ="Showing article " + totalRecords + " out of  " + totalRecords
+                  $scope.pagginMessage ="Showing article " + totalRecords + " out of  " + totalRecords
                 else
-                  $rootScope.pagginMessage = "Showing article " + (((currentPage - 1)  * recordsPerPage) + 1 ) + " to "+ totalRecords  + " out of " + totalRecords;
+                  $scope.pagginMessage = "Showing article " + (((currentPage - 1)  * recordsPerPage) + 1 ) + " to "+ totalRecords  + " out of " + totalRecords;
                 return
               else
                 endNo =(currentPage * recordsPerPage)  ;
 
-              $rootScope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords
+              $scope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords
 
           $scope.$on 'view_model_data', (event, data)->
             $scope.visible = true

@@ -8,8 +8,6 @@ describe '| services | Query-Service', ->
     inject ($rootScope)->
       spyOn $rootScope, '$broadcast'
 
-    #  query_Service = $injector.get('query_Service')
-
   afterEach ->
     inject ($httpBackend)->
       $httpBackend.verifyNoOutstandingExpectation()
@@ -42,9 +40,12 @@ describe '| services | Query-Service', ->
         @.load_Query()
         $httpBackend.flush()
 
-      using $rootScope.$broadcast.calls, ->
-        @.count().assert_Is 3
-        @.mostRecent().args.assert_Is  [ 'view_model_data',  { } ]
+      using $rootScope.$broadcast.calls.all(), ->
+        @.size().assert_Is 4
+        @[0].args.assert_Is [ 'loading_query', undefined , undefined, 0, 10 ]
+        @[1].args.assert_Is [ 'http_start' ]
+        @[2].args.assert_Is [ 'http_end'   ]
+        @[3].args.assert_Is [ 'view_model_data',  {} ]
 
   it 'load_Query (with query_Id, no filters)', ->
     inject (query_Service, $rootScope, $httpBackend)->
@@ -54,9 +55,12 @@ describe '| services | Query-Service', ->
         @.load_Query('an-query-id')
         $httpBackend.flush()
 
-      using $rootScope.$broadcast.calls, ->
-        @.count().assert_Is 3
-        @.mostRecent().args.assert_Is  [ 'view_model_data',  { id: 42 } ]
+      using $rootScope.$broadcast.calls.all(), ->
+        @.size().assert_Is 4
+        @[0].args.assert_Is [ 'loading_query', 'an-query-id', undefined, 0, 10 ]
+        @[1].args.assert_Is [ 'http_start' ]
+        @[2].args.assert_Is [ 'http_end'   ]
+        @[3].args.assert_Is [ 'view_model_data',  { id: 42 } ]
 
   it '@.load_Query  (with query_Id and filters)', ->
     inject (query_Service, $rootScope, $httpBackend)->
@@ -67,9 +71,12 @@ describe '| services | Query-Service', ->
         @.load_Query('an-query-id', 'an-filter-id')
         $httpBackend.flush()
 
-      using $rootScope.$broadcast.calls, ->
-        @.count().assert_Is 3
-        @.mostRecent().args.assert_Is  [ 'view_model_data',  { id: 42 } ]
+      using $rootScope.$broadcast.calls.all(), ->
+        @.size().assert_Is 4
+        @[0].args.assert_Is [ 'loading_query', 'an-query-id', 'an-filter-id', 0, 10 ]
+        @[1].args.assert_Is [ 'http_start' ]
+        @[2].args.assert_Is [ 'http_end'   ]
+        @[3].args.assert_Is [ 'view_model_data',  { id: 42 } ]
 #
   it 'reload_Data', ->
 
@@ -86,7 +93,7 @@ describe '| services | Query-Service', ->
         @.size().assert_Is 6
         @[0].args.assert_Is [ 'clear_filters']
         @[1].args.assert_Is [ 'clear_query']
-        @[2].args.assert_Is [ 'clear_search']
+        @[2].args.assert_Is [ 'loading_query', 'query-6234f2d47eb7', undefined, 0, 10 ]
         @[3].args.assert_Is [ 'http_start']
         @[4].args.assert_Is [ 'http_end']
         @[5].args.assert_Is [ 'view_model_data',  { id: 42 } ]

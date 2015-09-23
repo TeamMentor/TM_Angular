@@ -39,12 +39,8 @@ angular.module 'TM_App'
               $rootScope.$broadcast 'set_search', search_Text
             else if query_Id
               $timeout ->
-
-                #$rootScope.$broadcast 'apply_query', query_Id
                 query_Service.load_Query query_Id, filters, null, null, ->
                   $rootScope.$broadcast 'apply_filters', filters
-                #$rootScope.$broadcast 'apply_filter', filters
-
             else
               $timeout ->
                 query_Service.reload_Data()
@@ -81,5 +77,4 @@ angular.module 'TM_App'
           return if $stateParams.filters  and     $stateParams.query_Id and $location.url() isnt "/index/#{$stateParams.query_Id}/#{$stateParams.filters}"
           return if $stateParams.query_Id and not $stateParams.filters  and $location.url() isnt "/index/#{$stateParams.query_Id}"
 
-          #
           $scope.load_Index_Data()

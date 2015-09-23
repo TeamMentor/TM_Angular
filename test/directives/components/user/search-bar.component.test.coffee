@@ -1,5 +1,6 @@
 expect = chai.expect
 
+describe '| directive | search-bar', ->
 
   element      = null
   element_Raw  = null
@@ -44,16 +45,11 @@ expect = chai.expect
   it '| controller | $on query_data', ->
 
     using scope, ->
-      #@.$broadcast 'view_model_data', filter_Data
-      #@.$digest()
-
-    console.log 'aaa12'
 
     using element_Raw.find('option'), ->
-      #@.length      .assert_Is 12
+      @.length      .assert_Is 12
       texts = (option.innerText for option in @)
       texts.first().assert_Is 'All Technologies'
-      console.log texts
       texts.assert_Is [ 'All Technologies', 'Web Application', 'Technology Independent',
                         'C++', 'iOS', 'Java', 'Android', '.NET', 'Scala Play',
                         'PHP', 'WCF', 'HTML5' ]

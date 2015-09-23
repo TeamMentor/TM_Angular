@@ -21,8 +21,3 @@ describe '| directive | components | user | pagination', ->
     inject ($$)->
       using $$(element).$query,->
         @('#current_Page').$attr().assert_Is { id: 'current_Page', class: 'number' }
-
-
-
-
-

@@ -26,9 +26,8 @@ describe '| services | TM-API', ->
                            'docs_Library' , 'docs_Page'
                            'article',
                            'login', 'signup', 'pwd_reset' ]
-
-      @.cache_Query_Tree.assert_Is {}
-      @.cache_Articles  .assert_Is {}
+      @.cache_Query_View_Model.assert_Is {}
+      @.cache_Articles        .assert_Is {}
 
   it 'get_Words', ->
     inject ($httpBackend)->
@@ -84,7 +83,7 @@ describe '| services | TM-API', ->
   it 'docs_Library', ->
     inject ($httpBackend)->
 
-      $httpBackend.expectGET('/json/docs/library').respond { library: 42 }
+      $httpBackend.expectGET('/jade/json/docs/library').respond { library: 42 }
 
       using tm_API, ->
         @.docs_Library (library)->
@@ -95,7 +94,7 @@ describe '| services | TM-API', ->
   it 'docs_Page', ->
     inject ($httpBackend)->
 
-      $httpBackend.expectGET('/json/docs/an-doc-id').respond { doc: 42 }
+      $httpBackend.expectGET('/jade/json/docs/an-doc-id').respond { doc: 42 }
 
       using tm_API, ->
         @.docs_Page 'an-doc-id', (data)->
@@ -106,7 +105,7 @@ describe '| services | TM-API', ->
   it 'article', ->
     inject ($httpBackend, $timeout)->
 
-      $httpBackend.expectGET('/json/article/an-article-id').respond { article: 42 }
+      $httpBackend.expectGET('/jade/json/article/an-article-id').respond { article: 42 }
 
       using tm_API, ->
         @.article 'an-article-id', (data)-> data.assert_Is { article: 42 }
@@ -151,10 +150,10 @@ describe '| services | TM-API', ->
   it 'pwd_reset', ->
     inject ($httpBackend)->
 
-      $httpBackend.expectPOST('/json/user/pwd_reset')
-      .respond (method,url,postData)->
-        JSON.parse(postData).assert_Is 	{ email: 'an email'}
-        return [200, { result: 42 } ]
+      $httpBackend.expectPOST('/jade/json/user/pwd_reset')
+                  .respond (method,url,postData)->
+                    JSON.parse(postData).assert_Is 	{ email: 'an email'}
+                    return [200, { result: 42 } ]
 
       using tm_API, ->
         @.pwd_reset 'an email', (data)->

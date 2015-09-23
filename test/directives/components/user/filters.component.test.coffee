@@ -20,6 +20,11 @@ describe '| directives | component | filters', ->
       $rootScope.$digest()
       scope  =  element_Raw.find('div').eq(0).scope()
 
+  afterEach ->
+    inject ($httpBackend)->
+      $httpBackend.verifyNoOutstandingExpectation()
+      $httpBackend.verifyNoOutstandingRequest()
+
   it 'Check html elements',->
     inject ($$)->
       using $$(element).$query,->

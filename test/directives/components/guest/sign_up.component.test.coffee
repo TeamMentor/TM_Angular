@@ -18,12 +18,15 @@ describe '| directives | guest | login-form', ->
 
   it 'Check html elements',->
     inject ($$)->
-      using $$(element).$query,->
-        @('.section .label' ).$html().assert_Is 'Sign Up'
-        @('#error'          ).$attr().assert_Is id: 'error', 'ng-show': 'showErrorMessage()', class: 'section row ng-hide'
-        @('#info'           ).$attr().assert_Is id: 'info' , 'ng-show': 'showInfoMessage()' , class: 'section row ng-hide'
 
-        @('#sign-up-form'   ).$attr().assert_Is id: 'sign-up-form', role: 'form', 'ng-submit': 'signup()', class: 'ng-pristine ng-invalid ng-invalid-required ng-valid-email ng-valid-maxlength'
+      using $$(element).$query,->
+        @('.section'        ).$attr().assert_Is class : 'section row__label'
+        @('div'             ).$attr().assert_Is { 'ng-controller': 'Signup_Controller', class: 'ng-scope' }
+        @('div .section h4' ).$html().assert_Is 'Sign Up'
+        @('#error .section' ).$attr().assert_Is 'ng-show': 'showErrorMessage()', class: 'section row ng-hide'
+        @('#info .section'  ).$attr().assert_Is 'ng-show': 'showInfoMessage()' , class: 'section row ng-hide'
+
+        @('#sign-up-form'   ).$attr().assert_Is id: 'sign-up-form', role: 'form', 'ng-submit': 'signup()', class: 'access-form ng-pristine ng-invalid ng-invalid-required ng-valid-email ng-valid-maxlength'
 
         check_Field = (values)=>                      # this helps to see what field is missing
           values['ng-model'] = values.id

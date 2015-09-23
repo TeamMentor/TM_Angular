@@ -20,15 +20,12 @@ describe '| directive | components | user | queries', ->
       using  scope, ->
         @.title = 'an title'
 
-    #inject ($document)->
-    #  body = angular.element $document[0].body
-    #  body.find('queries').remove()
-    #  body.append element
-
   it 'constructor',->
     inject ($$)->
       using $$(element).$query,->
-        @('div'   ).$attr().assert_Is 'ng-controller': 'Queries_Controller', class: 'ng-scope'
+        @('div').$attr().assert_Is class: 'display-mobile'
+        @('#queries'   ).$attr().assert_Is id: 'queries' , 'ng-controller': 'Queries_Controller', class: 'ng-scope ng-hide', 'ng-show': 'visible'
+        @('#query_title').$html().assert_Is ''
         scope.$digest()
         @('#query_title').$html().assert_Is 'an title'
 

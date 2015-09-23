@@ -47,7 +47,7 @@ angular.module('TM_App')
           $httpProvider.interceptors.push('httpInterceptor');
 
        .run ($http, $rootScope) ->
-          spinnerFunction_Start = (data) ->
+          spinnerFunction_Start = (data) ->     # data tends to be undefined so not adding it below
             $rootScope.$broadcast 'http_start'
             data
           spinnerFunction_End = (data) ->

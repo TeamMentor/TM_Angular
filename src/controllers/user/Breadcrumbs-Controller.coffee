@@ -4,8 +4,9 @@ angular.module 'TM_App'
 
             #console.log 'in Breadcrumbs_Controller ' + new Date().getMilliseconds()
 
-            @.visible      = false
+            @.visible             =  false
             @.breadcrumbs_Service = breadcrumbs_Service
+            @.breadcrumbs         = null
 
             @.$on 'clear_query', (event, data)=>
               @.breadcrumbs_Service.clear_query()

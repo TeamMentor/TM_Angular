@@ -24,12 +24,31 @@ app.run ($templateCache)->
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><div ng-controller=\"Pwd_Forgot_Controller\"><div class=\"section row__label\"><h4>Forgot your password?</h4></div><div class=\"section row\"><form id=\"forgot-pwd-form\" ng-submit=\"get_Password()\" class=\"access-form\"><div class=\"section row\"><div class=\"col-8 input-field\"><label for=\"email\">Email Address</label><input type=\"email\" id=\"email\" ng-model=\"email\" placeholder=\"Email Address\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><button type=\"submit\" id=\"btn-get-password\" class=\"full-width\">Retrieve password</button></div></div></form></div><alert-ok></alert-ok></div>") 
  
-   $templateCache.put('/angular/jade-html/component/guest/pwd_reset_form' , "<!-- Getting Started--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+   $templateCache.put('/angular/jade-html/component/guest/pwd_reset_form' , "<!-- Getting Started--><!--mixin sign-up-form--><!--  form#sign-up-form.access-form(role=\"form\" ng-submit=\"signup()\")--><!--    .input-field--><!--      +username-input--><!--    .input-field--><!--      +email-input--><!--    .input-field--><!--      +password-input--><!--    .input-field--><!--      +confirm-password-input--><!--    .input-field--><!--      +first-name-input--><!--    .input-field--><!--      +last-name-input--><!--    .input-field--><!--      +company-input--><!--    .input-field--><!--      +title-input--><!--    .input-field--><!--      +country-input--><!--    .input-field--><!--      +state-input--><!--    .conditions--><!--      include:marked ../../TM_Static/content/getting-started/agree-to-toc.md--><!--    .button-field--><!--      +sign-up-button--><!--mixin reset-password-formform#password-reset-form.access-form(role='form' method='post' action='/flare/user/password-reset')
+  .section.row
+    .col-6.input-field
+      +password-input
+    .col-6.input-field
+      +confirm-password-input
+    .col-4.button-field
+      br
+      +reset-pwd-button--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
---><div class=\"section row__label\"><h4>Reset your password</h4></div><div class=\"section row\"><form id=\"password-reset-form\" role=\"form\" method=\"post\" action=\"/flare/user/password-reset\" class=\"access-form\"><div class=\"section row\"><div class=\"col-6 input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-6 input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><br/><button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button></div></div></form></div>") 
+--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+--><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
+--><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
+--><!-- Getting Started--><div ng-controller=\"Pwd_Reset_Controller\"><div class=\"section row__label\"><h4>Reset your password</h4></div><div id=\"error\"><div ng-show=\"showErrorMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-bad\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Error:  \{\{errorMessage}}</span><div ng-show=\"showSupportEmail()\"><a id=\"tm-support-email\" href=\"mailto:support@securityinnovation.com\">support@securityinnovation.com</a></div></div></div></div></div><div id=\"info\"><div ng-show=\"showInfoMessage()\" class=\"section row\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">Info:  \{\{infoMessage}}</span></div></div></div></div><div class=\"section row\"><form id=\"password-reset-form\" role=\"form\" ng-submit=\"reset_Password()\" class=\"access-form\"><div class=\"section row\"><div class=\"col-6 input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-6 input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><br/><button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button></div></div></form></div></div>") 
  
-   $templateCache.put('/angular/jade-html/component/guest/sign_up_form' , "<!-- Getting Started--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+   $templateCache.put('/angular/jade-html/component/guest/sign_up_form' , "<!-- Getting Started--><!--mixin sign-up-form--><!--  form#sign-up-form.access-form(role=\"form\" ng-submit=\"signup()\")--><!--    .input-field--><!--      +username-input--><!--    .input-field--><!--      +email-input--><!--    .input-field--><!--      +password-input--><!--    .input-field--><!--      +confirm-password-input--><!--    .input-field--><!--      +first-name-input--><!--    .input-field--><!--      +last-name-input--><!--    .input-field--><!--      +company-input--><!--    .input-field--><!--      +title-input--><!--    .input-field--><!--      +country-input--><!--    .input-field--><!--      +state-input--><!--    .conditions--><!--      include:marked ../../TM_Static/content/getting-started/agree-to-toc.md--><!--    .button-field--><!--      +sign-up-button--><!--mixin reset-password-formform#password-reset-form.access-form(role='form' method='post' action='/flare/user/password-reset')
+  .section.row
+    .col-6.input-field
+      +password-input
+    .col-6.input-field
+      +confirm-password-input
+    .col-4.button-field
+      br
+      +reset-pwd-button--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
@@ -113,14 +132,14 @@ span.text This article is part of the
           dd
             span.text \{\{container.title}}
             span.badge \{\{container.size}}
---><div ng-controller=\"Queries_Controller\" ng-show=\"visible\"><dl><dt><p id=\"query_title\">\{\{title}}</p><!--span.sub-nav__icona(href='#' ng-click=\"show_Previous_Query()\")
+--><div id=\"queries\" ng-controller=\"Queries_Controller\" ng-show=\"visible\"><dl><dt><p id=\"query_title\">\{\{title}}</p><!--span.sub-nav__icona(href='#' ng-click=\"show_Previous_Query()\")
   icon.Arrow-Up--></dt><div id=\"containers\" class=\"scroll\"><div ng-repeat=\"container in containers\"><a href=\"#\" id=\"\{\{container.id}}\" ng-click=\"load_Query(container.id)\" ng-show=\"container.size &gt;0\"><dd><span class=\"text\">\{\{container.title}}</span><span class=\"badge\">\{\{container.size}}</span></dd></a></div></div></dl></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/queries_history' , "<div ng-controller=\"Queries_History_Controller\"><nav><ul class=\"display-inline\"><li ng-repeat=\"(key, value) in history\"><a ng-href=\"#\" ng-click=\"load_Query(key)\">\{\{value}}</a></li></ul></nav></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/recommendations' , "<div ng-controller=\"Recommendations_Controller\"><ul id=\"recommendations\" ng-show=\"words.length &gt; 0\"><li ng-repeat=\"word in words\" value=\"word\" ng-click=\"select_Word(word)\">\{\{word}}</li></ul></div>") 
  
-   $templateCache.put('/angular/jade-html/component/user/results' , "<div ng-controller=\"Results_Controller\" ng-show=\"visible\"><section ng-hide=\"results_Size\" class=\"row__label\"><div id=\"noResultsTitle\" class=\"label\">Query has no results</div></section><section ng-show=\"results_Size\" class=\"row__label\"><div id=\"resultsTitle\" class=\"label\"><div ng-controller=\"Pagination_Controller\">\{\{pagginMessage}}</div></div><ul class=\"display-inline text-right\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result\"><div class=\"icon-Filter\"></div></a></li></ul></section></div>") 
+   $templateCache.put('/angular/jade-html/component/user/results' , "<div ng-controller=\"Results_Controller\" ng-show=\"visible\"><section ng-hide=\"results_Size\" class=\"row__label\"><div id=\"noResultsTitle\" class=\"label\">Query has no results</div></section><section ng-show=\"results_Size\" class=\"row__label\"><div id=\"resultsTitle\" class=\"label\"><div ng-controller=\"Pagination_Controller\"><span>\{\{pagginMessage}}</span></div></div><ul class=\"display-inline text-right\"><li><a id=\"view_Filters\" href=\"#\" title=\"View Filters\" ng-click=\"toggle_Filters()\" class=\"button btn-result\"><div class=\"icon-Filter\"></div></a></li></ul></section></div>") 
  
    $templateCache.put('/angular/jade-html/component/user/search_bar' , "<div ng-controller=\"Search_Bar_Controller\" class=\"search\"><form ng-submit=\"submit()\"><ul><li><a href=\"/\"><div class=\"logo\"></div></a></li></ul><div><button class=\"btn-search\"><icon class=\"Filter\"></icon></button><ul class=\"technology\"><li>Technology</li><li>Website</li><li>Java</li><li>Scala</li></ul><select ng-model=\"selected_Technology\" ng-change=\"select_Technology(selected_Technology)\" ng-options=\"technology as technology.title for technology in technologies\"></select><input id=\"search-text\" type=\"text\" ng-model=\"text\" placeholder=\"\{\{searchPlaceholder}}\" ng-change=\"get_Words(text)\" ng-focus=\"with_Focus(true)\" ng-blur=\"with_Focus(false)\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" class=\"search-input\"/><button id=\"search-button\" type=\"submit\" class=\"btn-search\"><icon class=\"Search\"></icon></button></div></form></div><div ng-controller=\"Recommendations_Controller\"><ul id=\"recommendations\" ng-show=\"words.length &gt; 0\"><li ng-repeat=\"word in words\" value=\"word\" ng-click=\"select_Word(word)\">\{\{word}}</li></ul></div>") 
  
@@ -141,7 +160,7 @@ span.text This article is part of the
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><div ng-controller=\"Help_Controller\" class=\"main help\"><div class=\"col-3 application-scroll\"><help-navigation></help-navigation></div><div class=\"col-9 application-scroll\"><div id=\"help\" class=\"section article\"><h1 id=\"help-title\">\{\{title}}</h1><help-content ng-bind-html=\"content\"></help-content><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><icon class=\"Mail\"></icon></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><icon class=\"Twitter\"></icon></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><icon class=\"Paperclip\"></icon></a></li></ul></div></div></div></div></div>") 
  
-   $templateCache.put('/angular/jade-html/views/guest/about' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+   $templateCache.put('/angular/jade-html/views/guest/about' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><div class=\"section about\"><h3 id=\"an-interactive-application-security-library-with-thousands-of-code-samples-and-professional-guidance-when-you-need-it\">An interactive Application Security library with thousands of code samples and professional guidance when you need it</h3>
@@ -149,7 +168,7 @@ span.text This article is part of the
 <p>It contains thousands of articles with dynamic content across multiple development platforms including .NET, Java, C/C++, PHP, Android and iOS. TEAM Mentor is the In-Practice companion to our <a href=\"https://www.securityinnovation.com/training/application-security/computer-based/\">TEAM Professor eLearning courses</a>, extending developers’ knowledge in combination with training.</p>
 <p>TEAM Mentor integrates with static analysis tools, such as Checkmarx and Fortify&trade;, helping teams make more sense of scan results and make critical decisions to fix software vulnerabilities.</p>
 </div><div class=\"section call-to-action\"><h2 id=\"security-risk-understood-\">Security Risk. Understood.</h2>
-<a ui-sref=\"sign_up\" class=\"button\">See for yourself</a></div><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></div>") 
+<a ui-sref=\"sign_up\" class=\"button\">See for yourself</a></div><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><icon class=\"Mail\"></icon></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><icon class=\"Twitter\"></icon></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><icon class=\"Paperclip\"></icon></a></li></ul></div></div>") 
  
    $templateCache.put('/angular/jade-html/views/guest/features' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
@@ -162,7 +181,7 @@ span.text This article is part of the
 </div></div></div><div class=\"section call-to-action\"><h2 id=\"security-risk-understood-\">Security Risk. Understood.</h2>
 <a ui-sref=\"sign_up\" class=\"button\">See for yourself</a></div><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><icon class=\"Mail\"></icon></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><icon class=\"Twitter\"></icon></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><icon class=\"Paperclip\"></icon></a></li></ul></div></div>") 
  
-   $templateCache.put('/angular/jade-html/views/guest/home' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+   $templateCache.put('/angular/jade-html/views/guest/home' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><div class=\"section usp\"><h2 id=\"instant-resources-that-bridge-the-gap-between-developer-questions-and-technical-solutions\">Instant resources that bridge the gap between developer questions and technical solutions</h2>
@@ -172,9 +191,9 @@ span.text This article is part of the
 </div></div><div class=\"section row\"><div class=\"col-3 text-center\"><div class=\"improve-process\"></div></div><div class=\"col-9\"><p>Expand the development team&#39;s knowledge and improve processes with access to thousands of specific remediation tactics, including the host organization&#39;s security policies and coding best practices.</p>
 </div></div></div><div class=\"section clients\"><h3 id=\"our-clients-love-us-and-we-think-you-will-too-\">Our clients love us (and we think you will too!)</h3>
 <img src=\"/assets/clients/flare-logos.jpg\"/></div><div class=\"section call-to-action\"><h2 id=\"security-risk-understood-\">Security Risk. Understood.</h2>
-<a ui-sref=\"sign_up\" class=\"button\">See for yourself</a></div><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></div>") 
+<a ui-sref=\"sign_up\" class=\"button\">See for yourself</a></div><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><icon class=\"Mail\"></icon></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><icon class=\"Twitter\"></icon></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><icon class=\"Paperclip\"></icon></a></li></ul></div></div>") 
  
-   $templateCache.put('/angular/jade-html/views/guest/login' , "<!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+   $templateCache.put('/angular/jade-html/views/guest/login' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><!--mixin forgot-pwd-form.section.row__label
@@ -187,13 +206,13 @@ span.text This article is part of the
       .col-4.button-field
         br
         +get-password-button
---><!-- Application Icons--><!-- Filter Icons--><!-- filter icons--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><div class=\"section row\"><div class=\"col-7\"><login-form></login-form></div><div class=\"col-5\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
 </td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>
 </td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
-</td></tr></table></div></div></div></div><br/><br/><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><span title=\"Mail\" class=\"icon-Mail\"></span></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><span title=\"Twitter\" class=\"icon-Twitter\"></span></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><span title=\"Terms &amp; Conditions\" class=\"icon-Paperclip\"></span></a></li></ul></div></div>") 
+</td></tr></table></div></div></div></div><br/><br/><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><icon class=\"Mail\"></icon></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><icon class=\"Twitter\"></icon></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><icon class=\"Paperclip\"></icon></a></li></ul></div></div>") 
  
    $templateCache.put('/angular/jade-html/views/guest/pwd_forgot' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
@@ -216,6 +235,36 @@ span.text This article is part of the
 </td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
 </td></tr></table></div></div></div></div><br/><br/><div class=\"footer\"><a href=\"http://www.securityinnovation.com/\" target=\"_blank\"><div class=\"si-logo\"></div></a><div class=\"icons\"><ul><li><div class=\"label no-underline\">TEAM Mentor 4.0</div></li><li><a href=\"mailto:support@securityinnovation.com\" title=\"Email\"><icon class=\"Mail\"></icon></a></li><li><a href=\"http://www.twitter.com/SecInnovation\" target=\"_blank\" title=\"Twitter\"><icon class=\"Twitter\"></icon></a></li><li><a id=\"terms-and-conditions\" ui-sref=\"terms_and_conditions\"><icon class=\"Paperclip\"></icon></a></li></ul></div></div>") 
  
+   $templateCache.put('/angular/jade-html/views/guest/pwd_reset' , "<!--extends ../_to_be_wired_in/_layouts/page_logged_out--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
+--><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
+--><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
+--><!-- Getting Started--><!--mixin forgot-pwd-form.section.row__label
+  .label Forgot your password?
+.section.row
+  form#forgot-pwd-form(action='#')
+    .section.row
+      .col-8.input-field
+        +email-input
+      .col-4.button-field
+        br
+        +get-password-button
+--><!--mixin pwd-reset-form.section.row__label
+  .label Reset your password
+.section.row
+  form#password-reset-form(role='form' method='post' action='/flare/user/password-reset')
+    .section.row
+      .col-6.input-field
+        +password-input
+      .col-6.input-field
+        +confirm-password-input
+      .col-4.button-field
+        br
+        +reset-pwd-button
+--><div class=\"section row\"><div class=\"col-4\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
+</td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>
+</td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
+</td></tr></table></div></div></div><div class=\"col-8\"><div class=\"getting-started\"><pwd-reset-form></pwd-reset-form></div></div></div>") 
+ 
    $templateCache.put('/angular/jade-html/views/guest/sign_up' , "<!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
@@ -236,28 +285,10 @@ span.text This article is part of the
  
    $templateCache.put('/angular/jade-html/views/new_user_onboard' , "Moved Temporarily. Redirecting to /error") 
  
-   $templateCache.put('/angular/jade-html/views/pwd_reset' , "<!--extends ../_to_be_wired_in/_layouts/page_logged_out--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
---><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
---><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
---><!-- Getting Started--><!--mixin forgot-pwd-form.section.row__label
-  .label Forgot your password?
-.section.row
-  form#forgot-pwd-form(action='#')
-    .section.row
-      .col-8.input-field
-        +email-input
-      .col-4.button-field
-        br
-        +get-password-button
---><div class=\"section row\"><div class=\"col-4\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
-</td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>
-</td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
-</td></tr></table></div></div></div><div class=\"col-8\"><div class=\"getting-started\"><div class=\"section row__label\"><div class=\"label\">Reset your password</div></div><div class=\"section row\"><form id=\"password-reset-form\" role=\"form\" method=\"post\" action=\"/flare/user/password-reset\"><div class=\"section row\"><div class=\"col-6 input-field\"><label for=\"password\">Password</label><input type=\"password\" id=\"password\" placeholder=\"Password\" ng-model=\"password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-6 input-field\"><label for=\"confirmpassword\">Confirm Password</label><input type=\"password\" id=\"confirmpassword\" ng-model=\"confirmpassword\" placeholder=\"Password\" required=\"required\" maxlength=\"256\"/></div><div class=\"col-4 button-field\"><br/><button type=\"submit\" id=\"btn-reset-pwd\">Reset password</button></div></div></form></div></div></div></div>") 
- 
    $templateCache.put('/angular/jade-html/views/pwd_sent' , "<!--extends ../_to_be_wired_in/_layouts/page_logged_out--><!--mixin save-results-buttonbutton.btn-result.icon-Save(title='Save results to Collection')
 --><!--mixin delete-results-buttonbutton.btn-result.icon-Delete(title='Delete results from Collection')
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
---><!-- Getting Started--><!--mixin forgot-pwd-form.section.row__label
+--><!-- Getting Started--><!--mixin sign-up-form--><!--  .section.row__label--><!--    .label Sign Up--><!--  .section.row--><!--    form#sign-up-form(action='/flare/user/sign-up')--><!--      .input-field--><!--        +username-input--><!--      .input-field--><!--        +email-input--><!--      .input-field--><!--        +password-input--><!--      .input-field--><!--        +confirm-password-input--><!--      .button-field--><!--        +sign-up-button--><!--      .conditions--><!--          include:marked ../../TM_Static/content/getting-started/agree-to-toc.md--><!--mixin forgot-pwd-form.section.row__label
   .label Forgot your password?
 .section.row
   form#forgot-pwd-form(action='#')
@@ -267,7 +298,19 @@ span.text This article is part of the
       .col-4.button-field
         br
         +get-password-button
---><div class=\"section row\"><div class=\"col-4\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
+--><!--mixin pwd-reset-form.section.row__label
+  .label Reset your password
+.section.row
+  form#password-reset-form(role='form' method='post' action='/flare/user/password-reset')
+    .section.row
+      .col-6.input-field
+        +password-input
+      .col-6.input-field
+        +confirm-password-input
+      .col-4.button-field
+        br
+        +reset-pwd-button
+--><!--mixin sign-up-form-validation--><!--  .section.row__label--><!--    .label Sign Up--><!--  .section.row--><!--    form#sign-up-form(action='/flare/user/sign-up')--><!--      .input-field--><!--        +username-input--><!--        p.validation Your username should only contain letters and numbers.--><!--      .input-field--><!--        +email-input--><!--        p.validation We'll email you a confirmation.--><!--      .input-field--><!--        +password-input--><!--        p.validation Your password should be at least 8 characters long. It should have at least one of each of the following: uppercase and lowercase letters, number and special character.--><!--      .input-field--><!--        +confirm-password-input--><!--        p.validation Type your password again.--><!--      .button-field--><!--        +sign-up-button--><!--      .conditions--><!--          include:marked ../../TM_Static/content/getting-started/agree-to-toc.md--><div class=\"section row\"><div class=\"col-4\"><div class=\"section tm-summary\"><div class=\"section row__label\"><div class=\"label\">With TEAM Mentor, you can...</div></div><div class=\"section row\"><table><tr><td><div class=\"fix-vulnerabilities\"></div></td><td><p>Fix vulnerabilities quicker than ever before.</p>
 </td></tr><tr><td><div class=\"reduce-vulnerabilities\"></div></td><td><p>Reduce the number of vulnerabilities over time.</p>
 </td></tr><tr><td><div class=\"improve-process\"></div></td><td><p>Expand the development team&#39;s knowledge and improve process.</p>
 </td></tr></table></div></div></div><div class=\"col-8\"><section class=\"getting-started\"><div role=\"alert\" class=\"alert alert-ok\"><div id=\"message\"><span class=\"alert-icon\">!</span><span class=\"alert-text\">If you entered a valid address, then a password reset link has been sent to your email address.</span></div></div><login-form></login-form></section></div></div>") 
@@ -472,7 +515,7 @@ Attn: Ombudsman
 --><!--mixin share-results-buttonbutton.btn-result.icon-Share(title='Share results')
 --><!-- Getting Started--><div ng-controller=\"Gateways_Controller\" class=\"main help\"><div class=\"col-3 application-scroll\"><dl class=\"help scroll\"><span ng-repeat=\"view in Library.Views\"><dt class=\"vertical-align\"><p>\{\{view.title}}</p></dt><dd ng-repeat=\"article in view.Articles\"><a href=\"#\{\{article.id}}\" ng-click=\"show_Article(article.id)\">\{\{article.title}}</a></dd></span></dl></div><div class=\"col-9 application-scroll\"><div class=\"article curated-content\"><h1 class=\"article-title\">\{\{title}}</h1><br/><div id=\"html\" dynamic=\"content\" class=\"article-content\"></div><br/><br/><br/><div class=\"footer\"><p>TEAM Mentor 4.0, a Security Innovation eKnowledge Product.</p>
 <p>© Security Innovation 2007-2015, all rights reserved.</p>
-<ul class=\"text-center\"><li><p><a href=\"mailto:support@securityinnovation.com\"><span class=\"icon-Mail\"></span><span class=\"text\">support@securityinnovation.com</span></a></p></li><li class=\"text-center\"><p><a ui-sref=\"terms_and_conditions\"><span class=\"icon-Paperclip\"></span><span class=\"text\">Terms & Conditions</span></a></p></li></ul></div></div><div class=\"section article-info curated-content\"><ul class=\"display-inline\"><li><a class=\"button btn-result\"><span class=\"icon\"><icon class=\"Share\"></icon></span><span class=\"text\">Share</span></a></li></ul><div class=\"section row__label\"><div class=\"label\">Metadata:</div></div><div class=\"section row\"><ul><li><span class=\"icon\"><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></span><span class=\"text\">\{\{article.technology}}</span></li><li><span class=\"icon\"><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></span><span class=\"text\">\{\{article.type}}</span></li><li><span class=\"icon\"><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></span><span class=\"text\">\{\{article.phase}}</span></li><li><span class=\"icon\"><icon class=\"Curated-Content\"></icon></span><span class=\"text\">This article is part of the <a href=\"guides\">Security Guide</a></span></li></ul></div><div class=\"section row fixed-bottom\"><div class=\"alert alert-neutral\"><div ng-show=\"showFeedbackBanner()\"><span class=\"text\">Have a comment about this article?<a id=\"tm-support-email\" href=\"\{\{githubContentUrl}}/new?title=\{\{article.title}} &amp;body=\{\{articleUrl}}\" target=\"_blank\">     Open an issue here.</a></span></div><div ng-show=\"showGeneralFeedback()\"><span class=\"text\">Have a comment about this article? Send our team<a href=\"mailto:support@securityinnovation.com\"> an email.</a></span></div></div></div></div></div></div>") 
+<ul class=\"text-center\"><li><p><a href=\"mailto:support@securityinnovation.com\"><span class=\"icon-Mail\"></span><span class=\"text\">support@securityinnovation.com</span></a></p></li><li class=\"text-center\"><p><a ui-sref=\"terms_and_conditions\"><span class=\"icon-Paperclip\"></span><span class=\"text\">Terms & Conditions</span></a></p></li></ul></div></div><div class=\"section article-info curated-content\"><ul class=\"display-inline\"><li><a class=\"button btn-result\"><span class=\"icon\"><icon class=\"Share\"></icon></span><span class=\"text\">Share</span></a></li></ul><div class=\"section row__label\"><div class=\"label\">Metadata:</div></div><div class=\"section row\"><ul><li><span class=\"icon\"><div id=\"icon-technology\" ng-bind-html=\"icon_Technology\"></div></span><span class=\"text\">\{\{article.technology}}</span></li><li><span class=\"icon\"><div id=\"icon-Type\" ng-bind-html=\"icon_Type\"></div></span><span class=\"text\">\{\{article.type}}</span></li><li><span class=\"icon\"><div id=\"icon-Phase\" ng-bind-html=\"icon_Phase\"></div></span><span class=\"text\">\{\{article.phase}}</span></li><li><span class=\"icon\"><icon class=\"Curated-Content\"></icon></span><span class=\"text\">Security Guides</span></li></ul></div><div class=\"section row fixed-bottom\"><div class=\"alert alert-neutral\"><div ng-show=\"showFeedbackBanner()\"><span class=\"text\">Have a comment about this article?<a id=\"tm-support-email\" href=\"\{\{githubContentUrl}}/new?title=\{\{article.title}} &amp;body=\{\{articleUrl}}\" target=\"_blank\">     Open an issue here.</a></span></div><div ng-show=\"showGeneralFeedback()\"><span class=\"text\">Have a comment about this article? Send our team<a href=\"mailto:support@securityinnovation.com\"> an email.</a></span></div></div></div></div></div></div>") 
  
    $templateCache.put('/angular/jade-html/views/user/index' , "<div ng-controller=\"Index_Controller\" class=\"main\"><div class=\"\{\{column_Left}} application-scroll left-col\"><queries></queries></div><div class=\"\{\{column_Middle}} middle-col\"><div class=\"display-desktop\"><breadcrumbs></breadcrumbs></div><results></results><filters_active></filters_active><div class=\"scrolling-results\"><articles></articles><pagination></pagination></div></div><div class=\"\{\{column_Right}} application-scroll right-col\"><div class=\"display-desktop\"><found_issue></found_issue></div><filters class=\"filters\"></filters></div></div>") 
  

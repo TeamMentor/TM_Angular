@@ -18,7 +18,6 @@ describe '| directive | components | user | index', ->
       $rootScope.$digest()
       scope = element_Raw.find('div').eq(0).scope()             # getting the scope for the Controller
 
-
     #inject ($document)->
     #  body = angular.element $document[0].body
     #  body.find('results').remove()
@@ -27,7 +26,7 @@ describe '| directive | components | user | index', ->
   it 'Check html elements',->
     inject ($$)->
       using $$(element).$query,->
-        @('div'            ).$attr().assert_Is 'ng-controller': 'Results_Controller', class: 'ng-scope'
+        @('div'            ).$attr().assert_Is 'ng-controller': 'Results_Controller', class: 'ng-scope ng-hide', 'ng-show': 'visible'
         @('#noResultsTitle').$attr().assert_Is id: 'noResultsTitle', class: 'label'
         @('#noResultsTitle').$html().assert_Is 'Query has no results'
         @('#view_Filters'  ).$attr().assert_Is
@@ -35,16 +34,17 @@ describe '| directive | components | user | index', ->
                               href      : '#'
                               title     : 'View Filters'
                               'ng-click': 'toggle_Filters()'
-                              class     : 'button btn-result icon-Filter'
+                              class     : 'button btn-result'
 
-  it 'Check results_Size binding (via scope.results_Size) ',->
+  it 'Check default resultsTitle value',->
     inject ($$)->
       using $$(element).$query,->
-        scope.results_Size = 42
-        scope.$digest()
-        @('#resultsTitle').$html().assert_Is 'Query has 42 articles , Page #1 (10 articles per page)'
+        @('#resultsTitle').$attr().assert_Is { id: 'resultsTitle', class: 'label' }
+        @('#resultsTitle div').$attr().assert_Is 'ng-controller' : 'Pagination_Controller' , class: 'ng-scope'
+        @('#resultsTitle span').$html().assert_Is ''
+        #@('#resultsTitle').$html().assert_Is 'Query has 42 articles , Page #1 (10 articles per page)'
 
-  it 'Check results_Size binding (via filter_data)',->
+  it 'Check resultsTitle value (via view_model_data)',->
     inject (graph_db_data)->
       article_Data = graph_db_data['query_view_model_query-6234f2d47eb7_0_10']
       expect(article_Data.size).to.be.above 2000
@@ -53,7 +53,7 @@ describe '| directive | components | user | index', ->
       scope.results_Size.assert_Is article_Data.size
       inject ($$)->
         using $$(element).$query,->
-          @('#resultsTitle').$html().assert_Is "Query has #{article_Data.size} articles , Page #1 (10 articles per page)"
+          @('#resultsTitle span').$html().assert_Is "Showing articles 1 to 10 out of #{article_Data.size}"
 
 
   it 'Check View Filters click triggers event', ->

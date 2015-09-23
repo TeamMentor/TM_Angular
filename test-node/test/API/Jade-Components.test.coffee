@@ -32,7 +32,7 @@ describe '| API | Jade-Components |', ->
                          'user/results', 'user/recommendations', 'user/search_bar', 'user/start_view']
 
   expected_Views      = ['article_editor', 'article_view_editor_option','docs'
-                         'new_user_onboard' ,'pwd_reset' ,'pwd_sent' ,
+                         'new_user_onboard' ,'pwd_sent' ,
                          'terms_and_conditions', 'user',
                          # guest
                          'guest/about','guest/features','guest/home','guest/login', 'guest/pwd_forgot', 'guest/sign_up',

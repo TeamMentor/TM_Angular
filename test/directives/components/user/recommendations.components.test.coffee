@@ -19,8 +19,7 @@ describe '| directive | search-bar', ->
 
       scope = element_Raw.find('div').eq(0).scope()     # getting the scope for the Controller
 
-  it 'Check html elements',->
-    inject ($$)->
-      using $$(element).$query,->
-        #@('form'          ).$attr().assert_Is { 'ng-submit' : 'submit()', class: 'ng-pristine ng-valid' }
-        console.log 'asd'
+#  it 'Check html elements',->
+#    inject ($$)->
+#      using $$(element).$query,->
+#        @('form'          ).$attr().assert_Is { 'ng-submit' : 'submit()', class: 'ng-pristine ng-valid' }
