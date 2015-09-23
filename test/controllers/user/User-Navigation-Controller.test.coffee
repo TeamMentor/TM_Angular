@@ -54,7 +54,6 @@ describe '| controllers | user | User-Navigation-Controller.test',->
 
   it 'open_Query_State (check events called)', ->
     inject ($rootScope, $state, $httpBackend, $timeout)->
-      #$httpBackend.expectGET('/json/user/currentuser').respond {}
 
       spyOn($rootScope, '$broadcast').and.callThrough()
 
@@ -64,8 +63,6 @@ describe '| controllers | user | User-Navigation-Controller.test',->
         using $rootScope.$broadcast.calls.all(), ->
           @.size().assert_Is 0
 
-
-        #@.$digest()
         @.open_Query_State()                    # the first time @.open_Query_State is called it should redirect to 'index'
         $state.current.name.assert_Is ''
         $timeout.flush()
