@@ -1,5 +1,5 @@
 angular.module('TM_App')
-.controller 'Pwd_Reset_Controller', ($scope, TM_API, $location, $timeout,$stateParams)=>
+.controller 'Pwd_Reset_Controller', ($state, $scope, TM_API, $location, $timeout,$stateParams)=>
   $scope.reset_Password= ->
 
     $scope.errorMessage = ''
@@ -21,6 +21,8 @@ angular.module('TM_App')
         if (data?.status=="Ok")
           $scope.errorMessage = ''
           $scope.infoMessage  = data?.message
+          $timeout (()-> $state.go('login')), 2000
+
         else
           $scope.errorMessage = data?.message
           $scope.infoMessage  = ''
