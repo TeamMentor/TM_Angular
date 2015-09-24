@@ -2213,7 +2213,8 @@
       this.technologies_By_Id = {};
       this.text = '';
       this.searchPlaceholder = "Search All of TEAM Mentor";
-      return this.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
+      this.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
+      return this.show_Mobile_Dropbox = false;
     });
     $scope.$on('clear_search', function() {
       return $scope.text = '';
@@ -2320,6 +2321,11 @@
     $scope.select_Technology = function() {
       $scope.update_Placeholder_Text();
       return $scope.update_Select_List();
+    };
+    $scope.select_Technology_Mobile = function(technology) {
+      $scope.selected_Technology = technology;
+      $scope.show_Mobile_Dropbox = false;
+      return $scope.select_Technology();
     };
     $scope.submit = function() {
       var after_Timeout, ref;

@@ -9,6 +9,7 @@ angular.module('TM_App')
             @.text                = ''
             @.searchPlaceholder   = "Search All of TEAM Mentor"
             @.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
+            @.show_Mobile_Dropbox = false
 
           $scope.$on 'clear_search', ()->
             $scope.text = ''
@@ -82,6 +83,11 @@ angular.module('TM_App')
           $scope.select_Technology = ()->
             $scope.update_Placeholder_Text()
             $scope.update_Select_List()
+
+          $scope.select_Technology_Mobile = (technology)->
+            $scope.selected_Technology = technology
+            $scope.show_Mobile_Dropbox = false
+            $scope.select_Technology()
 
           $scope.submit = ()->
             if not @.index_States.contains($state.current?.name)
