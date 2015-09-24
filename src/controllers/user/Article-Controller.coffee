@@ -57,7 +57,7 @@ angular.module('TM_App')
                     for rowArticle in view.Articles
                       if ((article.id == rowArticle.id) || (article.id==rowArticle.guid))
                         $timeout ->
-                          $window.location.href ='/angular/user/guides#'+ article.id
+                          $window.location.href ='/angular/user/guides/'+ article.id
 
 
           $scope.show_Article_Data = ->

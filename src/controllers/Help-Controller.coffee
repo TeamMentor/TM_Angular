@@ -1,15 +1,36 @@
 angular.module('TM_App')
-       .controller 'Help_Controller', ($sce, $scope, TM_API)->
-          $scope.show_Doc = (article)->
-            if article
-              TM_API.docs_Page article.Id, (article_Data)->
-                $scope.title   = article.Title
+       .controller 'Help_Controller', ($sce, $scope, $stateParams, TM_API)->
+          $scope.doc_Titles       = null
+          $scope.first_Article_Id = null
+
+          $scope.show_Doc = (article_Id)->
+            if article_Id
+              TM_API.docs_Page article_Id, (article_Data)->
+                $scope.id      = article_Id
+                $scope.title   = $scope.doc_Titles[article_Id]
                 $scope.content = $sce.trustAsHtml article_Data.html
 
-          $scope.load_Library = ()->
+          $scope.map_Doc_Titles = (library)->
+            $scope.doc_Titles = {}
+            if library
+              for view in library.Views
+                for article in view.Articles
+                  $scope.doc_Titles[article.Id] = article.Title
+
+          $scope.load_Library = (next)->
             TM_API.docs_Library (library)->
               if library?.Views
                 $scope.Views = library.Views
-                $scope.show_Doc library.Views?.first()?.Articles?.first()
+              $scope.map_Doc_Titles library
+              $scope.first_Article_Id = library.Views?.first()?.Articles?.first().Id
+              next()
 
-          $scope.load_Library()
+          $scope.show_First_Article = () ->
+            $scope.show_Doc $scope.first_Article_Id
+
+          $scope.load_Library ->
+            if $stateParams?.id
+              $scope.show_Doc $stateParams?.id
+            else
+              $scope.show_First_Article()
+

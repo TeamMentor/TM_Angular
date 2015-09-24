@@ -18,9 +18,14 @@ app.config ($stateProvider, routes_Names) ->
     url        : "/guides"
     templateUrl: "/angular/jade-html/views/user/guides"
 
-  $stateProvider.state 'guidehash'    ,
-    url        : "/guides#:id"
+#  $stateProvider.state 'guidehash'    ,
+#    url        : "/guides#:id"
+#    templateUrl: "/angular/jade-html/views/user/guides"
+
+  $stateProvider.state 'guide_id'    ,
+    url        : "/guides/:id"
     templateUrl: "/angular/jade-html/views/user/guides"
+
 
   $stateProvider.state 'logout'    ,
     url        : "/logout"
