@@ -10,8 +10,14 @@ angular.module('TM_App')
             return
           return
 
-      .controller 'Gateways_Controller', ($sce, $scope, TM_API, $location,$stateParams)->
+      .controller 'Gateways_Controller', ($sce, $state, $scope, TM_API, $location,$stateParams)->
         $scope.Library    = {}
+
+        $scope.load_Article = ($event, article_Id)->
+          $event.preventDefault()                                             # this will allow the link to actually contain the link (so that it works if the user chooses to open the article in a new Tab
+          $state.go 'guide_id', { id: article_Id }, notify:false, reload:false # change the url without trigger a state change (adds support for the back button)
+          $scope.show_Article article_Id                                      # show the article
+
 
         $scope.show_Article = (article)->
           if article

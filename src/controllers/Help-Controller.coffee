@@ -1,7 +1,12 @@
 angular.module('TM_App')
-       .controller 'Help_Controller', ($sce, $scope, $stateParams, TM_API)->
+       .controller 'Help_Controller', ($sce, $state, $scope, $stateParams, TM_API)->
           $scope.doc_Titles       = null
           $scope.first_Article_Id = null
+
+          $scope.load_Doc = ($event, article_Id)->                              # to be called from the view
+            $event.preventDefault()                                             # this will allow the link to actually contain the link (so that it works if the user choses to open the article in a new Tab
+            $state.go 'docs_id', { id: article_Id }, notify:false, reload:false # change the url without trigger a state change (adds support for the back button)
+            $scope.show_Doc article_Id                                          # show the article
 
           $scope.show_Doc = (article_Id)->
             if article_Id

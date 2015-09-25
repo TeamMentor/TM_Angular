@@ -63,8 +63,6 @@ angular.module 'TM_App'
             $state.go $scope.resolve_Index_State(query_Id,filters), { query_Id: query_Id , filters: filters},
                   notify:false          # prevent the events onStart and onSuccess from firing
                   reload:false          # prevent reload of the current state
-                  #location:'replace'    # replace the last record when changing the params so you don't hit the back button and get old params
-                  #inherit:true          # inherit the current params on the url
             $scope.current_Query_Id = query_Id
             $scope.current_Filters  = filters
 

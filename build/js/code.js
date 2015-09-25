@@ -330,9 +330,19 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Help_Controller', function($sce, $scope, $stateParams, TM_API) {
+  angular.module('TM_App').controller('Help_Controller', function($sce, $state, $scope, $stateParams, TM_API) {
     $scope.doc_Titles = null;
     $scope.first_Article_Id = null;
+    $scope.load_Doc = function($event, article_Id) {
+      $event.preventDefault();
+      $state.go('docs_id', {
+        id: article_Id
+      }, {
+        notify: false,
+        reload: false
+      });
+      return $scope.show_Doc(article_Id);
+    };
     $scope.show_Doc = function(article_Id) {
       if (article_Id) {
         return TM_API.docs_Page(article_Id, function(article_Data) {
@@ -1810,8 +1820,18 @@
         });
       }
     };
-  }).controller('Gateways_Controller', function($sce, $scope, TM_API, $location, $stateParams) {
+  }).controller('Gateways_Controller', function($sce, $state, $scope, TM_API, $location, $stateParams) {
     $scope.Library = {};
+    $scope.load_Article = function($event, article_Id) {
+      $event.preventDefault();
+      $state.go('guide_id', {
+        id: article_Id
+      }, {
+        notify: false,
+        reload: false
+      });
+      return $scope.show_Article(article_Id);
+    };
     $scope.show_Article = function(article) {
       if (article) {
         return TM_API.article(article, function(article_Data) {
