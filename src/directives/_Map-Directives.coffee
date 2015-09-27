@@ -11,7 +11,7 @@ class Map_Directives
     @.navigation_Components = [ 'landing_bar', 'left_navigation']
     @.user_Components       = [ 'active_filter', 'article', 'article_box', 'articles', 'breadcrumbs',
                                 'filters','filters_active', 'found_issue',
-                                'pagination', 'start_view'
+                                'pagination', 'start_view', 'share'
                                 'queries', 'queries_history', 'results', 'search_bar']
     @.root_Components       = [ 'alert_ok', 'alert_bad' , 'help_navigation']
 

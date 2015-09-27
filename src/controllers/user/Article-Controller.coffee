@@ -2,6 +2,7 @@ angular.module('TM_App')
        .controller 'Article_Controller', ($sce, $scope,$state, $stateParams,$window,$timeout, TM_API, icon_Service)=>
           using $scope, ->
             @.articleUrl      = $window.location.href
+            @.article_Link    = null
             @.showFeedback    = false
             @.articleLoaded   = false
 
@@ -40,6 +41,8 @@ angular.module('TM_App')
               id    = article.id?.remove('article-')
               title = article.title?.replace(new RegExp(' ','g'),'-').remove('.')
               article.url = '/angular/user/article/' + id + '/' + title
+
+              @.article_Link = "#{$window.location.origin}/article/#{id}"
 
           $scope.map_Current_User = ()->
             TM_API.currentuser? (userInfo) ->

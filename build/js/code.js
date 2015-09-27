@@ -151,6 +151,36 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
   var expect,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     hasProp = {}.hasOwnProperty;
@@ -300,36 +330,6 @@
 }).call(this);
 
 (function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
-      user_User: ['main', 'index', 'articles']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Help_Controller', function($sce, $state, $scope, $stateParams, TM_API) {
     $scope.doc_Titles = null;
     $scope.first_Article_Id = null;
@@ -411,7 +411,7 @@
       this.design_Components = ['all_icons', 'events'];
       this.guest_Components = ['login_form', 'pwd_forgot_form', 'sign_up_form', 'pwd_reset_form'];
       this.navigation_Components = ['landing_bar', 'left_navigation'];
-      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'found_issue', 'pagination', 'start_view', 'queries', 'queries_history', 'results', 'search_bar'];
+      this.user_Components = ['active_filter', 'article', 'article_box', 'articles', 'breadcrumbs', 'filters', 'filters_active', 'found_issue', 'pagination', 'start_view', 'share', 'queries', 'queries_history', 'results', 'search_bar'];
       this.root_Components = ['alert_ok', 'alert_bad', 'help_navigation'];
     }
 
@@ -1502,6 +1502,7 @@
     return function($sce, $scope, $state, $stateParams, $window, $timeout, TM_API, icon_Service) {
       using($scope, function() {
         this.articleUrl = $window.location.href;
+        this.article_Link = null;
         this.showFeedback = false;
         return this.articleLoaded = false;
       });
@@ -1533,7 +1534,8 @@
         if (article) {
           id = (ref = article.id) != null ? ref.remove('article-') : void 0;
           title = (ref1 = article.title) != null ? ref1.replace(new RegExp(' ', 'g'), '-').remove('.') : void 0;
-          return article.url = '/angular/user/article/' + id + '/' + title;
+          article.url = '/angular/user/article/' + id + '/' + title;
+          return this.article_Link = $window.location.origin + "/article/" + id;
         }
       };
       $scope.map_Current_User = function() {
@@ -2380,6 +2382,22 @@
     };
     $scope.set_technologies_By_Id();
     return $scope.select_Technology();
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Share_Controller', function($scope, $timeout) {
+    $scope.infoMessage = null;
+    $scope.copy_Article_Link = function() {
+      $scope.infoMessage = 'Article link copied to your clipboard';
+      return $timeout((function() {
+        return $scope.infoMessage = null;
+      }), 2000);
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);
