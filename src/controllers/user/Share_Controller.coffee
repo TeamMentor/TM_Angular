@@ -8,6 +8,7 @@ angular.module 'TM_App'
           $scope.infoMessage  = null
 
           $scope.copy_Article_Link = ->
+            $window.getSelection().removeAllRanges();
             try
               share_Link = $window.document.querySelector($scope.msg_Id);
               range = $window.document.createRange();
@@ -21,7 +22,7 @@ angular.module 'TM_App'
             catch
               $scope.infoMessage = $scope.msg_Copy_Fail
 
-            #$window.getSelection().removeAllRanges();
+            $window.getSelection().removeAllRanges();
 
             $timeout (-> $scope.infoMessage = null), 2000
 
