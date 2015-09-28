@@ -10,7 +10,7 @@ angular.module('TM_App')
             return
           return
 
-      .controller 'Gateways_Controller', ($sce, $state, $scope, TM_API, $location,$stateParams)->
+      .controller 'Gateways_Controller', ($sce, $state, $scope, TM_API, $location,icon_Service,$stateParams)->
         $scope.Library    = {}
 
         $scope.load_Article = ($event, article_Id)->
@@ -25,7 +25,9 @@ angular.module('TM_App')
               if (article_Data)
                 $scope.article = article_Data
                 $scope.title   = article_Data.title
-
+                $scope.icon_Technology   = $sce.trustAsHtml icon_Service.element_Html(article_Data.technology)
+                $scope.icon_Type         = $sce.trustAsHtml icon_Service.element_Html(article_Data.type)
+                $scope.icon_Phase        = $sce.trustAsHtml icon_Service.element_Html(article_Data.phase)
                 links = angular.element(article_Data.article_Html).find('a')
                 if (links? && links.length> 0)
                   for link in links
@@ -37,7 +39,7 @@ angular.module('TM_App')
                      #if link is a guid
                     if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(href.value))
                       value = href.value.split('-')[4]
-                      attr = "show_Article('"+ value + "')"
+                      attr = "load_Article($event, '"+ value + "')"
                       link.attributes.href.value = link.attributes.href.value.replace(href.value, 'article-'+ value)
                       link.setAttribute("ng-click", attr);
                       article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML)
