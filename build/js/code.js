@@ -1822,7 +1822,7 @@
         });
       }
     };
-  }).controller('Gateways_Controller', function($sce, $state, $scope, TM_API, $location, $stateParams) {
+  }).controller('Gateways_Controller', function($sce, $state, $scope, TM_API, $location, icon_Service, $stateParams) {
     $scope.Library = {};
     $scope.load_Article = function($event, article_Id) {
       $event.preventDefault();
@@ -1841,6 +1841,9 @@
           if (article_Data) {
             $scope.article = article_Data;
             $scope.title = article_Data.title;
+            $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article_Data.technology));
+            $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article_Data.type));
+            $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article_Data.phase));
             links = angular.element(article_Data.article_Html).find('a');
             if ((links != null) && links.length > 0) {
               for (i = 0, len = links.length; i < len; i++) {
@@ -1852,7 +1855,7 @@
                 }
                 if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(href.value)) {
                   value = href.value.split('-')[4];
-                  attr = "show_Article('" + value + "')";
+                  attr = "load_Article($event, '" + value + "')";
                   link.attributes.href.value = link.attributes.href.value.replace(href.value, 'article-' + value);
                   link.setAttribute("ng-click", attr);
                   article_Data.article_Html = article_Data.article_Html.replace(originalHtml, link.outerHTML);
@@ -2393,7 +2396,7 @@
     $scope.msg_Copy_Fail = 'Copy fail';
     $scope.infoMessage = null;
     $scope.copy_Article_Link = function() {
-      var range, share_Link;
+      var error, range, share_Link;
       $window.getSelection().removeAllRanges();
       try {
         share_Link = $window.document.querySelector($scope.msg_Id);
@@ -2405,7 +2408,7 @@
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }
-      } catch (_error) {
+      } catch (error) {
         $scope.infoMessage = $scope.msg_Copy_Fail;
       }
       $window.getSelection().removeAllRanges();
