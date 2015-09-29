@@ -72,17 +72,25 @@ class TM_API
   article:  (article_Id, callback)=>
     if @.cache_Articles[article_Id]
       @.$timeout => callback @.cache_Articles[article_Id]
-    else
-      url  = "/jade/json/article/#{article_Id}"     # needs to be refactored into /jade
-      @.$http.get(url).success (data)=>
-        @.cache_Articles[article_Id]= data
-        callback(data)
 
-  recent_Articles:  (callback)=>
+    url  = "/jade/json/article/#{article_Id}"               # this will always be called (for logging purposes)
+    @.$http.get(url).success (data)=>
+      if @.cache_Articles[article_Id]                       # but the returned data will only be used the first time
+        return
+      @.cache_Articles[article_Id]= data                    # ie. when the cache doesn't exist
+      callback(data)
+
+  my_Articles:  (size, callback)=>
+    url = "/jade/json/my-articles/#{size}"
+    @.$http.get(url).success (data) =>
+      callback data
+
+
+  recent_Articles:  (size,callback)=>
     if @.tmrecentArticles
       callback @.tmrecentArticles
     else
-      url = "/jade/json/recentarticles"
+      url = "/jade/json/recentarticles/#{size}"
       @.$http.get(url).success (data) =>
         @.tmrecentArticles = data
         callback data

@@ -199,7 +199,7 @@ describe '| controllers | Article-Controller.test',->
         @.map_Guide_Article { id:'an-id-2' }
         $httpBackend.flush()
         $timeout.flush()
-        window.location.href.assert_Is '/angular/user/guides#an-id-2'
+        window.location.href.assert_Is '/angular/user/guides/an-id-2'
 
   it 'show_Article_Data', ->
     new_Article_Controller (scope)->

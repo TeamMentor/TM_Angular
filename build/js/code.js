@@ -985,6 +985,7 @@
       this.login = bind(this.login, this);
       this.top_Articles = bind(this.top_Articles, this);
       this.recent_Articles = bind(this.recent_Articles, this);
+      this.my_Articles = bind(this.my_Articles, this);
       this.article = bind(this.article, this);
       this.docs_Page = bind(this.docs_Page, this);
       this.docs_Library = bind(this.docs_Library, this);
@@ -1105,28 +1106,40 @@
     TM_API.prototype.article = function(article_Id, callback) {
       var url;
       if (this.cache_Articles[article_Id]) {
-        return this.$timeout((function(_this) {
+        this.$timeout((function(_this) {
           return function() {
             return callback(_this.cache_Articles[article_Id]);
           };
         })(this));
-      } else {
-        url = "/jade/json/article/" + article_Id;
-        return this.$http.get(url).success((function(_this) {
-          return function(data) {
-            _this.cache_Articles[article_Id] = data;
-            return callback(data);
-          };
-        })(this));
       }
+      url = "/jade/json/article/" + article_Id;
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          if (_this.cache_Articles[article_Id]) {
+            return;
+          }
+          _this.cache_Articles[article_Id] = data;
+          return callback(data);
+        };
+      })(this));
     };
 
-    TM_API.prototype.recent_Articles = function(callback) {
+    TM_API.prototype.my_Articles = function(size, callback) {
+      var url;
+      url = "/jade/json/my-articles/" + size;
+      return this.$http.get(url).success((function(_this) {
+        return function(data) {
+          return callback(data);
+        };
+      })(this));
+    };
+
+    TM_API.prototype.recent_Articles = function(size, callback) {
       var url;
       if (this.tmrecentArticles) {
         return callback(this.tmrecentArticles);
       } else {
-        url = "/jade/json/recentarticles";
+        url = "/jade/json/recentarticles/" + size;
         return this.$http.get(url).success((function(_this) {
           return function(data) {
             _this.tmrecentArticles = data;
@@ -1332,13 +1345,6 @@
       return element;
     };
     return $$;
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -2425,10 +2431,11 @@
     return function($sce, $scope, $state, $stateParams, $window, $timeout, TM_API, icon_Service) {
       using($scope, function() {
         this.top_Articles = [];
-        return this.recent_Articles = [];
+        this.recent_Articles = [];
+        return this.my_Top_Articles = [];
       });
       $scope.recentArticles = function() {
-        return TM_API.recent_Articles(function(articles) {
+        return TM_API.recent_Articles(10, function(articles) {
           if ((articles != null)) {
             return angular.forEach(articles, function(article) {
               var id, title;
@@ -2441,6 +2448,24 @@
               return $scope.recent_Articles.push(article);
             });
           }
+        });
+      };
+      $scope.my_Articles = function() {
+        return TM_API.my_Articles(10, function(articles) {
+          console.log('--------------> ');
+          console.log(articles);
+          if ((articles != null)) {
+            angular.forEach(articles, function(article) {
+              var id, title;
+              article.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article.technology));
+              article.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
+              article.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
+              id = article.id.remove('article-');
+              title = article.title.replace(new RegExp(' ', 'g'), '-').remove('.');
+              return article.url = '/angular/user/article/' + id + '/' + title;
+            });
+          }
+          return $scope.my_Top_Articles = articles;
         });
       };
       $scope.topArticles = function() {
@@ -2469,6 +2494,7 @@
           return $scope.top_Search = search;
         });
       };
+      $scope.my_Articles();
       $scope.topArticles();
       $scope.recentArticles();
       return $scope.top_Searches();
@@ -2501,6 +2527,13 @@
         });
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
