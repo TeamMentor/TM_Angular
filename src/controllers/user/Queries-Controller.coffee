@@ -8,7 +8,8 @@ angular.module('TM_App')
             $scope.title      = data.title
             $scope.containers = data.queries
 
-          $scope.load_Query = (query_Id)->
+          $scope.load_Query = ($event, query_Id)->
+            $event.preventDefault()
             $rootScope.$broadcast 'apply_query', query_Id
 
           $scope.show_Previous_Query = ()->

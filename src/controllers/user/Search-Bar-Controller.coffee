@@ -9,7 +9,7 @@ angular.module('TM_App')
             @.text                = ''
             @.searchPlaceholder   = "Search All of TEAM Mentor"
             @.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
-            @.show_Mobile_Dropbox = false
+            @.mobile_Dropbox_Visible = false
 
           $scope.$on 'clear_search', ()->
             $scope.text = ''
@@ -86,7 +86,7 @@ angular.module('TM_App')
 
           $scope.select_Technology_Mobile = (technology)->
             $scope.selected_Technology = technology
-            $scope.show_Mobile_Dropbox = false
+            $scope.mobile_Dropbox_Visible = false
             $scope.select_Technology()
 
           $scope.submit = ()->
@@ -121,6 +121,11 @@ angular.module('TM_App')
 
           $scope.get_Words = (term)->
             $rootScope.$broadcast 'search_term', term, $scope.selected_Technology
+
+          $scope.show_Mobile_Dropbox = ()->
+            $scope.mobile_Dropbox_Visible
+          $scope.toggle_Mobile_Dropbox = ()->
+            $scope.mobile_Dropbox_Visible = not $scope.mobile_Dropbox_Visible
 
           $scope.set_technologies_By_Id()
           $scope.select_Technology()

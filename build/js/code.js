@@ -2177,7 +2177,8 @@
       $scope.title = data.title;
       return $scope.containers = data.queries;
     });
-    $scope.load_Query = function(query_Id) {
+    $scope.load_Query = function($event, query_Id) {
+      $event.preventDefault();
       return $rootScope.$broadcast('apply_query', query_Id);
     };
     return $scope.show_Previous_Query = function() {
@@ -2252,7 +2253,7 @@
       this.text = '';
       this.searchPlaceholder = "Search All of TEAM Mentor";
       this.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
-      return this.show_Mobile_Dropbox = false;
+      return this.mobile_Dropbox_Visible = false;
     });
     $scope.$on('clear_search', function() {
       return $scope.text = '';
@@ -2362,7 +2363,7 @@
     };
     $scope.select_Technology_Mobile = function(technology) {
       $scope.selected_Technology = technology;
-      $scope.show_Mobile_Dropbox = false;
+      $scope.mobile_Dropbox_Visible = false;
       return $scope.select_Technology();
     };
     $scope.submit = function() {
@@ -2395,6 +2396,12 @@
     };
     $scope.get_Words = function(term) {
       return $rootScope.$broadcast('search_term', term, $scope.selected_Technology);
+    };
+    $scope.show_Mobile_Dropbox = function() {
+      return $scope.mobile_Dropbox_Visible;
+    };
+    $scope.toggle_Mobile_Dropbox = function() {
+      return $scope.mobile_Dropbox_Visible = !$scope.mobile_Dropbox_Visible;
     };
     $scope.set_technologies_By_Id();
     return $scope.select_Technology();
