@@ -1,4 +1,15 @@
 angular.module('TM_App')
+
+       .directive 'dynamic', ($compile) ->
+          restrict: 'A'
+          replace: true
+          link: (scope, ele, attrs) ->
+            scope.$watch attrs.dynamic, (html) ->
+              ele.html html
+              $compile(ele.contents()) scope
+              return
+            return
+
        .controller 'Help_Controller', ($sce, $state, $scope, $stateParams, TM_API)->
           $scope.doc_Titles       = null
           $scope.first_Article_Id = null
@@ -7,6 +18,9 @@ angular.module('TM_App')
             $event.preventDefault()                                             # this will allow the link to actually contain the link (so that it works if the user choses to open the article in a new Tab
             $state.go 'docs_id', { id: article_Id }, notify:false, reload:false # change the url without trigger a state change (adds support for the back button)
             $scope.show_Doc article_Id                                          # show the article
+            div = document.querySelector('.col-9')
+            if angular.element(div)[0]
+              angular.element(div)[0].scrollTop=0
 
           $scope.show_Doc = (article_Id)->
             if article_Id
