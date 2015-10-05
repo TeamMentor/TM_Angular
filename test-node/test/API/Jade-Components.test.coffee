@@ -8,18 +8,36 @@ describe '| API | Jade-Components |', ->
 
   jade_Components = new Jade_Components()
 
-  expected_Components = ['alert_bad', 'alert_ok', 'article', 'filters', 'help_navigation',  'landing_bar',
-                         'left_navigation', 'login_form', 'navigate_results', 'pagination', 'pwd_forgot_form',
-                         'pwd_reset_form', 'result_article', 'result_saved_article','result_saved_search_term',
-                         'result_search_term', 'results_delete_share','results_save_share','search_bar',
-                         'search_result','sign_up_form', 'start_view', 'team_mentor_summary', 'user/articles',
-                         'user/queries', 'user/queries_breadcrumbs','user/queries_history','user_panel']
+  expected_Components = ['alert_bad', 'alert_ok', 'gateway_navigation', 'help_navigation',
+                         'result_saved_article','result_saved_search_term',
+                         'results_delete_share',
+                         'search_result', 'user_panel'
+                          #design
+                         'design/all_icons', 'design/events'
+                          #guest
+                         'guest/login_form'
+                         'guest/pwd_forgot_form'
+                         'guest/pwd_reset_form'
+                         'guest/sign_up_form'
+                          #navigation
+                         'navigation/landing_bar'
+                         'navigation/left_navigation'
+                          #user
+                         'user/article_box', 'user/article','user/articles',
+                         'user/breadcrumbs', 'user/customer_search_bar'
+                         'user/filters','user/filters_active', 'user/found_issue'
+                         'user/loading_bar', 'user/modal'
+                         'user/pagination'
+                         'user/queries', 'user/queries_history',
+                         'user/results', 'user/recommendations', 'user/search_bar', 'user/start_view']
 
-  expected_Views      = ['about', 'alert_application', 'article', 'blank',
-                         'curated_content', 'curated_content_article', 'docs','error',
-                         "features", "index", "login", "main","navigate" ,
-                         "new_user_onboard" ,"pwd_forgot" ,"pwd_reset" ,"pwd_sent" ,
-                         "search" ,"sign_up" ,"terms_and_conditions" ,"user/queries", "user"]
+  expected_Views      = ['article_editor', 'article_view_editor_option','docs'
+                         'new_user_onboard' ,'pwd_sent' ,
+                         'terms_and_conditions', 'user',
+                         # guest
+                         'guest/about','guest/features','guest/home','guest/login', 'guest/pwd_forgot', 'guest/sign_up',
+                         # user
+                         'user/article','user/article_box', 'user/error','user/guides', 'user/index', 'user/main']
 
 
   it 'constructor', ->
@@ -27,9 +45,12 @@ describe '| API | Jade-Components |', ->
       @.folder_Components.assert_Folder_Exists()
       @.folder_Components.folder_Name().assert_Is 'component'
 
-  it 'components', ->
+  it 'components (check expected)', ->
     using jade_Components, ->
-      @.components().assert_Is expected_Components
+      for component in @.components()
+        expected_Components.assert_Contains component
+      @.components().assert_Contains expected_Components
+      expected_Components.assert_Contains @.components()
 
   it 'component_Html (check one)', (done)->
     using jade_Components, ->
@@ -38,20 +59,9 @@ describe '| API | Jade-Components |', ->
         html.length.assert_Bigger_Than 0
         done()
 
-  #it 'component_Html (check all)', (done)->
-  #  @.timeout 5000
-  #  check_Component = (name, next)->
-  #    jade_Components.component_Html name, (html)->
-  #      #console.log "#{name} : #{html.length}"
-  #      html.length.assert_Bigger_Than 0
-  #      html.assert_Is_Not 'Moved Temporarily. Redirecting to /error'
-  #      next()
-
-  #  async.each expected_Components, check_Component, done
-
   it 'views', ->
     using jade_Components, ->
-      @.views().assert_Is expected_Views
+      @.views().assert_Contains expected_Views
 
   it 'view_Html (check one)', (done)->
     using jade_Components, ->

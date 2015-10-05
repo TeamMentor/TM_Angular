@@ -1,8 +1,10 @@
+expect = chai.expect
+
 describe '| services | Icon-Service', ->
 
   icon_Service  = null
-  test_Key      = '.Net'
-  test_Key_Html = '<span class="icon-Net" title=".Net"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span><span class="path11"></span><span class="path12"></span></span>'
+  test_Key      = '.NET'
+  test_Key_Html = '<span class="icon-Net" title=".NET"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span><span class="path6"></span><span class="path7"></span><span class="path8"></span><span class="path9"></span><span class="path10"></span><span class="path11"></span><span class="path12"></span></span>'
 
   beforeEach ()->
     module('TM_App')
@@ -28,4 +30,13 @@ describe '| services | Icon-Service', ->
   it 'element_Html', ->
     using icon_Service, ->
       @.element_Html(test_Key).assert_Is test_Key_Html
-      expect(@.element_Html('aaa')).toContain('icon-Default')
+      expect(@.element_Html('aaa')).to.contain('icon-Default')
+
+      expect(@.element_Html(null)).to.contain('icon-Default')
+
+  it 'simple_Element', ->
+    using icon_Service, ->
+      @.simple_Element(     'icon-Close', 'Close')[0].outerHTML.assert_Is '<span class="icon-Close" title="Close"></span>'
+      @.simple_Element(     'icon-Close', null   )[0].outerHTML.assert_Is '<span class="icon-Close"></span>'
+      @.simple_Element_Html('icon-Close', 'Close').assert_Is '<span class="icon-Close" title="Close"></span>'
+      @.simple_Element_Html('icon-Close', null   ).assert_Is '<span class="icon-Close"></span>'
