@@ -51,10 +51,6 @@ angular.module 'TM_App'
             value+= '_query_id'         if     query_Id and not filters
             return value
 
-            return 'index_query_id_filters' if     query_Id and     filters
-            return 'index_query_id'         if     query_Id and not filters
-            return 'index'
-
           $scope.update_Location_Url = (query_Id, filters)->
 
             if (not filters) and query_Id is 'query-6234f2d47eb7'  # don't update url for the index query

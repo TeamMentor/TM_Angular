@@ -5,7 +5,7 @@ routes_Names =
   views:
     # defined via dedicated state: '/user/article'
     guest     : ['about',  'features', 'home', 'login', 'pwd_forgot', 'sign_up']
-    user_Root : ['docs','terms-and-conditions']
-    user_User : ['main','index', 'articles']
+    user_Root : ['docs' , 'terms_and_conditions']
+    user_User : ['main','index', 'articles', 'error']
 
 app.constant('routes_Names',routes_Names)
