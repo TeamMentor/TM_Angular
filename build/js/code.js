@@ -1525,6 +1525,10 @@
         }
         return TM_API.article(article_Id, function(article) {
           $scope.articleLoaded = true;
+          if (($window.location.hash != null) && $window.location.hash.contains('#load:')) {
+            $window.location.hash = '';
+            $window.location.href = $window.location.href.split('#').first();
+          }
           if (article) {
             $scope.map_Guide_Article(article);
             $scope.map_Article_Url(article);
@@ -2416,7 +2420,7 @@
     $scope.msg_Copy_Fail = 'Copy fail';
     $scope.infoMessage = null;
     $scope.copy_Article_Link = function() {
-      var range, share_Link;
+      var error, range, share_Link;
       $window.getSelection().removeAllRanges();
       try {
         share_Link = $window.document.querySelector($scope.msg_Id);
@@ -2428,7 +2432,7 @@
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }
-      } catch (_error) {
+      } catch (error) {
         $scope.infoMessage = $scope.msg_Copy_Fail;
       }
       $window.getSelection().removeAllRanges();
