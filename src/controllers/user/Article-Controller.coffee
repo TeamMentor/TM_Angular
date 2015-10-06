@@ -12,9 +12,6 @@ angular.module('TM_App')
             TM_API.article article_Id, (article)->
 
               $scope.articleLoaded  = true
-              if ($window.location.hash? && $window.location.hash.contains('#load:'))
-                $window.location.hash = ''
-                $window.location.href = $window.location.href.split('#').first()
               if article
                 $scope.map_Guide_Article article
 
