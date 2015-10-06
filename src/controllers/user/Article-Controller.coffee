@@ -11,8 +11,7 @@ angular.module('TM_App')
               return null
             TM_API.article article_Id, (article)->
 
-              $scope.articleLoaded = true
-
+              $scope.articleLoaded  = true
               if article
                 $scope.map_Guide_Article article
 
