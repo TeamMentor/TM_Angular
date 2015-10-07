@@ -539,6 +539,125 @@
 }).call(this);
 
 (function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('index');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, view_Name;
+    ref = routes_Names.views.guest;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      });
+    }
+    $stateProvider.state('pwd_reset', {
+      url: "/pwd_reset/:username/:token",
+      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
+    });
+    return $stateProvider.state('docs_id', {
+      url: "/docs/:id",
+      templateUrl: "/angular/jade-html/views/docs"
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('guide_id', {
+      url: "/guides/:id",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
+
+}).call(this);
+
+(function() {
   var Breadcrumbs_Service,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -1247,125 +1366,6 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, view_Name;
-    ref = routes_Names.views.guest;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      });
-    }
-    $stateProvider.state('pwd_reset', {
-      url: "/pwd_reset/:username/:token",
-      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
-    });
-    return $stateProvider.state('docs_id', {
-      url: "/docs/:id",
-      templateUrl: "/angular/jade-html/views/docs"
-    });
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('guides', {
-      url: "/guides",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('guide_id', {
-      url: "/guides/:id",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('index_query_id_filters', {
-      url: "/index/:query_Id/:filters",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-
-  /*
-  app.run ($rootScope,$window,TM_API, routes_Names) =>
-    $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        return
-      else
-        TM_API.currentuser (userInfo) =>
-          if (userInfo? && userInfo?.UserEnabled)
-            return
-          else
-            $window.location.href = '/angular/guest/login'
-    return
-   */
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Events_Controller', function($scope) {
     return $scope.test = 'asd';
   });
@@ -1700,6 +1700,8 @@
   angular.module('TM_App').controller('Filters_Active_Controller', function($sce, $scope, $rootScope, query_Service, icon_Service) {
     $scope.current_Filters = {};
     $scope.current_Query_Id = null;
+    $scope.from = 0;
+    $scope.to = 0;
     $scope.$on('apply_filter', function(event, filter_Id, filter_Title, metadata_Title, filter_Refresh) {
       var icon;
       if (filter_Refresh == null) {
@@ -1713,7 +1715,7 @@
           metadata_Title: metadata_Title
         };
         if (filter_Refresh) {
-          return $scope.refresh_Filters();
+          return $scope.refresh_Filters($scope.from, $scope.to);
         }
       }
     });
@@ -1743,10 +1745,14 @@
     });
     $scope.$on('apply_query', function(event, query_Id) {
       $scope.current_Query_Id = query_Id;
-      return $scope.refresh_Filters();
+      return $scope.refresh_Filters($scope.from, $scope.to);
     });
     $scope.$on('set_page', function(event, page, from, to) {
       return $scope.refresh_Filters(from, to);
+    });
+    $scope.$on('set_from_to', function(event, from, to) {
+      $scope.from = from;
+      return $scope.to = to;
     });
     $scope.refresh_Filters = function(from, to) {
       var filters, query_Id;
@@ -1761,7 +1767,7 @@
     return $scope.clear_Filter = function(filter_Id) {
       $rootScope.$broadcast('clear_filter', filter_Id);
       delete $scope.current_Filters[filter_Id];
-      return $scope.refresh_Filters();
+      return $scope.refresh_Filters($scope.from, $scope.to);
     };
   });
 
@@ -1815,7 +1821,8 @@
       var div;
       div = document.querySelector('.scrolling-results');
       angular.element(div).css('height', '75%');
-      return $rootScope.$broadcast('apply_filter', filter_Id, filter_Title, metadata_Title);
+      $rootScope.$broadcast('apply_filter', filter_Id, filter_Title, metadata_Title);
+      return $rootScope.$broadcast('reset_current_page');
     };
     return $scope.map_Visibility = function() {
       var div, item, ref, results, value;
@@ -2057,7 +2064,7 @@
 (function() {
   var modulo = function(a, b) { return (+a % (b = +b) + b) % b; };
 
-  angular.module('TM_App').controller('Pagination_Controller', function($scope, $rootScope) {
+  angular.module('TM_App').controller('Pagination_Controller', function($scope, $rootScope, $window) {
     var model;
     model = {
       page: 1,
@@ -2070,38 +2077,40 @@
     $scope.model = model;
     $scope.visible = false;
     $scope.pagginMessage = '';
-    $scope.set_Paging_Message = function() {
+    $scope.Paging_Message = function() {
       var currentPage, endNo, recordsPerPage, remainingArticles, startNo, totalRecords;
       recordsPerPage = model.page_Split;
       totalRecords = model.data_Size;
       currentPage = model.page;
       if (currentPage === 1 && recordsPerPage > totalRecords) {
         if (totalRecords === 1) {
-          $scope.pagginMessage = "Showing " + totalRecords + " article";
+          $rootScope.$broadcast('set_paging_message', "Showing " + totalRecords + " article");
         } else {
-          $scope.pagginMessage = "Showing " + totalRecords + " articles";
+          $rootScope.$broadcast('set_paging_message', "Showing " + totalRecords + " articles");
         }
         return;
       }
       if (currentPage === 1) {
-        return $scope.pagginMessage = "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords;
+        return $rootScope.$broadcast('set_paging_message', "Showing articles 1 to " + recordsPerPage + " out of " + totalRecords);
       } else {
         startNo = ((currentPage - 1) * recordsPerPage) + 1;
         if ((currentPage * recordsPerPage) + 1 > totalRecords) {
           endNo = totalRecords;
           remainingArticles = (((currentPage - 1) * recordsPerPage) + 1) - endNo;
           if (remainingArticles === 0) {
-            $scope.pagginMessage = "Showing article " + totalRecords + " out of  " + totalRecords;
+            $rootScope.$broadcast('set_paging_message', "Showing article " + totalRecords + " out of  " + totalRecords);
           } else {
-            $scope.pagginMessage = "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords;
+            $rootScope.$broadcast('set_paging_message', "Showing article " + (((currentPage - 1) * recordsPerPage) + 1) + " to " + totalRecords + " out of " + totalRecords);
           }
-          return;
         } else {
           endNo = currentPage * recordsPerPage;
+          return $rootScope.$broadcast('set_paging_message', "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords);
         }
-        return $scope.pagginMessage = "Showing articles  " + startNo + " to " + endNo + " out of " + totalRecords;
       }
     };
+    $scope.$on('set_paging_message', function(event, data) {
+      return $scope.paginMessage = data;
+    });
     $scope.$on('view_model_data', function(event, data) {
       var i, results, split;
       $scope.visible = true;
@@ -2123,7 +2132,7 @@
           for (var i = 1; 1 <= split ? i <= split : i >= split; 1 <= split ? i++ : i--){ results.push(i); }
           return results;
         }).apply(this);
-        return $scope.set_Paging_Message();
+        return $scope.Paging_Message();
       }
     });
     $scope.set_Page = function() {
@@ -2131,12 +2140,16 @@
       if (model.page) {
         from = (model.page - 1) * model.page_Split;
         to = model.page * model.page_Split;
+        $rootScope.$broadcast('set_from_to', 0, model.page_Split);
         return $rootScope.$broadcast('set_page', model.page, from, to);
       } else {
         model.page = 1;
-        return $scope.set_Paging_Message();
+        return $scope.Paging_Message();
       }
     };
+    $scope.$on('reset_current_page', function(event) {
+      return model.page = 1;
+    });
     $scope.set_Page_Split = function(recordsPerPage) {
       model.page = 1;
       if (recordsPerPage) {
@@ -2195,7 +2208,8 @@
     });
     $scope.load_Query = function($event, query_Id) {
       $event.preventDefault();
-      return $rootScope.$broadcast('apply_query', query_Id);
+      $rootScope.$broadcast('apply_query', query_Id);
+      return $rootScope.$broadcast('reset_current_page');
     };
     return $scope.show_Previous_Query = function() {
       return $window.history.back();

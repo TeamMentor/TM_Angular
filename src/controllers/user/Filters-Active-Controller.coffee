@@ -3,7 +3,8 @@ angular.module('TM_App')
 
           $scope.current_Filters  = {}
           $scope.current_Query_Id = null
-
+          $scope.from =0
+          $scope.to   =0
           #console.log 'in Filters_Controller ' + new Date().getMilliseconds()
 
           $scope.$on 'apply_filter', (event,filter_Id, filter_Title, metadata_Title, filter_Refresh = true )->
@@ -11,7 +12,7 @@ angular.module('TM_App')
               icon =  $sce.trustAsHtml icon_Service.element_Html filter_Title
               $scope.current_Filters[filter_Id] = filter_Title:filter_Title, filter_Icon : icon, metadata_Title: metadata_Title
               if filter_Refresh
-                $scope.refresh_Filters()
+                $scope.refresh_Filters($scope.from, $scope.to)
 
           $scope.$on 'clear_filter' , (event, filter_Id, metadata_Title)->
             if metadata_Title
@@ -29,12 +30,15 @@ angular.module('TM_App')
 
           $scope.$on 'apply_query', (event, query_Id)->
             $scope.current_Query_Id = query_Id
-            $scope.refresh_Filters()
+            $scope.refresh_Filters($scope.from, $scope.to)
 
 
           $scope.$on 'set_page', (event, page, from, to)->
             $scope.refresh_Filters(from, to)
 
+          $scope.$on 'set_from_to', (event, from, to)->
+            $scope.from = from
+            $scope.to   = to
 
           $scope.refresh_Filters = (from, to)->
             query_Id = $scope.current_Query_Id
@@ -48,5 +52,5 @@ angular.module('TM_App')
           $scope.clear_Filter = (filter_Id)->
             $rootScope.$broadcast 'clear_filter', filter_Id
             delete $scope.current_Filters[filter_Id]
-            $scope.refresh_Filters()
+            $scope.refresh_Filters($scope.from, $scope.to)
 

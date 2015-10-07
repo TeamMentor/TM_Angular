@@ -32,6 +32,7 @@ angular.module('TM_App')
             div = document.querySelector('.scrolling-results');
             angular.element(div).css('height','75%')
             $rootScope.$broadcast 'apply_filter', filter_Id,filter_Title, metadata_Title
+            $rootScope.$broadcast 'reset_current_page'
 
           $scope.map_Visibility =  ()->
             delete $scope.hide_Metadata['Technology']
