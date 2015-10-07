@@ -1366,13 +1366,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       $scope.errorMessage = null;
@@ -1510,6 +1503,13 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
