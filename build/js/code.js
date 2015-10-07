@@ -1296,7 +1296,7 @@
           email = userEmail;
           return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
             if (email != null ? email.match(domain.toString()) : void 0) {
-              return callback(configFile.githubContentUrl);
+              return callback(configFile);
             }
           }) : void 0;
         };
@@ -1570,10 +1570,10 @@
       $scope.map_Current_User = function() {
         return typeof TM_API.currentuser === "function" ? TM_API.currentuser(function(userInfo) {
           if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
-            return typeof TM_API.verifyInternalUser === "function" ? TM_API.verifyInternalUser(userInfo.Email, function(githubContentUrl) {
-              if (githubContentUrl) {
+            return typeof TM_API.verifyInternalUser === "function" ? TM_API.verifyInternalUser(userInfo.Email, function(data) {
+              if (data) {
                 $scope.showFeedback = true;
-                return $scope.githubContentUrl = githubContentUrl;
+                return $scope.githubContentUrl = data.githubContentUrl;
               }
             }) : void 0;
           }
@@ -2560,6 +2560,31 @@
         });
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('UserFeedback_Controller', function($scope, TM_API) {
+    $scope.map_Current_User = function() {
+      return typeof TM_API.currentuser === "function" ? TM_API.currentuser(function(userInfo) {
+        if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
+          return typeof TM_API.verifyInternalUser === "function" ? TM_API.verifyInternalUser(userInfo.Email, function(data) {
+            if (data) {
+              $scope.showFeedback = true;
+              return $scope.githubUrl = data.githubUrl;
+            }
+          }) : void 0;
+        }
+      }) : void 0;
+    };
+    $scope.showGeneralFeedback = function() {
+      return !$scope.showFeedback;
+    };
+    $scope.showFeedbackBanner = function() {
+      return $scope.showFeedback;
+    };
+    return $scope.map_Current_User();
   });
 
 }).call(this);

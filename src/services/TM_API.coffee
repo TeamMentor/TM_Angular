@@ -172,7 +172,7 @@ class TM_API
       email                            = userEmail
       allowedEmailDomains?.some (domain)->                  # note: this will fire twice if there are two matches
         if email?.match(domain.toString())
-          callback configFile.githubContentUrl
+          callback configFile
           
     callback null
 
