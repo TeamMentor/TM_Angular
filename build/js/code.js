@@ -1276,7 +1276,7 @@
 
     TM_API.prototype.tmConfig = function(callback) {
       var url;
-      url = "/json/tm/config";
+      url = "/jade/json/tm/config";
       if (this.config) {
         return callback(this.config);
       } else {
