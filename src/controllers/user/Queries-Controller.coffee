@@ -10,6 +10,7 @@ angular.module('TM_App')
 
           $scope.load_Query = ($event, query_Id)->
             $event.preventDefault()
+            $rootScope.$broadcast 'reset_current_page'
             $rootScope.$broadcast 'apply_query', query_Id
 
           $scope.show_Previous_Query = ()->
