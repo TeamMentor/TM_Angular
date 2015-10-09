@@ -158,7 +158,7 @@ class TM_API
 
 
   tmConfig :(callback)=>
-    url             = "/json/tm/config"
+    url             = "/jade/json/tm/config"
     if @.config
       callback @.config
     else
