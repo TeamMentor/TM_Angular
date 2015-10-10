@@ -126,8 +126,17 @@ class TM_API
       callback  @.currentUser
     else
       @.$http.get(url).success (data)=>
-        @.currentUser = data
-        callback(data)
+        @.currentUser                   = data
+        @.currentUser.InternalUser      = ''
+        @.currentUser.InternalUserInfo  = {}
+
+        @.verifyInternalUser data.Email, (internalUserInfo) =>
+          if internalUserInfo?
+            @.currentUser.InternalUser     = true
+            @.currentUser.InternalUserInfo = internalUserInfo
+          else
+            @.currentUser.InternalUser     = false
+          callback @.currentUser
 
   pwd_reset: (email, callback)=>
     url      = "/jade/json/user/pwd_reset"

@@ -45,11 +45,11 @@ angular.module('TM_App')
 
           $scope.map_Current_User = ()->
             TM_API.currentuser? (userInfo) ->
-              if (userInfo?.UserEnabled)
-                TM_API.verifyInternalUser? userInfo.Email, (data)->
-                  if data
-                    $scope.showFeedback     = true
-                    $scope.githubContentUrl = data.githubContentUrl
+              if (userInfo?.UserEnabled && userInfo?.InternalUser)
+                $scope.showFeedback     = true
+                $scope.githubContentUrl = userInfo?.InternalUserInfo?.githubContentUrl
+              else
+                $scope.showFeedback     = false
 
           $scope.map_Guide_Article =(article)->
             if article
