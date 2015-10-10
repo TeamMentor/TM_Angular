@@ -46,6 +46,7 @@ class Breadcrumbs_Service
     @.current_Path = path.join('/')
 
   on_Selected: (breadcrumb)=>
+    @.rootScope.$broadcast 'reset_current_page'
     if breadcrumb?.query_Id
       @.current_Path = breadcrumb.path
       @.rootScope.$broadcast 'apply_query', breadcrumb.query_Id
