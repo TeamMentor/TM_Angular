@@ -954,12 +954,15 @@
       from = from || this.default_Page_From;
       to = to || this.default_Page_To;
       this.$rootScope.$broadcast('loading_query', query_Id, filters, from, to);
-      return this.TM_API.query_view_model(query_Id, filters, from, to, (function(_this) {
-        return function(data) {
-          _this.$rootScope.$broadcast('view_model_data', data);
-          if (callback) {
-            return callback();
-          }
+      return this.TM_API.currentuser((function(_this) {
+        return function(info) {
+          return _this.TM_API.query_view_model(query_Id, filters, from, to, function(data) {
+            data.UserInfo = info;
+            _this.$rootScope.$broadcast('view_model_data', data);
+            if (callback) {
+              return callback();
+            }
+          });
         };
       })(this));
     };
@@ -1225,7 +1228,17 @@
         return this.$http.get(url).success((function(_this) {
           return function(data) {
             _this.currentUser = data;
-            return callback(data);
+            _this.currentUser.InternalUser = '';
+            _this.currentUser.InternalUserInfo = {};
+            return _this.verifyInternalUser(data.Email, function(internalUserInfo) {
+              if (internalUserInfo != null) {
+                _this.currentUser.InternalUser = true;
+                _this.currentUser.InternalUserInfo = internalUserInfo;
+              } else {
+                _this.currentUser.InternalUser = false;
+              }
+              return callback(_this.currentUser);
+            });
           };
         })(this));
       }
@@ -1297,7 +1310,7 @@
           email = userEmail;
           return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
             if (email != null ? email.match(domain.toString()) : void 0) {
-              return callback(configFile.githubContentUrl);
+              return callback(configFile);
             }
           }) : void 0;
         };
@@ -1570,13 +1583,12 @@
       };
       $scope.map_Current_User = function() {
         return typeof TM_API.currentuser === "function" ? TM_API.currentuser(function(userInfo) {
-          if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
-            return typeof TM_API.verifyInternalUser === "function" ? TM_API.verifyInternalUser(userInfo.Email, function(githubContentUrl) {
-              if (githubContentUrl) {
-                $scope.showFeedback = true;
-                return $scope.githubContentUrl = githubContentUrl;
-              }
-            }) : void 0;
+          var ref;
+          if ((userInfo != null ? userInfo.UserEnabled : void 0) && (userInfo != null ? userInfo.InternalUser : void 0)) {
+            $scope.showFeedback = true;
+            return $scope.githubContentUrl = userInfo != null ? (ref = userInfo.InternalUserInfo) != null ? ref.githubContentUrl : void 0 : void 0;
+          } else {
+            return $scope.showFeedback = false;
           }
         }) : void 0;
       };
@@ -2054,8 +2066,6 @@
 (function() {
   angular.module('TM_App').controller('Logout_Controller', function(TM_API, $window) {
     return TM_API.logout(function(callback) {
-      $window.sessionStorage["userInfo"] = null;
-      $window.sessionStorage.clear();
       return $window.location.href = '/angular/guest/home';
     });
   });
@@ -2575,6 +2585,32 @@
         });
       }
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('UserFeedback_Controller', function($scope) {
+    return $scope.$on('view_model_data', function(event, data) {
+      if ((data != null) && data.UserInfo) {
+        if (data.UserInfo.InternalUser) {
+          $scope.showFeedback = true;
+          $scope.githubUrl = data.UserInfo.InternalUserInfo.githubUrl;
+        } else {
+          $scope.showFeedback = false;
+        }
+      }
+      $scope.visible = true;
+      $scope.showGeneralFeedback = function() {
+        return !$scope.showFeedback;
+      };
+      $scope.showFeedbackBanner = function() {
+        return $scope.showFeedback;
+      };
+      return $scope.showBanner = function() {
+        return $scope.visible;
+      };
+    });
   });
 
 }).call(this);
