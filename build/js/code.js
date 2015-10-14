@@ -308,8 +308,8 @@
     components: {},
     views: {
       guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms-and-conditions'],
-      user_User: ['main', 'index', 'articles']
+      user_Root: ['docs', 'terms_and_conditions'],
+      user_User: ['main', 'index', 'articles', 'error']
     }
   };
 
@@ -544,7 +544,7 @@
   app = angular.module('TM_App');
 
   app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('index');
+    $urlRouterProvider.otherwise('error');
     return $locationProvider.html5Mode(true);
   });
 
@@ -1564,11 +1564,9 @@
             $scope.icon_Type = $sce.trustAsHtml(icon_Service.element_Html(article.type));
             return $scope.icon_Phase = $sce.trustAsHtml(icon_Service.element_Html(article.phase));
           } else {
-            $scope.article = {
-              id: article_Id,
-              title: 'Article not found'
-            };
-            return $scope.article_Html = $sce.trustAsHtml('<br/><br/>Please contact support if you got here following a link');
+            return $timeout(function() {
+              return $state.go('error');
+            });
           }
         });
       };
@@ -2022,13 +2020,6 @@
         value += '_query_id';
       }
       return value;
-      if (query_Id && filters) {
-        return 'index_query_id_filters';
-      }
-      if (query_Id && !filters) {
-        return 'index_query_id';
-      }
-      return 'index';
     };
     $scope.update_Location_Url = function(query_Id, filters) {
       if ((!filters) && query_Id === 'query-6234f2d47eb7') {
@@ -2457,7 +2448,7 @@
     $scope.msg_Copy_Fail = 'Copy fail';
     $scope.infoMessage = null;
     $scope.copy_Article_Link = function() {
-      var error, range, share_Link;
+      var range, share_Link;
       $window.getSelection().removeAllRanges();
       try {
         share_Link = $window.document.querySelector($scope.msg_Id);
@@ -2469,7 +2460,7 @@
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }
-      } catch (error) {
+      } catch (_error) {
         $scope.infoMessage = $scope.msg_Copy_Fail;
       }
       $window.getSelection().removeAllRanges();
