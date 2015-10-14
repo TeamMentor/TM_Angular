@@ -11,8 +11,7 @@ angular.module('TM_App')
               return null
             TM_API.article article_Id, (article)->
 
-              $scope.articleLoaded = true
-
+              $scope.articleLoaded  = true
               if article
                 $scope.map_Guide_Article article
 
@@ -46,11 +45,11 @@ angular.module('TM_App')
 
           $scope.map_Current_User = ()->
             TM_API.currentuser? (userInfo) ->
-              if (userInfo?.UserEnabled)
-                TM_API.verifyInternalUser? userInfo.Email, (githubContentUrl)->
-                  if githubContentUrl
-                    $scope.showFeedback     = true
-                    $scope.githubContentUrl = githubContentUrl
+              if (userInfo?.UserEnabled && userInfo?.InternalUser)
+                $scope.showFeedback     = true
+                $scope.githubContentUrl = userInfo?.InternalUserInfo?.githubContentUrl
+              else
+                $scope.showFeedback     = false
 
           $scope.map_Guide_Article =(article)->
             if article

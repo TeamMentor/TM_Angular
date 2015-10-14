@@ -35,6 +35,7 @@ describe '| controllers | Login-Controller.test',->
         UserEnabled : true
       $httpBackend.whenPOST('/json/user/login'      ,{}).respond ()-> return [200, { result: 'OK' }]
       $httpBackend.whenGET('/json/user/currentuser'    ).respond ()-> return [200,  currentUser ]
+      $httpBackend.whenGET('/jade/json/tm/config'      ).respond {}
       scope.login()
       $httpBackend.flush()
       window.assert_Is location : href: '....'

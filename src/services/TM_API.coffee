@@ -11,7 +11,7 @@ class TM_API
     #@.cache_Query_Tree         = {}
     #@.cache_Query_Tree_Queries = {}
     @.cache_Query_View_Model    = {}
-    @.currentUser               = null
+    @.currentUser               = null            # todo: this variable name really needs to be refactored since it just about clashes with the currentuser method
     @.config                    = null
     @.tmrecentArticles          = null
     @.topArticles               = null
@@ -120,14 +120,27 @@ class TM_API
     @.$http.post(url, postData).success callback
     #@
 
-  currentuser :(callback) =>
+  #todo: this method name has a really close clash with the @.currentUser variable
+  currentuser: (callback) =>
     url      = "/json/user/currentuser"
     if  @.currentUser? &&  @.currentUser.UserEnabled
       callback  @.currentUser
     else
       @.$http.get(url).success (data)=>
-        @.currentUser = data
-        callback(data)
+        if not data
+          return callback null
+
+        @.currentUser                   = data
+        @.currentUser.InternalUser      = ''
+        @.currentUser.InternalUserInfo  = {}
+
+        @.verifyInternalUser data.Email, (internalUserInfo) =>
+          if internalUserInfo?
+            @.currentUser.InternalUser     = true
+            @.currentUser.InternalUserInfo = internalUserInfo
+          else
+            @.currentUser.InternalUser     = false
+          callback @.currentUser
 
   pwd_reset: (email, callback)=>
     url      = "/jade/json/user/pwd_reset"
@@ -158,7 +171,7 @@ class TM_API
 
 
   tmConfig :(callback)=>
-    url             = "/json/tm/config"
+    url             = "/jade/json/tm/config"
     if @.config
       callback @.config
     else
@@ -172,7 +185,7 @@ class TM_API
       email                            = userEmail
       allowedEmailDomains?.some (domain)->                  # note: this will fire twice if there are two matches
         if email?.match(domain.toString())
-          callback configFile.githubContentUrl
+          callback configFile
           
     callback null
 
