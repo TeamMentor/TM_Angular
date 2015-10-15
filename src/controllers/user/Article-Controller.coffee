@@ -26,12 +26,14 @@ angular.module('TM_App')
                 $scope.icon_Phase      = $sce.trustAsHtml icon_Service.element_Html(article.phase)
 
               else
+                $timeout ->
+                  $state.go 'error'
 
-                $scope.article =
-                  id    : article_Id
-                  title : 'Article not found'
-
-                $scope.article_Html = $sce.trustAsHtml '<br/><br/>Please contact support if you got here following a link'
+#                $scope.article =
+#                  id    : article_Id
+#                  title : 'Article not found'
+#
+#                $scope.article_Html = $sce.trustAsHtml '<br/><br/>Please contact support if you got here following a link'
 
 
 
