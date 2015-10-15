@@ -308,7 +308,7 @@
     components: {},
     views: {
       guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms_and_conditions'],
+      user_Root: ['docs', 'terms-and-conditions'],
       user_User: ['main', 'index', 'articles', 'error']
     }
   };
@@ -2448,7 +2448,7 @@
     $scope.msg_Copy_Fail = 'Copy fail';
     $scope.infoMessage = null;
     $scope.copy_Article_Link = function() {
-      var range, share_Link;
+      var error, range, share_Link;
       $window.getSelection().removeAllRanges();
       try {
         share_Link = $window.document.querySelector($scope.msg_Id);
@@ -2460,7 +2460,7 @@
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }
-      } catch (_error) {
+      } catch (error) {
         $scope.infoMessage = $scope.msg_Copy_Fail;
       }
       $window.getSelection().removeAllRanges();
