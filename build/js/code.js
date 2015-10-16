@@ -1227,6 +1227,9 @@
       } else {
         return this.$http.get(url).success((function(_this) {
           return function(data) {
+            if (!data) {
+              return callback(null);
+            }
             _this.currentUser = data;
             _this.currentUser.InternalUser = '';
             _this.currentUser.InternalUserInfo = {};
