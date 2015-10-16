@@ -20,19 +20,21 @@ describe '| controllers | user | Filters-Active-Controller.test',->
       expect(@.current_Filters  ).to.deep.equal {}
       expect(@.current_Query_Id ).to     .equal null
 
-      @.$$listeners.keys().size().assert_Is 6
+      @.$$listeners.keys().size().assert_Is 7
       expect(@.$$listeners['apply_filter'   ][0]).to.be.an('function')
       expect(@.$$listeners['apply_query'    ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filter'   ][0]).to.be.an('function')
       expect(@.$$listeners['clear_filters'  ][0]).to.be.an('function')
       expect(@.$$listeners['view_model_data'][0]).to.be.an('function')
       expect(@.$$listeners['set_page'       ][0]).to.be.an('function')
+      expect(@.$$listeners['set_from_to'    ][0]).to.be.an('function')
 
       expect(@.refresh_Filters).to.be.an('function')
       expect(@.clear_Filter   ).to.be.an('function')
 
   it '$on apply_Filter', ->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model_filtered/null/an_id/0/10'      ).respond {}
       using scope, ->
         @.$broadcast 'apply_filter', 'an_id', 'an title'
@@ -52,6 +54,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it '$on apply_query', ->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/an_id/0/10'      ).respond { id: 'abc-id'}
       using scope, ->
         @.$broadcast 'apply_query', 'an_id'
@@ -60,6 +63,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it '$on set_page',->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/null/11/22'      ).respond { id: 'abc-id'}
 
       using scope, ->
@@ -70,6 +74,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it 'refresh_Filters (no current filters)', ()->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/an-id/0/10'      ).respond {}
       using scope, ->
         @.current_Query_Id = 'an-id'
@@ -80,6 +85,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it 'refresh_Filters (with current filters)', ()->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model_filtered/an-id/aaa,bbb/0/10'      ).respond {}
       using scope, ->
         @.current_Query_Id = 'an-id'
@@ -89,6 +95,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it 'clear_Filter', ->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model_filtered/null/bbb/0/10'      ).respond {}
       using scope, ->
         @.current_Filters = aaa: 'a', 'bbb' : 'b'
@@ -98,6 +105,7 @@ describe '| controllers | user | Filters-Active-Controller.test',->
 
   it 'Check that apply_Filter and clear_Filters broadcasts are correctly received',  ->
     inject ($httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model_filtered/null/id/0/10'      ).respond {}
       using scope, ->
         @.$broadcast 'clear_filters'
