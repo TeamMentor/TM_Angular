@@ -1392,16 +1392,19 @@
 (function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
+      var timer;
       $scope.errorMessage = null;
       $scope.supportEmail = false;
-      $scope.infoMessage = '...logging in ...';
+      timer = $timeout((function() {
+        return $scope.infoMessage = 'We are experiencing slight delays. Hang on.';
+      }), 3000);
       return TM_API.login($scope.username, $scope.password, (function(_this) {
         return function(data) {
           var ref, ref1, ref2;
+          $timeout.cancel(timer);
           if (data.result === 'OK') {
             return TM_API.currentuser(function(userInfo) {
               if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
-                $scope.infoMessage = 'Login OK';
                 $rootScope.loggedInUser = true;
                 return $timeout(function() {
                   return $window.location.href = '/angular/user/index';
@@ -1501,7 +1504,7 @@
     $scope.signup = function() {
       $scope.errorMessage = null;
       $scope.supportEmail = false;
-      $scope.infoMessage = "...Signing  up ...";
+      $scope.infoMessage = "Signing you up";
       return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
         var ref, ref1, ref2;
         if ((data != null ? data.result : void 0) === 'OK') {

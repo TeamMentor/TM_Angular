@@ -4,12 +4,15 @@ angular.module('TM_App')
           $scope.login = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
-            $scope.infoMessage   = '...logging in ...'
+            timer =$timeout (->
+              $scope.infoMessage   = 'We are experiencing slight delays. Hang on.'
+            ), 3000
+
             TM_API.login  $scope.username, $scope.password, (data)=>
+              $timeout.cancel(timer);
               if data.result is 'OK'
                 TM_API.currentuser (userInfo)->
                   if (userInfo?.UserEnabled)
-                    $scope.infoMessage  = 'Login OK'
                     $rootScope.loggedInUser =true
                     $timeout ->
                       $window.location.href = '/angular/user/index'

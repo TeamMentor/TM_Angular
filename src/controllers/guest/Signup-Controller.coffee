@@ -3,7 +3,7 @@ angular.module('TM_App')
           $scope.signup = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
-            $scope.infoMessage   = "...Signing  up ..."
+            $scope.infoMessage   = "Signing you up"
             TM_API.signup $scope.username, $scope.password, $scope.confirmpassword,$scope.email,$scope.firstname,$scope.lastname,$scope.company,$scope.title,$scope.country,$scope.state, (data)->
               if data?.result is 'OK'
                 $scope.infoMessage  = 'Signup OK'
