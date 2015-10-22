@@ -9,10 +9,19 @@ angular.module('TM_App')
               if data.result is 'OK'
                 TM_API.currentuser (userInfo)->
                   if (userInfo?.UserEnabled)
-                    $scope.infoMessage  = 'Login OK'
+                    $scope.infoMessage      = 'Login OK'
                     $rootScope.loggedInUser =true
+                    #redirect URL upon login : If the value is set, a security check is performed.
+                    if data.viewModel?.redirectUrl
+                      if (/^(?:[a-z]+:)?\/\//i.test(data.viewModel?.redirectUrl)) #if it matches,it means it is a external URL
+                        url = '/angular/user/index'
+                      else
+                        url = data.viewModel?.redirectUrl #relative URL
+                    else
+                      url = '/angular/user/index'
+                      
                     $timeout ->
-                      $window.location.href = '/angular/user/index'
+                        $window.location.href = url
                   else
                     $scope.infoMessage  = null
                     $scope.errorMessage = 'User account is disabled'

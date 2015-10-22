@@ -1400,11 +1400,21 @@
           var ref, ref1, ref2;
           if (data.result === 'OK') {
             return TM_API.currentuser(function(userInfo) {
+              var ref, ref1, ref2, url;
               if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
                 $scope.infoMessage = 'Login OK';
                 $rootScope.loggedInUser = true;
+                if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
+                  if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
+                    url = '/angular/user/index';
+                  } else {
+                    url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
+                  }
+                } else {
+                  url = '/angular/user/index';
+                }
                 return $timeout(function() {
-                  return $window.location.href = '/angular/user/index';
+                  return $window.location.href = url;
                 });
               } else {
                 $scope.infoMessage = null;
