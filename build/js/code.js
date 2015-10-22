@@ -1405,11 +1405,23 @@
           $timeout.cancel(timer);
           if (data.result === 'OK') {
             return TM_API.currentuser(function(userInfo) {
+              var ref, ref1, ref2, url;
               $scope.isDisabled = false;
               if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
                 $rootScope.loggedInUser = true;
+                if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
+                  if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
+                    url = '/angular/user/index';
+                  } else {
+                    $scope.isDisabled = false;
+                    url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
+                  }
+                } else {
+                  $scope.isDisabled = false;
+                  url = '/angular/user/index';
+                }
                 return $timeout(function() {
-                  return $window.location.href = '/angular/user/index';
+                  return $window.location.href = url;
                 });
               } else {
                 $scope.infoMessage = null;
@@ -1417,7 +1429,6 @@
               }
             });
           } else {
-            $scope.isDisabled = false;
             $scope.infoMessage = null;
             if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
               $scope.supportEmail = true;

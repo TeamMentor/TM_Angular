@@ -16,13 +16,23 @@ angular.module('TM_App')
                   $scope.isDisabled = false  #Enabling login button since async call finished
                   if (userInfo?.UserEnabled)
                     $rootScope.loggedInUser =true
+                    #redirect URL upon login : If the value is set, a security check is performed.
+                    if data.viewModel?.redirectUrl
+                      if (/^(?:[a-z]+:)?\/\//i.test(data.viewModel?.redirectUrl)) #if it matches,it means it is a external URL
+                        url = '/angular/user/index'
+                      else
+                        $scope.isDisabled = false  #Enabling login button since async call finished
+                        url               = data.viewModel?.redirectUrl #relative URL
+                    else
+                      $scope.isDisabled = false  #Enabling login button since async call finished
+                      url               = '/angular/user/index'
+                      
                     $timeout ->
-                      $window.location.href = '/angular/user/index'
+                        $window.location.href = url
                   else
                     $scope.infoMessage  = null
                     $scope.errorMessage = 'User account is disabled'
               else
-                $scope.isDisabled = false  #Enabling login button since async call finished
                 $scope.infoMessage  = null
                 if data?.viewModel?.errorMessage?.contains('please contact us at')
                   $scope.supportEmail = true
