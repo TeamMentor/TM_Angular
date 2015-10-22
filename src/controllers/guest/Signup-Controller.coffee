@@ -3,8 +3,10 @@ angular.module('TM_App')
           $scope.signup = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
+            $scope.isDisabled    = true #Disabling login button
             $scope.infoMessage   = "Signing you up"
             TM_API.signup $scope.username, $scope.password, $scope.confirmpassword,$scope.email,$scope.firstname,$scope.lastname,$scope.company,$scope.title,$scope.country,$scope.state, (data)->
+              $scope.isDisabled = false  #Enabling login button since async call finished
               if data?.result is 'OK'
                 $scope.infoMessage  = 'Signup OK'
                 $timeout ->

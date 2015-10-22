@@ -4,6 +4,7 @@ angular.module('TM_App')
           $scope.login = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
+            $scope.isDisabled    = true #Disabling login button
             timer =$timeout (->
               $scope.infoMessage   = 'We are experiencing slight delays. Hang on.'
             ), 3000
@@ -12,6 +13,7 @@ angular.module('TM_App')
               $timeout.cancel(timer);
               if data.result is 'OK'
                 TM_API.currentuser (userInfo)->
+                  $scope.isDisabled = false  #Enabling login button since async call finished
                   if (userInfo?.UserEnabled)
                     $rootScope.loggedInUser =true
                     $timeout ->
@@ -20,6 +22,7 @@ angular.module('TM_App')
                     $scope.infoMessage  = null
                     $scope.errorMessage = 'User account is disabled'
               else
+                $scope.isDisabled = false  #Enabling login button since async call finished
                 $scope.infoMessage  = null
                 if data?.viewModel?.errorMessage?.contains('please contact us at')
                   $scope.supportEmail = true
