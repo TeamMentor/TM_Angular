@@ -30,10 +30,12 @@ angular.module('TM_App')
                     $timeout ->
                         $window.location.href = url
                   else
+                    $scope.isDisabled = false  #Enabling login button since async call finished
                     $scope.infoMessage  = null
                     $scope.errorMessage = 'User account is disabled'
               else
                 $scope.infoMessage  = null
+                $scope.isDisabled   = false  #Enabling login button since async call finished
                 if data?.viewModel?.errorMessage?.contains('please contact us at')
                   $scope.supportEmail = true
                 $scope.errorMessage = data.viewModel?.errorMessage || 'Login Failed (Server error)'
