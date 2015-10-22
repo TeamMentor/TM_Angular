@@ -4,16 +4,14 @@ angular.module 'TM_App'
           $scope.msg_Id        = '#share_article_link'
           $scope.msg_Copy_OK   = 'Article link copied to your clipboard'
           $scope.msg_Copy_Fail = 'Copy fail'
-
-          $scope.infoMessage  = null
+          $scope.show_feedback = false
+          $scope.infoMessage   = null
 
           $scope.copy_Article_Link = ->
             $window.getSelection().removeAllRanges();
             try
               share_Link = $window.document.querySelector($scope.msg_Id);
-              range = $window.document.createRange();
-              range.selectNode(share_Link);
-              $window.getSelection().addRange(range);
+              share_Link.childNodes[0].select()
 
               if $window.document.execCommand('copy')
                 $scope.infoMessage = $scope.msg_Copy_OK
@@ -28,3 +26,9 @@ angular.module 'TM_App'
 
           $scope.showInfoMessage = ->
             $scope.infoMessage
+
+          $scope.$on 'Show_Feedback_Box',(show)->
+            $scope.show_feedback = show;
+
+          $scope.closeModalWindow = ->
+            $scope.show_feedback = false

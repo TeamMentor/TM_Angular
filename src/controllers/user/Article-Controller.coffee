@@ -1,5 +1,5 @@
 angular.module('TM_App')
-       .controller 'Article_Controller', ($sce, $scope,$state, $stateParams,$window,$timeout, TM_API, icon_Service)=>
+       .controller 'Article_Controller', ($sce, $scope,$rootScope,$state, $stateParams,$window,$timeout, TM_API, icon_Service)=>
           using $scope, ->
             @.articleUrl      = $window.location.href
             @.article_Link    = null
@@ -43,7 +43,7 @@ angular.module('TM_App')
               title = article.title?.replace(new RegExp(' ','g'),'-').remove('.')
               article.url = '/angular/user/article/' + id + '/' + title
 
-              @.article_Link = "#{$window.location.origin}/article/#{id}"
+              @.article_Link = "#{$window.location.origin}/article/#{id}/#{title}"
 
           $scope.map_Current_User = ()->
             TM_API.currentuser? (userInfo) ->
@@ -73,6 +73,8 @@ angular.module('TM_App')
           $scope.showFeedbackBanner =  ->
             return $scope.showFeedback
 
+          $scope.show_feedback_button=->
+            $rootScope.$broadcast 'Show_Feedback_Box', true
 
           # invoked on controller load
           $scope.load_Article $stateParams?.article_Id
