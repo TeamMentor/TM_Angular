@@ -2,7 +2,7 @@ angular.module 'TM_App'
        .controller 'Share_Controller', ($scope, $timeout, $window)->
 
           $scope.msg_Id         = '#share_article_link'
-          $scope.msg_Copy_OK    = 'Article link copied to your clipboard'
+          $scope.msg_Copy_OK    = 'Article link has been copied to your clipboard'
           $scope.msg_Copy_Fail  = 'Copy and share the link below'
           $scope.show_feedback  = false
           $scope.infoMessage    = null
@@ -17,7 +17,7 @@ angular.module 'TM_App'
               if $window.document.execCommand('copy')
                 $scope.infoMessage = $scope.msg_Copy_OK
                 $timeout (->
-                  $scope.infoMessage = null), 2000
+                  $scope.infoMessage = null), 100000
               else
                 $scope.infoMessage = $scope.msg_Copy_Fail
             catch
