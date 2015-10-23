@@ -1392,37 +1392,46 @@
 (function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
+      var timer;
       $scope.errorMessage = null;
       $scope.supportEmail = false;
-      $scope.infoMessage = '...logging in ...';
+      $scope.isDisabled = true;
+      timer = $timeout((function() {
+        return $scope.infoMessage = 'We are experiencing slight delays. Hang on.';
+      }), 3000);
       return TM_API.login($scope.username, $scope.password, (function(_this) {
         return function(data) {
           var ref, ref1, ref2;
+          $timeout.cancel(timer);
           if (data.result === 'OK') {
             return TM_API.currentuser(function(userInfo) {
               var ref, ref1, ref2, url;
+              $scope.isDisabled = false;
               if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
-                $scope.infoMessage = 'Login OK';
                 $rootScope.loggedInUser = true;
                 if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
                   if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
                     url = '/angular/user/index';
                   } else {
+                    $scope.isDisabled = false;
                     url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
                   }
                 } else {
+                  $scope.isDisabled = false;
                   url = '/angular/user/index';
                 }
                 return $timeout(function() {
                   return $window.location.href = url;
                 });
               } else {
+                $scope.isDisabled = false;
                 $scope.infoMessage = null;
                 return $scope.errorMessage = 'User account is disabled';
               }
             });
           } else {
             $scope.infoMessage = null;
+            $scope.isDisabled = false;
             if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
               $scope.supportEmail = true;
             }
@@ -1447,8 +1456,10 @@
 (function() {
   angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
     $scope.get_Password = function() {
-      $scope.infoMessage = "...sending request ...";
+      $scope.isDisabled = true;
+      $scope.infoMessage = "Processing your request";
       return TM_API.pwd_reset($scope.email, function(data) {
+        $scope.isDisabled = false;
         return $scope.infoMessage = data != null ? data.message : void 0;
       });
     };
@@ -1465,20 +1476,24 @@
       $scope.reset_Password = function() {
         var token, url, username;
         $scope.errorMessage = '';
-        $scope.infoMessage = "...sending request ...";
+        $scope.infoMessage = "Processing your request";
+        $scope.isDisabled = true;
         url = $location.$$url;
         if ((url != null)) {
           username = $stateParams.username;
           token = $stateParams.token;
           if ((username == null) || (token == null)) {
+            $scope.isDisabled = false;
             return $scope.errorMessage = "Request not valid";
           }
           if ($scope.password !== $scope.confirmpassword) {
             $scope.infoMessage = '';
+            $scope.isDisabled = false;
             return $scope.errorMessage = "Passwords don't match, please verify";
           }
           return TM_API.pwd_reset_Token(username, token, $scope.password, (function(_this) {
             return function(data) {
+              $scope.isDisabled = false;
               if ((data != null ? data.status : void 0) === "Ok") {
                 $scope.errorMessage = '';
                 $scope.infoMessage = data != null ? data.message : void 0;
@@ -1511,9 +1526,11 @@
     $scope.signup = function() {
       $scope.errorMessage = null;
       $scope.supportEmail = false;
-      $scope.infoMessage = "...Signing  up ...";
+      $scope.isDisabled = true;
+      $scope.infoMessage = "Signing you up";
       return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
         var ref, ref1, ref2;
+        $scope.isDisabled = false;
         if ((data != null ? data.result : void 0) === 'OK') {
           $scope.infoMessage = 'Signup OK';
           return $timeout(function() {
@@ -2408,20 +2425,22 @@
         }
       }
     };
-    $scope.update_Select_List = function() {
-      var flex_Extra_Size, input_Size, ref, ref1, select_Size, title_Size;
-      title_Size = ((ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0) * 1.2 || 16;
-      flex_Extra_Size = title_Size;
-      select_Size = (5 + flex_Extra_Size) + '%';
-      input_Size = (85 - flex_Extra_Size) + '%';
-      if (typeof $element.find === "function") {
-        $element.find('select').css('flex', select_Size);
+    $scope.set_Style = function() {
+      var multiplier, ref, ref1, size, title_Length;
+      title_Length = (ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0;
+      if (title_Length) {
+        multiplier = 19.5;
+        size = (title_Length * multiplier) + 'px';
+        return {
+          flex: size
+        };
       }
-      return typeof $element.find === "function" ? $element.find('input').css('flex', input_Size) : void 0;
+      return {
+        flex: '310px'
+      };
     };
     $scope.select_Technology = function() {
-      $scope.update_Placeholder_Text();
-      return $scope.update_Select_List();
+      return $scope.update_Placeholder_Text();
     };
     $scope.select_Technology_Mobile = function(technology) {
       $scope.selected_Technology = technology;
