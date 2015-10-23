@@ -2408,20 +2408,22 @@
         }
       }
     };
-    $scope.update_Select_List = function() {
-      var flex_Extra_Size, input_Size, ref, ref1, select_Size, title_Size;
-      title_Size = ((ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0) * 1.2 || 16;
-      flex_Extra_Size = title_Size;
-      select_Size = (5 + flex_Extra_Size) + '%';
-      input_Size = (85 - flex_Extra_Size) + '%';
-      if (typeof $element.find === "function") {
-        $element.find('select').css('flex', select_Size);
+    $scope.set_Style = function() {
+      var multiplier, ref, ref1, size, title_Length;
+      title_Length = (ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0;
+      if (title_Length) {
+        multiplier = 19.5;
+        size = (title_Length * multiplier) + 'px';
+        return {
+          flex: size
+        };
       }
-      return typeof $element.find === "function" ? $element.find('input').css('flex', input_Size) : void 0;
+      return {
+        flex: '310px'
+      };
     };
     $scope.select_Technology = function() {
-      $scope.update_Placeholder_Text();
-      return $scope.update_Select_List();
+      return $scope.update_Placeholder_Text();
     };
     $scope.select_Technology_Mobile = function(technology) {
       $scope.selected_Technology = technology;
@@ -2478,7 +2480,7 @@
     $scope.msg_Copy_Fail = 'Copy fail';
     $scope.infoMessage = null;
     $scope.copy_Article_Link = function() {
-      var error, range, share_Link;
+      var range, share_Link;
       $window.getSelection().removeAllRanges();
       try {
         share_Link = $window.document.querySelector($scope.msg_Id);
@@ -2490,7 +2492,7 @@
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }
-      } catch (error) {
+      } catch (_error) {
         $scope.infoMessage = $scope.msg_Copy_Fail;
       }
       $window.getSelection().removeAllRanges();
