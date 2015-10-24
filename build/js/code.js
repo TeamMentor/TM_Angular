@@ -2508,7 +2508,7 @@
           $scope.infoMessage = $scope.msg_Copy_OK;
           $timeout((function() {
             return $scope.infoMessage = null;
-          }), 100000);
+          }), 3000);
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }

@@ -17,7 +17,7 @@ angular.module 'TM_App'
               if $window.document.execCommand('copy')
                 $scope.infoMessage = $scope.msg_Copy_OK
                 $timeout (->
-                  $scope.infoMessage = null), 100000
+                  $scope.infoMessage = null), 3000
               else
                 $scope.infoMessage = $scope.msg_Copy_Fail
             catch
