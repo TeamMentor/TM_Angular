@@ -300,6 +300,36 @@
 }).call(this);
 
 (function() {
+  var app, routes_Names;
+
+  app = angular.module('TM_App');
+
+  routes_Names = {
+    components: {},
+    views: {
+      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
+      user_Root: ['docs', 'terms-and-conditions'],
+      user_User: ['main', 'index', 'articles', 'error']
+    }
+  };
+
+  app.constant('routes_Names', routes_Names);
+
+}).call(this);
+
+(function() {
+  var tm_angular_config;
+
+  tm_angular_config = {
+    log_Events: false,
+    log_Urls: false
+  };
+
+  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').directive('dynamic', function($compile) {
     return {
       restrict: 'A',
@@ -382,36 +412,6 @@
       }
     });
   });
-
-}).call(this);
-
-(function() {
-  var app, routes_Names;
-
-  app = angular.module('TM_App');
-
-  routes_Names = {
-    components: {},
-    views: {
-      guest: ['about', 'features', 'home', 'login', 'pwd_forgot', 'sign_up'],
-      user_Root: ['docs', 'terms-and-conditions'],
-      user_User: ['main', 'index', 'articles', 'error']
-    }
-  };
-
-  app.constant('routes_Names', routes_Names);
-
-}).call(this);
-
-(function() {
-  var tm_angular_config;
-
-  tm_angular_config = {
-    log_Events: false,
-    log_Urls: false
-  };
-
-  angular.module('TM_App').constant('tm_angular_config', tm_angular_config);
 
 }).call(this);
 
@@ -535,6 +535,125 @@
       }
     };
   });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('error');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, view_Name;
+    ref = routes_Names.views.guest;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      });
+    }
+    $stateProvider.state('pwd_reset', {
+      url: "/pwd_reset/:username/:token",
+      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
+    });
+    return $stateProvider.state('docs_id', {
+      url: "/docs/:id",
+      templateUrl: "/angular/jade-html/views/docs"
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('guide_id', {
+      url: "/guides/:id",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
 
 }).call(this);
 
@@ -1264,125 +1383,6 @@
 }).call(this);
 
 (function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('error');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, view_Name;
-    ref = routes_Names.views.guest;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      });
-    }
-    $stateProvider.state('pwd_reset', {
-      url: "/pwd_reset/:username/:token",
-      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
-    });
-    return $stateProvider.state('docs_id', {
-      url: "/docs/:id",
-      templateUrl: "/angular/jade-html/views/docs"
-    });
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('guides', {
-      url: "/guides",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('guide_id', {
-      url: "/guides/:id",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('index_query_id_filters', {
-      url: "/index/:query_Id/:filters",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-
-  /*
-  app.run ($rootScope,$window,TM_API, routes_Names) =>
-    $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        return
-      else
-        TM_API.currentuser (userInfo) =>
-          if (userInfo? && userInfo?.UserEnabled)
-            return
-          else
-            $window.location.href = '/angular/guest/login'
-    return
-   */
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Events_Controller', function($scope) {
     return $scope.test = 'asd';
   });
@@ -1572,7 +1572,7 @@
 
 (function() {
   angular.module('TM_App').controller('Article_Controller', (function(_this) {
-    return function($sce, $scope, $state, $stateParams, $window, $timeout, TM_API, icon_Service) {
+    return function($sce, $scope, $rootScope, $state, $stateParams, $window, $timeout, TM_API, icon_Service) {
       using($scope, function() {
         this.articleUrl = $window.location.href;
         this.article_Link = null;
@@ -1606,7 +1606,7 @@
           id = (ref = article.id) != null ? ref.remove('article-') : void 0;
           title = (ref1 = article.title) != null ? ref1.replace(new RegExp(' ', 'g'), '-').remove('.') : void 0;
           article.url = '/angular/user/article/' + id + '/' + title;
-          return this.article_Link = $window.location.origin + "/article/" + id;
+          return this.article_Link = $window.location.origin + "/article/" + id + "/" + title;
         }
       };
       $scope.map_Current_User = function() {
@@ -1659,6 +1659,9 @@
       };
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
+      };
+      $scope.show_feedback_button = function() {
+        return $rootScope.$broadcast('Show_Feedback_Box', true);
       };
       $scope.load_Article($stateParams != null ? $stateParams.article_Id : void 0);
       return $scope.map_Current_User();
@@ -1899,8 +1902,9 @@
         });
       }
     };
-  }).controller('Gateways_Controller', function($sce, $state, $scope, TM_API, $location, icon_Service, $stateParams) {
+  }).controller('Gateways_Controller', function($sce, $state, $scope, $rootScope, $window, TM_API, $location, icon_Service, $stateParams) {
     $scope.Library = {};
+    this.article_Link = null;
     $scope.load_Article = function($event, article_Id) {
       $event.preventDefault();
       $state.go('guide_id', {
@@ -1916,6 +1920,7 @@
         return TM_API.article(article, function(article_Data) {
           var attr, href, i, len, link, links, originalHtml, value;
           if (article_Data) {
+            $scope.map_Article_Url(article_Data);
             $scope.article = article_Data;
             $scope.title = article_Data.title;
             $scope.icon_Technology = $sce.trustAsHtml(icon_Service.element_Html(article_Data.technology));
@@ -1942,6 +1947,15 @@
             return $scope.content = article_Data.article_Html;
           }
         });
+      }
+    };
+    $scope.map_Article_Url = function(article) {
+      var id, ref, ref1, title;
+      if (article) {
+        id = (ref = article.id) != null ? ref.remove('article-') : void 0;
+        title = (ref1 = article.title) != null ? ref1.replace(new RegExp(' ', 'g'), '-').remove('.') : void 0;
+        article.url = '/angular/user/article/' + id + '/' + title;
+        return this.article_Link = $window.location.origin + "/article/" + id + "/" + title;
       }
     };
     $scope.map_Current_User = function() {
@@ -1987,6 +2001,9 @@
     };
     $scope.map_Current_User();
     $scope.load_Library();
+    $scope.show_feedback_button = function() {
+      return $rootScope.$broadcast('Show_Feedback_Box', true);
+    };
     return window._stateParams = $stateParams;
   });
 
@@ -2476,32 +2493,61 @@
 (function() {
   angular.module('TM_App').controller('Share_Controller', function($scope, $timeout, $window) {
     $scope.msg_Id = '#share_article_link';
-    $scope.msg_Copy_OK = 'Article link copied to your clipboard';
-    $scope.msg_Copy_Fail = 'Copy fail';
+    $scope.msg_Copy_OK = 'Article link has been copied to your clipboard';
+    $scope.msg_Copy_Fail = 'Copy and share the link below';
+    $scope.show_feedback = false;
     $scope.infoMessage = null;
+    $scope.showCopyButton = null;
     $scope.copy_Article_Link = function() {
-      var range, share_Link;
+      var error, share_Link;
       $window.getSelection().removeAllRanges();
       try {
         share_Link = $window.document.querySelector($scope.msg_Id);
-        range = $window.document.createRange();
-        range.selectNode(share_Link);
-        $window.getSelection().addRange(range);
+        $window.document.getElementById("share_link").select();
         if ($window.document.execCommand('copy')) {
           $scope.infoMessage = $scope.msg_Copy_OK;
+          $timeout((function() {
+            return $scope.infoMessage = null;
+          }), 3000);
         } else {
           $scope.infoMessage = $scope.msg_Copy_Fail;
         }
-      } catch (_error) {
+      } catch (error) {
         $scope.infoMessage = $scope.msg_Copy_Fail;
       }
-      $window.getSelection().removeAllRanges();
       return $timeout((function() {
-        return $scope.infoMessage = null;
-      }), 2000);
+        return window.getSelection().removeAllRanges();
+      }), 5000);
     };
-    return $scope.showInfoMessage = function() {
+    $scope.showInfoMessage = function() {
       return $scope.infoMessage;
+    };
+    $scope.$on('Show_Feedback_Box', function(show) {
+      $scope.show_feedback = show;
+      return $timeout((function() {
+        $window.document.querySelector($scope.msg_Id).childNodes[0].focus();
+        return $window.document.querySelector($scope.msg_Id).childNodes[0].select();
+      }), 1);
+    });
+    $scope.closeModalWindow = function() {
+      $scope.show_feedback = false;
+      return $window.getSelection().removeAllRanges();
+    };
+    $scope.supportedCopyToClipboard = function() {
+      var isChrome, isFF, ua;
+      ua = $window.navigator.userAgent;
+      isChrome = ua.indexOf('Chrome') !== -1;
+      isFF = ua.indexOf('Firefox') !== -1;
+      return isChrome || isFF;
+    };
+    return $scope.modalMessage = function() {
+      if ($scope.supportedCopyToClipboard()) {
+        $scope.showCopyButton = true;
+        return "Share this article";
+      } else {
+        $scope.showCopyButton = false;
+        return $scope.msg_Copy_Fail;
+      }
     };
   });
 
