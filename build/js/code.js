@@ -2541,14 +2541,16 @@
       return isChrome || isFF;
     };
     return $scope.modalMessage = function() {
-      if ($scope.supportedCopyToClipboard()) {
-        $scope.showCopyButton = true;
-        return "Share this article";
-      } else {
-        $scope.showCopyButton = false;
-        return $scope.msg_Copy_Fail;
-      }
+      return "Copy the shareable link below";
     };
+
+    /*if ($scope.supportedCopyToClipboard())
+      $scope.showCopyButton = true
+      return "Share this article"
+    else
+      $scope.showCopyButton = false
+      return $scope.msg_Copy_Fail
+     */
   });
 
 }).call(this);
