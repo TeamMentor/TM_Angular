@@ -48,11 +48,12 @@ angular.module 'TM_App'
              return (isChrome || isFF)
 
           $scope.modalMessage =->
-             if ($scope.supportedCopyToClipboard())
-               $scope.showCopyButton = true
-               return "Share this article"
-             else
-               $scope.showCopyButton = false
-               return $scope.msg_Copy_Fail
+            return "Copy the shareable link below"
+           ###if ($scope.supportedCopyToClipboard())
+             $scope.showCopyButton = true
+             return "Share this article"
+           else
+             $scope.showCopyButton = false
+             return $scope.msg_Copy_Fail###
 
 
