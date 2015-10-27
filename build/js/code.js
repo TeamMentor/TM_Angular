@@ -1580,11 +1580,18 @@
         return this.articleLoaded = false;
       });
       $scope.load_Article = function(article_Id) {
+        $scope.redirectMessage = '';
         if (!article_Id) {
           return null;
         }
         return TM_API.article(article_Id, function(article) {
           $scope.articleLoaded = true;
+          if (((article != null ? article.redirectUrl : void 0) != null)) {
+            $scope.redirectMessage = "Article not found in this free TEAM Mentor edition, you are being redirected to the full TEAM Mentor site";
+            $timeout((function() {
+              return $window.location.href = article.redirectUrl;
+            }), 3000);
+          }
           if (article) {
             $scope.map_Guide_Article(article);
             $scope.map_Article_Url(article);
@@ -1659,6 +1666,9 @@
       };
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
+      };
+      $scope.showRedirectMessage = function() {
+        return $scope.redirectMessage.length > 0;
       };
       $scope.show_feedback_button = function() {
         return $rootScope.$broadcast('Show_Feedback_Box', true);
