@@ -1914,6 +1914,8 @@
     };
   }).controller('Gateways_Controller', function($sce, $state, $scope, $rootScope, $window, TM_API, $location, icon_Service, $stateParams) {
     $scope.Library = {};
+    $scope.NoGuidesMessage = "Guides not availale in this version of TEAMMentor.";
+    $scope.ShowMessage = false;
     this.article_Link = null;
     $scope.load_Article = function($event, article_Id) {
       $event.preventDefault();
@@ -1994,6 +1996,7 @@
       return TM_API.gatewaysLibrary(function(data) {
         var articleId, ref, ref1, ref2, ref3;
         if (data) {
+          $scope.ShowMessage = false;
           $scope.Library.title = data.title;
           $scope.Library.Views = data.Views;
           articleId = $stateParams.id;
@@ -2002,8 +2005,13 @@
           } else {
             return $scope.show_Article(data != null ? (ref = data.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? (ref3 = ref2.first()) != null ? ref3.id : void 0 : void 0 : void 0 : void 0 : void 0);
           }
+        } else {
+          return $scope.ShowMessage = true;
         }
       });
+    };
+    $scope.showNoGuidesMessage = function() {
+      return $scope.ShowMessage;
     };
     $scope.showMetadata = function() {
       var ref, ref1, ref2;

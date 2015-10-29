@@ -11,7 +11,10 @@ angular.module('TM_App')
           return
 
       .controller 'Gateways_Controller', ($sce, $state, $scope, $rootScope,$window, TM_API, $location,icon_Service,$stateParams)->
-        $scope.Library    = {}
+        $scope.Library         = {}
+        $scope.NoGuidesMessage = "Guides not availale in this version of TEAMMentor."
+        $scope.ShowMessage     = false;
+
         @.article_Link    = null
 
         $scope.load_Article = ($event, article_Id)->
@@ -78,6 +81,7 @@ angular.module('TM_App')
         $scope.load_Library = ()->
           TM_API.gatewaysLibrary (data)->
             if data
+              $scope.ShowMessage   = false
               $scope.Library.title = data.title
               $scope.Library.Views = data.Views;
               articleId =  $stateParams.id #$location.$$hash
@@ -85,7 +89,11 @@ angular.module('TM_App')
                 $scope.show_Article articleId
               else
                 $scope.show_Article data?.Views?.first()?.Articles?.first()?.id
+            else
+              $scope.ShowMessage = true
 
+        $scope.showNoGuidesMessage = ->
+          return $scope.ShowMessage
 
         $scope.showMetadata = ->
           return $scope.article?.phase? || $scope.article?.technology? || $scope.article?.technology?
