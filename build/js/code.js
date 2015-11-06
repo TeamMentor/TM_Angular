@@ -1580,11 +1580,18 @@
         return this.articleLoaded = false;
       });
       $scope.load_Article = function(article_Id) {
+        $scope.redirectMessage = '';
         if (!article_Id) {
           return null;
         }
         return TM_API.article(article_Id, function(article) {
           $scope.articleLoaded = true;
+          if (((article != null ? article.redirectUrl : void 0) != null)) {
+            $scope.redirectMessage = "Article not found in this free TEAM Mentor edition, you are being redirected to the full TEAM Mentor site";
+            $timeout((function() {
+              return $window.location.href = article.redirectUrl;
+            }), 3000);
+          }
           if (article) {
             $scope.map_Guide_Article(article);
             $scope.map_Article_Url(article);
@@ -1659,6 +1666,9 @@
       };
       $scope.showFeedbackBanner = function() {
         return $scope.showFeedback;
+      };
+      $scope.showRedirectMessage = function() {
+        return $scope.redirectMessage.length > 0;
       };
       $scope.show_feedback_button = function() {
         return $rootScope.$broadcast('Show_Feedback_Box', true);
@@ -1904,6 +1914,8 @@
     };
   }).controller('Gateways_Controller', function($sce, $state, $scope, $rootScope, $window, TM_API, $location, icon_Service, $stateParams) {
     $scope.Library = {};
+    $scope.NoGuidesMessage = "Guides not availale in this version of TEAMMentor.";
+    $scope.ShowMessage = false;
     this.article_Link = null;
     $scope.load_Article = function($event, article_Id) {
       $event.preventDefault();
@@ -1984,6 +1996,7 @@
       return TM_API.gatewaysLibrary(function(data) {
         var articleId, ref, ref1, ref2, ref3;
         if (data) {
+          $scope.ShowMessage = false;
           $scope.Library.title = data.title;
           $scope.Library.Views = data.Views;
           articleId = $stateParams.id;
@@ -1992,8 +2005,13 @@
           } else {
             return $scope.show_Article(data != null ? (ref = data.Views) != null ? (ref1 = ref.first()) != null ? (ref2 = ref1.Articles) != null ? (ref3 = ref2.first()) != null ? ref3.id : void 0 : void 0 : void 0 : void 0 : void 0);
           }
+        } else {
+          return $scope.ShowMessage = true;
         }
       });
+    };
+    $scope.showNoGuidesMessage = function() {
+      return $scope.ShowMessage;
     };
     $scope.showMetadata = function() {
       var ref, ref1, ref2;

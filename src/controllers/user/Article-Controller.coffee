@@ -7,11 +7,17 @@ angular.module('TM_App')
             @.articleLoaded   = false
 
           $scope.load_Article = (article_Id)->
+            $scope.redirectMessage =''
             if not article_Id
               return null
             TM_API.article article_Id, (article)->
 
               $scope.articleLoaded  = true
+              if (article?.redirectUrl?)
+                $scope.redirectMessage     ="Article not found in this free TEAM Mentor edition, you are being redirected to the full TEAM Mentor site"
+                $timeout (->
+                  $window.location.href = article.redirectUrl
+                ), 3000
               if article
                 $scope.map_Guide_Article article
 
@@ -72,6 +78,9 @@ angular.module('TM_App')
 
           $scope.showFeedbackBanner =  ->
             return $scope.showFeedback
+
+          $scope.showRedirectMessage = ->
+            return $scope.redirectMessage.length >0
 
           $scope.show_feedback_button=->
             $rootScope.$broadcast 'Show_Feedback_Box', true
