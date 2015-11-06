@@ -2020,6 +2020,7 @@
     using($scope, function() {
       this.history = {};
       this.view_Filters = false;
+      this.view_found_issue = false;
       this.column_Left = 'col-3';
       this.column_Middle = 'col-9';
       this.column_Right = 'col-0';
@@ -2028,6 +2029,7 @@
       return this.$on('toggle_filters', (function(_this) {
         return function(event) {
           $scope.view_Filters = !$scope.view_Filters;
+          $scope.view_found_issue = !$scope.view_found_issue;
           if ($scope.view_Filters) {
             _this.column_Middle = 'col-6';
             return _this.column_Right = 'col-3';

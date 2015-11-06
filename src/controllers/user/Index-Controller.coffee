@@ -12,17 +12,19 @@ angular.module 'TM_App'
           #console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
           using $scope, ->
-            @.history       = {}
-            @.view_Filters  = false
-            @.column_Left   = 'col-3'
-            @.column_Middle = 'col-9'
-            @.column_Right  = 'col-0'
+            @.history           = {}
+            @.view_Filters      = false
+            @.view_found_issue  = false
+            @.column_Left       = 'col-3'
+            @.column_Middle     = 'col-9'
+            @.column_Right      = 'col-0'
 
             @.current_Query_Id = null
             @.current_Filters = null
 
             @.$on 'toggle_filters' , (event)=>
-              $scope.view_Filters = not $scope.view_Filters
+              $scope.view_Filters     = not $scope.view_Filters
+              $scope.view_found_issue = not $scope.view_found_issue
               if $scope.view_Filters
                 @.column_Middle = 'col-6'
                 @.column_Right  = 'col-3'
