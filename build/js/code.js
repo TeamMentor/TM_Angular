@@ -1383,13 +1383,6 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
-  });
-
-}).call(this);
-
-(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       var timer;
@@ -1554,6 +1547,13 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -2451,7 +2451,7 @@
       title_Length = (ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0;
       multiplier = 18;
       if (title_Length) {
-        size = title_Length <= 5 ? 105 : title_Length * multiplier;
+        size = title_Length <= 5 ? 115 : title_Length * multiplier;
         return {
           flex: size + 'px'
         };

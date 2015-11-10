@@ -77,7 +77,7 @@ angular.module('TM_App')
             multiplier   = 18
 
             if title_Length
-              size =  if title_Length  <= 5 then 105 else title_Length * multiplier
+              size =  if title_Length  <= 5 then 115 else title_Length * multiplier
               return { flex: size + 'px'}
             return { flex: '310px' }
 
