@@ -539,178 +539,121 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('error');
+    return $locationProvider.html5Mode(true);
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
-    $scope.login = function() {
-      var timer;
-      $scope.errorMessage = null;
-      $scope.supportEmail = false;
-      $scope.isDisabled = true;
-      timer = $timeout((function() {
-        return $scope.infoMessage = 'We are experiencing slight delays. Hang on.';
-      }), 3000);
-      return TM_API.login($scope.username, $scope.password, (function(_this) {
-        return function(data) {
-          var ref, ref1, ref2;
-          $timeout.cancel(timer);
-          if (data.result === 'OK') {
-            return TM_API.currentuser(function(userInfo) {
-              var ref, ref1, ref2, url;
-              $scope.isDisabled = false;
-              if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
-                $rootScope.loggedInUser = true;
-                if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
-                  if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
-                    url = '/angular/user/index';
-                  } else {
-                    $scope.isDisabled = false;
-                    url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
-                  }
-                } else {
-                  $scope.isDisabled = false;
-                  url = '/angular/user/index';
-                }
-                return $timeout(function() {
-                  return $window.location.href = url;
-                });
-              } else {
-                $scope.isDisabled = false;
-                $scope.infoMessage = null;
-                return $scope.errorMessage = 'User account is disabled';
-              }
-            });
-          } else {
-            $scope.infoMessage = null;
-            $scope.isDisabled = false;
-            if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
-              $scope.supportEmail = true;
-            }
-            return $scope.errorMessage = ((ref2 = data.viewModel) != null ? ref2.errorMessage : void 0) || 'Login Failed (Server error)';
-          }
-        };
-      })(this));
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    $scope.showSupportEmail = function() {
-      return $scope.supportEmail;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
-  });
+  var app;
 
-}).call(this);
+  app = angular.module('TM_App');
 
-(function() {
-  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
-    $scope.get_Password = function() {
-      $scope.isDisabled = true;
-      $scope.infoMessage = "Processing your request";
-      return TM_API.pwd_reset($scope.email, function(data) {
-        $scope.isDisabled = false;
-        return $scope.infoMessage = data != null ? data.message : void 0;
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, view_Name;
+    ref = routes_Names.views.guest;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
       });
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+    }
+    $stateProvider.state('pwd_reset', {
+      url: "/pwd_reset/:username/:token",
+      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
+    });
+    return $stateProvider.state('docs_id', {
+      url: "/docs/:id",
+      templateUrl: "/angular/jade-html/views/docs"
+    });
   });
 
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('Pwd_Reset_Controller', (function(_this) {
-    return function($state, $scope, TM_API, $location, $timeout, $stateParams) {
-      $scope.reset_Password = function() {
-        var token, url, username;
-        $scope.errorMessage = '';
-        $scope.infoMessage = "Processing your request";
-        $scope.isDisabled = true;
-        url = $location.$$url;
-        if ((url != null)) {
-          username = $stateParams.username;
-          token = $stateParams.token;
-          if ((username == null) || (token == null)) {
-            $scope.isDisabled = false;
-            return $scope.errorMessage = "Request not valid";
-          }
-          if ($scope.password !== $scope.confirmpassword) {
-            $scope.infoMessage = '';
-            $scope.isDisabled = false;
-            return $scope.errorMessage = "Passwords don't match, please verify";
-          }
-          return TM_API.pwd_reset_Token(username, token, $scope.password, (function(_this) {
-            return function(data) {
-              $scope.isDisabled = false;
-              if ((data != null ? data.status : void 0) === "Ok") {
-                $scope.errorMessage = '';
-                $scope.infoMessage = data != null ? data.message : void 0;
-                return $timeout((function() {
-                  return $state.go('login');
-                }), 2000);
-              } else {
-                $scope.errorMessage = data != null ? data.message : void 0;
-                return $scope.infoMessage = '';
-              }
-            };
-          })(this));
-        } else {
-          return $scope.errorMessage = "Unable to process your request";
-        }
-      };
-      $scope.showInfoMessage = function() {
-        return $scope.infoMessage;
-      };
-      return $scope.showErrorMessage = function() {
-        return $scope.errorMessage;
-      };
-    };
-  })(this));
+  var app;
 
-}).call(this);
+  app = angular.module('TM_App');
 
-(function() {
-  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
-    $scope.signup = function() {
-      $scope.errorMessage = null;
-      $scope.supportEmail = false;
-      $scope.isDisabled = true;
-      $scope.infoMessage = "Signing you up";
-      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
-        var ref, ref1, ref2;
-        $scope.isDisabled = false;
-        if ((data != null ? data.result : void 0) === 'OK') {
-          $scope.infoMessage = 'Signup OK';
-          return $timeout(function() {
-            return $window.location.href = '/angular/user/index';
-          });
-        } else {
-          $scope.infoMessage = null;
-          if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
-            $scope.supportEmail = true;
-          }
-          return $scope.errorMessage = (data != null ? (ref2 = data.viewModel) != null ? ref2.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
-        }
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
       });
-    };
-    $scope.showErrorMessage = function() {
-      return $scope.errorMessage;
-    };
-    $scope.showSupportEmail = function() {
-      return $scope.supportEmail;
-    };
-    return $scope.showInfoMessage = function() {
-      return $scope.infoMessage;
-    };
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('guide_id', {
+      url: "/guides/:id",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
   });
+
+
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
 
 }).call(this);
 
@@ -1435,6 +1378,182 @@
       return element;
     };
     return $$;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
+    $scope.login = function() {
+      var timer;
+      $scope.errorMessage = null;
+      $scope.supportEmail = false;
+      $scope.isDisabled = true;
+      timer = $timeout((function() {
+        return $scope.infoMessage = 'We are experiencing slight delays. Hang on.';
+      }), 3000);
+      return TM_API.login($scope.username, $scope.password, (function(_this) {
+        return function(data) {
+          var ref, ref1, ref2;
+          $timeout.cancel(timer);
+          if (data.result === 'OK') {
+            return TM_API.currentuser(function(userInfo) {
+              var ref, ref1, ref2, url;
+              $scope.isDisabled = false;
+              if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
+                $rootScope.loggedInUser = true;
+                if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
+                  if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
+                    url = '/angular/user/index';
+                  } else {
+                    $scope.isDisabled = false;
+                    url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
+                  }
+                } else {
+                  $scope.isDisabled = false;
+                  url = '/angular/user/index';
+                }
+                return $timeout(function() {
+                  return $window.location.href = url;
+                });
+              } else {
+                $scope.isDisabled = false;
+                $scope.infoMessage = null;
+                return $scope.errorMessage = 'User account is disabled';
+              }
+            });
+          } else {
+            $scope.infoMessage = null;
+            $scope.isDisabled = false;
+            if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
+              $scope.supportEmail = true;
+            }
+            return $scope.errorMessage = ((ref2 = data.viewModel) != null ? ref2.errorMessage : void 0) || 'Login Failed (Server error)';
+          }
+        };
+      })(this));
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    $scope.showSupportEmail = function() {
+      return $scope.supportEmail;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Pwd_Forgot_Controller', function($scope, TM_API, $location, $timeout) {
+    $scope.get_Password = function() {
+      $scope.isDisabled = true;
+      $scope.infoMessage = "Processing your request";
+      return TM_API.pwd_reset($scope.email, function(data) {
+        $scope.isDisabled = false;
+        return $scope.infoMessage = data != null ? data.message : void 0;
+      });
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Pwd_Reset_Controller', (function(_this) {
+    return function($state, $scope, TM_API, $location, $timeout, $stateParams) {
+      $scope.reset_Password = function() {
+        var token, url, username;
+        $scope.errorMessage = '';
+        $scope.infoMessage = "Processing your request";
+        $scope.isDisabled = true;
+        url = $location.$$url;
+        if ((url != null)) {
+          username = $stateParams.username;
+          token = $stateParams.token;
+          if ((username == null) || (token == null)) {
+            $scope.isDisabled = false;
+            return $scope.errorMessage = "Request not valid";
+          }
+          if ($scope.password !== $scope.confirmpassword) {
+            $scope.infoMessage = '';
+            $scope.isDisabled = false;
+            return $scope.errorMessage = "Passwords don't match, please verify";
+          }
+          return TM_API.pwd_reset_Token(username, token, $scope.password, (function(_this) {
+            return function(data) {
+              $scope.isDisabled = false;
+              if ((data != null ? data.status : void 0) === "Ok") {
+                $scope.errorMessage = '';
+                $scope.infoMessage = data != null ? data.message : void 0;
+                return $timeout((function() {
+                  return $state.go('login');
+                }), 2000);
+              } else {
+                $scope.errorMessage = data != null ? data.message : void 0;
+                return $scope.infoMessage = '';
+              }
+            };
+          })(this));
+        } else {
+          return $scope.errorMessage = "Unable to process your request";
+        }
+      };
+      $scope.showInfoMessage = function() {
+        return $scope.infoMessage;
+      };
+      return $scope.showErrorMessage = function() {
+        return $scope.errorMessage;
+      };
+    };
+  })(this));
+
+}).call(this);
+
+(function() {
+  angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.signup = function() {
+      $scope.errorMessage = null;
+      $scope.supportEmail = false;
+      $scope.isDisabled = true;
+      $scope.infoMessage = "Signing you up";
+      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+        var ref, ref1, ref2;
+        $scope.isDisabled = false;
+        if ((data != null ? data.result : void 0) === 'OK') {
+          $scope.infoMessage = 'Signup OK';
+          return $timeout(function() {
+            return $window.location.href = '/angular/user/index';
+          });
+        } else {
+          $scope.infoMessage = null;
+          if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
+            $scope.supportEmail = true;
+          }
+          return $scope.errorMessage = (data != null ? (ref2 = data.viewModel) != null ? ref2.errorMessage : void 0 : void 0) || 'Signup Failed (Server error)';
+        }
+      });
+    };
+    $scope.showErrorMessage = function() {
+      return $scope.errorMessage;
+    };
+    $scope.showSupportEmail = function() {
+      return $scope.supportEmail;
+    };
+    return $scope.showInfoMessage = function() {
+      return $scope.infoMessage;
+    };
   });
 
 }).call(this);
@@ -2330,11 +2449,11 @@
     $scope.set_Style = function() {
       var multiplier, ref, ref1, size, title_Length;
       title_Length = (ref = $scope.selected_Technology) != null ? (ref1 = ref.title) != null ? ref1.length : void 0 : void 0;
+      multiplier = 18;
       if (title_Length) {
-        multiplier = 19.5;
-        size = (title_Length * multiplier) + 'px';
+        size = title_Length <= 5 ? 105 : title_Length * multiplier;
         return {
-          flex: size
+          flex: size + 'px'
         };
       }
       return {
@@ -2585,124 +2704,5 @@
       };
     });
   });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('error');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, view_Name;
-    ref = routes_Names.views.guest;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      });
-    }
-    $stateProvider.state('pwd_reset', {
-      url: "/pwd_reset/:username/:token",
-      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
-    });
-    return $stateProvider.state('docs_id', {
-      url: "/docs/:id",
-      templateUrl: "/angular/jade-html/views/docs"
-    });
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('guides', {
-      url: "/guides",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('guide_id', {
-      url: "/guides/:id",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('index_query_id_filters', {
-      url: "/index/:query_Id/:filters",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-
-  /*
-  app.run ($rootScope,$window,TM_API, routes_Names) =>
-    $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        return
-      else
-        TM_API.currentuser (userInfo) =>
-          if (userInfo? && userInfo?.UserEnabled)
-            return
-          else
-            $window.location.href = '/angular/guest/login'
-    return
-   */
 
 }).call(this);
