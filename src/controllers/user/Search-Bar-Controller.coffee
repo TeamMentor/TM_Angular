@@ -74,10 +74,11 @@ angular.module('TM_App')
           $scope.set_Style = ()->
 
             title_Length = $scope.selected_Technology?.title?.length
+            multiplier   = 18
+
             if title_Length
-              multiplier = 19.5       # if (title_Length < 6) then 19.5 else 16  # this works better in bigger screens
-              size = (title_Length * multiplier) + 'px'
-              return { flex: size}
+              size =  if title_Length  <= 5 then 115 else title_Length * multiplier
+              return { flex: size + 'px'}
             return { flex: '310px' }
 
           $scope.select_Technology = ()->
