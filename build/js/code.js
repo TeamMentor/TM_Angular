@@ -1383,6 +1383,13 @@
 }).call(this);
 
 (function() {
+  angular.module('TM_App').controller('Events_Controller', function($scope) {
+    return $scope.test = 'asd';
+  });
+
+}).call(this);
+
+(function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
     $scope.login = function() {
       var timer;
@@ -1547,13 +1554,6 @@
     return $scope.showInfoMessage = function() {
       return $scope.infoMessage;
     };
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('TM_App').controller('Events_Controller', function($scope) {
-    return $scope.test = 'asd';
   });
 
 }).call(this);
@@ -2666,12 +2666,15 @@
       });
     });
     return $scope.open_Query_State = function() {
-      var ref;
+      var ref, ref1;
       if (this.index_States.contains((ref = $state.current) != null ? ref.name : void 0)) {
         $rootScope.$broadcast('clear_filter', 'All');
         $rootScope.$broadcast('loading_query', null, null);
         return query_Service.reload_Data();
       } else {
+        if (((ref1 = $state.current) != null ? ref1.name : void 0) === 'article') {
+          $rootScope.$broadcast('clear_filter', 'All');
+        }
         return $timeout(function() {
           return $state.go('index');
         });
