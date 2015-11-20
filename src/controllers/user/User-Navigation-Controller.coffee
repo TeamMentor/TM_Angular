@@ -20,6 +20,8 @@ angular.module('TM_App')
               $rootScope.$broadcast 'loading_query', null, null   # to clear existing query_Ids and Filter mappings
               query_Service.reload_Data()                         # trigger data reload
             else
+              if $state.current?.name =='article'
+                $rootScope.$broadcast 'clear_filter', 'All'
               $timeout ->
                 $state.go 'index'
 
