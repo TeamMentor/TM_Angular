@@ -13,8 +13,8 @@ describe '| controllers | Start-View-Controller.test',->
     inject ($controller, $rootScope, $httpBackend)->
       $httpBackend.expectGET('/jade/json/my-articles/10').respond []
       $httpBackend.expectGET('/jade/json/toparticles').respond []
-      $httpBackend.expectGET('/jade/json/recentarticles').respond []
-      $httpBackend.expectGET('/jade/json/search/recentsearch/10').respond []
+      $httpBackend.expectGET('/jade/json/recentarticles/10').respond []
+      $httpBackend.expectGET('/jade/json/search/recentsearch').respond []
       scope       = $rootScope.$new()
       $controller('Start_View_Controller', { $scope: scope})
       $httpBackend.flush()

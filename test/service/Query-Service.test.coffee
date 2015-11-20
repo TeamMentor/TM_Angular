@@ -26,6 +26,7 @@ describe '| services | Query-Service', ->
 
   it 'load_Data', ->
     inject (query_Service, $rootScope, $httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/query-6234f2d47eb7/0/10').respond  [{ a: 42 }]
       using query_Service, ->
         @.load_Data()
@@ -34,6 +35,7 @@ describe '| services | Query-Service', ->
 
   it 'load_Query (no id)', ->
     inject (query_Service, $rootScope, $httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/undefined/0/10').respond {}
 
       using query_Service, ->
@@ -41,14 +43,16 @@ describe '| services | Query-Service', ->
         $httpBackend.flush()
 
       using $rootScope.$broadcast.calls.all(), ->
-        @.size().assert_Is 4
+        @.size().assert_Is 5
         @[0].args.assert_Is [ 'loading_query', undefined , undefined, 0, 10 ]
         @[1].args.assert_Is [ 'http_start' ]
-        @[2].args.assert_Is [ 'http_end'   ]
-        @[3].args.assert_Is [ 'view_model_data',  {} ]
+        @[2].args.assert_Is [ 'http_start' ]
+        @[3].args.assert_Is [ 'http_end'   ]
+        @[4].args.assert_Is [ 'view_model_data',  { UserInfo:null} ]
 
   it 'load_Query (with query_Id, no filters)', ->
     inject (query_Service, $rootScope, $httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/an-query-id/0/10').respond  { id: 42 }
 
       using query_Service, ->
@@ -56,15 +60,16 @@ describe '| services | Query-Service', ->
         $httpBackend.flush()
 
       using $rootScope.$broadcast.calls.all(), ->
-        @.size().assert_Is 4
+        @.size().assert_Is 5
         @[0].args.assert_Is [ 'loading_query', 'an-query-id', undefined, 0, 10 ]
         @[1].args.assert_Is [ 'http_start' ]
-        @[2].args.assert_Is [ 'http_end'   ]
-        @[3].args.assert_Is [ 'view_model_data',  { id: 42 } ]
+        @[2].args.assert_Is [ 'http_start' ]
+        @[3].args.assert_Is [ 'http_end'   ]
+        @[4].args.assert_Is [ 'view_model_data',  { id: 42, UserInfo: null} ]
 
   it '@.load_Query  (with query_Id and filters)', ->
     inject (query_Service, $rootScope, $httpBackend)->
-
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model_filtered/an-query-id/an-filter-id/0/10').respond  { id: 42 }
 
       using query_Service, ->
@@ -72,15 +77,17 @@ describe '| services | Query-Service', ->
         $httpBackend.flush()
 
       using $rootScope.$broadcast.calls.all(), ->
-        @.size().assert_Is 4
+        @.size().assert_Is 5
         @[0].args.assert_Is [ 'loading_query', 'an-query-id', 'an-filter-id', 0, 10 ]
         @[1].args.assert_Is [ 'http_start' ]
-        @[2].args.assert_Is [ 'http_end'   ]
-        @[3].args.assert_Is [ 'view_model_data',  { id: 42 } ]
+        @[2].args.assert_Is [ 'http_start' ]
+        @[3].args.assert_Is [ 'http_end'   ]
+        @[4].args.assert_Is [ 'view_model_data',  { id: 42, UserInfo: null } ]
 #
   it 'reload_Data', ->
 
     inject (query_Service, $rootScope, $httpBackend)->
+      $httpBackend.expectGET('/json/user/currentuser').respond null
       $httpBackend.expectGET('/api/data/query_view_model/query-6234f2d47eb7/0/10').respond  { id: 42 }
 
       using query_Service, ->
@@ -90,11 +97,12 @@ describe '| services | Query-Service', ->
         $httpBackend.flush()
 
       using $rootScope.$broadcast.calls.all(), ->
-        @.size().assert_Is 6
+        @.size().assert_Is 7
         @[0].args.assert_Is [ 'clear_filters']
         @[1].args.assert_Is [ 'clear_query']
         @[2].args.assert_Is [ 'loading_query', 'query-6234f2d47eb7', undefined, 0, 10 ]
         @[3].args.assert_Is [ 'http_start']
-        @[4].args.assert_Is [ 'http_end']
-        @[5].args.assert_Is [ 'view_model_data',  { id: 42 } ]
+        @[4].args.assert_Is [ 'http_start']
+        @[5].args.assert_Is [ 'http_end']
+        @[6].args.assert_Is [ 'view_model_data',  { id: 42, UserInfo:null } ]
 
