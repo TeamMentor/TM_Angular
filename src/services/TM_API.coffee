@@ -39,6 +39,7 @@ class TM_API
                 callback(data)
 
   query_from_text_search: (text, callback)=>
+    text    = text.replace('%','-')
     url     = "/api/search/query_from_text_search/#{text}"
     @.$http.get url
          .success (data)->

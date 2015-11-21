@@ -1074,6 +1074,7 @@
 
     TM_API.prototype.query_from_text_search = function(text, callback) {
       var url;
+      text = text.replace('%', '-');
       url = "/api/search/query_from_text_search/" + text;
       return this.$http.get(url).success(function(data) {
         return callback(data);
