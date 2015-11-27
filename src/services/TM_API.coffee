@@ -1,11 +1,12 @@
 app     = angular.module('TM_App')
 
 class TM_API
-  constructor: (q, http,timeout,state)->
+  constructor: (q, http,window,timeout,state)->
     #console.log 'in TM_API CTOR'
     @.$q                        = q
     @.$http                     = http
     @.$timeout                  = timeout
+    @.$window                   = window
     @.cache_Articles            = {}
     @.cache_Guides              = null
     #@.cache_Query_Tree         = {}
@@ -15,6 +16,8 @@ class TM_API
     @.config                    = null
     @.tmrecentArticles          = null
     @.topArticles               = null
+    @.loginPage                 = '/angular/guest/login'
+    @.errorPage                 = '/angular/user/error'
 
 
   get_Words: (term, callback)=>
@@ -24,6 +27,11 @@ class TM_API
                    callback (match for match of data) if callback     # when using callback
                 .then (response)->
                    return (match for match of response.data)          # when using promises
+                .error (data, statusCode) =>
+                  if statusCode == 403
+                    @.$window.location.href = @.loginPage
+                  else
+                    @.$window.location.href = @.errorPage
 
   query_view_model:  (id, filters, from, to, callback)=>
     if filters
@@ -37,6 +45,12 @@ class TM_API
              .success (data)=>
                 @.cache_Query_View_Model[url] = data
                 callback(data)
+             .error (data, statusCode) =>
+                if statusCode == 403
+                  @.$window.location.href = @.loginPage
+                else
+                  @.$window.location.href = @.errorPage
+
 
   query_from_text_search: (text, callback)=>
     text    = text.replace('%','-')
@@ -44,6 +58,11 @@ class TM_API
     @.$http.get url
          .success (data)->
             callback(data)
+         .error (data, statusCode) =>
+           if statusCode == 403
+             @.$window.location.href = @.loginPage
+           else
+            @.$window.location.href = @.errorPage
 
   get_articles_parent_queries: (article_Ids, ignore_Titles, callback)=>
     url     = "/api/data/articles_parent_queries/#{article_Ids.join(',')}"
@@ -59,6 +78,11 @@ class TM_API
                  if ignore_Titles.indexOf(query_Data.title) is -1
                    matches.push { id: key,  title: query_Data.title, articles: query_Data.articles , size: query_Data.articles.size()}
            callback(matches) if callback
+         .error (data, statusCode) =>
+            if statusCode == 403
+              @.$window.location.href = @.loginPage
+            else
+              @.$window.location.href = @.errorPage
 
   docs_Library:  (callback)=>
     url     = "/jade/json/docs/library"
@@ -75,11 +99,17 @@ class TM_API
       @.$timeout => callback @.cache_Articles[article_Id]
 
     url  = "/jade/json/article/#{article_Id}"               # this will always be called (for logging purposes)
-    @.$http.get(url).success (data)=>
-      if @.cache_Articles[article_Id]                       # but the returned data will only be used the first time
-        return
-      @.cache_Articles[article_Id]= data                    # ie. when the cache doesn't exist
-      callback(data)
+    @.$http.get(url)
+           .success (data)=>
+              if @.cache_Articles[article_Id]                       # but the returned data will only be used the first time
+                return
+              @.cache_Articles[article_Id]= data                    # ie. when the cache doesn't exist
+              callback(data)
+          .error (data, statusCode) =>
+            if statusCode == 403
+              @.$window.location.href = @.loginPage
+            else
+              @.$window.location.href = @.errorPage
 
   my_Articles:  (size, callback)=>
     url = "/jade/json/my-articles/#{size}"
@@ -190,7 +220,7 @@ class TM_API
           
     callback null
 
-app.service 'TM_API', ($q, $http, $timeout)=>
-  return new TM_API($q, $http, $timeout)
+app.service 'TM_API', ($q, $http,$window, $timeout)=>
+  return new TM_API($q, $http,$window, $timeout)
 
 
