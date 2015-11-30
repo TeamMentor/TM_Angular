@@ -199,7 +199,11 @@ class TM_API
       @.$http.get(url)
       .success (data)=>
         callback(data)
-
+      .error (data, statusCode) =>
+        if statusCode == 403
+          @.$window.location.href = @.loginPage
+        else
+          @.$window.location.href = @.errorPage
 
   tmConfig :(callback)=>
     url             = "/jade/json/tm/config"
