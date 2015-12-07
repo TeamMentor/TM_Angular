@@ -2655,15 +2655,19 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $window, $timeout, $rootScope, query_Service) {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, TM_API, $state, $window, $timeout, $rootScope, query_Service) {
     $scope.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
     $scope.show_Loading_Image = false;
+    TM_API.tmConfig(function(callback) {
+      return $scope.ShowLogOutBtn = callback.showLogoutButton;
+    });
     $scope.$on('http_start', function() {
       return $scope.show_Loading_Image = true;
     });
     $scope.$on('http_end', function() {
       return $timeout(function() {
-        return $scope.show_Loading_Image = false;
+        $scope.show_Loading_Image = false;
+        return $scope.elements = document.querySelectorAll('#menu li:not(.hidden)').length;
       });
     });
     return $scope.open_Query_State = function() {
