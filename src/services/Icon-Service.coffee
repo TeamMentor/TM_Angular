@@ -14,6 +14,7 @@ mappings =
   'WCF 3.5'                  : { class: 'icon-WCF'            , layers: 12 }
   'Web Application'          : { class: 'icon-Web-App'        , layers: 12 }
   'HTML5'                    : { class: 'icon-HTML5'          , layers: 12 }
+  'AWS'                      : { class: 'icon-AWS'            , layers: 12 }
 
   # Phase
   'Deployment'               : { class: 'icon-Deploy'         , layers: 12 }
