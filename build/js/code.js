@@ -998,6 +998,7 @@
 
   TM_API = (function() {
     function TM_API(q, http, window, timeout, state) {
+      this.verifyInternalUser = bind(this.verifyInternalUser, this);
       this.tmConfig = bind(this.tmConfig, this);
       this.gatewaysLibrary = bind(this.gatewaysLibrary, this);
       this.popular_Search = bind(this.popular_Search, this);
@@ -1024,7 +1025,7 @@
       this.cache_Articles = {};
       this.cache_Guides = null;
       this.cache_Query_View_Model = {};
-      this.currentUser = null;
+      this.currentUserCache = null;
       this.config = null;
       this.tmrecentArticles = null;
       this.topArticles = null;
@@ -1047,7 +1048,15 @@
             return results;
           })());
         }
-      }).then(function(response) {
+      }).error((function(_this) {
+        return function(data, statusCode) {
+          if (statusCode === 403) {
+            return _this.$window.location.href = _this.loginPage;
+          } else {
+            return _this.$window.location.href = _this.errorPage;
+          }
+        };
+      })(this)).then(function(response) {
         var match;
         return (function() {
           var results;
@@ -1057,15 +1066,7 @@
           }
           return results;
         })();
-      }).error((function(_this) {
-        return function(data, statusCode) {
-          if (statusCode === 403) {
-            return _this.$window.location.href = _this.loginPage;
-          } else {
-            return _this.$window.location.href = _this.errorPage;
-          }
-        };
-      })(this));
+      });
     };
 
     TM_API.prototype.query_view_model = function(id, filters, from, to, callback) {
@@ -1270,25 +1271,25 @@
     TM_API.prototype.currentuser = function(callback) {
       var url;
       url = "/json/user/currentuser";
-      if ((this.currentUser != null) && this.currentUser.UserEnabled) {
-        return callback(this.currentUser);
+      if ((this.currentUserCache != null) && this.currentUserCache.UserEnabled) {
+        return callback(this.currentUserCache);
       } else {
         return this.$http.get(url).success((function(_this) {
           return function(data) {
             if (!data) {
               return callback(null);
             }
-            _this.currentUser = data;
-            _this.currentUser.InternalUser = '';
-            _this.currentUser.InternalUserInfo = {};
+            _this.currentUserCache = data;
+            _this.currentUserCache.InternalUser = '';
+            _this.currentUserCache.InternalUserInfo = {};
             return _this.verifyInternalUser(data.Email, function(internalUserInfo) {
               if (internalUserInfo != null) {
-                _this.currentUser.InternalUser = true;
-                _this.currentUser.InternalUserInfo = internalUserInfo;
+                _this.currentUserCache.InternalUser = true;
+                _this.currentUserCache.InternalUserInfo = internalUserInfo;
               } else {
-                _this.currentUser.InternalUser = false;
+                _this.currentUserCache.InternalUser = false;
               }
-              return callback(_this.currentUser);
+              return callback(_this.currentUserCache);
             });
           };
         })(this));
@@ -1362,19 +1363,26 @@
     };
 
     TM_API.prototype.verifyInternalUser = function(userEmail, callback) {
-      this.tmConfig((function(_this) {
+      return this.tmConfig((function(_this) {
         return function(configFile) {
-          var allowedEmailDomains, email;
+          var allowedEmailDomains, email, matchesEmail;
           allowedEmailDomains = configFile != null ? configFile.allowedEmailDomains : void 0;
           email = userEmail;
-          return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
-            if (email != null ? email.match(domain.toString()) : void 0) {
-              return callback(configFile);
-            }
-          }) : void 0;
+          matchesEmail = false;
+          if (allowedEmailDomains != null) {
+            allowedEmailDomains.some(function(domain) {
+              if (email != null ? email.match(domain.toString()) : void 0) {
+                return matchesEmail = true;
+              }
+            });
+          }
+          if (matchesEmail) {
+            return callback(configFile);
+          } else {
+            return callback(null);
+          }
         };
       })(this));
-      return callback(null);
     };
 
     return TM_API;
