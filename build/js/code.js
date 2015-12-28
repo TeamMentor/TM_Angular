@@ -539,6 +539,125 @@
 }).call(this);
 
 (function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+    $urlRouterProvider.otherwise('error');
+    return $locationProvider.html5Mode(true);
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.service('ui_Routes', function() {});
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, len, ref, view_Name;
+    ref = routes_Names.views.guest;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/guest/" + view_Name
+      });
+    }
+    $stateProvider.state('pwd_reset', {
+      url: "/pwd_reset/:username/:token",
+      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
+    });
+    return $stateProvider.state('docs_id', {
+      url: "/docs/:id",
+      templateUrl: "/angular/jade-html/views/docs"
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var app;
+
+  app = angular.module('TM_App');
+
+  app.config(function($stateProvider, routes_Names) {
+    var i, j, len, len1, ref, ref1, view_Name;
+    ref = routes_Names.views.user_Root;
+    for (i = 0, len = ref.length; i < len; i++) {
+      view_Name = ref[i];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/" + view_Name
+      });
+    }
+    ref1 = routes_Names.views.user_User;
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      view_Name = ref1[j];
+      $stateProvider.state(view_Name, {
+        url: "/" + view_Name,
+        templateUrl: "/angular/jade-html/views/user/" + view_Name
+      });
+    }
+    $stateProvider.state('guides', {
+      url: "/guides",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('guide_id', {
+      url: "/guides/:id",
+      templateUrl: "/angular/jade-html/views/user/guides"
+    });
+    $stateProvider.state('logout', {
+      url: "/logout",
+      controller: 'Logout_Controller'
+    });
+    $stateProvider.state('article', {
+      url: "/article/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('guid', {
+      url: "/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('articleguid', {
+      url: "/article/:article_Id",
+      templateUrl: '/angular/jade-html/views/user/article'
+    });
+    $stateProvider.state('article-box', {
+      url: "/article-box/:article_Id/:article_Title",
+      templateUrl: '/angular/jade-html/views/user/article_box'
+    });
+    $stateProvider.state('index_query_id', {
+      url: "/index/:query_Id",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+    return $stateProvider.state('index_query_id_filters', {
+      url: "/index/:query_Id/:filters",
+      templateUrl: '/angular/jade-html/views/user/index'
+    });
+  });
+
+
+  /*
+  app.run ($rootScope,$window,TM_API, routes_Names) =>
+    $rootScope.$on '$stateChangeStart', (event, next, current) =>
+      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
+        return
+      else
+        TM_API.currentuser (userInfo) =>
+          if (userInfo? && userInfo?.UserEnabled)
+            return
+          else
+            $window.location.href = '/angular/guest/login'
+    return
+   */
+
+}).call(this);
+
+(function() {
   var Breadcrumbs_Service,
     bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -695,6 +814,10 @@
     },
     'HTML5': {
       "class": 'icon-HTML5',
+      layers: 12
+    },
+    'AWS': {
+      "class": 'icon-AWS',
       layers: 12
     },
     'Deployment': {
@@ -875,6 +998,7 @@
 
   TM_API = (function() {
     function TM_API(q, http, window, timeout, state) {
+      this.verifyInternalUser = bind(this.verifyInternalUser, this);
       this.tmConfig = bind(this.tmConfig, this);
       this.gatewaysLibrary = bind(this.gatewaysLibrary, this);
       this.popular_Search = bind(this.popular_Search, this);
@@ -901,7 +1025,7 @@
       this.cache_Articles = {};
       this.cache_Guides = null;
       this.cache_Query_View_Model = {};
-      this.currentUser = null;
+      this.currentUserCache = null;
       this.config = null;
       this.tmrecentArticles = null;
       this.topArticles = null;
@@ -924,7 +1048,15 @@
             return results;
           })());
         }
-      }).then(function(response) {
+      }).error((function(_this) {
+        return function(data, statusCode) {
+          if (statusCode === 403) {
+            return _this.$window.location.href = _this.loginPage;
+          } else {
+            return _this.$window.location.href = _this.errorPage;
+          }
+        };
+      })(this)).then(function(response) {
         var match;
         return (function() {
           var results;
@@ -934,15 +1066,7 @@
           }
           return results;
         })();
-      }).error((function(_this) {
-        return function(data, statusCode) {
-          if (statusCode === 403) {
-            return _this.$window.location.href = _this.loginPage;
-          } else {
-            return _this.$window.location.href = _this.errorPage;
-          }
-        };
-      })(this));
+      });
     };
 
     TM_API.prototype.query_view_model = function(id, filters, from, to, callback) {
@@ -1147,25 +1271,25 @@
     TM_API.prototype.currentuser = function(callback) {
       var url;
       url = "/json/user/currentuser";
-      if ((this.currentUser != null) && this.currentUser.UserEnabled) {
-        return callback(this.currentUser);
+      if ((this.currentUserCache != null) && this.currentUserCache.UserEnabled) {
+        return callback(this.currentUserCache);
       } else {
         return this.$http.get(url).success((function(_this) {
           return function(data) {
             if (!data) {
               return callback(null);
             }
-            _this.currentUser = data;
-            _this.currentUser.InternalUser = '';
-            _this.currentUser.InternalUserInfo = {};
+            _this.currentUserCache = data;
+            _this.currentUserCache.InternalUser = '';
+            _this.currentUserCache.InternalUserInfo = {};
             return _this.verifyInternalUser(data.Email, function(internalUserInfo) {
               if (internalUserInfo != null) {
-                _this.currentUser.InternalUser = true;
-                _this.currentUser.InternalUserInfo = internalUserInfo;
+                _this.currentUserCache.InternalUser = true;
+                _this.currentUserCache.InternalUserInfo = internalUserInfo;
               } else {
-                _this.currentUser.InternalUser = false;
+                _this.currentUserCache.InternalUser = false;
               }
-              return callback(_this.currentUser);
+              return callback(_this.currentUserCache);
             });
           };
         })(this));
@@ -1239,19 +1363,26 @@
     };
 
     TM_API.prototype.verifyInternalUser = function(userEmail, callback) {
-      this.tmConfig((function(_this) {
+      return this.tmConfig((function(_this) {
         return function(configFile) {
-          var allowedEmailDomains, email;
+          var allowedEmailDomains, email, matchesEmail;
           allowedEmailDomains = configFile != null ? configFile.allowedEmailDomains : void 0;
           email = userEmail;
-          return allowedEmailDomains != null ? allowedEmailDomains.some(function(domain) {
-            if (email != null ? email.match(domain.toString()) : void 0) {
-              return callback(configFile);
-            }
-          }) : void 0;
+          matchesEmail = false;
+          if (allowedEmailDomains != null) {
+            allowedEmailDomains.some(function(domain) {
+              if (email != null ? email.match(domain.toString()) : void 0) {
+                return matchesEmail = true;
+              }
+            });
+          }
+          if (matchesEmail) {
+            return callback(configFile);
+          } else {
+            return callback(null);
+          }
         };
       })(this));
-      return callback(null);
     };
 
     return TM_API;
@@ -1312,125 +1443,6 @@
     };
     return $$;
   });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-    $urlRouterProvider.otherwise('error');
-    return $locationProvider.html5Mode(true);
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.service('ui_Routes', function() {});
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, len, ref, view_Name;
-    ref = routes_Names.views.guest;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/guest/" + view_Name
-      });
-    }
-    $stateProvider.state('pwd_reset', {
-      url: "/pwd_reset/:username/:token",
-      templateUrl: "/angular/jade-html/views/guest/pwd_reset"
-    });
-    return $stateProvider.state('docs_id', {
-      url: "/docs/:id",
-      templateUrl: "/angular/jade-html/views/docs"
-    });
-  });
-
-}).call(this);
-
-(function() {
-  var app;
-
-  app = angular.module('TM_App');
-
-  app.config(function($stateProvider, routes_Names) {
-    var i, j, len, len1, ref, ref1, view_Name;
-    ref = routes_Names.views.user_Root;
-    for (i = 0, len = ref.length; i < len; i++) {
-      view_Name = ref[i];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/" + view_Name
-      });
-    }
-    ref1 = routes_Names.views.user_User;
-    for (j = 0, len1 = ref1.length; j < len1; j++) {
-      view_Name = ref1[j];
-      $stateProvider.state(view_Name, {
-        url: "/" + view_Name,
-        templateUrl: "/angular/jade-html/views/user/" + view_Name
-      });
-    }
-    $stateProvider.state('guides', {
-      url: "/guides",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('guide_id', {
-      url: "/guides/:id",
-      templateUrl: "/angular/jade-html/views/user/guides"
-    });
-    $stateProvider.state('logout', {
-      url: "/logout",
-      controller: 'Logout_Controller'
-    });
-    $stateProvider.state('article', {
-      url: "/article/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('guid', {
-      url: "/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('articleguid', {
-      url: "/article/:article_Id",
-      templateUrl: '/angular/jade-html/views/user/article'
-    });
-    $stateProvider.state('article-box', {
-      url: "/article-box/:article_Id/:article_Title",
-      templateUrl: '/angular/jade-html/views/user/article_box'
-    });
-    $stateProvider.state('index_query_id', {
-      url: "/index/:query_Id",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-    return $stateProvider.state('index_query_id_filters', {
-      url: "/index/:query_Id/:filters",
-      templateUrl: '/angular/jade-html/views/user/index'
-    });
-  });
-
-
-  /*
-  app.run ($rootScope,$window,TM_API, routes_Names) =>
-    $rootScope.$on '$stateChangeStart', (event, next, current) =>
-      if routes_Names.views.guest.indexOf(next.name) > -1 || next.name is "docs" || next.name is 'terms_and_conditions'
-        return
-      else
-        TM_API.currentuser (userInfo) =>
-          if (userInfo? && userInfo?.UserEnabled)
-            return
-          else
-            $window.location.href = '/angular/guest/login'
-    return
-   */
 
 }).call(this);
 
@@ -2706,9 +2718,12 @@
 }).call(this);
 
 (function() {
-  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, $state, $window, $timeout, $rootScope, query_Service) {
+  angular.module('TM_App').controller('User_Navigation_Controller', function($scope, TM_API, $state, $window, $timeout, $rootScope, query_Service) {
     $scope.index_States = ['index', 'index_query_id', 'index_query_id_filters'];
     $scope.show_Loading_Image = false;
+    TM_API.tmConfig(function(callback) {
+      return $scope.ShowLogOutBtn = callback.showLogoutButton;
+    });
     $scope.$on('http_start', function() {
       return $scope.show_Loading_Image = true;
     });
