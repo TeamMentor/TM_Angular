@@ -1,6 +1,6 @@
 angular.module('TM_App')
        .controller 'Login_Controller', ($scope, TM_API, $window, $timeout,$rootScope)->
-
+          $scope.form = {}
           $scope.login = ->
             $scope.errorMessage  = null
             $scope.supportEmail  = false
@@ -9,7 +9,7 @@ angular.module('TM_App')
               $scope.infoMessage   = 'We are experiencing slight delays. Hang on.'
             ), 3000
 
-            TM_API.login  $scope.username, $scope.password, (data)=>
+            TM_API.login   $scope.form.username,  $scope.form.password, (data)=>
               $timeout.cancel(timer);
               if data.result is 'OK'
                 TM_API.currentuser (userInfo)->
