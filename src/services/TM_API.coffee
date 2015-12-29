@@ -12,7 +12,7 @@ class TM_API
     #@.cache_Query_Tree         = {}
     #@.cache_Query_Tree_Queries = {}
     @.cache_Query_View_Model    = {}
-    @.currentUser               = null            # todo: this variable name really needs to be refactored since it just about clashes with the currentuser method
+    @.currentUserCache          = null            # todo: this variable name really needs to be refactored since it just about clashes with the currentuser method
     @.config                    = null
     @.tmrecentArticles          = null
     @.topArticles               = null
@@ -25,13 +25,13 @@ class TM_API
     return @.$http.get url
                 .success (data)->
                    callback (match for match of data) if callback     # when using callback
-                .then (response)->
-                   return (match for match of response.data)          # when using promises
                 .error (data, statusCode) =>
                   if statusCode == 403
                     @.$window.location.href = @.loginPage
                   else
                     @.$window.location.href = @.errorPage
+                .then (response)->
+                   return (match for match of response.data)          # when using promises
 
   query_view_model:  (id, filters, from, to, callback)=>
     if filters
@@ -155,24 +155,24 @@ class TM_API
   #todo: this method name has a really close clash with the @.currentUser variable
   currentuser: (callback) =>
     url      = "/json/user/currentuser"
-    if  @.currentUser? &&  @.currentUser.UserEnabled
-      callback  @.currentUser
+    if  @.currentUserCache? &&  @.currentUserCache.UserEnabled
+      callback  @.currentUserCache
     else
       @.$http.get(url).success (data)=>
         if not data
           return callback null
 
-        @.currentUser                   = data
-        @.currentUser.InternalUser      = ''
-        @.currentUser.InternalUserInfo  = {}
+        @.currentUserCache                   = data
+        @.currentUserCache.InternalUser      = ''
+        @.currentUserCache.InternalUserInfo  = {}
 
         @.verifyInternalUser data.Email, (internalUserInfo) =>
           if internalUserInfo?
-            @.currentUser.InternalUser     = true
-            @.currentUser.InternalUserInfo = internalUserInfo
+            @.currentUserCache.InternalUser     = true
+            @.currentUserCache.InternalUserInfo = internalUserInfo
           else
-            @.currentUser.InternalUser     = false
-          callback @.currentUser
+            @.currentUserCache.InternalUser     = false
+          callback @.currentUserCache
 
   pwd_reset: (email, callback)=>
     url      = "/jade/json/user/pwd_reset"
@@ -215,15 +215,18 @@ class TM_API
         @.config  = data
         callback(data)
 
-  verifyInternalUser: (userEmail, callback)->
+  verifyInternalUser: (userEmail, callback)=>
     @tmConfig (configFile) =>
       allowedEmailDomains              = configFile?.allowedEmailDomains
       email                            = userEmail
-      allowedEmailDomains?.some (domain)->                  # note: this will fire twice if there are two matches
+      matchesEmail = false
+      allowedEmailDomains?.some (domain)=>                  # note: this will fire twice if there are two matches
         if email?.match(domain.toString())
-          callback configFile
-          
-    callback null
+          return matchesEmail = true
+      if matchesEmail
+        return callback configFile
+      else
+        return callback null
 
 app.service 'TM_API', ($q, $http,$window, $timeout)=>
   return new TM_API($q, $http,$window, $timeout)
