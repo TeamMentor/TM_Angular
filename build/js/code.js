@@ -1250,22 +1250,11 @@
       return this.$http.post(url, postData).success(callback);
     };
 
-    TM_API.prototype.signup = function(username, password, confirmpassword, email, firstname, lastname, company, title, country, state, callback) {
-      var postData, url;
+    TM_API.prototype.signup = function(postData, callback) {
+      var url;
       url = "/json/user/signup";
-      postData = {
-        username: username,
-        password: password,
-        'confirm-password': confirmpassword,
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        company: company,
-        title: title,
-        country: country,
-        state: state
-      };
-      return this.$http.post(url, postData).success(callback);
+      postData['confirm-password'] = postData.confirmpassword;
+      return this.$http.post(url, angular.toJson(postData)).success(callback);
     };
 
     TM_API.prototype.currentuser = function(callback) {
@@ -1455,6 +1444,7 @@
 
 (function() {
   angular.module('TM_App').controller('Login_Controller', function($scope, TM_API, $window, $timeout, $rootScope) {
+    $scope.form = {};
     $scope.login = function() {
       var timer;
       $scope.errorMessage = null;
@@ -1463,7 +1453,7 @@
       timer = $timeout((function() {
         return $scope.infoMessage = 'We are experiencing slight delays. Hang on.';
       }), 3000);
-      return TM_API.login($scope.username, $scope.password, (function(_this) {
+      return TM_API.login($scope.form.username, $scope.form.password, (function(_this) {
         return function(data) {
           var ref, ref1, ref2;
           $timeout.cancel(timer);
@@ -1587,12 +1577,13 @@
 
 (function() {
   angular.module('TM_App').controller('Signup_Controller', function($scope, TM_API, $window, $timeout) {
+    $scope.form = {};
     $scope.signup = function() {
       $scope.errorMessage = null;
       $scope.supportEmail = false;
       $scope.isDisabled = true;
       $scope.infoMessage = "Signing you up";
-      return TM_API.signup($scope.username, $scope.password, $scope.confirmpassword, $scope.email, $scope.firstname, $scope.lastname, $scope.company, $scope.title, $scope.country, $scope.state, function(data) {
+      return TM_API.signup($scope.form, function(data) {
         var ref, ref1, ref2;
         $scope.isDisabled = false;
         if ((data != null ? data.result : void 0) === 'OK') {

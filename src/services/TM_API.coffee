@@ -145,10 +145,11 @@ class TM_API
     postData = {}
     @.$http.post(url,postData).success callback
 
-  signup: (username, password,confirmpassword,email,firstname,lastname,company,title,country,state, callback)=>
+  signup: (postData, callback)=>
     url      = "/json/user/signup"
-    postData =  { username: username , password: password,'confirm-password':confirmpassword , email: email,firstname:firstname, lastname:lastname,company:company,title:title,country:country,state:state}
-    @.$http.post(url, postData).success callback
+    postData['confirm-password'] = postData.confirmpassword
+
+    @.$http.post(url, angular.toJson(postData)).success callback
     #@
 
   #todo: this method name has a really close clash with the @.currentUser variable
