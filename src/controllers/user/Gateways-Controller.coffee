@@ -10,8 +10,12 @@ angular.module('TM_App')
             return
           return
 
-      .controller 'Gateways_Controller', ($sce, $state, $scope, TM_API, $location,icon_Service,$stateParams)->
-        $scope.Library    = {}
+      .controller 'Gateways_Controller', ($sce, $state, $scope, $rootScope,$window, TM_API, $location,icon_Service,$stateParams)->
+        $scope.Library         = {}
+        $scope.NoGuidesMessage = "Guides not availale in this version of TEAMMentor."
+        $scope.ShowMessage     = false;
+
+        @.article_Link    = null
 
         $scope.load_Article = ($event, article_Id)->
           $event.preventDefault()                                             # this will allow the link to actually contain the link (so that it works if the user chooses to open the article in a new Tab
@@ -23,6 +27,8 @@ angular.module('TM_App')
           if article
             TM_API.article article, (article_Data)->
               if (article_Data)
+                $scope.map_Article_Url article_Data
+
                 $scope.article = article_Data
                 $scope.title   = article_Data.title
                 $scope.icon_Technology   = $sce.trustAsHtml icon_Service.element_Html(article_Data.technology)
@@ -46,6 +52,14 @@ angular.module('TM_App')
 
                 $scope.content = article_Data.article_Html
 
+
+        $scope.map_Article_Url =  (article)->
+          if article
+            id    = article.id?.remove('article-')
+            title = article.title?.replace(new RegExp(' ','g'),'-').remove('.')
+            article.url = '/angular/user/article/' + id + '/' + title
+            @.article_Link = "#{$window.location.origin}/article/#{id}/#{title}"
+
         $scope.map_Current_User = ->
           TM_API.currentuser (userInfo) ->
             if (userInfo? && userInfo?.UserEnabled)
@@ -67,6 +81,7 @@ angular.module('TM_App')
         $scope.load_Library = ()->
           TM_API.gatewaysLibrary (data)->
             if data
+              $scope.ShowMessage   = false
               $scope.Library.title = data.title
               $scope.Library.Views = data.Views;
               articleId =  $stateParams.id #$location.$$hash
@@ -74,7 +89,11 @@ angular.module('TM_App')
                 $scope.show_Article articleId
               else
                 $scope.show_Article data?.Views?.first()?.Articles?.first()?.id
+            else
+              $scope.ShowMessage = true
 
+        $scope.showNoGuidesMessage = ->
+          return $scope.ShowMessage
 
         $scope.showMetadata = ->
           return $scope.article?.phase? || $scope.article?.technology? || $scope.article?.technology?
@@ -82,6 +101,8 @@ angular.module('TM_App')
         $scope.map_Current_User()
         $scope.load_Library()
 
+        $scope.show_feedback_button=->
+          $rootScope.$broadcast 'Show_Feedback_Box', true
 
         window._stateParams = $stateParams
 

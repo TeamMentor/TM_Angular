@@ -12,17 +12,20 @@ angular.module 'TM_App'
           #console.log 'in Index_Controller ' + new Date().getMilliseconds()
 
           using $scope, ->
-            @.history       = {}
-            @.view_Filters  = false
-            @.column_Left   = 'col-3'
-            @.column_Middle = 'col-9'
-            @.column_Right  = 'col-0'
-
-            @.current_Query_Id = null
-            @.current_Filters = null
+            @.history             = {}
+            @.view_Filters        = false
+            @.view_found_issue    = false
+            @.column_Left         = 'col-3'
+            @.column_Middle       = 'col-9'
+            @.column_Right        = 'col-0'
+            @.showCollapseFilters = $window.document.documentMode == undefined #just ie shows this property
+            @.current_Query_Id    = null
+            @.current_Filters     = null
 
             @.$on 'toggle_filters' , (event)=>
-              $scope.view_Filters = not $scope.view_Filters
+              $scope.view_Filters     = not $scope.view_Filters
+              $scope.view_found_issue = not $scope.view_found_issue
+
               if $scope.view_Filters
                 @.column_Middle = 'col-6'
                 @.column_Right  = 'col-3'
@@ -50,10 +53,6 @@ angular.module 'TM_App'
             value+= '_query_id_filters' if     query_Id and     filters
             value+= '_query_id'         if     query_Id and not filters
             return value
-
-            return 'index_query_id_filters' if     query_Id and     filters
-            return 'index_query_id'         if     query_Id and not filters
-            return 'index'
 
           $scope.update_Location_Url = (query_Id, filters)->
 

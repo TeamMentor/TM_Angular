@@ -18,13 +18,14 @@ class Query_Service
   #load_Query
   load_Query: (query_Id, filters, from, to , callback)=>
     from = from || @.default_Page_From
-    to   = to || @.default_Page_To
+    to   = to   || @.default_Page_To
 
     @.$rootScope.$broadcast 'loading_query', query_Id, filters, from, to
-
-    @.TM_API.query_view_model query_Id, filters, from, to, (data)=>
-      @.$rootScope.$broadcast 'view_model_data', data
-      callback() if callback
+    @.TM_API.currentuser (info) =>
+      @.TM_API.query_view_model query_Id, filters, from, to, (data)=>
+        data.UserInfo = info
+        @.$rootScope.$broadcast 'view_model_data', data
+        callback() if callback
 
   reload_Data: ()=>
     @.$rootScope.$broadcast 'clear_filters'
@@ -32,5 +33,5 @@ class Query_Service
     #@.$rootScope.$broadcast 'clear_search'
     @.load_Data()
 
-app.service 'query_Service', ($rootScope, TM_API)->
+app.service 'query_Service', ($rootScope, TM_API )->
   return new Query_Service { TM_API:TM_API, $rootScope: $rootScope}

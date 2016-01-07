@@ -1,20 +1,23 @@
 app     = angular.module('TM_App')
 
 class TM_API
-  constructor: (q, http,timeout,state)->
+  constructor: (q, http,window,timeout,state)->
     #console.log 'in TM_API CTOR'
     @.$q                        = q
     @.$http                     = http
     @.$timeout                  = timeout
+    @.$window                   = window
     @.cache_Articles            = {}
     @.cache_Guides              = null
     #@.cache_Query_Tree         = {}
     #@.cache_Query_Tree_Queries = {}
     @.cache_Query_View_Model    = {}
-    @.currentUser               = null
+    @.currentUserCache          = null            # todo: this variable name really needs to be refactored since it just about clashes with the currentuser method
     @.config                    = null
     @.tmrecentArticles          = null
     @.topArticles               = null
+    @.loginPage                 = '/angular/guest/login'
+    @.errorPage                 = '/angular/user/error'
 
 
   get_Words: (term, callback)=>
@@ -22,6 +25,11 @@ class TM_API
     return @.$http.get url
                 .success (data)->
                    callback (match for match of data) if callback     # when using callback
+                .error (data, statusCode) =>
+                  if statusCode == 403
+                    @.$window.location.href = @.loginPage
+                  else
+                    @.$window.location.href = @.errorPage
                 .then (response)->
                    return (match for match of response.data)          # when using promises
 
@@ -37,12 +45,24 @@ class TM_API
              .success (data)=>
                 @.cache_Query_View_Model[url] = data
                 callback(data)
+             .error (data, statusCode) =>
+                if statusCode == 403
+                  @.$window.location.href = @.loginPage
+                else
+                  @.$window.location.href = @.errorPage
+
 
   query_from_text_search: (text, callback)=>
+    text    = text.replace('%','-')
     url     = "/api/search/query_from_text_search/#{text}"
     @.$http.get url
          .success (data)->
             callback(data)
+         .error (data, statusCode) =>
+           if statusCode == 403
+             @.$window.location.href = @.loginPage
+           else
+            @.$window.location.href = @.errorPage
 
   get_articles_parent_queries: (article_Ids, ignore_Titles, callback)=>
     url     = "/api/data/articles_parent_queries/#{article_Ids.join(',')}"
@@ -58,6 +78,11 @@ class TM_API
                  if ignore_Titles.indexOf(query_Data.title) is -1
                    matches.push { id: key,  title: query_Data.title, articles: query_Data.articles , size: query_Data.articles.size()}
            callback(matches) if callback
+         .error (data, statusCode) =>
+            if statusCode == 403
+              @.$window.location.href = @.loginPage
+            else
+              @.$window.location.href = @.errorPage
 
   docs_Library:  (callback)=>
     url     = "/jade/json/docs/library"
@@ -74,11 +99,17 @@ class TM_API
       @.$timeout => callback @.cache_Articles[article_Id]
 
     url  = "/jade/json/article/#{article_Id}"               # this will always be called (for logging purposes)
-    @.$http.get(url).success (data)=>
-      if @.cache_Articles[article_Id]                       # but the returned data will only be used the first time
-        return
-      @.cache_Articles[article_Id]= data                    # ie. when the cache doesn't exist
-      callback(data)
+    @.$http.get(url)
+           .success (data)=>
+              if @.cache_Articles[article_Id]                       # but the returned data will only be used the first time
+                return
+              @.cache_Articles[article_Id]= data                    # ie. when the cache doesn't exist
+              callback(data)
+          .error (data, statusCode) =>
+            if statusCode == 403
+              @.$window.location.href = @.loginPage
+            else
+              @.$window.location.href = @.errorPage
 
   my_Articles:  (size, callback)=>
     url = "/jade/json/my-articles/#{size}"
@@ -114,20 +145,34 @@ class TM_API
     postData = {}
     @.$http.post(url,postData).success callback
 
-  signup: (username, password,confirmpassword,email,firstname,lastname,company,title,country,state, callback)=>
+  signup: (postData, callback)=>
     url      = "/json/user/signup"
-    postData =  { username: username , password: password,'confirm-password':confirmpassword , email: email,firstname:firstname, lastname:lastname,company:company,title:title,country:country,state:state}
-    @.$http.post(url, postData).success callback
+    postData['confirm-password'] = postData.confirmpassword
+
+    @.$http.post(url, angular.toJson(postData)).success callback
     #@
 
-  currentuser :(callback) =>
+  #todo: this method name has a really close clash with the @.currentUser variable
+  currentuser: (callback) =>
     url      = "/json/user/currentuser"
-    if  @.currentUser? &&  @.currentUser.UserEnabled
-      callback  @.currentUser
+    if  @.currentUserCache? &&  @.currentUserCache.UserEnabled
+      callback  @.currentUserCache
     else
       @.$http.get(url).success (data)=>
-        @.currentUser = data
-        callback(data)
+        if not data
+          return callback null
+
+        @.currentUserCache                   = data
+        @.currentUserCache.InternalUser      = ''
+        @.currentUserCache.InternalUserInfo  = {}
+
+        @.verifyInternalUser data.Email, (internalUserInfo) =>
+          if internalUserInfo?
+            @.currentUserCache.InternalUser     = true
+            @.currentUserCache.InternalUserInfo = internalUserInfo
+          else
+            @.currentUserCache.InternalUser     = false
+          callback @.currentUserCache
 
   pwd_reset: (email, callback)=>
     url      = "/jade/json/user/pwd_reset"
@@ -155,10 +200,14 @@ class TM_API
       @.$http.get(url)
       .success (data)=>
         callback(data)
-
+      .error (data, statusCode) =>
+        if statusCode == 403
+          @.$window.location.href = @.loginPage
+        else
+          @.$window.location.href = @.errorPage
 
   tmConfig :(callback)=>
-    url             = "/json/tm/config"
+    url             = "/jade/json/tm/config"
     if @.config
       callback @.config
     else
@@ -166,17 +215,20 @@ class TM_API
         @.config  = data
         callback(data)
 
-  verifyInternalUser: (userEmail, callback)->
+  verifyInternalUser: (userEmail, callback)=>
     @tmConfig (configFile) =>
       allowedEmailDomains              = configFile?.allowedEmailDomains
       email                            = userEmail
-      allowedEmailDomains?.some (domain)->                  # note: this will fire twice if there are two matches
+      matchesEmail = false
+      allowedEmailDomains?.some (domain)=>                  # note: this will fire twice if there are two matches
         if email?.match(domain.toString())
-          callback configFile.githubContentUrl
-          
-    callback null
+          return matchesEmail = true
+      if matchesEmail
+        return callback configFile
+      else
+        return callback null
 
-app.service 'TM_API', ($q, $http, $timeout)=>
-  return new TM_API($q, $http, $timeout)
+app.service 'TM_API', ($q, $http,$window, $timeout)=>
+  return new TM_API($q, $http,$window, $timeout)
 
 

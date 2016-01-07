@@ -29,6 +29,30 @@ describe '| services | TM-API', ->
       @.cache_Query_View_Model.assert_Is {}
       @.cache_Articles        .assert_Is {}
 
+
+  it 'currentuser', ()->
+    inject ($httpBackend)->
+      using tm_API, ->
+
+        @.currentuser (data)->
+          (data is null).assert_Is_True()
+        $httpBackend.expectGET('/json/user/currentuser').respond null
+        $httpBackend.flush()
+
+        tm_API.currentUser = null
+
+        @.currentuser (data)->
+          data.assert_Is a: '42', InternalUser: false, InternalUserInfo: {}
+          tm_API.currentUser.assert_Is data
+
+        $httpBackend.expectGET('/json/user/currentuser').respond { a: '42'}
+        $httpBackend.expectGET('/jade/json/tm/config'  ).respond { }
+        $httpBackend.flush()
+
+        tm_API.currentUser = null
+
+
+
   it 'get_Words', ->
     inject ($httpBackend)->
       $httpBackend.expectGET('/angular/api/auto-complete?term=xss').respond { aaa: 'a', bbb: 'b' }
@@ -107,17 +131,20 @@ describe '| services | TM-API', ->
 
       $httpBackend.expectGET('/jade/json/article/an-article-id').respond { article: 42 }
 
+
       using tm_API, ->
         @.article 'an-article-id', (data)-> data.assert_Is { article: 42 }
 
         $httpBackend.flush()
 
-        @.cache_Articles['an-article-id'].assert_Is { article: 42 }
+        $httpBackend.expectGET('/jade/json/article/an-article-id').respond { article: 'aaaaaaa' }  # for caching purposes this request is still made
+        @.cache_Articles['an-article-id'].assert_Is { article: 42 }                                # but the response data is ignored
                                          .bbb = 'cc'
 
         @.article 'an-article-id', (data)-> data.assert_Is { article: 42, bbb: 'cc' }
 
         $timeout.flush()
+        $httpBackend.flush()
 
   it 'login', ->
     inject ($httpBackend)->

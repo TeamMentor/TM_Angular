@@ -71,18 +71,18 @@ angular.module('TM_App')
               if $scope.selected_Technology.title isnt 'All Technologies'
                 $scope.searchPlaceholder = "Search " + $scope.selected_Technology.title
 
-          $scope.update_Select_List = ()->
-            title_Size      = $scope.selected_Technology?.title?.length * 1.2 || 16
-            flex_Extra_Size = title_Size
-            select_Size = (5 + flex_Extra_Size) + '%'
-            input_Size  = (85 - flex_Extra_Size) + '%'
+          $scope.set_Style = ()->
 
-            $element.find?('select').css('flex', select_Size)
-            $element.find?('input' ).css('flex', input_Size )
+            title_Length = $scope.selected_Technology?.title?.length
+            multiplier   = 18
+
+            if title_Length
+              size =  if title_Length  <= 5 then 115 else title_Length * multiplier
+              return { flex: size + 'px'}
+            return { flex: '310px' }
 
           $scope.select_Technology = ()->
             $scope.update_Placeholder_Text()
-            $scope.update_Select_List()
 
           $scope.select_Technology_Mobile = (technology)->
             $scope.selected_Technology = technology

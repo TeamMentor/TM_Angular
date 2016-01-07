@@ -3,7 +3,8 @@ angular.module('TM_App')
   $scope.reset_Password= ->
 
     $scope.errorMessage = ''
-    $scope.infoMessage  = "...sending request ..."
+    $scope.infoMessage  = "Processing your request"
+    $scope.isDisabled   = true #Disabling login button
 
     url = $location.$$url      #url has to contain the username and the token
     if (url?)
@@ -11,13 +12,16 @@ angular.module('TM_App')
       token    =  $stateParams.token
 
       if (not username? or not token?)
+        $scope.isDisabled   = false #Disabling login button
         return $scope.errorMessage  = "Request not valid"
 
       if $scope.password != $scope.confirmpassword
         $scope.infoMessage           = ''
+        $scope.isDisabled   = false #Disabling login button
         return $scope.errorMessage  = "Passwords don't match, please verify"
 
       TM_API.pwd_reset_Token username, token, $scope.password, (data)=>
+        $scope.isDisabled   = false #Disabling login button
         if (data?.status=="Ok")
           $scope.errorMessage = ''
           $scope.infoMessage  = data?.message

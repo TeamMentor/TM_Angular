@@ -1,10 +1,13 @@
 angular.module('TM_App')
-       .controller 'User_Navigation_Controller', ($scope, $state,$window, $timeout, $rootScope, query_Service)->
+       .controller 'User_Navigation_Controller', ($scope,TM_API, $state,$window, $timeout, $rootScope, query_Service)->
 
           #console.log 'in User_Navigation_Controller ' + new Date().getMilliseconds()
 
+
           $scope.index_States        = ['index', 'index_query_id', 'index_query_id_filters']
           $scope.show_Loading_Image = false
+          TM_API.tmConfig (callback) ->
+            $scope.ShowLogOutBtn = callback.showLogoutButton
 
           $scope.$on 'http_start', ()->
             $scope.show_Loading_Image = true
@@ -20,6 +23,8 @@ angular.module('TM_App')
               $rootScope.$broadcast 'loading_query', null, null   # to clear existing query_Ids and Filter mappings
               query_Service.reload_Data()                         # trigger data reload
             else
+              if $state.current?.name =='article'
+                $rootScope.$broadcast 'clear_filter', 'All'
               $timeout ->
                 $state.go 'index'
 

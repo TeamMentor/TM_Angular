@@ -115,10 +115,6 @@ describe '| controllers | Article-Controller.test',->
     userInfo = null
     TM_API  =
         currentuser       : (callback)->callback userInfo
-        verifyInternalUser: (email, callback)->
-          if email
-            email.assert_Is userInfo.Email
-          callback if userInfo.Email.contains('securityinnovation.com') then {} else null
 
     new_Article_Controller_With_TM_API TM_API, (scope)->
       using scope, ->
@@ -138,8 +134,9 @@ describe '| controllers | Article-Controller.test',->
         @.showFeedback.assert_Is_False()
 
         userInfo =
-          UserEnabled: true
-          Email: 'aaa@securityinnovation.com'
+          UserEnabled : true
+          InternalUser: true
+          Email       : 'aaa@securityinnovation.com'
         @.map_Current_User()
         @.showFeedback.assert_Is_True()
 
@@ -148,6 +145,8 @@ describe '| controllers | Article-Controller.test',->
       new_Article_Controller (scope)->
         using scope, ->
           $httpBackend.expectGET('/json/user/currentuser', {"Accept":"application/json, text/plain, */*"}).respond {}
+          #$httpBackend.expectGET('/jade/json/tm/config').respond {}
+          $httpBackend.expectGET('/jade/json/tm/config'  , {"Accept":"application/json, text/plain, */*"}).respond allowedEmailDomains: ['@securityinnovation.com'] , githubContentUrl: 'www.github.com'
           $httpBackend.flush()
           @.showFeedback.assert_Is_False()
 
@@ -157,16 +156,13 @@ describe '| controllers | Article-Controller.test',->
           $httpBackend.flush()
 
           $httpBackend.expectGET('/json/user/currentuser', {"Accept":"application/json, text/plain, */*"}).respond UserEnabled : true , Email: 'test@securityinnovation.com'
-          $httpBackend.expectGET('/json/tm/config'       , {"Accept":"application/json, text/plain, */*"}).respond null
           @.map_Current_User()
           $httpBackend.flush()
           @.showFeedback.assert_Is_False()
 
           $httpBackend.expectGET('/json/tm/config'       , {"Accept":"application/json, text/plain, */*"}).respond allowedEmailDomains: ['@securityinnovation.com'] , githubContentUrl: 'www.github.com'
           @.map_Current_User()
-          $httpBackend.flush()
-          @.map_Current_User()
-          @.showFeedback.assert_Is_True()
+          @.showFeedback.assert_Is_False()
           @.githubContentUrl.assert_Is 'www.github.com'
 
   it 'map_Guide_Article  (with mocked $httpBackend)', ->
@@ -177,7 +173,8 @@ describe '| controllers | Article-Controller.test',->
       $controller('Article_Controller', { $scope: scope , $window: window})
       #new_Article_Controller (scope)->
       using scope, ->
-        $httpBackend.expectGET('/json/user/currentuser', {"Accept":"application/json, text/plain, */*"}).respond {}
+        $httpBackend.expectGET('/json/user/currentuser').respond {}
+        $httpBackend.expectGET('/jade/json/tm/config'  ).respond {}
         @.map_Guide_Article()
         $httpBackend.flush()
 
