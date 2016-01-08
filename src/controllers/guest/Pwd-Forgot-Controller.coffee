@@ -4,7 +4,7 @@ angular.module('TM_App')
          $scope.get_Password = ->
            $scope.isDisabled   = true #Disabling login button
            $scope.infoMessage  = "Processing your request"
-           TM_API.pwd_reset $scope.email, (data)->
+           TM_API.pwd_reset $scope.form.email, (data)->
              $scope.isDisabled   = false #Disabling login button
              $scope.infoMessage  = data?.message
          $scope.showInfoMessage = -> $scope.infoMessage

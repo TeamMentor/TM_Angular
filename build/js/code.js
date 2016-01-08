@@ -1455,25 +1455,26 @@
       }), 3000);
       return TM_API.login($scope.form.username, $scope.form.password, (function(_this) {
         return function(data) {
-          var ref, ref1, ref2;
+          var ref, ref1, ref2, ref3, ref4, ref5, url;
           $timeout.cancel(timer);
           if (data.result === 'OK') {
+            if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
+              if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
+                url = '/angular/user/index';
+              } else {
+                $scope.isDisabled = false;
+                url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
+              }
+              $timeout(function() {
+                return $window.location.href = url;
+              });
+            }
             return TM_API.currentuser(function(userInfo) {
-              var ref, ref1, ref2, url;
               $scope.isDisabled = false;
               if ((userInfo != null ? userInfo.UserEnabled : void 0)) {
                 $rootScope.loggedInUser = true;
-                if ((ref = data.viewModel) != null ? ref.redirectUrl : void 0) {
-                  if (/^(?:[a-z]+:)?\/\//i.test((ref1 = data.viewModel) != null ? ref1.redirectUrl : void 0)) {
-                    url = '/angular/user/index';
-                  } else {
-                    $scope.isDisabled = false;
-                    url = (ref2 = data.viewModel) != null ? ref2.redirectUrl : void 0;
-                  }
-                } else {
-                  $scope.isDisabled = false;
-                  url = '/angular/user/index';
-                }
+                $scope.isDisabled = false;
+                url = '/angular/user/index';
                 return $timeout(function() {
                   return $window.location.href = url;
                 });
@@ -1486,10 +1487,10 @@
           } else {
             $scope.infoMessage = null;
             $scope.isDisabled = false;
-            if (data != null ? (ref = data.viewModel) != null ? (ref1 = ref.errorMessage) != null ? ref1.contains('please contact us at') : void 0 : void 0 : void 0) {
+            if (data != null ? (ref3 = data.viewModel) != null ? (ref4 = ref3.errorMessage) != null ? ref4.contains('please contact us at') : void 0 : void 0 : void 0) {
               $scope.supportEmail = true;
             }
-            return $scope.errorMessage = ((ref2 = data.viewModel) != null ? ref2.errorMessage : void 0) || 'Login Failed (Server error)';
+            return $scope.errorMessage = ((ref5 = data.viewModel) != null ? ref5.errorMessage : void 0) || 'Login Failed (Server error)';
           }
         };
       })(this));
@@ -1512,7 +1513,7 @@
     $scope.get_Password = function() {
       $scope.isDisabled = true;
       $scope.infoMessage = "Processing your request";
-      return TM_API.pwd_reset($scope.email, function(data) {
+      return TM_API.pwd_reset($scope.form.email, function(data) {
         $scope.isDisabled = false;
         return $scope.infoMessage = data != null ? data.message : void 0;
       });
@@ -1540,12 +1541,12 @@
             $scope.isDisabled = false;
             return $scope.errorMessage = "Request not valid";
           }
-          if ($scope.password !== $scope.confirmpassword) {
+          if ($scope.form.password !== $scope.form.confirmpassword) {
             $scope.infoMessage = '';
             $scope.isDisabled = false;
             return $scope.errorMessage = "Passwords don't match, please verify";
           }
-          return TM_API.pwd_reset_Token(username, token, $scope.password, (function(_this) {
+          return TM_API.pwd_reset_Token(username, token, $scope.form.password, (function(_this) {
             return function(data) {
               $scope.isDisabled = false;
               if ((data != null ? data.status : void 0) === "Ok") {

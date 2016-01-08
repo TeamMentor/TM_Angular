@@ -12,21 +12,21 @@ angular.module('TM_App')
             TM_API.login   $scope.form.username,  $scope.form.password, (data)=>
               $timeout.cancel(timer);
               if data.result is 'OK'
+                if data.viewModel?.redirectUrl
+                  if (/^(?:[a-z]+:)?\/\//i.test(data.viewModel?.redirectUrl)) #if it matches,it means it is a external URL
+                    url = '/angular/user/index'
+                  else
+                    $scope.isDisabled = false  #Enabling login button since async call finished
+                    url               = data.viewModel?.redirectUrl #relative URL
+                  $timeout ->
+                    $window.location.href = url
+
                 TM_API.currentuser (userInfo)->
                   $scope.isDisabled = false  #Enabling login button since async call finished
                   if (userInfo?.UserEnabled)
                     $rootScope.loggedInUser =true
-                    #redirect URL upon login : If the value is set, a security check is performed.
-                    if data.viewModel?.redirectUrl
-                      if (/^(?:[a-z]+:)?\/\//i.test(data.viewModel?.redirectUrl)) #if it matches,it means it is a external URL
-                        url = '/angular/user/index'
-                      else
-                        $scope.isDisabled = false  #Enabling login button since async call finished
-                        url               = data.viewModel?.redirectUrl #relative URL
-                    else
-                      $scope.isDisabled = false  #Enabling login button since async call finished
-                      url               = '/angular/user/index'
-                      
+                    $scope.isDisabled = false  #Enabling login button since async call finished
+                    url               = '/angular/user/index'
                     $timeout ->
                         $window.location.href = url
                   else
