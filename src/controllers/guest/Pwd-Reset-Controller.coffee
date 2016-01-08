@@ -15,12 +15,12 @@ angular.module('TM_App')
         $scope.isDisabled   = false #Disabling login button
         return $scope.errorMessage  = "Request not valid"
 
-      if $scope.password != $scope.confirmpassword
+      if $scope.form.password != $scope.form.confirmpassword
         $scope.infoMessage           = ''
         $scope.isDisabled   = false #Disabling login button
         return $scope.errorMessage  = "Passwords don't match, please verify"
 
-      TM_API.pwd_reset_Token username, token, $scope.password, (data)=>
+      TM_API.pwd_reset_Token username, token, $scope.form.password, (data)=>
         $scope.isDisabled   = false #Disabling login button
         if (data?.status=="Ok")
           $scope.errorMessage = ''
