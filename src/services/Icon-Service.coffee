@@ -17,6 +17,7 @@ mappings =
   'AWS'                      : { class: 'icon-AWS'            , layers: 12 }
   'Ruby'                     : { class: 'icon-Ruby'           , layers: 12 }
   'ABAP'                     : { class: 'icon-ABAP'           , layers: 12 }
+  'Python'                   : { class: 'icon-Python'         , layers: 12 }
 
   # Phase
   'Deployment'               : { class: 'icon-Deploy'         , layers: 12 }
